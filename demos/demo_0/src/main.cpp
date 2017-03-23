@@ -71,7 +71,7 @@ int main(int argc, char **argv)
             float32 angle = body->GetAngle();
             sprintf(str, "Time: %4.2f\nX: %4.2f\nY: %4.2f\nAngle: %4.2f\n", now.asSeconds(), position.x, position.y, angle);
             shape.setPosition(300+5*position.x, 300+5*position.y);
-            shape.setRotation(angle);
+            shape.setRotation(180.0 / M_PI * angle / 20);
 
             // Draw the string
             sf::Text text(str, font, 10);
