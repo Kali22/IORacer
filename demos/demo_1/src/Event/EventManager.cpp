@@ -5,7 +5,7 @@
  *  @date 22.03.17
  */
 
-#include "EventManager.h"
+#include <EventManager.h>
 
 EventManager::EventManager() {
 
@@ -15,10 +15,10 @@ EventManager::~EventManager() {
 
 }
 
-void EventManager::PushEvent(const Event &event) {
+void EventManager::PushEvent(const sf::Event &event) {
 
 }
 
-Event EventManager::PopEvent() {
-
+bool EventManager::PopEvent(Event &event) {
+    return false;
 }

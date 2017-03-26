@@ -9,7 +9,9 @@
 #define _EventManager_H_
 
 #include <vector>
-#include "Event.h"
+#include <Event.h>
+#include <SFML/Window/Event.hpp>
+
 
 /**
  * Event Manager
@@ -31,7 +33,7 @@ public:
     ~EventManager();
 
     /// Add new event to the queue
-    void PushEvent(const Event &event);
+    void PushEvent(const sf::Event &event);
 
     /// Take event and remove
     bool PopEvent(Event &event);

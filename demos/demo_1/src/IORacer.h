@@ -1,6 +1,7 @@
 /**
  *  @defgroup io_racer IORacer
  *  IORacer game main class.
+ *  @TODO Think about passing events to main class.... Event buffers should me more general!?
  */
 
 /**
@@ -19,34 +20,58 @@
 #include <ContextManager.h>
 
 /**
- * Main game class object.
+ * Main game object.
  */
 class IORacer {
 private:
+    /// Context manager
+    ContextManager context_manager;
     /// External events controller
     ExternalEvents external_events;
     /// Event manager
     EventManager event_manager;
-    /// Game context manager
-    ContextManager context_manager;
-
-    /// Main view
+    /// Main window manager and renderer
     MainView main_view;
 
+    /**
+     * Check whether game is over.
+     * @return true if program is over, false otherwise
+     */
+    bool IsOver();
 public:
+
+    /**
+     * Create game.
+     */
     IORacer();
 
+    /**
+     *  Stub.
+     */
     ~IORacer();
 
+    /**
+     * Parse command line parameters and apply settings.
+     * @param argc
+     * @param argv
+     */
     void ParseParams(int argc, char **argv);
 
+    /**
+     * Initialize game structures.
+     */
     void Initialize();
 
+    /**
+     * Run game main loop.
+     */
     void Run();
 
+    /**
+     * Perform cleaning and returns appropriate exit code.
+     * @return exit code
+     */
     int Exit();
-
-    bool IsOver();
 };
 
 

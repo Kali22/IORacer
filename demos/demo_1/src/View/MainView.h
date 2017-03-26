@@ -1,6 +1,11 @@
 /**
+ * @defgroup main_view Main View
+ *
+ */
+
+/**
  *  @file
- *  @ingroup xxx
+ *  @ingroup main_view
  *  @author Jacek Łysiak <jaceklysiako.o@gmail.com>
  *  @date 20.03.17
  */
@@ -9,26 +14,27 @@
 #define _MainView_H_
 
 #include <SFML/Window.hpp>
-#include "Context/ContextView.h"
+#include <RendererHandler.h>
 #include <cstring>
 
 class MainView {
 private:
     int window_size_x;
     int window_size_y;
-    sf::Window *window;
+    sf::Window window;
     std::string window_name;
+    RendererHandler renderer;
 
 public:
     MainView();
 
     ~MainView();
 
-    sf::Window *GetWindow();
+    sf::Window &GetWindowHandler();
 
     void Initialize();
 
-    void Render(const std::vector<ContextView &>::const_iterator views_list);
+    RendererHandler &GetRendererHandler();
 };
 
 

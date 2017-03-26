@@ -1,4 +1,9 @@
 /**
+ * @defgroup event Event
+ * Application event structure
+ */
+
+/**
  *  @file
  *  @ingroup event
  *  @author Jacek Łysiak <jaceklysiako.o@gmail.com>

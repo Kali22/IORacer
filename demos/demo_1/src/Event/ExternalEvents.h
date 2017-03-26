@@ -13,7 +13,7 @@
 #define _ExternalEvents_H_
 
 #include <SFML/Window.hpp>  // Window handler
-#include "EventManager.h    // Event queue
+#include <EventManager.h>   // Event queue
 
 /**
  * External events listener

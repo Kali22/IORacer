@@ -5,69 +5,42 @@
  *  @date 20.03.17
  */
 
-#include "IORacer.h"
+#include <IORacer.h>
 
-/**
- * Create game.
- */
 IORacer::IORacer() {
-    settings = new Settings();
-    view = new MainView();
-    controller = new GameController();
-    context_manager = new ContextManager();
+
 }
 
-/**
- *  Stub.
- */
+
 IORacer::~IORacer() {
 
 }
 
-/**
- * Parse command line parameters and apply settings.
- * @param argc
- * @param argv
- */
 void IORacer::ParseParams(int argc, char **argv) {
 
 }
 
-/**
- * Initialize game structures.
- */
 void IORacer::Initialize() {
-    view->Initialize();
+    main_view.Initialize();
 }
 
-/**
- * Run game main loop.
- */
 void IORacer::Run() {
     while (!IsOver()) {
-        // Poll all events from user and OS
-        external_events.Listen(main_view, event_manager);
+        // Poll all events from user and OS and pass them to manager
+        external_events.Listen(main_view.GetWindowHandler(), event_manager);
         // Propagate collected events to all contexts
-        context_manager.PropagateEvents(event_manager);
-        // Process all contexts, let them send event
+        context_manager.ProcessEvents(event_manager);
+        // Process all contexts, let them do a job
         context_manager.ProcessContexts(event_manager);
         // Print everything on the screen
-        MainView.Render(context_manager.GetContextsViews());
+        context_manager.RenderContexts(main_view.GetRendererHandler());
     }
 }
 
-/**
- * Perform cleaning and returns appropriate exit code.
- * @return exit code
- */
 int IORacer::Exit() {
     return 0;
 }
 
-/**
- * Check whether game is over.
- * @return true if program is over, false otherwise
- */
 bool IORacer::IsOver() {
-    return false;
+    return true;
 }
