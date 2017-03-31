@@ -7,12 +7,12 @@
 #include <SFML/Graphics.hpp>
 
 class Race {
-public:
-    Race(sf::RenderWindow& win) : window(win) { }
-
-    void Run();
 private:
     sf::RenderWindow& window;
+
+public:
+    Race(sf::RenderWindow& win) : window(win) { }
+    void Run();
 };
 
 #endif //RACE_H

@@ -1,6 +1,7 @@
 # Set source files root directory
 set(SRCROOT ${PROJECT_SOURCE_DIR}/src)
 
+# Autodetect all *.cpp source files
 file(GLOB_RECURSE SOURCE_LIST "*.cpp")
 
 # All source files

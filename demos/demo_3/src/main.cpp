@@ -4,7 +4,7 @@
  *  Main entry ponit.
  */
 
-#include <Race.hpp>
+#include <Race.h>
 
 /**
  * Main. Entry point.
@@ -13,11 +13,10 @@
  * @return exit code
  */
 int main(int argc, char **argv) {
-    /** Prepare the window */
-    sf::RenderWindow Window(sf::VideoMode(800, 1200, 32), "IORacer");
+    /* Prepare the window */
+    sf::RenderWindow Window(sf::VideoMode(1200, 800, 32), "IORacer");
     Window.setFramerateLimit(60);
     Race race(Window);
     race.Run();
-
     return 0;
 }
