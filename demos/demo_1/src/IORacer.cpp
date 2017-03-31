@@ -6,41 +6,72 @@
  */
 
 #include <IORacer.h>
+#include <cstdio>
 
 IORacer::IORacer() {
-
+    printf("IORacer init!\n");
 }
 
-
 IORacer::~IORacer() {
-
+    printf("IORacer close!\n");
 }
 
 void IORacer::ParseParams(int argc, char **argv) {
-
+    printf("Parsing command line params!\n");
 }
 
 void IORacer::Initialize() {
+    printf("IORacer initialization!\n");
+    // We wanna play!
+    game_over = false;
+
+    // Init main window
     main_view.Initialize();
+    // Bind window as event source
+    event_server.RegisterWindow(main_view.GetWindowHandler());
+    // Bind event client
+    event_server.RegisterClient(&event_client);
+
+    event_client.RegisterEventType((event_type_t) sf::Event::Closed);
 }
 
 void IORacer::Run() {
     while (!IsOver()) {
-        // Poll all events from user and OS and pass them to manager
-        external_events.Listen(main_view.GetWindowHandler(), event_manager);
-        // Propagate collected events to all contexts
-        context_manager.ProcessEvents(event_manager);
-        // Process all contexts, let them do a job
-        context_manager.ProcessContexts(event_manager);
-        // Print everything on the screen
-        context_manager.RenderContexts(main_view.GetRendererHandler());
+        // Listen for external events
+        event_server.Listen();
+        // Process all collected events
+        event_server.ProcessEvents();
+        // Check whether events arrived to main unit
+        ProcessReceivedEvents();
+
+        // Process contexts
+
+        // Render contexts
     }
 }
 
 int IORacer::Exit() {
+    printf("IORacer exit!\n");
+    event_server.UnregisterWindow(main_view.GetWindowHandler());
+    event_server.UnregisterClient(&event_client);
+
     return 0;
 }
 
 bool IORacer::IsOver() {
-    return true;
+    return game_over;
+}
+
+void IORacer::ProcessReceivedEvents() {
+    Event event;
+    while (event_client.GetEvent(event)) {
+        printf("IORacer - process event: %d\n", event.event_type);
+        /// @TODO Here you can put stuff controlling your main
+        switch (event.event_type) {
+            case 0:
+                game_over = true;
+                main_view.GetWindowHandler()->close();
+                break;
+        }
+    }
 }

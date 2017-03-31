@@ -20,7 +20,7 @@ void Context::PushEvent(Event &event) {
     context_events.PushEvent(event);
 }
 
-void Context::Process(EventManager &event_manager) {
+void Context::Process(EventServer &event_manager) {
     //====================== CONTEXT EVENTS PROCESSING
     Event event;
     while (context_events.PopEvent(event)) {

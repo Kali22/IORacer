@@ -8,10 +8,11 @@
 #ifndef _EventTypes_H_
 #define _EventTypes_H_
 
-enum event_type_t {
-    EVENT_SFML_CLOSE,
-    EVENT_SFML_KEY,
-    EVENT_MAIN_MENU
-};
+typedef int event_type_t;
+//enum event_type_t {
+//    EVENT_SFML_CLOSE,
+//    EVENT_SFML_KEY,
+//    EVENT_MAIN_MENU
+//};
 
 #endif //_EventTypes_H_

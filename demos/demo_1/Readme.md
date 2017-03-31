@@ -1,4 +1,6 @@
-# IORacer  
+# DOESN'T WORK
+# WORK SUSPENDED
+
 ## demo_1
 SFML & Box2D demonstration project.
 For building instruction check Readme.md in demo_0.

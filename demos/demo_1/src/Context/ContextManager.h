@@ -14,7 +14,7 @@
 #define _ContextManager_H_
 
 #include <Context.h>
-#include <EventManager.h>
+#include <EventServer.h>
 #include <RendererHandler.h>
 #include <vector>
 
@@ -41,13 +41,13 @@ public:
      * Propagate collected events to contexts.
      * @param event_manager
      */
-    void ProcessEvents(EventManager &event_manager);
+    void ProcessEvents(EventServer &event_manager);
 
     /**
      * Run each event and let them do a job.
      * @param event_manager
      */
-    void ProcessContexts(EventManager &event_manager);
+    void ProcessContexts(EventServer &event_manager);
 
     /**
      * Render appropriate contexts on screen.

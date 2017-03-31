@@ -13,12 +13,14 @@
 #ifndef _Event_H_
 #define _Event_H_
 
+#include <EventTypes.h>
+
 /**
  * Event package
  */
 class Event {
 public:
-    int event_type;
+    event_type_t event_type;
 
     union event_param {
         int t1; // sth1

@@ -15,16 +15,16 @@ ContextManager::~ContextManager() {
     /// @TODO implementation?
 }
 
-void ContextManager::ProcessEvents(EventManager &event_manager) {
+void ContextManager::ProcessEvents(EventServer &event_manager) {
     Event event;
-    while (event_manager.PopEvent(event)) {
-        for (int i = 0; i < context_list.size(); ++i) {
-            context_list[i].PushEvent(event);
-        }
-    }
+//    while (event_manager.PopEvent(event)) {
+//        for (int i = 0; i < context_list.size(); ++i) {
+//            context_list[i].PushEvent(event);
+//        }
+//    }
 }
 
-void ContextManager::ProcessContexts(EventManager &event_manager) {
+void ContextManager::ProcessContexts(EventServer &event_manager) {
     for (int i = 0; i < context_list.size(); ++i) {
         context_list[i].Process(event_manager);
     }

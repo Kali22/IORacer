@@ -18,8 +18,8 @@ MainView::~MainView() {
 
 }
 
-sf::Window &MainView::GetWindowHandler() {
-    return window;
+sf::Window *MainView::GetWindowHandler() {
+    return &window;
 }
 
 void MainView::Initialize() {

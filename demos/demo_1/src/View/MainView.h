@@ -30,7 +30,7 @@ public:
 
     ~MainView();
 
-    sf::Window &GetWindowHandler();
+    sf::Window *GetWindowHandler();
 
     void Initialize();
 

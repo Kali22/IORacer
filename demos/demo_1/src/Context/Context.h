@@ -15,7 +15,7 @@
 
 #include <ContextEvents.h>
 #include <Event.h>
-#include <EventManager.h>
+#include <EventServer.h>
 #include <string>
 #include <ContextScene.h>
 #include <ContextCameraView.h>
@@ -58,7 +58,7 @@ public:
      * Context main function.
      * @param event_manager
      */
-    void Process(EventManager &event_manager);
+    void Process(EventServer &event_manager);
 
     /**
      * Get context name

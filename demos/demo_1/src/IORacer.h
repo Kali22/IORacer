@@ -15,8 +15,8 @@
 #define _IORacer_H_
 
 #include <MainView.h>
-#include <ExternalEvents.h>
-#include <EventManager.h>
+#include <EventServer.h>
+#include <EventClient.h>
 #include <ContextManager.h>
 
 /**
@@ -26,18 +26,31 @@ class IORacer {
 private:
     /// Context manager
     ContextManager context_manager;
-    /// External events controller
-    ExternalEvents external_events;
-    /// Event manager
-    EventManager event_manager;
+
+    /// Event server
+    EventServer event_server;
     /// Main window manager and renderer
     MainView main_view;
+
+    /**
+     *  Event client
+     *  Handling core events
+     */
+    EventClient event_client;
+
+    /// Close application
+    bool game_over;
 
     /**
      * Check whether game is over.
      * @return true if program is over, false otherwise
      */
     bool IsOver();
+
+    /**
+     * Process all events for main management unit.
+     */
+    void ProcessReceivedEvents();
 public:
 
     /**
