@@ -11,24 +11,37 @@
 #include <string>
 #include <SFML/Graphics/Texture.hpp>
 #include <SFML/Graphics/Sprite.hpp>
+#include <SFML/Graphics/View.hpp>
 
 class Map {
 private:
+    unsigned int max_size;
     std::string name;
     std::string full_name;
     sf::Texture map_view;   //!< Visual part, in GPU memory
     sf::Image image_view;   //!< Visual part, in CPU memory
     sf::Texture map_friction; //!< Friction modulator map, in GPU memory
     sf::Image image_friction;   //!< Friction modulator map, in CPU memory
-    sf::Sprite map_sprite;
+    sf::Sprite sprite_map;
+    sf::Sprite sprite_friction;
+
+    sf::View camera;
+    sf::View minimap;
 
 public:
     Map();
     ~Map();
     void LoadMap(const std::string& name, const std::string &full_name);
+    float GetFrictionModifier(const sf::Vector2f &pos);
 
     const sf::Drawable &GetViewMap();
-    float GetFrictionModifier(const sf::Vector2f &pos);
+    const sf::Drawable &GetFrictionMap();
+    const sf::View &GetCameraView();
+    const sf::View &GetMinimapView();
+    
+    void AlignCameraViewSize(const sf::Window &window);
+    void SetCameraViewPosition(const sf::Vector2f &pos);
+    void SetCameraViewZoom(float f);
 };
 
 

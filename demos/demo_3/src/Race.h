@@ -13,14 +13,10 @@ class Race {
 private:
     sf::RenderWindow& window;
     Map map;
-    sf::View camera;
-    sf::View mipmap;
-
     b2World world;
     Car car;
 
     void Initialize();
-
 public:
     Race(sf::RenderWindow& win) : window(win), world(b2Vec2(0.f, 0.f)) { };
     void Run();

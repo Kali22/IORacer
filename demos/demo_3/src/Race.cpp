@@ -40,14 +40,10 @@ void HandleKeyboard(sf::Event::KeyEvent Event, int *state, int type) {
 void Race::Initialize() {
     // Prepare map
     map.LoadMap("map_0", "Mapa testowa");
-
-    car.Initialize(&world, 300, 300);
-    car.setCharacteristics(80, -20, 100);
-    mipmap.reset(sf::FloatRect(0,0,2220,1260));
-    mipmap.setViewport(sf::FloatRect(0, 0, 1/4.f, 1/4.f));
-    camera.setCenter(300,300);
-    camera.setSize(1200,800);
-    camera.setViewport(sf::FloatRect(0, 0, 1.f, 1.f));
+    car.Initialize(&world, 100, 100);
+    car.setCharacteristics(40, -10, 50);
+    map.AlignCameraViewSize(window);
+    map.SetCameraViewPosition(car.GetPosition());
 }
 
 void Race::Run() {
@@ -63,6 +59,9 @@ void Race::Run() {
             if (Event.type == sf::Event::Closed) {
                 window.close();
             } else if (Event.type == sf::Event::KeyPressed) {
+                if (Event.key.code == sf::Keyboard::Key::Escape) {
+                    window.close();
+                }
                 HandleKeyboard(Event.key, &carState, 1);
             } else if (Event.type == sf::Event::KeyReleased) {
                 HandleKeyboard(Event.key, &carState, 0);
@@ -72,16 +71,16 @@ void Race::Run() {
         /** Simulate the world */
         car.Update(carState, map.GetFrictionModifier(car.GetPosition()));
         world.Step(1 / 60.f, 8, 3);
-        camera.setCenter(car.GetPosition());
+        map.SetCameraViewPosition(car.GetPosition());
         float zoom = 0.8f + car.GetSpeed()/70;
-        camera.zoom(zoom);
+        map.SetCameraViewZoom(zoom);
         window.clear(sf::Color::White);
-        window.setView(camera);
+        window.setView(map.GetCameraView());
         window.draw(map.GetViewMap());
         window.draw(car.GetSprite());
-        camera.zoom(1.f / zoom);
-        window.setView(mipmap);
-        window.draw(map.GetViewMap());
+        map.SetCameraViewZoom(1.f / zoom);
+        window.setView(map.GetMinimapView());
+        window.draw(map.GetFrictionMap());
         window.draw(car.GetSprite());
         window.setView(window.getDefaultView());
         window.display();
