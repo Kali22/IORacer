@@ -18,8 +18,9 @@ b2Body* CreateBox(b2World *World, int MouseX, int MouseY) {
     b2PolygonShape Shape;
     Shape.SetAsBox((32.f / 2) / SCALE, (32.f / 2) / SCALE);
     b2FixtureDef FixtureDef;
-    FixtureDef.density = 5.f;
-    FixtureDef.friction = 0.7f;
+    FixtureDef.density = 4.f;
+    FixtureDef.friction = 1.7f;
+    FixtureDef.restitution = 0.5;
     FixtureDef.shape = &Shape;
     Body->CreateFixture(&FixtureDef);
     return Body;
@@ -36,6 +37,7 @@ void Car::Initialize(b2World *world, int x, int y) {
     car_texture.loadFromFile("../resource/car.png");
     car_sprite.setTexture(car_texture);
     car_sprite.setOrigin(16.f, 16.f);
+    car_sprite.setScale(0.5f,0.5f);
 }
 
 Car::~Car() {

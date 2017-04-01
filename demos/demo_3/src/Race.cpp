@@ -40,7 +40,7 @@ void HandleKeyboard(sf::Event::KeyEvent Event, int *state, int type) {
 void Race::Initialize() {
     // Prepare map
     map.LoadMap("map_0", "Mapa testowa");
-    car.Initialize(&world, 100, 100);
+    car.Initialize(&world, 300, 300);
     car.setCharacteristics(40, -10, 50);
     map.AlignCameraViewSize(window);
     map.SetCameraViewPosition(car.GetPosition());
@@ -72,16 +72,16 @@ void Race::Run() {
         car.Update(carState, map.GetFrictionModifier(car.GetPosition()));
         world.Step(1 / 60.f, 8, 3);
         map.SetCameraViewPosition(car.GetPosition());
-        float zoom = 0.8f + car.GetSpeed()/70;
-        map.SetCameraViewZoom(zoom);
+//        float zoom = 0.8f + car.GetSpeed()/70;
+//        map.SetCameraViewZoom(zoom);
         window.clear(sf::Color::White);
+        map.RenderBottomLayer(window);
         window.setView(map.GetCameraView());
-        window.draw(map.GetViewMap());
         window.draw(car.GetSprite());
-        map.SetCameraViewZoom(1.f / zoom);
-        window.setView(map.GetMinimapView());
-        window.draw(map.GetFrictionMap());
-        window.draw(car.GetSprite());
+//        map.SetCameraViewZoom(1.f / zoom);
+//        window.setView(map.GetMinimapView());
+//        window.draw(map.GetFrictionMap());
+//        window.draw(car.GetSprite());
         window.setView(window.getDefaultView());
         window.display();
     }

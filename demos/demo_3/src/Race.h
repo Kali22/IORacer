@@ -18,7 +18,7 @@ private:
 
     void Initialize();
 public:
-    Race(sf::RenderWindow& win) : window(win), world(b2Vec2(0.f, 0.f)) { };
+    Race(sf::RenderWindow& win) : window(win), world(b2Vec2(0.f, 0.f)), map(world) { };
     void Run();
 };
 

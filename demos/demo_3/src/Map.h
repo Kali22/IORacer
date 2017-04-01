@@ -12,6 +12,9 @@
 #include <SFML/Graphics/Texture.hpp>
 #include <SFML/Graphics/Sprite.hpp>
 #include <SFML/Graphics/View.hpp>
+#include <Dynamics/b2Body.h>
+#include <Dynamics/b2World.h>
+#include <SFML/Graphics/RenderWindow.hpp>
 
 class Map {
 private:
@@ -28,8 +31,12 @@ private:
     sf::View camera;
     sf::View minimap;
 
+    b2World &world;
+    b2Body *bands[4]; //!< Outside bands
+    sf::Sprite bands_sprite[4];
+
 public:
-    Map();
+    Map(b2World &world);
     ~Map();
     void LoadMap(const std::string& name, const std::string &full_name);
     float GetFrictionModifier(const sf::Vector2f &pos);
@@ -42,6 +49,8 @@ public:
     void AlignCameraViewSize(const sf::Window &window);
     void SetCameraViewPosition(const sf::Vector2f &pos);
     void SetCameraViewZoom(float f);
+
+    void RenderBottomLayer(sf::RenderWindow &window);
 };
 
 
