@@ -2,11 +2,8 @@
 // Created by pawel on 30.03.17.
 //
 
-#include <SFML/Graphics.hpp>
-#include <Box2D/Box2D.h>
-#include <Car.h>
+#include <Race.h>
 
-#include "Race.h"
 
 //#ifndef DEGTORAD
 //#define DEGTORAD 0.0174532925199432957f
@@ -40,17 +37,24 @@ void HandleKeyboard(sf::Event::KeyEvent Event, int *state, int type) {
     }
 }
 
+void Race::Initialize() {
+    // Prepare map
+    map.LoadMap("map_0", "Mapa testowa");
+
+    car.Initialize(&world, 300, 300);
+    car.setCharacteristics(80, -20, 100);
+    mipmap.reset(sf::FloatRect(0,0,2220,1260));
+    mipmap.setViewport(sf::FloatRect(0, 0, 1/4.f, 1/4.f));
+    camera.setCenter(300,300);
+    camera.setSize(1200,800);
+    camera.setViewport(sf::FloatRect(0, 0, 1.f, 1.f));
+}
 
 void Race::Run() {
-    /** Prepare the world */
-    b2Vec2 Gravity(0.f, 0.f);
-    b2World World(Gravity);
+    // Initialize game
+    Initialize();
 
-    sf::Texture BoxTexture;
-    BoxTexture.loadFromFile("../resource/car.png");
     int carState = 0;
-    Car car(&World, 300, 300);
-    car.setCharacteristics(180, -80, 150);
 
     while (window.isOpen()) {
         sf::Event Event;
@@ -66,11 +70,20 @@ void Race::Run() {
         }
 
         /** Simulate the world */
-        car.Update(carState);
-        World.Step(1 / 60.f, 8, 3);
-
+        car.Update(carState, map.GetFrictionModifier(car.GetPosition()));
+        world.Step(1 / 60.f, 8, 3);
+        camera.setCenter(car.GetPosition());
+        float zoom = 0.8f + car.GetSpeed()/70;
+        camera.zoom(zoom);
         window.clear(sf::Color::White);
-        car.Draw(window, BoxTexture);
+        window.setView(camera);
+        window.draw(map.GetViewMap());
+        window.draw(car.GetSprite());
+        camera.zoom(1.f / zoom);
+        window.setView(mipmap);
+        window.draw(map.GetViewMap());
+        window.draw(car.GetSprite());
+        window.setView(window.getDefaultView());
         window.display();
     }
 }

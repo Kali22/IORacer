@@ -25,29 +25,34 @@ b2Body* CreateBox(b2World *World, int MouseX, int MouseY) {
     return Body;
 }
 
-Car::Car(b2World *world, int x, int y) {
+Car::Car() {
+
+}
+
+void Car::Initialize(b2World *world, int x, int y) {
     body = CreateBox(world, x, y);
     body->SetUserData(this);
+
+    car_texture.loadFromFile("../resource/car.png");
+    car_sprite.setTexture(car_texture);
+    car_sprite.setOrigin(16.f, 16.f);
 }
 
 Car::~Car() {
     body->GetWorld()->DestroyBody(body);
 }
 
-void Car::Update(int state) {
-    updateFriction();
+void Car::Update(int state, float modifier) {
+    updateFriction(modifier);
     updateDrive(state);
     updateTurn(state);
 }
 
-void Car::Draw(sf::RenderWindow &window, sf::Texture texture) {
-    sf::Sprite Sprite;
-    Sprite.setTexture(texture);
-    Sprite.setOrigin(16.f, 16.f);
-    Sprite.setPosition(SCALE * body->GetPosition().x,
+const sf::Drawable  &Car::GetSprite() {
+    car_sprite.setPosition(SCALE * body->GetPosition().x,
                        SCALE * body->GetPosition().y);
-    Sprite.setRotation(body->GetAngle() * 180 / b2_pi);
-    window.draw(Sprite);
+    car_sprite.setRotation(body->GetAngle() * 180 / b2_pi);
+    return car_sprite;
 }
 
 void Car::setCharacteristics(float maxForwardSpeed_, float maxBackwardSpeed_,
@@ -67,7 +72,7 @@ b2Vec2 Car::getForwardVelocity() {
     return b2Dot(currentForwardNormal, body->GetLinearVelocity()) * currentForwardNormal;
 }
 
-void Car::updateFriction() {
+void Car::updateFriction(float modifier) {
     //lateral linear velocity
     float maxLateralImpulse = 2.5f;
     b2Vec2 impulse = body->GetMass() * -getLateralVelocity();
@@ -83,7 +88,7 @@ void Car::updateFriction() {
     b2Vec2 currentForwardNormal = getForwardVelocity();
     float currentForwardSpeed = currentForwardNormal.Normalize();
     float dragForceMagnitude = -2 * currentForwardSpeed;
-    body->ApplyForce(dragForceMagnitude * currentForwardNormal,
+    body->ApplyForce(modifier * dragForceMagnitude * currentForwardNormal,
                      body->GetWorldCenter(), true);
 }
 
@@ -131,3 +136,17 @@ void Car::updateTurn(int controlState) {
     }
     body->ApplyTorque(desiredTorque, true);
 }
+
+const sf::Vector2f &Car::GetPosition() const {
+    return car_sprite.getPosition();
+}
+
+float Car::GetRotation() {
+    return body->GetAngle() * 180 / b2_pi;
+}
+
+float Car::GetSpeed() {
+    return body->GetLinearVelocity().Length();
+}
+
+
