@@ -67,7 +67,7 @@ void Race::Run() {
         }
 
         /* Update states */
-        vehicle.Update(carState, map.GetFrictionModifier(vehicle.GetPosition()));
+        vehicle.Update(carState, map);
 
         /* Simulate the world */
         world.Step(1 / 60.f, 8, 3);

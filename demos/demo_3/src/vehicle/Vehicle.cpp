@@ -6,6 +6,7 @@
  */
 
 #include <Vehicle.h>
+#include <Map.h>
 
 #define SCALE 30.f
 
@@ -44,9 +45,9 @@ void Vehicle::setCharacteristics(float maxForwardSpeed_, float maxBackwardSpeed_
     maxDriveForce = maxDriveForce_;
 }
 
-void Vehicle::Update(int state, float modifier) {
-    updateFriction(modifier);
-    updateDrive(state);
+void Vehicle::Update(int state, Map &map) {
+    updateFriction(map);
+    updateDrive(state, map);
     updateTurn(state);
 }
 
@@ -109,21 +110,23 @@ void Vehicle::Initialize(b2World *world, int x, int y) {
     sprite_chassis.setOrigin(16.f, 24.f);
 }
 
-void Vehicle::updateFriction(float modifier) {
+void Vehicle::updateFriction(Map &map) {
     for (int i = 0; i < 4; i++) {
+        float modifier = map.GetFrictionModifier(tires[i]->tireSprite.getPosition());
         tires[i]->updateFriction(modifier);
     }
 }
 
-void Vehicle::updateDrive(int controlState) {
+void Vehicle::updateDrive(int controlState, Map &map) {
     for (int i = 0; i < 4; i++) {
-        tires[i]->UpdateDrive(controlState);
+        float modifier = map.GetFrictionModifier(tires[i]->tireSprite.getPosition());
+        tires[i]->UpdateDrive(controlState, modifier);
     }
 }
 
 void Vehicle::updateTurn(int controlState) {
     //car class function
-    float lockAngle = 5 * b2_pi/ 180.f;
+    float lockAngle = 10 * b2_pi/ 180.f;
     float turnSpeedPerSec = 720 * b2_pi/ 180.f;//from lock to lock in 0.25 sec
     float turnPerTimeStep = turnSpeedPerSec / 60.0f;
     float desiredAngle = 0;

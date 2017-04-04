@@ -31,7 +31,7 @@ public:
 
 
     void Render(sf::RenderWindow &window);
-    void UpdateDrive(int state);
+    void UpdateDrive(int state, float mod);
 };
 
 

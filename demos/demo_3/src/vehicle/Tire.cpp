@@ -46,7 +46,6 @@ b2Vec2 Tire::getLateralVelocity() {
 }
 
 void Tire::updateFriction(float mod) {
-    printf("%lf\n",mod);
     b2Vec2 impulse = body->GetMass() * -getLateralVelocity();
     if ( impulse.Length() > 5 * mod * maxLateralImpulse )
         impulse *= 5 * mod * maxLateralImpulse / impulse.Length();
@@ -70,7 +69,7 @@ b2Vec2 Tire::getForwardVelocity() {
     return b2Dot( currentRightNormal, body->GetLinearVelocity() ) * currentRightNormal;
 }
 
-void Tire::UpdateDrive(int state) {
+void Tire::UpdateDrive(int state, float mod) {
     //find desired speed
     float desiredSpeed = 0;
     switch (state & (UP | DOWN)) {
@@ -96,6 +95,6 @@ void Tire::UpdateDrive(int state) {
         force = -10;
     else
         return;
-    body->ApplyForce(force * currentForwardNormal, body->GetWorldCenter(), true);
+    body->ApplyForce(mod * force * currentForwardNormal, body->GetWorldCenter(), true);
 
 }
