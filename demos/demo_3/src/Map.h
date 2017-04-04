@@ -31,12 +31,12 @@ private:
     sf::View camera;
     sf::View minimap;
 
-    b2World &world;
+    b2World *world;
     b2Body *bands[4]; //!< Outside bands
     sf::Sprite bands_sprite[4];
 
 public:
-    Map(b2World &world);
+    Map(b2World *world);
     ~Map();
     void LoadMap(const std::string& name, const std::string &full_name);
     float GetFrictionModifier(const sf::Vector2f &pos);

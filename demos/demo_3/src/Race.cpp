@@ -4,12 +4,6 @@
 
 #include <Race.h>
 
-
-//#ifndef DEGTORAD
-//#define DEGTORAD 0.0174532925199432957f
-//#define RADTODEG 57.295779513082320876f
-//#endif
-
 void setclr(int *reg, int mask, int type) {
     if (type)
         *reg |= mask;
@@ -32,6 +26,9 @@ void HandleKeyboard(sf::Event::KeyEvent Event, int *state, int type) {
         case sf::Keyboard::Key::Right:
             setclr(state, RIGHT, type);
             break;
+        case sf::Keyboard::Key::B:
+            setclr(state, BRAKE, type);
+            break;
         default:
             break;
     }
@@ -40,10 +37,11 @@ void HandleKeyboard(sf::Event::KeyEvent Event, int *state, int type) {
 void Race::Initialize() {
     // Prepare map
     map.LoadMap("map_0", "Mapa testowa");
-    car.Initialize(&world, 300, 300);
-    car.setCharacteristics(40, -10, 50);
+    vehicle.Initialize(&world, 1600, 2200);
+    vehicle.setCharacteristics(40, -10, 20);
+
     map.AlignCameraViewSize(window);
-    map.SetCameraViewPosition(car.GetPosition());
+    map.SetCameraViewPosition(vehicle.GetPosition());
 }
 
 void Race::Run() {
@@ -68,20 +66,24 @@ void Race::Run() {
             }
         }
 
-        /** Simulate the world */
-        car.Update(carState, map.GetFrictionModifier(car.GetPosition()));
+        /* Update states */
+        vehicle.Update(carState, map.GetFrictionModifier(vehicle.GetPosition()));
+
+        /* Simulate the world */
         world.Step(1 / 60.f, 8, 3);
-        map.SetCameraViewPosition(car.GetPosition());
+
+        /* Rendering */
+        map.SetCameraViewPosition(vehicle.GetPosition());
+        window.clear(sf::Color::White);
 //        float zoom = 0.8f + car.GetSpeed()/70;
 //        map.SetCameraViewZoom(zoom);
-        window.clear(sf::Color::White);
         map.RenderBottomLayer(window);
         window.setView(map.GetCameraView());
-        window.draw(car.GetSprite());
 //        map.SetCameraViewZoom(1.f / zoom);
 //        window.setView(map.GetMinimapView());
-//        window.draw(map.GetFrictionMap());
+//        window.draw(map.GetViewMap());
 //        window.draw(car.GetSprite());
+        vehicle.Render(window);
         window.setView(window.getDefaultView());
         window.display();
     }

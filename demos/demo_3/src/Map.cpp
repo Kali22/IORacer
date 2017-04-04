@@ -13,11 +13,11 @@
 
 #define SCALE 30.f
 
-b2Body *CreateBox(b2World &World, float MouseX, float MouseY, float width, float height) {
+b2Body *CreateBox(b2World *World, float MouseX, float MouseY, float width, float height) {
     b2BodyDef BodyDef;
     BodyDef.position = b2Vec2(MouseX / SCALE, MouseY / SCALE);
     BodyDef.type = b2_staticBody;
-    b2Body *Body = World.CreateBody(&BodyDef);
+    b2Body *Body = World->CreateBody(&BodyDef);
 
     b2PolygonShape Shape;
     Shape.SetAsBox((width / 2) / SCALE, (height / 2) / SCALE);
@@ -28,15 +28,18 @@ b2Body *CreateBox(b2World &World, float MouseX, float MouseY, float width, float
     return Body;
 }
 
-Map::Map(b2World &world) : world(world) {
+Map::Map(b2World *world) {
+    this->world = world;
     for (int i = 0; i < 4; ++i)
         bands[i] = NULL;
 }
 
 Map::~Map() {
     for (int i = 0; i < 4; ++i)
-        if (bands[i])
-            world.DestroyBody(bands[i]);
+        if (bands[i]) {
+            bands[i]->GetWorld()->DestroyBody(bands[i]);
+            bands[i] = NULL;
+        }
     printf("Map %s destroyed!\n", name.c_str());
 }
 
@@ -55,7 +58,7 @@ void Map::LoadMap(const std::string &name, const std::string &full_name) {
     this->name = name;
     this->full_name = full_name;
 
-    sprite_map.setTexture(map_view);
+    sprite_map.setTexture(map_friction);
     sprite_friction.setTexture(map_friction);
     printf("Loading map %s done!\n", name.c_str());
 
@@ -102,7 +105,7 @@ const sf::Drawable &Map::GetFrictionMap() {
 
 void Map::AlignCameraViewSize(const sf::Window &window) {
     sf::Vector2u wnd_size = window.getSize();
-    camera.setSize(wnd_size.x / 2.5f, wnd_size.y / 2.5f);
+    camera.setSize(wnd_size.x, wnd_size.y);
 }
 
 const sf::View &Map::GetCameraView() {
