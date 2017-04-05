@@ -9,6 +9,7 @@
 
 #include <Car.h>
 #include <Entity.h>
+#include <MathUtil.h>
 
 #define SCALE 30.f
 
@@ -156,7 +157,7 @@ const sf::Vector2f &Car::GetPosition() const {
 }
 
 float Car::GetRotation() {
-    return body_->GetAngle() * 180 / b2_pi;
+    return MathUtil::RadianToDegree(body_->GetAngle());
 }
 
 float Car::GetSpeed() {

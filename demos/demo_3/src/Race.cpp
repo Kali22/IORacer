@@ -43,8 +43,8 @@ void Race::Initialize() {
     // Prepare map
     map.LoadMap("map_0", "Mapa testowa");
     /// TODO add race builder
-    auto checkPoint = new CheckPoint(&world, b2Vec2(8, 12), b2Vec2(9, 1));
-    auto checkPoint2 = new CheckPoint(&world, b2Vec2(12, 17), b2Vec2(9, 1));
+    auto checkPoint = new CheckPoint(&world, b2Vec2(8, 12), b2Vec2(9, 1), 0);
+    auto checkPoint2 = new CheckPoint(&world, b2Vec2(12, 17), b2Vec2(9, 1), 90);
     std::vector<CheckPoint*> checkPoints =
             {checkPoint, checkPoint2};
     checkPointManager_ = new CheckPointManager(checkPoints);

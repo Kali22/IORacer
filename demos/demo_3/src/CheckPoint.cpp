@@ -10,21 +10,8 @@
 #include <SFML/Graphics/View.hpp>
 #include <Entity.h>
 
-
-sf::Vector2f CheckPoint::b2VectorToSFML(const b2Vec2 &vec) {
-    return sf::Vector2f(vec.x * 30, vec.y * 30);
-}
-
 int CheckPoint::GetEntityType() {
     return CHECK_POINT;
-}
-
-b2Vec2 CheckPoint::GetPosition() {
-    return position_;
-}
-
-b2Vec2 CheckPoint::GetSize() {
-    return size_;
 }
 
 void CheckPoint::SetObserver(CheckPointObserver* observer) {
@@ -39,46 +26,16 @@ bool CheckPoint::IsEnabled() {
     return isActive_;
 }
 
-void CheckPoint::DebugPrint() {
-    std::cout << "CheckPoint ";
-    std::cout << body_->GetPosition().x << " "
-              << body_->GetPosition().y << std::endl;
-}
-
-void CheckPoint::CreateB2Rectangle(b2Vec2 position, b2Vec2 size) {
-    b2BodyDef bodyDef;
-    bodyDef.position = position;
-    body_ = world_->CreateBody(&bodyDef);
-    b2FixtureDef fixtureDef;
-
-    b2PolygonShape polygonShape;
-    polygonShape.SetAsBox(size.x / 2, size.y / 2);
-
-    fixtureDef.shape = &polygonShape;
-    fixtureDef.isSensor = true;
-
-    b2Fixture *checkPointFixture = body_->CreateFixture(&fixtureDef);
-    body_->SetUserData(this);
-}
-
-void CheckPoint::CreateSFMLRectangle(b2Vec2 position, b2Vec2 size) {
-    rectangleShape_ = sf::RectangleShape(b2VectorToSFML(size));
-    sf::Vector2f convertedPos = b2VectorToSFML(position);
-    convertedPos.x -= size.x * 30 / 2;
-    convertedPos.y -= size.y * 30 / 2;
-
-    rectangleShape_.setPosition(convertedPos);
-}
-
-CheckPoint::CheckPoint(b2World *world, b2Vec2 position, b2Vec2 size)
-        : world_(world), position_(position), size_(size), isActive_(false) {
-    CreateB2Rectangle(position, size);
-    CreateSFMLRectangle(position, size);
+CheckPoint::CheckPoint(b2World *world,
+                       const b2Vec2& position,
+                       const b2Vec2& size,
+                       float angle)
+        : world_(world), rectangleArea_(world, position, size, angle, this) {
 }
 
 void CheckPoint::Draw(sf::RenderWindow *window) {
     if (isActive_) {
-        window->draw(rectangleShape_);
+        rectangleArea_.Draw(window);
     }
 }
 
@@ -95,4 +52,6 @@ void CheckPoint::BeginContact() {
 void CheckPoint::EndContact() {
     std::cout << "End contact\n";
 }
+
+CheckPoint::~CheckPoint() {}
 
