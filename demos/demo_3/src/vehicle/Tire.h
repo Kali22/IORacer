@@ -13,6 +13,8 @@
 #include <SFML/Graphics/Sprite.hpp>
 #include <SFML/Graphics/Texture.hpp>
 #include <SFML/Graphics/RenderWindow.hpp>
+#include "CarParams.h"
+
 
 class Tire {
 public:
@@ -27,11 +29,11 @@ public:
 
     b2Vec2 getLateralVelocity();
     b2Vec2 getForwardVelocity();
-    void updateFriction(float mod);
+    void updateFriction(float mod, CarParameters &params);
 
 
     void Render(sf::RenderWindow &window);
-    void UpdateDrive(int state, float mod);
+    void UpdateDrive(int state, float mod, CarParameters &params);
 };
 
 

@@ -17,7 +17,7 @@
 #include <SFML/Graphics/Sprite.hpp>
 #include <Map.h>
 
-//
+
 enum car_control_e {
     LEFT    =   0x01,
     RIGHT   =   0x02,
@@ -36,23 +36,23 @@ private:
     sf::Texture texture_chassis;
     sf::Sprite sprite_chassis;
 
-    float maxForwardSpeed;
-    float maxBackwardSpeed;
-    float maxDriveForce;
-    float angle;
-
+    CarParameters &carParameters;
 
     void updateFriction(Map &map);
     void updateDrive(int controlState, Map &map);
     void updateTurn(int controlState);
 public:
-    Vehicle();
+    Vehicle(CarParameters &params);
     ~Vehicle();
 
     void Render(sf::RenderWindow &window);
 
     const sf::Vector2f &GetPosition() const;
-    void setCharacteristics(float maxForwardSpeed_, float maxBackwardSpeed_, float maxDriveForce_);
+    float GetAngle();
+    float GetBoxAngle();
+    float GetSpeed();
+    sf::Vector2f GetBoxPosition() const;
+
     void Update(int state, Map &map);
     void Initialize(b2World *world, int x, int y);
 };

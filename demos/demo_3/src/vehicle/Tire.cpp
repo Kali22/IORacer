@@ -12,22 +12,22 @@
 #define SCALE 30.f
 
 enum tire_control_e {
-    LEFT    =   0x01,
-    RIGHT   =   0x02,
-    UP      =   0x04,
-    DOWN    =   0x08,
-    BRAKE   =   0x10
+    LEFT = 0x01,
+    RIGHT = 0x02,
+    UP = 0x04,
+    DOWN = 0x08,
+    BRAKE = 0x10
 };
 
 Tire::Tire(b2World *world) {
     b2BodyDef bodyDef;
     bodyDef.type = b2_dynamicBody;
+    bodyDef.angle = 0;
     body = world->CreateBody(&bodyDef);
 
     b2PolygonShape polygonShape;
     polygonShape.SetAsBox((6.f / 2.f) / SCALE, (12.f / 2.f) / SCALE);
     body->CreateFixture(&polygonShape, 2.f);//shape, density
-
     body->SetUserData(this);
     tireTexture.loadFromFile("../resource/tire.png");
     tireSprite.setTexture(tireTexture);
@@ -45,16 +45,16 @@ b2Vec2 Tire::getLateralVelocity() {
 
 }
 
-void Tire::updateFriction(float mod) {
+void Tire::updateFriction(float mod, CarParameters &params) {
     b2Vec2 impulse = body->GetMass() * -getLateralVelocity();
-    if ( impulse.Length() > 5 * mod * maxLateralImpulse )
+    if (impulse.Length() > 5 * mod * maxLateralImpulse)
         impulse *= 5 * mod * maxLateralImpulse / impulse.Length();
     body->ApplyLinearImpulse(impulse, body->GetWorldCenter(), true);
     body->ApplyAngularImpulse(0.5f * body->GetInertia() * -body->GetAngularVelocity(), true);
     b2Vec2 currentForwardNormal = getForwardVelocity();
     float currentForwardSpeed = currentForwardNormal.Normalize();
-    float dragForceMagnitude = -0.2f * currentForwardSpeed;
-    body->ApplyForce( dragForceMagnitude * currentForwardNormal, body->GetWorldCenter(), true );
+    float dragForceMagnitude = -(1.0f - mod + 0.15f) * 0.2f * currentForwardSpeed;
+    body->ApplyForce(dragForceMagnitude * currentForwardNormal, body->GetWorldCenter(), true);
 }
 
 void Tire::Render(sf::RenderWindow &window) {
@@ -65,11 +65,11 @@ void Tire::Render(sf::RenderWindow &window) {
 }
 
 b2Vec2 Tire::getForwardVelocity() {
-    b2Vec2 currentRightNormal = body->GetWorldVector( b2Vec2(0,1) );
-    return b2Dot( currentRightNormal, body->GetLinearVelocity() ) * currentRightNormal;
+    b2Vec2 currentRightNormal = body->GetWorldVector(b2Vec2(0, 1));
+    return b2Dot(currentRightNormal, body->GetLinearVelocity()) * currentRightNormal;
 }
 
-void Tire::UpdateDrive(int state, float mod) {
+void Tire::UpdateDrive(int state, float mod, CarParameters &params) {
     //find desired speed
     float desiredSpeed = 0;
     switch (state & (UP | DOWN)) {
@@ -95,6 +95,6 @@ void Tire::UpdateDrive(int state, float mod) {
         force = -10;
     else
         return;
-    body->ApplyForce(mod * force * currentForwardNormal, body->GetWorldCenter(), true);
+    body->ApplyForce(force * currentForwardNormal, body->GetWorldCenter(), true);
 
 }

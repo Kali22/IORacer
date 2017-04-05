@@ -1,0 +1,59 @@
+box_size_x: 10. / SCALE
+box_size_y: 2 / SCALE
+
+check 1
+box_x: 128.101
+box_y: 129.355
+box_angle: angle/pi * 180
+
+pix_x: 3838
+pix_y: 3880
+angle:90
+
+check 2
+box_x: 26.30
+box_y: 47.34
+box_angle: angle/pi * 180
+
+pix_x: 789
+pix_y: 1420
+angle:0
+
+check 3
+box_x: 122.30
+box_y: 102.34
+box_angle: angle/pi * 180
+
+pix_x: 3672
+pix_y: 3080
+angle:249
+
+
+check 4
+box_x: 200.30
+box_y: 32.34
+box_angle: angle/pi * 180
+
+pix_x: 6911
+pix_y: 970
+angle:291
+
+
+check 5
+box_x: 246.703
+box_y: 25.8415
+box_angle: angle/pi * 180
+
+pix_x: 7401
+pix_y: 775
+angle:321
+
+
+check 6
+box_x: 248.30
+box_y: 100.34
+box_angle: angle/pi * 180
+
+pix_x: 7444
+pix_y: 3006
+angle:0

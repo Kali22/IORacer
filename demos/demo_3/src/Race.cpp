@@ -3,6 +3,7 @@
 //
 
 #include <Race.h>
+#include <vehicle/Vehicle.h>
 
 void setclr(int *reg, int mask, int type) {
     if (type)
@@ -38,7 +39,14 @@ void Race::Initialize() {
     // Prepare map
     map.LoadMap("map_0", "Mapa testowa");
     vehicle.Initialize(&world, 1600, 2200);
-    vehicle.setCharacteristics(40, -10, 20);
+    // Set initiial car params
+    carParameters.activeTireModifier = 1.0f;
+    carParameters.baseTireFriction = 1.0f;
+    carParameters.maxBackwardSpeed = -20.f;
+    carParameters.maxForwardSpeed = 60.f;
+    carParameters.maxEnginePower = 30.f;
+    carParameters.maxSteeringAngle = 20.f;
+    carParameters.steeringSpeed = 120.0;
 
     map.AlignCameraViewSize(window);
     map.SetCameraViewPosition(vehicle.GetPosition());
@@ -85,6 +93,8 @@ void Race::Run() {
 //        window.draw(car.GetSprite());
         vehicle.Render(window);
         window.setView(window.getDefaultView());
+
+        hud.draw(&window);
         window.display();
     }
 }

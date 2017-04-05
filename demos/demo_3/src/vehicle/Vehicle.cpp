@@ -7,10 +7,12 @@
 
 #include <Vehicle.h>
 #include <Map.h>
+#include "Vehicle.h"
+#include "CarParams.h"
 
 #define SCALE 30.f
 
-Vehicle::Vehicle() {
+Vehicle::Vehicle(CarParameters &params) : carParameters(params) {
 
 }
 
@@ -39,12 +41,6 @@ const sf::Vector2f &Vehicle::GetPosition() const {
     return sprite_chassis.getPosition();
 }
 
-void Vehicle::setCharacteristics(float maxForwardSpeed_, float maxBackwardSpeed_, float maxDriveForce_) {
-    maxForwardSpeed = maxForwardSpeed_;
-    maxBackwardSpeed = maxBackwardSpeed_;
-    maxDriveForce = maxDriveForce_;
-}
-
 void Vehicle::Update(int state, Map &map) {
     updateFriction(map);
     updateDrive(state, map);
@@ -55,6 +51,7 @@ void Vehicle::Initialize(b2World *world, int x, int y) {
     //create car body
     b2BodyDef bodyDef;
     bodyDef.position = b2Vec2(x / SCALE, y / SCALE);
+    bodyDef.angle = 0;
     bodyDef.type = b2_dynamicBody;
     body = world->CreateBody(&bodyDef);
     body->SetUserData(this);
@@ -63,7 +60,7 @@ void Vehicle::Initialize(b2World *world, int x, int y) {
     b2PolygonShape Shape;
     Shape.SetAsBox((16.f / 2) / SCALE, (48.f / 2) / SCALE);
     b2FixtureDef FixtureDef;
-    FixtureDef.density = 3.f;
+    FixtureDef.density = 4.f;
     FixtureDef.friction = 1.7f;
     FixtureDef.restitution = 0.5;
     FixtureDef.shape = &Shape;
@@ -113,32 +110,56 @@ void Vehicle::Initialize(b2World *world, int x, int y) {
 void Vehicle::updateFriction(Map &map) {
     for (int i = 0; i < 4; i++) {
         float modifier = map.GetFrictionModifier(tires[i]->tireSprite.getPosition());
-        tires[i]->updateFriction(modifier);
+        tires[i]->updateFriction(modifier, carParameters);
     }
 }
 
 void Vehicle::updateDrive(int controlState, Map &map) {
     for (int i = 0; i < 4; i++) {
         float modifier = map.GetFrictionModifier(tires[i]->tireSprite.getPosition());
-        tires[i]->UpdateDrive(controlState, modifier);
+        tires[i]->UpdateDrive(controlState, modifier, carParameters);
     }
 }
 
 void Vehicle::updateTurn(int controlState) {
-    //car class function
-    float lockAngle = 10 * b2_pi/ 180.f;
-    float turnSpeedPerSec = 720 * b2_pi/ 180.f;//from lock to lock in 0.25 sec
+    float turnSpeedPerSec = carParameters.steeringSpeed * b2_pi / 180.f;
     float turnPerTimeStep = turnSpeedPerSec / 60.0f;
     float desiredAngle = 0;
-    switch ( controlState & (LEFT|RIGHT) ) {
-        case LEFT:  desiredAngle = -lockAngle;  break;
-        case RIGHT: desiredAngle = lockAngle; break;
-        default: ;//nothing
+    switch (controlState & (LEFT | RIGHT)) {
+        case LEFT:
+            desiredAngle = -carParameters.maxSteeringAngle * b2_pi / 180.f;
+            break;
+        case RIGHT:
+            desiredAngle = carParameters.maxSteeringAngle * b2_pi / 180.f;
+            break;
+        default:;//nothing
     }
+    desiredAngle *= (1.f - abs(GetSpeed()) / carParameters.maxForwardSpeed);
     float angleNow = fl_joint->GetJointAngle();
     float angleToTurn = desiredAngle - angleNow;
-    angleToTurn = b2Clamp( angleToTurn, -turnPerTimeStep, turnPerTimeStep );
+    angleToTurn = b2Clamp(angleToTurn, -turnPerTimeStep, turnPerTimeStep);
     float newAngle = angleNow + angleToTurn;
-    fl_joint->SetLimits( newAngle, newAngle );
-    fr_joint->SetLimits( newAngle, newAngle );
+    fl_joint->SetLimits(newAngle, newAngle);
+    fr_joint->SetLimits(newAngle, newAngle);
+}
+
+sf::Vector2f Vehicle::GetBoxPosition() const {
+    sf::Vector2f pos;
+    b2Vec2 boxPos = body->GetPosition();
+    pos.x = boxPos.x;
+    pos.y = boxPos.y;
+    return pos;
+}
+
+float Vehicle::GetAngle() {
+    return sprite_chassis.getRotation();
+}
+
+float Vehicle::GetBoxAngle() {
+    return body->GetAngle();
+}
+
+float Vehicle::GetSpeed() {
+    b2Vec2 vel = this->body->GetLinearVelocity();
+    return sqrt(b2Dot(vel,vel));
 }

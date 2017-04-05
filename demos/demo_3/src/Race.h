@@ -8,6 +8,8 @@
 #include <Box2D/Box2D.h>
 #include <Map.h>
 #include <Vehicle.h>
+#include "HUD.h"
+
 
 class Race {
 private:
@@ -15,10 +17,12 @@ private:
     Map map;
     b2World world;
     Vehicle vehicle;
+    CarParameters carParameters;
+    HUD hud;
 
     void Initialize();
 public:
-    Race(sf::RenderWindow& win) : window(win), world(b2Vec2(0.f, 0.f)), map(&world) { };
+    Race(sf::RenderWindow& win) : window(win), world(b2Vec2(0.f, 0.f)), map(&world), vehicle(carParameters), hud(vehicle) { };
     void Run();
 };
 
