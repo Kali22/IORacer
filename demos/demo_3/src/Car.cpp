@@ -5,15 +5,22 @@
  *  @date 3/31/17
  */
 
+#include <iostream>
+
 #include <Car.h>
+#include <Entity.h>
 
 #define SCALE 30.f
 
-b2Body* CreateBox(b2World *World, int MouseX, int MouseY) {
+int Car::GetEntityType() {
+    return CAR;
+}
+
+void Car::CreateBody(b2World *World, int positionX, int positionY) {
     b2BodyDef BodyDef;
-    BodyDef.position = b2Vec2(MouseX / SCALE, MouseY / SCALE);
+    BodyDef.position = b2Vec2(positionX / SCALE, positionY / SCALE);
     BodyDef.type = b2_dynamicBody;
-    b2Body *Body = World->CreateBody(&BodyDef);
+    body_ = World->CreateBody(&BodyDef);
 
     b2PolygonShape Shape;
     Shape.SetAsBox((32.f / 2) / SCALE, (32.f / 2) / SCALE);
@@ -22,17 +29,22 @@ b2Body* CreateBox(b2World *World, int MouseX, int MouseY) {
     FixtureDef.friction = 1.7f;
     FixtureDef.restitution = 0.5;
     FixtureDef.shape = &Shape;
-    Body->CreateFixture(&FixtureDef);
-    return Body;
+    b2Fixture* fixture = body_->CreateFixture(&FixtureDef);
+    body_->SetUserData(this);
 }
 
 Car::Car() {
 
 }
 
+void Car::DebugPrint() {
+    std::cout << "Car ";
+    std::cout << body_->GetPosition().x << " "
+              << body_->GetPosition().y << std::endl;
+}
+
 void Car::Initialize(b2World *world, int x, int y) {
-    body = CreateBox(world, x, y);
-    body->SetUserData(this);
+    CreateBody(world, x, y);
 
     car_texture.loadFromFile("../resource/car.png");
     car_sprite.setTexture(car_texture);
@@ -41,7 +53,7 @@ void Car::Initialize(b2World *world, int x, int y) {
 }
 
 Car::~Car() {
-    body->GetWorld()->DestroyBody(body);
+    body_->GetWorld()->DestroyBody(body_);
 }
 
 void Car::Update(int state, float modifier) {
@@ -50,10 +62,10 @@ void Car::Update(int state, float modifier) {
     updateTurn(state);
 }
 
-const sf::Drawable  &Car::GetSprite() {
-    car_sprite.setPosition(SCALE * body->GetPosition().x,
-                       SCALE * body->GetPosition().y);
-    car_sprite.setRotation(body->GetAngle() * 180 / b2_pi);
+const sf::Drawable &Car::GetSprite() {
+    car_sprite.setPosition(SCALE * body_->GetPosition().x,
+                       SCALE * body_->GetPosition().y);
+    car_sprite.setRotation(body_->GetAngle() * 180 / b2_pi);
     return car_sprite;
 }
 
@@ -65,33 +77,33 @@ void Car::setCharacteristics(float maxForwardSpeed_, float maxBackwardSpeed_,
 }
 
 b2Vec2 Car::getLateralVelocity() {
-    b2Vec2 currentRightNormal = body->GetWorldVector(b2Vec2(1, 0));
-    return b2Dot(currentRightNormal, body->GetLinearVelocity()) * currentRightNormal;
+    b2Vec2 currentRightNormal = body_->GetWorldVector(b2Vec2(1, 0));
+    return b2Dot(currentRightNormal, body_->GetLinearVelocity()) * currentRightNormal;
 }
 
 b2Vec2 Car::getForwardVelocity() {
-    b2Vec2 currentForwardNormal = body->GetWorldVector(b2Vec2(0, 1));
-    return b2Dot(currentForwardNormal, body->GetLinearVelocity()) * currentForwardNormal;
+    b2Vec2 currentForwardNormal = body_->GetWorldVector(b2Vec2(0, 1));
+    return b2Dot(currentForwardNormal, body_->GetLinearVelocity()) * currentForwardNormal;
 }
 
 void Car::updateFriction(float modifier) {
     //lateral linear velocity
     float maxLateralImpulse = 2.5f;
-    b2Vec2 impulse = body->GetMass() * -getLateralVelocity();
+    b2Vec2 impulse = body_->GetMass() * -getLateralVelocity();
     if (impulse.Length() > maxLateralImpulse)
         impulse *= maxLateralImpulse / impulse.Length();
-    body->ApplyLinearImpulse(impulse, body->GetWorldCenter(), true);
+    body_->ApplyLinearImpulse(impulse, body_->GetWorldCenter(), true);
 
     //angular velocity
-    body->ApplyAngularImpulse(0.1f * body->GetInertia() *
-                              -body->GetAngularVelocity(), true);
+    body_->ApplyAngularImpulse(0.1f * body_->GetInertia() *
+                              -body_->GetAngularVelocity(), true);
 
     //forward linear velocity
     b2Vec2 currentForwardNormal = getForwardVelocity();
     float currentForwardSpeed = currentForwardNormal.Normalize();
     float dragForceMagnitude = -2 * currentForwardSpeed;
-    body->ApplyForce(modifier * dragForceMagnitude * currentForwardNormal,
-                     body->GetWorldCenter(), true);
+    body_->ApplyForce(modifier * dragForceMagnitude * currentForwardNormal,
+                     body_->GetWorldCenter(), true);
 }
 
 void Car::updateDrive(int controlState) {
@@ -110,7 +122,7 @@ void Car::updateDrive(int controlState) {
     }
 
     //find current speed in forward direction
-    b2Vec2 currentForwardNormal = body->GetWorldVector(b2Vec2(0, 1));
+    b2Vec2 currentForwardNormal = body_->GetWorldVector(b2Vec2(0, 1));
     float currentSpeed = b2Dot(getForwardVelocity(), currentForwardNormal);
 
     //apply necessary force
@@ -121,7 +133,7 @@ void Car::updateDrive(int controlState) {
         force = -maxDriveForce;
     else
         return;
-    body->ApplyForce(force * currentForwardNormal, body->GetWorldCenter
+    body_->ApplyForce(force * currentForwardNormal, body_->GetWorldCenter
             (), true);
 }
 
@@ -136,7 +148,7 @@ void Car::updateTurn(int controlState) {
             break;
         default:;//nothing
     }
-    body->ApplyTorque(desiredTorque, true);
+    body_->ApplyTorque(desiredTorque, true);
 }
 
 const sf::Vector2f &Car::GetPosition() const {
@@ -144,11 +156,11 @@ const sf::Vector2f &Car::GetPosition() const {
 }
 
 float Car::GetRotation() {
-    return body->GetAngle() * 180 / b2_pi;
+    return body_->GetAngle() * 180 / b2_pi;
 }
 
 float Car::GetSpeed() {
-    return body->GetLinearVelocity().Length();
+    return body_->GetLinearVelocity().Length();
 }
 
 

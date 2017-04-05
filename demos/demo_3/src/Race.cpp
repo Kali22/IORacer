@@ -3,6 +3,8 @@
 //
 
 #include <Race.h>
+#include <CheckPoint.h>
+#include <CheckPointManager.h>
 
 
 //#ifndef DEGTORAD
@@ -40,10 +42,19 @@ void HandleKeyboard(sf::Event::KeyEvent Event, int *state, int type) {
 void Race::Initialize() {
     // Prepare map
     map.LoadMap("map_0", "Mapa testowa");
+    /// TODO add race builder
+    auto checkPoint = new CheckPoint(&world, b2Vec2(8, 12), b2Vec2(9, 1));
+    auto checkPoint2 = new CheckPoint(&world, b2Vec2(12, 17), b2Vec2(9, 1));
+    std::vector<CheckPoint*> checkPoints =
+            {checkPoint, checkPoint2};
+    checkPointManager_ = new CheckPointManager(checkPoints);
     car.Initialize(&world, 300, 300);
+    /// @TODO inject parameter rather than hardcode it
     car.setCharacteristics(40, -10, 50);
     map.AlignCameraViewSize(window);
     map.SetCameraViewPosition(car.GetPosition());
+    world.SetContactListener(&contactListener);
+    checkPointManager_->StartTimer();
 }
 
 void Race::Run() {
@@ -51,6 +62,8 @@ void Race::Run() {
     Initialize();
 
     int carState = 0;
+
+    int cnt = 0;
 
     while (window.isOpen()) {
         sf::Event Event;
@@ -75,8 +88,18 @@ void Race::Run() {
 //        float zoom = 0.8f + car.GetSpeed()/70;
 //        map.SetCameraViewZoom(zoom);
         window.clear(sf::Color::White);
+        if (cnt == 120) {
+            car.DebugPrint();
+            printf("Elapsed time: %f\n", checkPointManager_->GetElapsedTime()
+                    .asSeconds());
+            cnt = 0;
+        } else {
+            cnt++;
+        }
+        //checkPoint->DebugPrint();
         map.RenderBottomLayer(window);
         window.setView(map.GetCameraView());
+        checkPointManager_->DrawCheckPoints(&window); /// TEMPORARY
         window.draw(car.GetSprite());
 //        map.SetCameraViewZoom(1.f / zoom);
 //        window.setView(map.GetMinimapView());

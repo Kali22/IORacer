@@ -15,6 +15,7 @@
 
 #include <Box2D/Box2D.h>
 #include <SFML/Graphics.hpp>
+#include <Entity.h>
 
 enum car_control_e {
     LEFT    =   0x01,
@@ -24,7 +25,7 @@ enum car_control_e {
     BRAKE   =   0x10
 };
 
-class Car {
+class Car : public Entity {
 private:
     sf::Texture car_texture;
     sf::Sprite car_sprite;
@@ -35,7 +36,7 @@ private:
     void updateDrive(int controlState);
     void updateTurn(int controlState);
 
-    b2Body *body;
+    b2Body *body_;
     float maxForwardSpeed;
     float maxBackwardSpeed;
     float maxDriveForce;
@@ -45,6 +46,12 @@ public:
     ~Car();
     void Initialize(b2World *world, int x, int y);
 
+    void CreateBody(b2World *World, int positionX, int positionY);
+
+    void DebugPrint();
+
+    virtual int GetEntityType();
+
     void Update(int state, float modifier);
     const sf::Drawable &GetSprite() ;
     void setCharacteristics(float maxForwardSpeed_, float maxBackwardSpeed_, float maxDriveForce_);
@@ -52,6 +59,9 @@ public:
     const sf::Vector2f &GetPosition() const;
     float GetRotation();
     float GetSpeed();
+
+    bool FixtureBelong(b2Fixture* fixture);
+
 };
 
 

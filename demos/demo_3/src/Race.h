@@ -8,6 +8,8 @@
 #include <Box2D/Box2D.h>
 #include <Car.h>
 #include <Map.h>
+#include <CheckPointManager.h>
+#include <ContactListener.h>
 
 class Race {
 private:
@@ -15,6 +17,8 @@ private:
     Map map;
     b2World world;
     Car car;
+    ContactListener contactListener;
+    CheckPointManager* checkPointManager_;
 
     void Initialize();
 public:
