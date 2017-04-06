@@ -19,9 +19,10 @@ private:
     Text boxData;
 
     Vehicle &vehicle;
+    Map &map;
 
 public:
-    HUD(Vehicle &car);
+    HUD(Vehicle &car, Map &map);
     ~HUD();
     void draw(sf::RenderWindow *window);
 };

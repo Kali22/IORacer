@@ -8,9 +8,10 @@
 #include <HUD.h>
 #include <sstream>
 
-HUD::HUD(Vehicle &car) : vehicle(car),
-                         sfmlData("x","impact",sf::Vector2f(50,50)),
-                         boxData("y","impact",sf::Vector2f(50,300)) {
+HUD::HUD(Vehicle &car, Map &map) : vehicle(car),
+                                   sfmlData("x","impact",sf::Vector2f(50,50)),
+                                   boxData("y","impact",sf::Vector2f(50,300)), map(map)
+{
 
 }
 
@@ -27,7 +28,11 @@ void HUD::draw(sf::RenderWindow *window) {
     sfmlData.SetString(ss.str());
     ss.str("");
     ss << "box_X: " << boxPos.x <<"\nbox_Y: "<<boxPos.y<<"\nbox_deg: "<<vehicle.GetBoxAngle()<<"\n";
-    ss << "vel: " << vehicle.GetSpeed();
+    ss << "vel: " << vehicle.GetSpeed()<<"\n";
+    ss << "fl_wheel: " << vehicle.GetTireModifier(0, map) << "\n";
+    ss << "fr_wheel: " << vehicle.GetTireModifier(1, map) << "\n";
+    ss << "bl_wheel: " << vehicle.GetTireModifier(3, map) << "\n";
+    ss << "br_wheel: " << vehicle.GetTireModifier(2, map) << "\n";
     boxData.SetString(ss.str());
 
     sfmlData.draw(window);

@@ -58,7 +58,7 @@ void Map::LoadMap(const std::string &name, const std::string &full_name) {
     this->name = name;
     this->full_name = full_name;
 
-    sprite_map.setTexture(map_friction);
+    sprite_map.setTexture(map_view);
     sprite_friction.setTexture(map_friction);
     printf("Loading map %s done!\n", name.c_str());
 

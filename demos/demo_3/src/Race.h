@@ -22,7 +22,8 @@ private:
 
     void Initialize();
 public:
-    Race(sf::RenderWindow& win) : window(win), world(b2Vec2(0.f, 0.f)), map(&world), vehicle(carParameters), hud(vehicle) { };
+    Race(sf::RenderWindow& win) : window(win), world(b2Vec2(0.f, 0.f)), map(&world), vehicle(carParameters),
+                                  hud(vehicle, map) { };
     void Run();
 };
 

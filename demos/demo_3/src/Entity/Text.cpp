@@ -13,9 +13,11 @@ Text::Text(std::string text, std::string font_name, sf::Vector2f position) {
         throw std::runtime_error("Font loading failed");
     }
     sf_text.setFont(sf_font);
-    sf_text.setCharacterSize(50);
+    sf_text.setCharacterSize(20);
     sf_text.setString(text);
-    sf_text.setColor(sf::Color::White);
+    sf_text.setFillColor(sf::Color::Yellow);
+    sf_text.setOutlineColor(sf::Color::Black);
+    sf_text.setOutlineThickness(2);
     // centering string
     auto bounds = sf_text.getGlobalBounds();
     int width = (int) bounds.width;

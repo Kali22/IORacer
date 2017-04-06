@@ -70,6 +70,7 @@ void Vehicle::Initialize(b2World *world, int x, int y) {
     // FRONT LEFT
     b2RevoluteJointDef jointDef;
     jointDef.bodyA = body;
+    jointDef.referenceAngle = 0;
     jointDef.enableLimit = true;
     jointDef.lowerAngle = 0;//with both these at zero...
     jointDef.upperAngle = 0;//...the joint will not move
@@ -77,6 +78,7 @@ void Vehicle::Initialize(b2World *world, int x, int y) {
 
     Tire *tire = new Tire(world);
     jointDef.bodyB = tire->body;
+    jointDef.referenceAngle = 0;
     jointDef.localAnchorA.Set(-17.f / SCALE, 18.f / SCALE);
     fl_joint = (b2RevoluteJoint *) world->CreateJoint(&jointDef);
     tires.push_back(tire);
@@ -84,6 +86,7 @@ void Vehicle::Initialize(b2World *world, int x, int y) {
     // FRONT RIGHT
     tire = new Tire(world);
     jointDef.bodyB = tire->body;
+    jointDef.referenceAngle = 0;
     jointDef.localAnchorA.Set(17.f / SCALE, 18.f / SCALE);
     fr_joint = (b2RevoluteJoint *) world->CreateJoint(&jointDef);
     tires.push_back(tire);
@@ -91,6 +94,7 @@ void Vehicle::Initialize(b2World *world, int x, int y) {
     // BACK RIGHT
     tire = new Tire(world);
     jointDef.bodyB = tire->body;
+    jointDef.referenceAngle = 0;
     jointDef.localAnchorA.Set(17.f / SCALE, -17.f / SCALE);
     br_joint = (b2RevoluteJoint *) world->CreateJoint(&jointDef);
     tires.push_back(tire);
@@ -98,6 +102,7 @@ void Vehicle::Initialize(b2World *world, int x, int y) {
     // BACK LEFT
     tire = new Tire(world);
     jointDef.bodyB = tire->body;
+    jointDef.referenceAngle = 0;
     jointDef.localAnchorA.Set(-17.f / SCALE, -17.f / SCALE);
     bl_joint = (b2RevoluteJoint *) world->CreateJoint(&jointDef);
     tires.push_back(tire);
@@ -162,4 +167,8 @@ float Vehicle::GetBoxAngle() {
 float Vehicle::GetSpeed() {
     b2Vec2 vel = this->body->GetLinearVelocity();
     return sqrt(b2Dot(vel,vel));
+}
+
+float Vehicle::GetTireModifier(int i, Map &map) {
+    return map.GetFrictionModifier(tires[i]->tireSprite.getPosition());
 }

@@ -51,6 +51,8 @@ public:
     float GetAngle();
     float GetBoxAngle();
     float GetSpeed();
+    float GetTireModifier(int i, Map &map);
+
     sf::Vector2f GetBoxPosition() const;
 
     void Update(int state, Map &map);
