@@ -1,30 +1,33 @@
-# Set source files root directory
-set(SRCROOT ${PROJECT_SOURCE_DIR}/src)
+cmake_minimum_required(VERSION 3.5)
 
-file(GLOB_RECURSE SOURCE_LIST "*.cpp")
+project(demo_2)
 
-# All source files
-set(SRC ${SOURCE_LIST})
+# define the build type
+set(CMAKE_BUILD_TYPE Debug)
 
-set(CMAKE_MODULE_PATH "${CMAKE_SOURCE_DIR}/cmake_modules" ${CMAKE_MODULE_PATH})
-find_package(SFML REQUIRED COMPONENTS System Window Graphics)
-find_package(Box2D REQUIRED)
+# Set version information in a config.h file
+set(${PROJECT_NAME}_VERSION_MAJOR 3)
+set(${PROJECT_NAME}_VERSION_MINOR 0)
 
-#set headers stuff
-set(INCLUDE_DIRS
-        ${PROJECT_SOURCE_DIR}/src
-        ${PROJECT_SOURCE_DIR}/src/Entity
-        ${PROJECT_SOURCE_DIR}/src/Module
-        ${SFML_INCLUDE_DIR}
-        ${BOX2D_INCLUDE_DIR}/Box2D
-        )
+# Set C++11 standard
+set(CMAKE_CXX_STANDARD 11)
+# Define the path of our additional CMake modules
+set(CMAKE_MODULE_PATH "${PROJECT_SOURCE_DIR}/cmake-modules")
 
-#set lib stuff
-set(DEPEND_LIBS
-        ${SFML_LIBRARIES}
-        ${BOX2D_LIBRARY}
-        )
 
-include_directories(${INCLUDE_DIRS})
-add_executable(${PROJECT_NAME} ${SRC})
-target_link_libraries(${PROJECT_NAME} ${DEPEND_LIBS})
+# add the subdirectories
+add_subdirectory(src)
+#file(COPY ${CMAKE_CURRENT_SOURCE_DIR}/resource DESTINATION ${CMAKE_CURRENT_BINARY_DIR})
+
+# add a target to generate API documentation with Doxygen
+find_package(Doxygen)
+if(DOXYGEN_FOUND)
+    configure_file(${CMAKE_CURRENT_SOURCE_DIR}/Doxyfile.in ${CMAKE_CURRENT_BINARY_DIR}/Doxyfile @ONLY)
+#    add_custom_target(doc
+#            ${DOXYGEN_EXECUTABLE} ${CMAKE_CURRENT_BINARY_DIR}/Doxyfile
+#            WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}
+#            COMMENT "Generating API documentation with Doxygen" VERBATIM
+#            )
+endif(DOXYGEN_FOUND)
+
+install(PROGRAMS ${CMAKE_CURRENT_BINARY_DIR}/src/${PROJECT_NAME} DESTINATION ${CMAKE_CURRENT_BINARY_DIR})
