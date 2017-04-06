@@ -5,7 +5,7 @@
 #include <Race.h>
 #include <CheckPoint.h>
 #include <CheckPointManager.h>
-
+#include <CheckPointParser.h>
 
 //#ifndef DEGTORAD
 //#define DEGTORAD 0.0174532925199432957f
@@ -46,10 +46,10 @@ void Race::Initialize() {
     // Prepare map
     map.LoadMap("map_0", "Mapa testowa");
     /// TODO add race builder
-    auto checkPoint = new CheckPoint(&world, b2Vec2(8, 12), b2Vec2(9, 1), 0);
-    auto checkPoint2 = new CheckPoint(&world, b2Vec2(12, 17), b2Vec2(9, 1), 90);
-    std::vector<CheckPoint*> checkPoints =
-            {checkPoint, checkPoint2};
+    CheckPointParser parser(&world, 30); // scale
+    /// @TODO move checkPointsParser to map Load
+    std::vector<CheckPoint*> checkPoints = parser.ParseFile(
+            "../resource/maps/map_0/checkpoints_list");
     checkPointManager_ = new CheckPointManager(checkPoints);
     vehicle.Initialize(&world, 1600, 2200);
     /// @TODO inject parameter rather than hardcode it
@@ -99,6 +99,7 @@ void Race::Run() {
         if (cnt == 120) {
             printf("Elapsed time: %f\n", checkPointManager_->GetElapsedTime()
                     .asSeconds());
+            vehicle.PrintPos();
             cnt = 0;
         } else {
             cnt++;
@@ -106,7 +107,7 @@ void Race::Run() {
         //checkPoint->DebugPrint();
         map.RenderBottomLayer(window);
         window.setView(map.GetCameraView());
-        checkPointManager_->DrawCheckPoints(&window); /// TEMPORARY
+        checkPointManager_->DrawCheckPoints(&window);
 //        map.SetCameraViewZoom(1.f / zoom);
 //        window.setView(map.GetMinimapView());
 //        window.draw(map.GetViewMap());

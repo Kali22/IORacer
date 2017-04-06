@@ -16,20 +16,16 @@
  */
 bool ContactListener::CheckIfCar(Entity** entity1, Entity** entity2) {
     if ((*entity2)->GetEntityType() == CAR) {
-        std::cout << "Car\n";
         std::swap(*entity1, *entity2);
         return true;
     }
     if ((*entity1)->GetEntityType() == CAR) {
-        std::cout << "Car\n";
         return true;
     }
     return false;
 }
 
 void ContactListener::BeginContact(b2Contact* contact) {
-    std::cout << "Foo\n";
-
     CheckPoint* checkPoint;
     if (!GetCheckPointFromContact(contact, &checkPoint)) {
         return;
@@ -54,17 +50,14 @@ which) {
     if (!fixture) {
         return false;
     }
-    std::cout << "Foo1\n";
     b2Body* body = fixture->GetBody();
     if (!body) {
         return false;
     }
-    std::cout << "Foo2\n";
     *entity = (Entity*)body->GetUserData();
     if (!(*entity)) {
         return false;
     }
-    std::cout << "Foo3\n";
     return true;
 }
 
@@ -79,17 +72,12 @@ bool ContactListener::GetCheckPointFromContact(
         !GetUserData(contact, &entityB, 1)) {
         return false;
     }
-    std::cout << "Foo4\n";
     if (!CheckIfCar(&entityA, &entityB)) {
-        std::cout << "Not car\n";
         return false;
     }
-    std::cout << "Foo5\n";
     if (entityB->GetEntityType() != CHECK_POINT) {
-        std::cout << "Not check point\n";
         return false;
     }
-    std::cout << "Foo6\n";
     *checkPoint = static_cast<CheckPoint*>(entityB);
     return true;
 }

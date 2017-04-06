@@ -22,8 +22,6 @@
 
 class Vehicle : public Entity {
 private:
-    virtual int GetEntityType();
-
     b2Body *body;
     std::vector<Tire*> tires;
     b2RevoluteJoint *fl_joint, *fr_joint; // Front joints
@@ -44,6 +42,10 @@ private:
 public:
     Vehicle();
     ~Vehicle();
+
+    void PrintPos();
+
+    virtual int GetEntityType();
 
     void Render(sf::RenderWindow &window);
 

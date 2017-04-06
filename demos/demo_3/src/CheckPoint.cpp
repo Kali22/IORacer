@@ -27,10 +27,8 @@ bool CheckPoint::IsEnabled() {
 }
 
 CheckPoint::CheckPoint(b2World *world,
-                       const b2Vec2& position,
-                       const b2Vec2& size,
-                       float angle)
-        : world_(world), rectangleArea_(world, position, size, angle, this) {
+                       const struct RectangleParams& params)
+        : world_(world), rectangleArea_(world, params, this) {
 }
 
 void CheckPoint::Draw(sf::RenderWindow *window) {

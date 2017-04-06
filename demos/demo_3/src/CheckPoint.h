@@ -8,6 +8,7 @@
 #include <Car.h>
 #include <CheckPointObserver.h>
 #include <RectangleArea.h>
+#include <RectangleParams.h>
 
 class CheckPoint : public Entity {
 public:
@@ -21,8 +22,7 @@ public:
 
     void Draw(sf::Window* window);
 
-    CheckPoint(b2World* world, const b2Vec2& position, const b2Vec2& size,
-               float angle);
+    CheckPoint(b2World* world, const struct RectangleParams& params);
 
     ~CheckPoint();
 

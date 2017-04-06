@@ -5,6 +5,8 @@
  *  @date 4/1/17
  */
 
+#include <iostream>
+
 #include <Vehicle.h>
 #include <Map.h>
 #include <Entity.h>
@@ -147,4 +149,10 @@ void Vehicle::updateTurn(int controlState) {
     float newAngle = angleNow + angleToTurn;
     fl_joint->SetLimits( newAngle, newAngle );
     fr_joint->SetLimits( newAngle, newAngle );
+}
+
+void Vehicle::PrintPos() {
+    std::cout << "Car " << body->GetPosition().x << " "
+              << body->GetPosition().y << std::endl;
+
 }
