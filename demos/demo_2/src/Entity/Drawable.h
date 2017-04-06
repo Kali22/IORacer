@@ -11,8 +11,9 @@
 
 class Drawable {
 public:
-    virtual void draw(sf::RenderWindow *window) { }
+    virtual void draw(sf::RenderWindow *window)=0;
 };
 
+using Drawable_ptr = std::shared_ptr<Drawable>;
 
 #endif //DEMO_2_DRAWABLE_H

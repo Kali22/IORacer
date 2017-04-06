@@ -4,8 +4,8 @@
 
 #include "Text.h"
 
-std::map<std::string, std::string> font {
-    std::make_pair("impact", "/usr/share/fonts/truetype/msttcorefonts/impact.ttf")
+std::map <std::string, std::string> font{
+        std::make_pair("impact", "/usr/share/fonts/truetype/msttcorefonts/impact.ttf")
 };
 
 Text::Text(std::string text, std::string font_name, sf::Vector2f position) {
@@ -26,4 +26,8 @@ Text::Text(std::string text, std::string font_name, sf::Vector2f position) {
 
 void Text::draw(sf::RenderWindow *window) {
     window->draw(sf_text);
+}
+
+void Text::setText(std::string txt) {
+    sf_text.setString(txt);
 }

@@ -4,38 +4,37 @@
 
 #include "Button.h"
 
-bool Button::hovered(sf::Vector2f mouse_position) {
-    return background.getGlobalBounds().contains(mouse_position);
+bool Button::hovered(sf::Vector2f mousePosition) {
+    return background.getGlobalBounds().contains(mousePosition);
 }
 
-Button::Button(sf::Vector2f pos, sf::Vector2f size, std::string txt, std::function<void(sf::RenderWindow *window)> click) :
+Button::Button(sf::Vector2f pos, sf::Vector2f size, std::string txt, std::function<void()> action) :
         background(size),
         position(pos),
         text(txt, "impact", pos),
-        callback(click) {
+        action(action) {
     background.setPosition(pos - size / 2.0f);
     background.setFillColor(sf::Color(128, 128, 128)); // Grey
     background.setOutlineColor(sf::Color(50, 120, 70));
 }
 
-bool Button::toggle_hover(sf::Vector2f mouse_position) {
-    if (hovered(mouse_position)) {
+bool Button::toggleHover(sf::Vector2f mousePosition) {
+    if (hovered(mousePosition)) {
         background.setFillColor(sf::Color(64, 64, 64)); // Dark Grey
         background.setOutlineThickness(2);
         return true;
-    }
-    else {
+    } else {
         background.setFillColor(sf::Color(128, 128, 128)); // Grey
         background.setOutlineThickness(0);
         return false;
     }
 }
 
-void Button::onClick(sf::RenderWindow *window) {
-    callback(window);
-}
-
 void Button::draw(sf::RenderWindow *window) {
     window->draw(background);
     text.draw(window);
+}
+
+void Button::onClick() {
+    action();
 }

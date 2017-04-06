@@ -8,91 +8,89 @@
 #include <SFML/Graphics.hpp>
 #include <bits/stdc++.h>
 
-#include <../Entity/Button.h>
-#include "Game.h"
-#include "Workshop.h"
+#include <GameData.h>
 
 
-Menu::Menu(sf::RenderWindow *window) : Module(window) {
-    const sf::Vector2f menu_button_size = sf::Vector2f(300, 80);
+Menu::Menu(sf::RenderWindow *window, GameData_ptr gameplay) :
+        Module(window), gameData(gameplay), workshop(std::make_shared<Workshop>(window, gameData)),
+        game(std::make_shared<Game>(window, gameData)) {
+
+    sf::Vector2f menuButtonSize = sf::Vector2f(300, 80);
     // set buttons
-    std::shared_ptr<Button> play_button = std::make_shared<Button>(
+    playButton = std::make_shared<Button>(
             sf::Vector2f(400, 150),
-            menu_button_size,
+            menuButtonSize,
             "Play",
-            [&](sf::RenderWindow *window){
-                Game game(window);
-                game.run();
+            [this]() {
+                game->run();
             }
     );
 
-    std::shared_ptr<Button> workshop_button = std::make_shared<Button>(
+    workshopButton = std::make_shared<Button>(
             sf::Vector2f(400, 300),
-            menu_button_size,
+            menuButtonSize,
             "Workshop",
-            [&](sf::RenderWindow *window){
-                Workshop workshop(window);
-                workshop.run();
+            [this]() {
+                workshop->run();
             }
     );
 
-    std::shared_ptr<Button> quit_button = std::make_shared<Button>(
+    quitButton = std::make_shared<Button>(
             sf::Vector2f(400, 450),
-            menu_button_size,
+            menuButtonSize,
             "Quit",
-            [&](sf::RenderWindow *window){
+            [this]() {
                 close = true;
             }
     );
 
     // every drawable object
-    objects.push_back(play_button);
-    objects.push_back(workshop_button);
-    objects.push_back(quit_button);
+    objects.push_back(playButton);
+    objects.push_back(workshopButton);
+    objects.push_back(quitButton);
 
     // buttons
-    buttons.push_back(play_button);
-    buttons.push_back(workshop_button);
-    buttons.push_back(quit_button);
+    buttons.push_back(playButton);
+    buttons.push_back(workshopButton);
+    buttons.push_back(quitButton);
 }
 
 
 int Menu::run() {
-    while (!close)
-    {
-        bool mouse_click = false; // info for buttons
+    close = false;
+    while (!close) {
+        bool mouseClick = false; // info for buttons
 
         // EVENT handling
         sf::Event event;
-        while (window->pollEvent(event))
-        {
+        while (window->pollEvent(event)) {
             // "close requested" event: end while loop
             if (event.type == sf::Event::Closed) {
                 close = true;
             }
             // handle mouse click
-            if (event.type == sf::Event::MouseButtonPressed && event.mouseButton.button ==  sf::Mouse::Left) {
-                mouse_click = true;
+            if (event.type == sf::Event::MouseButtonPressed && event.mouseButton.button == sf::Mouse::Left) {
+                mouseClick = true;
             }
         }
 
         /// BUTTON things
-        std::shared_ptr<Button> active_button = nullptr;
-        sf::Vector2f mouse_pos = sf::Vector2f(sf::Mouse::getPosition(*window));
+        std::shared_ptr <Button> activeButton = nullptr;
+        sf::Vector2f mousePos = sf::Vector2f(sf::Mouse::getPosition(*window));
         // select hovered button, change style
-        for (auto& button : buttons) {
-            if (button->toggle_hover(mouse_pos)) {
-                active_button = button;
+        for (auto &button : buttons) {
+            if (button->toggleHover(mousePos)) {
+                activeButton = button;
             }
         }
-        if (active_button != nullptr && mouse_click) {
-            active_button->onClick(window);
+        if (activeButton != nullptr && mouseClick) {
+            activeButton->onClick();
         }
 
         // DRAWING
         window->clear(sf::Color(60, 70, 80));
-        for (auto& drawable_object : objects) {
-            drawable_object->draw(window);
+        for (auto &drawableObject : objects) {
+            drawableObject->draw(window);
         }
         window->display();
     }

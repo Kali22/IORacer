@@ -9,21 +9,25 @@
 #include "Text.h"
 
 class Button : public Drawable {
+
+protected:
     sf::RectangleShape background;
     sf::Vector2f position;
     Text text;
-    std::function<void(sf::RenderWindow *window)> callback;
+    std::function<void()> action;
+
 public:
     bool hovered(sf::Vector2f mouse_position);
 
-    Button(sf::Vector2f pos, sf::Vector2f size, std::string txt, std::function<void(sf::RenderWindow *window)> click);
+    Button(sf::Vector2f pos, sf::Vector2f size, std::string txt, std::function<void()> action);
 
-    bool toggle_hover(sf::Vector2f mouse_position);
+    bool toggleHover(sf::Vector2f mouse_position);
 
-    void onClick(sf::RenderWindow *window);
+    void onClick();
 
     void draw(sf::RenderWindow *window);
 };
 
+using Button_ptr = std::shared_ptr<Button>;
 
 #endif //DEMO_2_BUTTON_H

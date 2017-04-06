@@ -7,15 +7,18 @@
 
 #include <SFML/Graphics.hpp>
 #include "Module.h"
-#include "../Entity/Button.h"
+#include <Button.h>
+#include <Model/GameData.h>
 
 class Game : public Module {
+    GameData_ptr gameData;
 
 public:
-    Game(sf::RenderWindow *window);
+    Game(sf::RenderWindow *window, GameData_ptr gameData);
 
     int run();
 };
 
+typedef std::shared_ptr <Game> Game_ptr;
 
 #endif //DEMO_2_GAME_H

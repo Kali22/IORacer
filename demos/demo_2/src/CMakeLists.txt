@@ -14,6 +14,7 @@ find_package(Box2D REQUIRED)
 set(INCLUDE_DIRS
         ${PROJECT_SOURCE_DIR}/src
         ${PROJECT_SOURCE_DIR}/src/Entity
+        ${PROJECT_SOURCE_DIR}/src/Model
         ${PROJECT_SOURCE_DIR}/src/Module
         ${SFML_INCLUDE_DIR}
         ${BOX2D_INCLUDE_DIR}/Box2D
