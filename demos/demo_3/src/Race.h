@@ -6,7 +6,7 @@
 
 #include <SFML/Graphics.hpp>
 #include <Box2D/Box2D.h>
-#include <Car.h>
+#include <Vehicle.h>
 #include <Map.h>
 #include <CheckPointManager.h>
 #include <ContactListener.h>
@@ -16,13 +16,13 @@ private:
     sf::RenderWindow& window;
     Map map;
     b2World world;
-    Car car;
-    ContactListener contactListener;
+    Vehicle vehicle;
+ContactListener contactListener;
     CheckPointManager* checkPointManager_;
 
     void Initialize();
 public:
-    Race(sf::RenderWindow& win) : window(win), world(b2Vec2(0.f, 0.f)), map(world) { };
+    Race(sf::RenderWindow& win) : window(win), world(b2Vec2(0.f, 0.f)), map(&world) { };
     void Run();
 };
 

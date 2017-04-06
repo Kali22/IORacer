@@ -19,6 +19,8 @@ public:
 
     ~ContactListener();
 private:
+    bool GetUserData(b2Contact* contact, Entity** entity, int which);
+
     bool CheckIfCar(Entity** entity1, Entity** entity2);
 
     bool GetCheckPointFromContact(b2Contact* contact, CheckPoint** checkPoint);

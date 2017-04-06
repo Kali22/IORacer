@@ -50,7 +50,6 @@ void CheckPoint::BeginContact() {
 }
 
 void CheckPoint::EndContact() {
-    std::cout << "End contact\n";
 }
 
 CheckPoint::~CheckPoint() {}

@@ -34,6 +34,9 @@ void HandleKeyboard(sf::Event::KeyEvent Event, int *state, int type) {
         case sf::Keyboard::Key::Right:
             setclr(state, RIGHT, type);
             break;
+        case sf::Keyboard::Key::B:
+            setclr(state, BRAKE, type);
+            break;
         default:
             break;
     }
@@ -48,12 +51,12 @@ void Race::Initialize() {
     std::vector<CheckPoint*> checkPoints =
             {checkPoint, checkPoint2};
     checkPointManager_ = new CheckPointManager(checkPoints);
-    car.Initialize(&world, 300, 300);
+    vehicle.Initialize(&world, 1600, 2200);
     /// @TODO inject parameter rather than hardcode it
-    car.setCharacteristics(40, -10, 50);
+    vehicle.setCharacteristics(40, -10, 50);
     map.AlignCameraViewSize(window);
-    map.SetCameraViewPosition(car.GetPosition());
-    world.SetContactListener(&contactListener);
+    map.SetCameraViewPosition(vehicle.GetPosition());
+world.SetContactListener(&contactListener);
     checkPointManager_->StartTimer();
 }
 
@@ -81,15 +84,19 @@ void Race::Run() {
             }
         }
 
-        /** Simulate the world */
-        car.Update(carState, map.GetFrictionModifier(car.GetPosition()));
+        /* Update states */
+        vehicle.Update(carState, map);
+
+        /* Simulate the world */
         world.Step(1 / 60.f, 8, 3);
-        map.SetCameraViewPosition(car.GetPosition());
-//        float zoom = 0.8f + car.GetSpeed()/70;
+
+        /* Rendering */
+        map.SetCameraViewPosition(vehicle.GetPosition());
+        window.clear(sf::Color::White);
+//        float zoom = 0.8f + vehicle.GetSpeed()/70;
 //        map.SetCameraViewZoom(zoom);
         window.clear(sf::Color::White);
         if (cnt == 120) {
-            car.DebugPrint();
             printf("Elapsed time: %f\n", checkPointManager_->GetElapsedTime()
                     .asSeconds());
             cnt = 0;
@@ -100,11 +107,11 @@ void Race::Run() {
         map.RenderBottomLayer(window);
         window.setView(map.GetCameraView());
         checkPointManager_->DrawCheckPoints(&window); /// TEMPORARY
-        window.draw(car.GetSprite());
 //        map.SetCameraViewZoom(1.f / zoom);
 //        window.setView(map.GetMinimapView());
-//        window.draw(map.GetFrictionMap());
-//        window.draw(car.GetSprite());
+//        window.draw(map.GetViewMap());
+//        window.draw(vehicle.GetSprite());
+        vehicle.Render(window);
         window.setView(window.getDefaultView());
         window.display();
     }

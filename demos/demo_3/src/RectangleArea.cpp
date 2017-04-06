@@ -44,7 +44,7 @@ void RectangleArea::CreateSFMLRectangle(const b2Vec2 &position,
     convertedPos.y -= size.y * 30 / 2;
 
     rectangleShape_.setPosition(convertedPos);
-    rectangleShape_.setRotation(angle);
+    rectangleShape_.setRotation(30);
 }
 
 RectangleArea::RectangleArea(b2World *world, const b2Vec2 &position,

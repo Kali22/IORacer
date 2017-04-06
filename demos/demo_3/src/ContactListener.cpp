@@ -4,6 +4,7 @@
 
 #include <utility>
 #include <iostream>
+#include <cassert>
 
 #include <Box2D.h>
 #include <Entity.h>
@@ -41,40 +42,54 @@ ContactListener::ContactListener() {}
 ContactListener::~ContactListener() {}
 
 void ContactListener::EndContact(b2Contact* contact) {
-    std::cout << "Foo end\n";
-    CheckPoint* checkPoint;
-    if (!GetCheckPointFromContact(contact, &checkPoint)) {
-        return;
-    }
-    checkPoint->EndContact();
 }
 
+/**
+ * if which is 0 check for A body, otherwise for B body
+ */
+bool ContactListener::GetUserData(b2Contact* contact, Entity** entity, int
+which) {
+    b2Fixture* fixture = (!which ? contact->GetFixtureA() :
+                          contact->GetFixtureB());
+    if (!fixture) {
+        return false;
+    }
+    std::cout << "Foo1\n";
+    b2Body* body = fixture->GetBody();
+    if (!body) {
+        return false;
+    }
+    std::cout << "Foo2\n";
+    *entity = (Entity*)body->GetUserData();
+    if (!(*entity)) {
+        return false;
+    }
+    std::cout << "Foo3\n";
+    return true;
+}
 
 /** If contact is beetween car and check point return true and set checkPoint
  *  pointer to checkPoint from collision. Otherwise return false.
  */
 bool ContactListener::GetCheckPointFromContact(
         b2Contact* contact, CheckPoint** checkPoint) {
-    Entity* entityA = (Entity*)contact->GetFixtureA()->GetBody()
-            ->GetUserData();
-    Entity* entityB = (Entity*)contact->GetFixtureB()->GetBody()
-            ->GetUserData();
-    if (!entityA && !entityB) {
-        std::cout << "Both nullptr\n";
-    }
-
-    if (!entityA || !entityB) {
-        std::cout << "Null ptr\n";
+    Entity* entityA;
+    Entity* entityB;
+    if (!GetUserData(contact, &entityA, 0) ||
+        !GetUserData(contact, &entityB, 1)) {
         return false;
     }
+    std::cout << "Foo4\n";
     if (!CheckIfCar(&entityA, &entityB)) {
         std::cout << "Not car\n";
         return false;
     }
+    std::cout << "Foo5\n";
     if (entityB->GetEntityType() != CHECK_POINT) {
         std::cout << "Not check point\n";
         return false;
     }
+    std::cout << "Foo6\n";
     *checkPoint = static_cast<CheckPoint*>(entityB);
     return true;
 }
