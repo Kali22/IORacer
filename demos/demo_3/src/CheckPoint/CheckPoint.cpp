@@ -7,7 +7,13 @@
 #include <Entity.h>
 #include <Area.h>
 
-int CheckPoint::GetEntityType() {
+CheckPoint::CheckPoint(Area* area) : area_(area) {
+    area_->SetCollisionUserData(this);
+}
+
+CheckPoint::~CheckPoint() {}
+
+int CheckPoint::GetEntityType() const {
     return CHECK_POINT;
 }
 
@@ -19,15 +25,11 @@ void CheckPoint::Enable() {
     isActive_ = true;
 }
 
-bool CheckPoint::IsEnabled() {
+bool CheckPoint::IsEnabled() const {
     return isActive_;
 }
 
-CheckPoint::CheckPoint(Area* area) : area_(area) {
-    area_->SetCollisionUserData(this);
-}
-
-void CheckPoint::Draw(sf::RenderWindow *window) {
+void CheckPoint::Draw(sf::RenderWindow *window) const {
     if (isActive_) {
         area_->Draw(window);
     }
@@ -40,11 +42,9 @@ void CheckPoint::BeginContact() {
             observer_->NotifyCheckPointReached();
         }
     }
-    std::cout << "Begin contact\n";
 }
 
 void CheckPoint::EndContact() {
 }
 
-CheckPoint::~CheckPoint() {}
 

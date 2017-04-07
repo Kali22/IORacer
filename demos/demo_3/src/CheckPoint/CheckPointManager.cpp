@@ -7,31 +7,6 @@
 #include <CheckPointManager.h>
 #include <SFML/System/Clock.hpp>
 
-void CheckPointManager::StartTimer() {
-    if (checkPoints_.empty()) {
-        return;
-    }
-    GetCurrentCheckPoint()->Enable();
-    clock_.restart();
-}
-
-sf::Time CheckPointManager::GetElapsedTime() {
-    clock_.getElapsedTime();
-}
-
-void CheckPointManager::NotifyCheckPointReached() {
-    if (GetCurrentCheckPoint()->IsEnabled()) {
-        return;
-    }
-    // TODO save time
-    currentCheckPoint_++;
-    if (currentCheckPoint_ >= checkPoints_.size()) {
-        finishedLap_++;
-        currentCheckPoint_ = 0;
-    }
-    GetCurrentCheckPoint()->Enable();
-}
-
 CheckPointManager::CheckPointManager(std::vector<CheckPoint*> checkPoints)
         :checkPoints_(checkPoints), finishedLap_(0), currentCheckPoint_(0) {
     assert(!checkPoints.empty());
@@ -40,12 +15,36 @@ CheckPointManager::CheckPointManager(std::vector<CheckPoint*> checkPoints)
     }
 }
 
-void CheckPointManager::DrawCheckPoints(sf::RenderWindow* window) {
+void CheckPointManager::StartTimer() {
+    if (checkPoints_.empty()) {
+        return;
+    }
+    GetCurrentCheckPoint()->Enable();
+    clock_.restart();
+}
+
+sf::Time CheckPointManager::GetElapsedTime() const {
+    clock_.getElapsedTime();
+}
+
+void CheckPointManager::NotifyCheckPointReached() {
+    if (GetCurrentCheckPoint()->IsEnabled()) {
+        return;
+    }
+    currentCheckPoint_++;
+    if (currentCheckPoint_ >= checkPoints_.size()) {
+        finishedLap_++;
+        currentCheckPoint_ = 0;
+    }
+    GetCurrentCheckPoint()->Enable();
+}
+
+void CheckPointManager::Draw(sf::RenderWindow* window) const {
     auto* checkPoint = GetCurrentCheckPoint();
     checkPoint->Draw(window);
 }
 
-CheckPoint* CheckPointManager::GetCurrentCheckPoint() {
+CheckPoint* CheckPointManager::GetCurrentCheckPoint() const {
     return checkPoints_[currentCheckPoint_];
 }
 

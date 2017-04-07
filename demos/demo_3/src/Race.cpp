@@ -108,11 +108,12 @@ void Race::Run() {
         }
         map_->RenderBottomLayer(*window_);
         window_->setView(map_->GetCameraView());
-        checkPointManager_->DrawCheckPoints(window_);
+        checkPointManager_->Draw(window_);
 
         vehicle_->Render(*window_);
         window_->setView(window_->getDefaultView());
 
+        hud_->Update();
         hud_->Draw(window_);
         window_->display();
     }

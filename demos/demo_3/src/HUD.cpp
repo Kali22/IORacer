@@ -18,13 +18,14 @@ HUD::HUD(Vehicle* vehicle, Map* map) : vehicle_(vehicle),
 HUD::~HUD() {
 }
 
-void HUD::Draw(sf::RenderWindow *window) {
+void HUD::Update() {
     std::stringstream ss;
     sf::Vector2f mapPos = vehicle_->GetPosition();
     sf::Vector2f boxPos = vehicle_->GetBoxPosition();
 
     ss << "map_X: " << mapPos.x <<"\nmap_Y: "<<mapPos.y<<"\nmap_deg: "
             ""<<vehicle_->GetAngle();
+
     sfmlData_.SetString(ss.str());
     ss.str("");
     ss << "box_X: " << boxPos.x <<"\nbox_Y: "<<boxPos.y<<"\nbox_deg: "
@@ -35,7 +36,9 @@ void HUD::Draw(sf::RenderWindow *window) {
     ss << "bl_wheel: " << vehicle_->GetTireModifier(3, *map_) << "\n";
     ss << "br_wheel: " << vehicle_->GetTireModifier(2, *map_) << "\n";
     boxData_.SetString(ss.str());
+}
 
+void HUD::Draw(sf::RenderWindow *window) const {
     sfmlData_.Draw(window);
     boxData_.Draw(window);
 }

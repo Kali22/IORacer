@@ -24,7 +24,7 @@ Text::Text(std::string text, std::string font_name, sf::Vector2f position) {
     sf_text.setPosition(center);
 }
 
-void Text::Draw(sf::RenderWindow *window) {
+void Text::Draw(sf::RenderWindow *window) const {
     window->draw(sf_text);
 }
 

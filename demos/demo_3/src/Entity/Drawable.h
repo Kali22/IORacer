@@ -6,6 +6,6 @@
 
 class Drawable {
 public:
-    virtual void Draw(sf::RenderWindow *window) = 0;
+    virtual void Draw(sf::RenderWindow *window) const = 0;
 };
 

@@ -20,7 +20,7 @@ enum tire_control_e {
     BRAKE = 0x10
 };
 
-int Tire::GetEntityType() {
+int Tire::GetEntityType() const {
     return TIRE;
 }
 

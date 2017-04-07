@@ -14,8 +14,9 @@ class HUD : public Drawable{
 public:
     HUD(Vehicle* car, Map* map);
     ~HUD();
-    void Draw(sf::RenderWindow *window);
+    void Draw(sf::RenderWindow *window) const;
 
+    void Update();
 private:
     Text sfmlData_;
     Text boxData_;

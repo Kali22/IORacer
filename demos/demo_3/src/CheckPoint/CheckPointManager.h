@@ -1,26 +1,21 @@
 #pragma once
-//
-// Created by pawel on 04.04.17.
-//
 
 #include <CheckPoint.h>
 #include <CheckPointObserver.h>
 #include <SFML/System/Clock.hpp>
+#include <Drawable.h>
 
-
-class CheckPointManager : public CheckPointObserver {
+class CheckPointManager : public CheckPointObserver, public Drawable {
 public:
-    void StartTimer();
+    CheckPointManager(std::vector<CheckPoint*> checkPoints);
 
-    sf::Time GetElapsedTime();
+    void StartTimer();
+    sf::Time GetElapsedTime() const;
 
     void NotifyCheckPointReached();
-
-    void DrawCheckPoints(sf::RenderWindow* window);
-
-    CheckPointManager(std::vector<CheckPoint*> checkPoints);
+    void Draw(sf::RenderWindow* window) const;
 private:
-    CheckPoint* GetCurrentCheckPoint();
+    CheckPoint* GetCurrentCheckPoint() const;
 
     std::vector<CheckPoint*> checkPoints_;
     int finishedLap_;

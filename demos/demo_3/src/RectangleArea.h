@@ -13,12 +13,10 @@ public:
 
     ~RectangleArea();
 
-    void Draw(sf::RenderWindow* window);
+    void Draw(sf::RenderWindow* window) const;
 
     void SetCollisionUserData(Entity* entity);
 private:
-    sf::Vector2f b2VectorToSFML(const b2Vec2& vec);
-
     void CreateSFMLRectangle(const sf::Vector2f& position,
                              const sf::Vector2f& size,
                              float angle);

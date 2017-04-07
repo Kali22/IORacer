@@ -1,13 +1,10 @@
+#pragma once
 /**
  *  @file
  *  @ingroup xxx
  *  @author Jacek Łysiak <jaceklysiako.o@gmail.com>
  *  @date 4/1/17
  */
-
-#ifndef _Vehicle_H_
-#define _Vehicle_H_
-
 
 #include <Box2D.h>
 #include <vector>
@@ -19,6 +16,26 @@
 #include <Entity.h>
 
 class Vehicle : public Entity {
+public:
+    Vehicle(CarParameters &params);
+    ~Vehicle();
+
+    void PrintPos();
+
+    virtual int GetEntityType() const;
+
+    void Render(sf::RenderWindow &window);
+
+    const sf::Vector2f &GetPosition() const;
+    float GetAngle();
+    float GetBoxAngle();
+    float GetSpeed();
+    float GetTireModifier(int i, Map &map);
+
+    sf::Vector2f GetBoxPosition() const;
+
+    void Update(int state, Map* map);
+    void Initialize(b2World *world, int x, int y);
 private:
     b2Body *body;
     std::vector<Tire*> tires;
@@ -33,27 +50,5 @@ private:
     void updateFriction(Map &map);
     void updateDrive(int controlState, Map &map);
     void updateTurn(int controlState);
-public:
-    Vehicle(CarParameters &params);
-    ~Vehicle();
-
-    void PrintPos();
-
-    virtual int GetEntityType();
-
-    void Render(sf::RenderWindow &window);
-
-    const sf::Vector2f &GetPosition() const;
-    float GetAngle();
-    float GetBoxAngle();
-    float GetSpeed();
-    float GetTireModifier(int i, Map &map);
-
-    sf::Vector2f GetBoxPosition() const;
-
-    void Update(int state, Map* map);
-    void Initialize(b2World *world, int x, int y);
 };
 
-
-#endif //Vehicle

@@ -9,5 +9,5 @@ class Area : public Drawable {
 public:
     virtual void SetCollisionUserData(Entity* entity) = 0;
 
-    virtual void Draw(sf::RenderWindow *window) = 0;
+    virtual void Draw(sf::RenderWindow *window) const = 0;
 };

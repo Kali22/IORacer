@@ -6,11 +6,15 @@
 #include <MathUtil.h>
 #include <RectangleParams.h>
 
-sf::Vector2f RectangleArea::b2VectorToSFML(const b2Vec2 &vec) {
-    return sf::Vector2f(vec.x * 30, vec.y * 30);
+RectangleArea::RectangleArea(b2World* world, const struct RectangleParams
+&params) : world_(world) {
+    CreateB2Rectangle(params.b2Pos, params.b2Size, params.b2Angle);
+    CreateSFMLRectangle(params.sfmlPos, params.sfmlSize, params.sfmlAngle);
 }
 
-void RectangleArea::Draw(sf::RenderWindow *window) {
+RectangleArea::~RectangleArea() {}
+
+void RectangleArea::Draw(sf::RenderWindow *window) const {
     window->draw(rectangleShape_);
 }
 
@@ -18,8 +22,8 @@ void RectangleArea::SetCollisionUserData(Entity* entity) {
     body_->SetUserData(entity);
 }
 
-void RectangleArea::CreateB2Rectangle(const b2Vec2 &position, const b2Vec2 &
-size, float angle) {
+void RectangleArea::CreateB2Rectangle(const b2Vec2 &position, const
+b2Vec2 & size, float angle) {
     b2BodyDef bodyDef;
     body_ = world_->CreateBody(&bodyDef);
     b2FixtureDef fixtureDef;
@@ -42,13 +46,4 @@ void RectangleArea::CreateSFMLRectangle(const sf::Vector2f &position,
     rectangleShape_.setRotation(angle);
 
 }
-
-
-RectangleArea::RectangleArea(b2World* world, const struct RectangleParams
-&params) : world_(world) {
-    CreateB2Rectangle(params.b2Pos, params.b2Size, params.b2Angle);
-    CreateSFMLRectangle(params.sfmlPos, params.sfmlSize, params.sfmlAngle);
-}
-
-RectangleArea::~RectangleArea() {}
 

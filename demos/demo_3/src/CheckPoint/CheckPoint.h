@@ -10,23 +10,19 @@
 
 class CheckPoint : public Entity {
 public:
-    virtual int GetEntityType();
+    CheckPoint(Area* area);
+    ~CheckPoint();
+
+    void Draw(sf::RenderWindow* window) const;
+    virtual int GetEntityType() const;
 
     void Enable();
-
-    bool IsEnabled();
+    bool IsEnabled() const;
 
     void SetObserver(CheckPointObserver* observer);
 
-    CheckPoint(Area* area);
-
-    ~CheckPoint();
-
     void BeginContact();
-
     void EndContact();
-
-    void Draw(sf::RenderWindow* window);
 private:
     Area* area_;
     CheckPointObserver* observer_;

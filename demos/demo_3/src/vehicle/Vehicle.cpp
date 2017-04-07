@@ -16,7 +16,7 @@
 
 #define SCALE 30.f
 
-int Vehicle::GetEntityType() {
+int Vehicle::GetEntityType() const {
     return CAR;
 }
 
