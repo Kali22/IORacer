@@ -21,7 +21,6 @@ void RectangleArea::Draw(sf::RenderWindow *window) {
 void RectangleArea::CreateB2Rectangle(const b2Vec2 &position, const b2Vec2 &
 size, float angle, Entity *userData) {
     b2BodyDef bodyDef;
-    //bodyDef.position = position;
     body_ = world_->CreateBody(&bodyDef);
     b2FixtureDef fixtureDef;
 
@@ -38,16 +37,11 @@ size, float angle, Entity *userData) {
 void RectangleArea::CreateSFMLRectangle(const sf::Vector2f &position,
                                         const sf::Vector2f &size,
                                         float angle) {
-    /**rectangleShape_ = sf::RectangleShape(b2VectorToSFML(size));
-    sf::Vector2f convertedPos = b2VectorToSFML(position);
-    convertedPos.x -= size.x * 30 / 2;
-    convertedPos.y -= size.y * 30 / 2;
-
-    rectangleShape_.setPosition(convertedPos);
-    rectangleShape_.setRotation(30); */
     rectangleShape_ = sf::RectangleShape(size);
-    rectangleShape_.setPosition(position);
+    rectangleShape_.setOrigin(size.x / 2, size.y / 2);
+    rectangleShape_.move(position);
     rectangleShape_.setRotation(angle);
+
 }
 
 
