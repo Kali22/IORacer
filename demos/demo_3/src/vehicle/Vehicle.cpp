@@ -47,9 +47,9 @@ const sf::Vector2f &Vehicle::GetPosition() const {
     return sprite_chassis.getPosition();
 }
 
-void Vehicle::Update(int state, Map &map) {
-    updateFriction(map);
-    updateDrive(state, map);
+void Vehicle::Update(int state, Map *map) {
+    updateFriction(*map); // TODO change to const &
+    updateDrive(state, *map);
     updateTurn(state);
 }
 

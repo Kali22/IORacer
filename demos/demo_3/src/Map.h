@@ -1,12 +1,10 @@
+#pragma once
 /**
  *  @file
  *  @ingroup map
  *  @author Jacek Łysiak <jaceklysiako.o@gmail.com>
  *  @date 3/31/17
  */
-
-#ifndef _Map_H_
-#define _Map_H_
 
 #include <string>
 #include <SFML/Graphics/Texture.hpp>
@@ -17,6 +15,23 @@
 #include <SFML/Graphics/RenderWindow.hpp>
 
 class Map {
+public:
+    Map(b2World *world);
+    ~Map();
+    void LoadMap(const std::string& name, const std::string &full_name);
+    float GetFrictionModifier(const sf::Vector2f &pos);
+
+    const sf::Drawable &GetViewMap();
+    const sf::Drawable &GetFrictionMap();
+    const sf::View &GetCameraView();
+    const sf::View &GetMinimapView();
+
+    void AlignCameraViewSize(const sf::Window &window);
+    void SetCameraViewPosition(const sf::Vector2f &pos);
+    void SetCameraViewZoom(float f);
+
+    void RenderBottomLayer(sf::RenderWindow &window);
+
 private:
     unsigned int max_size;
     std::string name;
@@ -35,23 +50,4 @@ private:
     b2Body *bands[4]; //!< Outside bands
     sf::Sprite bands_sprite[4];
 
-public:
-    Map(b2World *world);
-    ~Map();
-    void LoadMap(const std::string& name, const std::string &full_name);
-    float GetFrictionModifier(const sf::Vector2f &pos);
-
-    const sf::Drawable &GetViewMap();
-    const sf::Drawable &GetFrictionMap();
-    const sf::View &GetCameraView();
-    const sf::View &GetMinimapView();
-    
-    void AlignCameraViewSize(const sf::Window &window);
-    void SetCameraViewPosition(const sf::Vector2f &pos);
-    void SetCameraViewZoom(float f);
-
-    void RenderBottomLayer(sf::RenderWindow &window);
 };
-
-
-#endif //Map

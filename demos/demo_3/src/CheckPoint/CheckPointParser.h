@@ -8,8 +8,6 @@
 #include <SFML/Graphics.hpp>
 #include <CheckPoint.h>
 
-
-
 class CheckPointParser {
 public:
     CheckPointParser(b2World* world, float scale);

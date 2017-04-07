@@ -51,7 +51,7 @@ public:
 
     sf::Vector2f GetBoxPosition() const;
 
-    void Update(int state, Map &map);
+    void Update(int state, Map* map);
     void Initialize(b2World *world, int x, int y);
 };
 

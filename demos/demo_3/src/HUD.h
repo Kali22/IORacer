@@ -12,15 +12,15 @@
 
 class HUD : public Drawable{
 public:
-    HUD(Vehicle &car, Map &map);
+    HUD(Vehicle* car, Map* map);
     ~HUD();
     void Draw(sf::RenderWindow *window);
 
 private:
-    Text sfmlData;
-    Text boxData;
+    Text sfmlData_;
+    Text boxData_;
 
-    Vehicle &vehicle;
-    Map &map;
+    Vehicle* vehicle_;
+    Map* map_;
 };
 

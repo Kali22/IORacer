@@ -21,6 +21,16 @@ void setclr(int *reg, int mask, int type) {
         *reg &= ~mask;
 }
 
+Race::Race(sf::RenderWindow *win, b2World *world, Map *map, Vehicle *vehicle,
+           HUD *hud, CheckPointManager* checkPointManager)
+        : window_(win),
+          world_(world),
+          map_(map),
+          vehicle_(vehicle),
+          hud_(hud),
+          checkPointManager_(checkPointManager) {}
+
+
 void HandleKeyboard(sf::Event::KeyEvent Event, int *state, int type) {
     /// @TODO change to map
     switch (Event.code) {
@@ -46,31 +56,11 @@ void HandleKeyboard(sf::Event::KeyEvent Event, int *state, int type) {
 
 void Race::Initialize() {
     // Prepare map
-    map.LoadMap("map_0", "Mapa testowa");
-    /// TODO add race builder
-    CheckPointParser parser(&world, 30); // scale
-    /// @TODO move checkPointsParser to map Load
-    std::vector<CheckPoint*> checkPoints = parser.ParseFile(
-            "../resource/maps/map_0/checkpoints_list");
-    checkPointManager_ = new CheckPointManager(checkPoints);
-    vehicle.Initialize(&world, 1600, 2200);
+    vehicle_->Initialize(world_, 1600, 2200);
 
-    // Set initiial car params
-    carParameters.activeTireModifier = 1.0f;
-    carParameters.baseTireFriction = 1.0f;
-    carParameters.maxBackwardSpeed = -20.f;
-    carParameters.maxForwardSpeed = 60.f;
-    carParameters.maxEnginePower = 30.f;
-    carParameters.maxSteeringAngle = 20.f;
-    carParameters.steeringSpeed = 120.0;
-
-
-    /// @TODO inject parameter rather than hardcode it
-    //vehicle.setCharacteristics(40, -10, 50);
-
-    map.AlignCameraViewSize(window);
-    map.SetCameraViewPosition(vehicle.GetPosition());
-world.SetContactListener(&contactListener);
+    map_->AlignCameraViewSize(*window_);
+    map_->SetCameraViewPosition(vehicle_->GetPosition());
+    world_->SetContactListener(&contactListener);
     checkPointManager_->StartTimer();
 }
 
@@ -82,15 +72,15 @@ void Race::Run() {
 
     int cnt = 0;
 
-    while (window.isOpen()) {
+    while (window_->isOpen()) {
         sf::Event Event;
-        while (window.pollEvent(Event)) {
+        while (window_->pollEvent(Event)) {
             // Close window : exit
             if (Event.type == sf::Event::Closed) {
-                window.close();
+                window_->close();
             } else if (Event.type == sf::Event::KeyPressed) {
                 if (Event.key.code == sf::Keyboard::Key::Escape) {
-                    window.close();
+                    window_->close();
                 }
                 HandleKeyboard(Event.key, &carState, 1);
             } else if (Event.type == sf::Event::KeyReleased) {
@@ -99,31 +89,31 @@ void Race::Run() {
         }
 
         /* Update states */
-        vehicle.Update(carState, map);
+        vehicle_->Update(carState, map_);
 
         /* Simulate the world */
-        world.Step(1 / 60.f, 8, 3);
+        world_->Step(1 / 60.f, 8, 3);
 
         /* Rendering */
-        map.SetCameraViewPosition(vehicle.GetPosition());
-        window.clear(sf::Color::White);
-        window.clear(sf::Color::White);
+        map_->SetCameraViewPosition(vehicle_->GetPosition());
+        window_->clear(sf::Color::White);
+        window_->clear(sf::Color::White);
         if (cnt == 120) {
             printf("Elapsed time: %f\n", checkPointManager_->GetElapsedTime()
                     .asSeconds());
-            vehicle.PrintPos();
+            vehicle_->PrintPos();
             cnt = 0;
         } else {
             cnt++;
         }
-        map.RenderBottomLayer(window);
-        window.setView(map.GetCameraView());
-        checkPointManager_->DrawCheckPoints(&window);
+        map_->RenderBottomLayer(*window_);
+        window_->setView(map_->GetCameraView());
+        checkPointManager_->DrawCheckPoints(window_);
 
-        vehicle.Render(window);
-        window.setView(window.getDefaultView());
+        vehicle_->Render(*window_);
+        window_->setView(window_->getDefaultView());
 
-        hud.Draw(&window);
-        window.display();
+        hud_->Draw(window_);
+        window_->display();
     }
 }
