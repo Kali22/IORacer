@@ -1,26 +1,32 @@
-//
-// Created by maciej on 30.03.17.
-//
-
-#ifndef DEMO_2_MODULE_H
-#define DEMO_2_MODULE_H
+#pragma once
 
 #include <SFML/Graphics.hpp>
 #include <SFML/Window.hpp>
 #include <bits/stdc++.h>
-#include "../Entity/Drawable.h"
-#include "../Entity/Button.h"
+#include <Drawable.h>
+#include <Button.h>
+
 
 class Module {
-protected:
-    bool close;
-    sf::RenderWindow *window;
-    std::vector<std::shared_ptr<Drawable> > objects;
-    std::vector<std::shared_ptr<Button> > buttons;
 public:
-    Module(sf::RenderWindow *window) : close(false), window(window), objects(), buttons() {}
-    virtual int run() { return 0; }
+    Module(sf::RenderWindow *window) : close_(false), window_(window) {}
+
+    virtual int run()=0;
+
+    void setWindow(sf::RenderWindow *newWindow) {
+        window_ = newWindow;
+    }
+
+protected:
+    bool close_;
+    sf::RenderWindow *window_;
+    std::vector<DrawablePtr> objects_;
+    std::vector<ButtonPtr> buttons_;
+
+    void registerButton(ButtonPtr button) {
+        objects_.push_back(button);
+        buttons_.push_back(button);
+    }
 };
 
-
-#endif //DEMO_2_MODULE_H
+using ModulePtr = std::shared_ptr<Module>;

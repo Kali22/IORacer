@@ -1,9 +1,4 @@
-//
-// Created by maciej on 30.03.17.
-//
-
-#ifndef DEMO_2_DRAWABLE_H
-#define DEMO_2_DRAWABLE_H
+#pragma once
 
 #include <SFML/Window.hpp>
 #include <SFML/Graphics.hpp>
@@ -11,8 +6,7 @@
 
 class Drawable {
 public:
-    virtual void draw(sf::RenderWindow *window) { }
+    virtual void draw(sf::RenderWindow *window)=0;
 };
 
-
-#endif //DEMO_2_DRAWABLE_H
+using DrawablePtr = std::shared_ptr<Drawable>;

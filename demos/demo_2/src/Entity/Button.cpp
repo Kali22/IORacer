@@ -4,38 +4,37 @@
 
 #include "Button.h"
 
-bool Button::hovered(sf::Vector2f mouse_position) {
-    return background.getGlobalBounds().contains(mouse_position);
+bool Button::hovered(sf::Vector2f mousePosition) {
+    return background_.getGlobalBounds().contains(mousePosition);
 }
 
-Button::Button(sf::Vector2f pos, sf::Vector2f size, std::string txt, std::function<void(sf::RenderWindow *window)> click) :
-        background(size),
-        position(pos),
-        text(txt, "impact", pos),
-        callback(click) {
-    background.setPosition(pos - size / 2.0f);
-    background.setFillColor(sf::Color(128, 128, 128)); // Grey
-    background.setOutlineColor(sf::Color(50, 120, 70));
+Button::Button(sf::Vector2f pos, sf::Vector2f size, std::string txt, std::function<void()> action) :
+        background_(size),
+        position_(pos),
+        text_(txt, "impact", pos),
+        action_(action) {
+    background_.setPosition(pos - size / 2.0f);
+    background_.setFillColor(sf::Color(128, 128, 128)); // Grey
+    background_.setOutlineColor(sf::Color(50, 120, 70));
 }
 
-bool Button::toggle_hover(sf::Vector2f mouse_position) {
-    if (hovered(mouse_position)) {
-        background.setFillColor(sf::Color(64, 64, 64)); // Dark Grey
-        background.setOutlineThickness(2);
+bool Button::toggleHover(sf::Vector2f mousePosition) {
+    if (hovered(mousePosition)) {
+        background_.setFillColor(sf::Color(64, 64, 64)); // Dark Grey
+        background_.setOutlineThickness(2);
         return true;
-    }
-    else {
-        background.setFillColor(sf::Color(128, 128, 128)); // Grey
-        background.setOutlineThickness(0);
+    } else {
+        background_.setFillColor(sf::Color(128, 128, 128)); // Grey
+        background_.setOutlineThickness(0);
         return false;
     }
 }
 
-void Button::onClick(sf::RenderWindow *window) {
-    callback(window);
+void Button::draw(sf::RenderWindow *window) {
+    window->draw(background_);
+    text_.draw(window);
 }
 
-void Button::draw(sf::RenderWindow *window) {
-    window->draw(background);
-    text.draw(window);
+void Button::onClick() {
+    action_();
 }

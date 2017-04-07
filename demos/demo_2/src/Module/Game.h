@@ -1,21 +1,18 @@
-//
-// Created by maciej on 30.03.17.
-//
-
-#ifndef DEMO_2_GAME_H
-#define DEMO_2_GAME_H
+#pragma once
 
 #include <SFML/Graphics.hpp>
 #include "Module.h"
-#include "../Entity/Button.h"
+#include <Button.h>
+#include <Model/GameData.h>
 
 class Game : public Module {
-
 public:
-    Game(sf::RenderWindow *window);
+    Game(sf::RenderWindow *window, GameDataPtr gameData);
 
     int run();
+
+private:
+    GameDataPtr gameData_;
 };
 
-
-#endif //DEMO_2_GAME_H
+using GamePtr = std::shared_ptr<Game>;

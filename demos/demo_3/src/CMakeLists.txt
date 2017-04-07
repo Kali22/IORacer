@@ -1,6 +1,7 @@
 # Set source files root directory
 set(SRCROOT ${PROJECT_SOURCE_DIR}/src)
 
+# Autodetect all *.cpp source files
 file(GLOB_RECURSE SOURCE_LIST "*.cpp")
 
 # All source files
@@ -13,7 +14,10 @@ find_package(Box2D REQUIRED)
 #set headers stuff
 set(INCLUDE_DIRS
         ${PROJECT_SOURCE_DIR}/src
-        ${SFML_INCLUDE_DIR}
+        ${PROJECT_SOURCE_DIR}/src/vehicle
+        ${PROJECT_SOURCE_DIR}/src/Entity
+        ${PROJECT_SOURCE_DIR}/src/CheckPoint
+	${SFML_INCLUDE_DIR}
         ${BOX2D_INCLUDE_DIR}/Box2D
         )
 
@@ -24,5 +28,6 @@ set(DEPEND_LIBS
         )
 
 include_directories(${INCLUDE_DIRS})
+message(${SRC})
 add_executable(${PROJECT_NAME} ${SRC})
 target_link_libraries(${PROJECT_NAME} ${DEPEND_LIBS})

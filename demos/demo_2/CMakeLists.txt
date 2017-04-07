@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 3.4)
+cmake_minimum_required(VERSION 3.5)
 
 project(demo_2)
 
@@ -6,7 +6,7 @@ project(demo_2)
 set(CMAKE_BUILD_TYPE Debug)
 
 # Set version information in a config.h file
-set(${PROJECT_NAME}_VERSION_MAJOR 1)
+set(${PROJECT_NAME}_VERSION_MAJOR 3)
 set(${PROJECT_NAME}_VERSION_MINOR 0)
 
 # Set C++11 standard
@@ -17,6 +17,7 @@ set(CMAKE_MODULE_PATH "${PROJECT_SOURCE_DIR}/cmake-modules")
 
 # add the subdirectories
 add_subdirectory(src)
+#file(COPY ${CMAKE_CURRENT_SOURCE_DIR}/resource DESTINATION ${CMAKE_CURRENT_BINARY_DIR})
 
 # add a target to generate API documentation with Doxygen
 find_package(Doxygen)

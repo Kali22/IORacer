@@ -1,17 +1,23 @@
-//
-// Created by maciej on 30.03.17.
-//
+#pragma once
 
-#ifndef DEMO_2_MENU_H
-#define DEMO_2_MENU_H
-
+#include "GameData.h"
 #include "Module.h"
+#include "Workshop.h"
+#include "Game.h"
+#include <Button.h>
 
-class Menu : public Module{
+class Menu : public Module {
 public:
-    Menu(sf::RenderWindow *window);
+    Menu(sf::RenderWindow *window, GameDataPtr gameData);
+
     int run();
+
+private:
+    GameDataPtr gameData_;
+    GamePtr game_;
+    WorkshopPtr workshop_;
+    ButtonPtr playButton_, workshopButton_, quitButton_;
+
 };
 
-
-#endif //DEMO_2_MENU_H
+using MenuPtr = std::shared_ptr<Menu>;

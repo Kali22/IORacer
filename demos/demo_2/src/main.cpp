@@ -1,15 +1,15 @@
 #include <SFML/Window.hpp>
 #include <SFML/Graphics.hpp>
 #include <bits/stdc++.h>
+#include <Model/GameData.h>
 
-#include "Module/Menu.h"
+#include <Menu.h>
 
-int main()
-{
+int main() {
     sf::RenderWindow window(sf::VideoMode(800, 600), "My window");
-
-    Menu menu(&window);
-    menu.run();
+    GameDataPtr gameData = std::make_shared<GameData>();
+    MenuPtr menu = std::make_shared<Menu>(&window, gameData);
+    menu->run();
 
     window.close();
 
