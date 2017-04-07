@@ -1,0 +1,21 @@
+#pragma once
+/*
+#include <SFML/Graphics.hpp>
+#include "Module.h"
+#include <Button.h>
+#include <Model/GameData.h>
+#include <Race.h>
+
+class Game : public Module {
+public:
+    Game(sf::RenderWindow *window, GameDataPtr gameData, RacePtr race);
+
+    int run();
+
+private:
+    GameDataPtr gameData_;
+    RacePtr race_;
+};
+
+using GamePtr = std::shared_ptr<Game>;
+*/
