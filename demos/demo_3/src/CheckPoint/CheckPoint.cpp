@@ -1,7 +1,3 @@
-//
-// Created by pawel on 03.04.17.
-//
-
 #include <iostream>
 
 #include <Box2D.h>
@@ -9,6 +5,7 @@
 #include <Car.h>
 #include <SFML/Graphics/View.hpp>
 #include <Entity.h>
+#include <Area.h>
 
 int CheckPoint::GetEntityType() {
     return CHECK_POINT;
@@ -26,15 +23,13 @@ bool CheckPoint::IsEnabled() {
     return isActive_;
 }
 
-CheckPoint::CheckPoint(b2World *world,
-                       const struct RectangleParams& params)
-        : world_(world), rectangleArea_(world, params) {
-    rectangleArea_.SetCollisionUserData(this);
+CheckPoint::CheckPoint(Area* area) : area_(area) {
+    area_->SetCollisionUserData(this);
 }
 
 void CheckPoint::Draw(sf::RenderWindow *window) {
     if (isActive_) {
-        rectangleArea_.Draw(window);
+        area_->Draw(window);
     }
 }
 

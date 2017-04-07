@@ -2,6 +2,7 @@
 #include <string>
 #include <fstream>
 
+#include <RectangleArea.h>
 #include <CheckPointParser.h>
 #include <CheckPoint.h>
 #include <RectangleParams.h>
@@ -25,7 +26,8 @@ std::vector<CheckPoint*> CheckPointParser::ParseFile(const std::string& file) {
     while (input_ >> paramName >> val1) {
         struct RectangleParams params;
         ParseCheckPoint(&params);
-        CheckPoint* checkPoint = new CheckPoint(world_, params);
+        CheckPoint* checkPoint =
+                new CheckPoint(new RectangleArea(world_, params));
         res.push_back(checkPoint);
     }
     input_.close();
