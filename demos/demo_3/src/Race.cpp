@@ -107,8 +107,6 @@ void Race::Run() {
         /* Rendering */
         map.SetCameraViewPosition(vehicle.GetPosition());
         window.clear(sf::Color::White);
-//        float zoom = 0.8f + vehicle.GetSpeed()/70;
-//        map.SetCameraViewZoom(zoom);
         window.clear(sf::Color::White);
         if (cnt == 120) {
             printf("Elapsed time: %f\n", checkPointManager_->GetElapsedTime()
@@ -118,18 +116,14 @@ void Race::Run() {
         } else {
             cnt++;
         }
-        //checkPoint->DebugPrint();
         map.RenderBottomLayer(window);
         window.setView(map.GetCameraView());
         checkPointManager_->DrawCheckPoints(&window);
-//        map.SetCameraViewZoom(1.f / zoom);
-//        window.setView(map.GetMinimapView());
-//        window.draw(map.GetViewMap());
-//        window.draw(vehicle.GetSprite());
+
         vehicle.Render(window);
         window.setView(window.getDefaultView());
 
-        hud.draw(&window);
+        hud.Draw(&window);
         window.display();
     }
 }

@@ -1,7 +1,3 @@
-//
-// Created by pawel on 05.04.17.
-//
-
 #include <Box2D.h>
 #include <SFML/Graphics/View.hpp>
 #include <SFML/Graphics.hpp>
@@ -18,8 +14,12 @@ void RectangleArea::Draw(sf::RenderWindow *window) {
     window->draw(rectangleShape_);
 }
 
+void RectangleArea::SetCollisionUserData(Entity* entity) {
+    body_->SetUserData(entity);
+}
+
 void RectangleArea::CreateB2Rectangle(const b2Vec2 &position, const b2Vec2 &
-size, float angle, Entity *userData) {
+size, float angle) {
     b2BodyDef bodyDef;
     body_ = world_->CreateBody(&bodyDef);
     b2FixtureDef fixtureDef;
@@ -31,7 +31,6 @@ size, float angle, Entity *userData) {
     fixtureDef.isSensor = true;
 
     b2Fixture *checkPointFixture = body_->CreateFixture(&fixtureDef);
-    body_->SetUserData(userData);
 }
 
 void RectangleArea::CreateSFMLRectangle(const sf::Vector2f &position,
@@ -46,8 +45,8 @@ void RectangleArea::CreateSFMLRectangle(const sf::Vector2f &position,
 
 
 RectangleArea::RectangleArea(b2World* world, const struct RectangleParams
-&params, Entity *userData) : world_(world) {
-    CreateB2Rectangle(params.b2Pos, params.b2Size, params.b2Angle, userData);
+&params) : world_(world) {
+    CreateB2Rectangle(params.b2Pos, params.b2Size, params.b2Angle);
     CreateSFMLRectangle(params.sfmlPos, params.sfmlSize, params.sfmlAngle);
 }
 

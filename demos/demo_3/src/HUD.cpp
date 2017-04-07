@@ -10,16 +10,15 @@
 
 HUD::HUD(Vehicle &car, Map &map) : vehicle(car),
                                    sfmlData("x","impact",sf::Vector2f(50,50)),
-                                   boxData("y","impact",sf::Vector2f(50,300)), map(map)
+                                   boxData("y","impact",sf::Vector2f(50,300)),
+                                   map(map)
 {
-
 }
 
 HUD::~HUD() {
-
 }
 
-void HUD::draw(sf::RenderWindow *window) {
+void HUD::Draw(sf::RenderWindow *window) {
     std::stringstream ss;
     sf::Vector2f mapPos = vehicle.GetPosition();
     sf::Vector2f boxPos = vehicle.GetBoxPosition();
@@ -35,6 +34,6 @@ void HUD::draw(sf::RenderWindow *window) {
     ss << "br_wheel: " << vehicle.GetTireModifier(2, map) << "\n";
     boxData.SetString(ss.str());
 
-    sfmlData.draw(window);
-    boxData.draw(window);
+    sfmlData.Draw(window);
+    boxData.Draw(window);
 }

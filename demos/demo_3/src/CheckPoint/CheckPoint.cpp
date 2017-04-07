@@ -28,7 +28,8 @@ bool CheckPoint::IsEnabled() {
 
 CheckPoint::CheckPoint(b2World *world,
                        const struct RectangleParams& params)
-        : world_(world), rectangleArea_(world, params, this) {
+        : world_(world), rectangleArea_(world, params) {
+    rectangleArea_.SetCollisionUserData(this);
 }
 
 void CheckPoint::Draw(sf::RenderWindow *window) {

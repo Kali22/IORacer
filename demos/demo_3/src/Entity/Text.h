@@ -1,20 +1,13 @@
-//
-// Created by maciej on 30.03.17.
-//
+#pragma once
 
-#ifndef DEMO_2_TEXT_H
-#define DEMO_2_TEXT_H
-
-#include "Drawable.h"
+#include <Drawable.h>
 
 class Text : public Drawable {
-    sf::Font sf_font;
-    sf::Text sf_text;
 public:
     Text(std::string text, std::string font_path, sf::Vector2f position);
-    void draw(sf::RenderWindow *window);
+    void Draw(sf::RenderWindow *window);
     void SetString(std::string text);
+private:
+    sf::Font sf_font;
+    sf::Text sf_text;
 };
-
-
-#endif //DEMO_2_TEXT_H
