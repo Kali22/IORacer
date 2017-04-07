@@ -5,11 +5,10 @@
 
 #include <Menu.h>
 
-int main()
-{
+int main() {
     sf::RenderWindow window(sf::VideoMode(800, 600), "My window");
-    GameData_ptr gameData = std::make_shared<GameData>();
-    Menu_ptr menu = std::make_shared<Menu>(&window, gameData);
+    GameDataPtr gameData = std::make_shared<GameData>();
+    MenuPtr menu = std::make_shared<Menu>(&window, gameData);
     menu->run();
 
     window.close();

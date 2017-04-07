@@ -11,62 +11,62 @@
 #include <GameData.h>
 
 
-Menu::Menu(sf::RenderWindow *window, GameData_ptr gameplay) :
-        Module(window), gameData(gameplay), workshop(std::make_shared<Workshop>(window, gameData)),
-        game(std::make_shared<Game>(window, gameData)) {
+Menu::Menu(sf::RenderWindow *window, GameDataPtr gameData) :
+        Module(window), gameData_(gameData), workshop_(std::make_shared<Workshop>(window_, gameData_)),
+        game_(std::make_shared<Game>(window_, gameData_)) {
 
     sf::Vector2f menuButtonSize = sf::Vector2f(300, 80);
     // set buttons
-    playButton = std::make_shared<Button>(
+    playButton_ = std::make_shared<Button>(
             sf::Vector2f(400, 150),
             menuButtonSize,
             "Play",
             [this]() {
-                game->run();
+                game_->run();
             }
     );
 
-    workshopButton = std::make_shared<Button>(
+    workshopButton_ = std::make_shared<Button>(
             sf::Vector2f(400, 300),
             menuButtonSize,
             "Workshop",
             [this]() {
-                workshop->run();
+                workshop_->run();
             }
     );
 
-    quitButton = std::make_shared<Button>(
+    quitButton_ = std::make_shared<Button>(
             sf::Vector2f(400, 450),
             menuButtonSize,
             "Quit",
             [this]() {
-                close = true;
+                close_ = true;
             }
     );
 
     // every drawable object
-    objects.push_back(playButton);
-    objects.push_back(workshopButton);
-    objects.push_back(quitButton);
+    objects_.push_back(playButton_);
+    objects_.push_back(workshopButton_);
+    objects_.push_back(quitButton_);
 
     // buttons
-    buttons.push_back(playButton);
-    buttons.push_back(workshopButton);
-    buttons.push_back(quitButton);
+    buttons_.push_back(playButton_);
+    buttons_.push_back(workshopButton_);
+    buttons_.push_back(quitButton_);
 }
 
 
 int Menu::run() {
-    close = false;
-    while (!close) {
+    close_ = false;
+    while (!close_) {
         bool mouseClick = false; // info for buttons
 
         // EVENT handling
         sf::Event event;
-        while (window->pollEvent(event)) {
-            // "close requested" event: end while loop
+        while (window_->pollEvent(event)) {
+            // "close_ requested" event: end while loop
             if (event.type == sf::Event::Closed) {
-                close = true;
+                close_ = true;
             }
             // handle mouse click
             if (event.type == sf::Event::MouseButtonPressed && event.mouseButton.button == sf::Mouse::Left) {
@@ -75,10 +75,10 @@ int Menu::run() {
         }
 
         /// BUTTON things
-        std::shared_ptr <Button> activeButton = nullptr;
-        sf::Vector2f mousePos = sf::Vector2f(sf::Mouse::getPosition(*window));
+        std::shared_ptr<Button> activeButton = nullptr;
+        sf::Vector2f mousePos = sf::Vector2f(sf::Mouse::getPosition(*window_));
         // select hovered button, change style
-        for (auto &button : buttons) {
+        for (auto &button : buttons_) {
             if (button->toggleHover(mousePos)) {
                 activeButton = button;
             }
@@ -88,11 +88,11 @@ int Menu::run() {
         }
 
         // DRAWING
-        window->clear(sf::Color(60, 70, 80));
-        for (auto &drawableObject : objects) {
-            drawableObject->draw(window);
+        window_->clear(sf::Color(60, 70, 80));
+        for (auto &drawableObject : objects_) {
+            drawableObject->draw(window_);
         }
-        window->display();
+        window_->display();
     }
 
     return 0;

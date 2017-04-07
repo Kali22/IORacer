@@ -1,10 +1,4 @@
-//
-// Created by maciej on 30.03.17.
-//
-
-#ifndef DEMO_2_WORKSHOP_H
-#define DEMO_2_WORKSHOP_H
-
+#pragma once
 
 #include <SFML/Graphics.hpp>
 #include <GameData.h>
@@ -13,20 +7,17 @@
 
 
 class Workshop : public Module {
-
-    GameData_ptr gameData;
-    Button_ptr returnButton;
-    Text_ptr maxSpeedText, accelerationText;
-    Button_ptr plusMaxSpeed, minusMaxSpeed;
-    Button_ptr plusAcceleration, minusAcceleration;
-
-
 public:
-    Workshop(sf::RenderWindow *window, GameData_ptr gameData);
+    Workshop(sf::RenderWindow *window, GameDataPtr gameData);
 
     int run();
+
+private:
+    GameDataPtr gameData_;
+    ButtonPtr returnButton_;
+    TextPtr maxSpeedText_, accelerationText_;
+    ButtonPtr plusMaxSpeed_, minusMaxSpeed_;
+    ButtonPtr plusAcceleration_, minusAcceleration_;
 };
 
-using Workshop_ptr = std::shared_ptr<Workshop>;
-
-#endif //DEMO_2_WORKSHOP_H
+using WorkshopPtr = std::shared_ptr<Workshop>;

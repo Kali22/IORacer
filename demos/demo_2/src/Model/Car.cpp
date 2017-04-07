@@ -4,7 +4,7 @@
 
 #include "Car.h"
 
-Car::Car() : maxSpeed(100.0), acceleration(50.0), turnSpeed(10.0), maxTurnAngle(60.0) {}
+Car::Car() : maxSpeed_(100.0), acceleration_(50.0), turnSpeed_(10.0), maxTurnAngle_(60.0) {}
 
 Car::Car(float maxSpeed, float acceleration, float turnSpeed, float maxTurnAngle) :
-        maxSpeed(maxSpeed), acceleration(acceleration), turnSpeed(turnSpeed), maxTurnAngle(maxTurnAngle) {}
+        maxSpeed_(maxSpeed), acceleration_(acceleration), turnSpeed_(turnSpeed), maxTurnAngle_(maxTurnAngle) {}
