@@ -11,7 +11,7 @@
 #include <Map.h>
 #include "Vehicle.h"
 #include "CarParams.h"
-
+#include <CarControlE.h>
 #include <Entity.h>
 
 #define SCALE 30.f

@@ -66,7 +66,7 @@ void Race::Initialize() {
 
 
     /// @TODO inject parameter rather than hardcode it
-    vehicle.setCharacteristics(40, -10, 50);
+    //vehicle.setCharacteristics(40, -10, 50);
 
     map.AlignCameraViewSize(window);
     map.SetCameraViewPosition(vehicle.GetPosition());
