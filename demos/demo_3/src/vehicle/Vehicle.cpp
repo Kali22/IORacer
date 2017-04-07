@@ -5,16 +5,22 @@
  *  @date 4/1/17
  */
 
+#include <iostream>
+
 #include <Vehicle.h>
 #include <Map.h>
 #include "Vehicle.h"
 #include "CarParams.h"
 
+#include <Entity.h>
+
 #define SCALE 30.f
 
-Vehicle::Vehicle(CarParameters &params) : carParameters(params) {
-
+int Vehicle::GetEntityType() {
+    return CAR;
 }
+
+Vehicle::Vehicle(CarParameters &params) : carParameters(params) {}
 
 Vehicle::~Vehicle() {
     body->GetWorld()->DestroyJoint(fl_joint);
@@ -171,4 +177,10 @@ float Vehicle::GetSpeed() {
 
 float Vehicle::GetTireModifier(int i, Map &map) {
     return map.GetFrictionModifier(tires[i]->tireSprite.getPosition());
+}
+
+void Vehicle::PrintPos() {
+    std::cout << "Car " << body->GetPosition().x << " "
+              << body->GetPosition().y << std::endl;
+
 }

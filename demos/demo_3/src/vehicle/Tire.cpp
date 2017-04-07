@@ -8,6 +8,7 @@
 #include <Tire.h>
 #include <Dynamics/b2World.h>
 #include <Collision/Shapes/b2PolygonShape.h>
+#include <Entity.h>
 
 #define SCALE 30.f
 
@@ -18,6 +19,10 @@ enum tire_control_e {
     DOWN = 0x08,
     BRAKE = 0x10
 };
+
+int Tire::GetEntityType() {
+    return TIRE;
+}
 
 Tire::Tire(b2World *world) {
     b2BodyDef bodyDef;

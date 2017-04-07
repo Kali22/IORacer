@@ -16,7 +16,14 @@
 #include <Box2D/Box2D.h>
 #include <SFML/Graphics.hpp>
 #include <Entity.h>
-#include <CarControlE.h>
+
+enum car_control_e {
+    LEFT    =   0x01,
+    RIGHT   =   0x02,
+    UP      =   0x04,
+    DOWN    =   0x08,
+    BRAKE   =   0x10
+};
 
 class Car : public Entity {
 private:
@@ -29,7 +36,12 @@ private:
     void updateDrive(int controlState);
     void updateTurn(int controlState);
 
+<<<<<<< HEAD:demos/demo_3/src/Car.h
     b2Body *body_;
+=======
+    b2Body *body;
+
+>>>>>>> origin/map_test:demos/demo_3/src/vehicle/Car.h
     float maxForwardSpeed;
     float maxBackwardSpeed;
     float maxDriveForce;
@@ -52,6 +64,9 @@ public:
     const sf::Vector2f &GetPosition() const;
     float GetRotation();
     float GetSpeed();
+
+    bool FixtureBelong(b2Fixture* fixture);
+
 };
 
 

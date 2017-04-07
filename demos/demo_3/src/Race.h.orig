@@ -6,27 +6,30 @@
 
 #include <SFML/Graphics.hpp>
 #include <Box2D/Box2D.h>
-#include <Vehicle.h>
-#include "HUD.h"
 #include <Map.h>
+<<<<<<< HEAD
 #include <CheckPointManager.h>
 #include <ContactListener.h>
+=======
+#include <Vehicle.h>
+>>>>>>> origin/map_test
 
 class Race {
 private:
     sf::RenderWindow& window;
     Map map;
     b2World world;
-    Vehicle vehicle;
-    CarParameters carParameters;
-    HUD hud;
+<<<<<<< HEAD
+    Car car;
     ContactListener contactListener;
     CheckPointManager* checkPointManager_;
+=======
+    Vehicle vehicle;
+>>>>>>> origin/map_test
 
     void Initialize();
 public:
-    Race(sf::RenderWindow& win) : window(win), world(b2Vec2(0.f, 0.f)), map(&world), vehicle(carParameters),
-                                  hud(vehicle, map) { };
+    Race(sf::RenderWindow& win) : window(win), world(b2Vec2(0.f, 0.f)), map(&world) { };
     void Run();
 };
 

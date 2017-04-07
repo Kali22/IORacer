@@ -92,7 +92,6 @@ const sf::Drawable &Map::GetViewMap() {
 }
 
 float Map::GetFrictionModifier(const sf::Vector2f &pos) {
-
     unsigned int x = (unsigned int) (pos.x < 0 ? 0 : pos.x);
     unsigned int y = (unsigned int) (pos.y < 0 ? 0 : pos.y);
     sf::Color color = image_friction.getPixel(x, y);

@@ -14,10 +14,12 @@
 #include <SFML/Graphics/Texture.hpp>
 #include <SFML/Graphics/RenderWindow.hpp>
 #include "CarParams.h"
+#include <Entity.h>
 
-
-class Tire {
+class Tire : public Entity {
 public:
+    virtual int GetEntityType();
+
     sf::Texture tireTexture;
     sf::Sprite tireSprite;
 

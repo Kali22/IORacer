@@ -16,7 +16,8 @@
 #include <SFML/Graphics/Texture.hpp>
 #include <SFML/Graphics/Sprite.hpp>
 #include <Map.h>
-
+#include <CarControlE.h>
+#include <Entity.h>
 
 enum car_control_e {
     LEFT    =   0x01,
@@ -26,7 +27,7 @@ enum car_control_e {
     BRAKE   =   0x10
 };
 
-class Vehicle {
+class Vehicle : public Entity {
 private:
     b2Body *body;
     std::vector<Tire*> tires;
@@ -44,6 +45,10 @@ private:
 public:
     Vehicle(CarParameters &params);
     ~Vehicle();
+
+    void PrintPos();
+
+    virtual int GetEntityType();
 
     void Render(sf::RenderWindow &window);
 

@@ -4,11 +4,16 @@
  *  @author Jacek Łysiak <jaceklysiako.o@gmail.com>
  *  @date 3/31/17
  */
+
+<<<<<<< HEAD:demos/demo_3/src/Car.cpp
 #include <iostream>
 
-
-#include <vehicle/Car.h>
+#include <Car.h>
+#include <Entity.h>
 #include <MathUtil.h>
+=======
+#include <vehicle/Car.h>
+>>>>>>> origin/map_test:demos/demo_3/src/vehicle/Car.cpp
 
 #define SCALE 30.f
 
@@ -48,8 +53,7 @@ void Car::Initialize(b2World *world, int x, int y) {
 
     car_texture.loadFromFile("../resource/car.png");
     car_sprite.setTexture(car_texture);
-    car_sprite.setOrigin(16.f, 16.f);
-    car_sprite.setScale(0.5f,0.5f);
+    car_sprite.setOrigin(16.f, 24.f);
 }
 
 Car::~Car() {
