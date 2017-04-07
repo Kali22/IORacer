@@ -1,24 +1,17 @@
-//
-// Created by bartek on 06.04.17.
-//
-
-#ifndef DEMO_2_CAR_H
-#define DEMO_2_CAR_H
+#pragma once
 
 #include <memory>
 
 class Car {
 public:
-    float maxSpeed;
-    float acceleration;
-    float turnSpeed;
-    float maxTurnAngle;
+    float maxSpeed_;
+    float acceleration_;
+    float turnSpeed_;
+    float maxTurnAngle_;
 
     Car();
 
     Car(float maxSpeed, float acceleration, float turnSpeed, float maxTurnAngle);
 };
 
-typedef std::shared_ptr <Car> Car_ptr;
-
-#endif //DEMO_2_CAR_H
+using CarPtr = std::shared_ptr<Car>;

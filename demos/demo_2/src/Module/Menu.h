@@ -1,9 +1,4 @@
-//
-// Created by maciej on 30.03.17.
-//
-
-#ifndef DEMO_2_MENU_H
-#define DEMO_2_MENU_H
+#pragma once
 
 #include "GameData.h"
 #include "Module.h"
@@ -12,17 +7,17 @@
 #include <Button.h>
 
 class Menu : public Module {
-    GameData_ptr gameData;
-    Game_ptr game;
-    Workshop_ptr workshop;
-    Button_ptr playButton, workshopButton, quitButton;
-
 public:
-    Menu(sf::RenderWindow *window, GameData_ptr gameData);
+    Menu(sf::RenderWindow *window, GameDataPtr gameData);
 
     int run();
+
+private:
+    GameDataPtr gameData_;
+    GamePtr game_;
+    WorkshopPtr workshop_;
+    ButtonPtr playButton_, workshopButton_, quitButton_;
+
 };
 
-using Menu_ptr = std::shared_ptr<Menu>;
-
-#endif //DEMO_2_MENU_H
+using MenuPtr = std::shared_ptr<Menu>;

@@ -1,9 +1,4 @@
-//
-// Created by maciej on 30.03.17.
-//
-
-#ifndef DEMO_2_MODULE_H
-#define DEMO_2_MODULE_H
+#pragma once
 
 #include <SFML/Graphics.hpp>
 #include <SFML/Window.hpp>
@@ -13,29 +8,25 @@
 
 
 class Module {
-protected:
-    bool close;
-    sf::RenderWindow *window;
-    std::vector <Drawable_ptr> objects;
-    std::vector <Button_ptr> buttons;
-
-    void registerButton(Button_ptr button) {
-        objects.push_back(button);
-        buttons.push_back(button);
-    }
-
 public:
-    Module(sf::RenderWindow *window) : close(false), window(window) {}
+    Module(sf::RenderWindow *window) : close_(false), window_(window) {}
 
     virtual int run()=0;
 
     void setWindow(sf::RenderWindow *newWindow) {
-        window = newWindow;
+        window_ = newWindow;
     }
 
+protected:
+    bool close_;
+    sf::RenderWindow *window_;
+    std::vector<DrawablePtr> objects_;
+    std::vector<ButtonPtr> buttons_;
+
+    void registerButton(ButtonPtr button) {
+        objects_.push_back(button);
+        buttons_.push_back(button);
+    }
 };
 
-using Module_ptr = std::shared_ptr<Module>;
-
-
-#endif //DEMO_2_MODULE_H
+using ModulePtr = std::shared_ptr<Module>;

@@ -1,22 +1,16 @@
-//
-// Created by bartek on 06.04.17.
-//
-
-#ifndef DEMO_2_GAMEPLAY_H
-#define DEMO_2_GAMEPLAY_H
+#pragma once
 
 #include "Car.h"
 
 class GameData {
 public:
-    Car_ptr car;
+    CarPtr car_;
 
     //Maps
     GameData();
 
-    GameData(Car_ptr car);
+    GameData(CarPtr car);
 };
 
-typedef std::shared_ptr <GameData> GameData_ptr;
+using GameDataPtr = std::shared_ptr<GameData>;
 
-#endif //DEMO_2_GAMEPLAY_H
