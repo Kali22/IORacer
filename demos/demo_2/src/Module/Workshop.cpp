@@ -1,94 +1,90 @@
-//
-// Created by maciej on 30.03.17.
-//
-
 #include "Workshop.h"
 
 /*
 void Workshop::addButton(const sf::Vector2f &position,
                          const sf::Vector2f &button_size, std::string text,
-                         std::function<void(sf::RenderWindow *window)> func) {
+                         std::function<void(sf::RenderWindow *window_)> func) {
     registerButton(std::make_shared<RedirectButton>(position, button_size, text, func));
 }*/
 
-Workshop::Workshop(sf::RenderWindow *window, GameData_ptr gamedata) : Module(window), gameData(gamedata) {
+Workshop::Workshop(sf::RenderWindow *window_, GameDataPtr gameData) : Module(window_), gameData_(gameData) {
 
     const sf::Vector2f gameButtonSize = sf::Vector2f(400, 80);
     const sf::Vector2f statsButtonSize = sf::Vector2f(50, 50);
     const sf::Vector2f textFieldSize = sf::Vector2f(200, 60);
 
-    returnButton = std::make_shared<Button>(
+    returnButton_ = std::make_shared<Button>(
             sf::Vector2f(400, 520),
             gameButtonSize,
             "Return to menu",
             [this]() {
-                close = true;
+                close_ = true;
             });
-    registerButton(returnButton);
+    registerButton(returnButton_);
 
 
     std::string plus = "+";
     std::string minus = "-";
-    maxSpeedText = std::make_shared<Text>(
-            std::to_string((int) gameData->car->maxSpeed), "impact", sf::Vector2f(400, 100));
-    objects.push_back(maxSpeedText);
+    maxSpeedText_ = std::make_shared<Text>(
+            std::to_string((int) gameData->car_->maxSpeed_), "impact", sf::Vector2f(400, 100));
+    objects_.push_back(maxSpeedText_);
 
-    minusMaxSpeed = std::make_shared<Button>(
+    minusMaxSpeed_ = std::make_shared<Button>(
             sf::Vector2f(250, 100),
             statsButtonSize,
             minus,
             [this]() {
-                gameData->car->maxSpeed--;
-                maxSpeedText->setText(std::to_string((int) gameData->car->maxSpeed));
+                gameData_->car_->maxSpeed_--;
+                maxSpeedText_->setText(std::to_string((int) gameData_->car_->maxSpeed_));
             });
-    registerButton(minusMaxSpeed);
+    registerButton(minusMaxSpeed_);
 
-    plusMaxSpeed = std::make_shared<Button>(
+    plusMaxSpeed_ = std::make_shared<Button>(
             sf::Vector2f(550, 100),
             statsButtonSize,
             plus,
             [this]() {
-                gameData->car->maxSpeed++;
-                maxSpeedText->setText(std::to_string((int) gameData->car->maxSpeed));
+                gameData_->car_->maxSpeed_++;
+                maxSpeedText_->setText(std::to_string((int) gameData_->car_->maxSpeed_));
             });
-    registerButton(plusMaxSpeed);
+    registerButton(plusMaxSpeed_);
 
-    accelerationText = std::make_shared<Text>(
-            std::to_string((int) gameData->car->acceleration), "impact", sf::Vector2f(400, 200));
-    objects.push_back(accelerationText);
+    accelerationText_ = std::make_shared<Text>(
+            std::to_string((int) gameData->car_->acceleration_), "impact", sf::Vector2f(400, 200));
+    objects_.push_back(accelerationText_);
 
-    minusMaxSpeed = std::make_shared<Button>(
+    minusMaxSpeed_ = std::make_shared<Button>(
             sf::Vector2f(250, 200),
             statsButtonSize,
             minus,
             [this]() {
-                gameData->car->acceleration--;
-                accelerationText->setText(std::to_string((int) gameData->car->acceleration));
+                gameData_->car_->acceleration_--;
+                accelerationText_->setText(std::to_string((int) gameData_->car_->acceleration_));
             });
-    registerButton(minusMaxSpeed);
+    registerButton(minusMaxSpeed_);
 
-    plusMaxSpeed = std::make_shared<Button>(
+    plusMaxSpeed_ = std::make_shared<Button>(
             sf::Vector2f(550, 200),
             statsButtonSize,
             plus,
             [this]() {
-                gameData->car->acceleration++;
-                accelerationText->setText(std::to_string((int) gameData->car->acceleration));
+                gameData_->car_->acceleration_++;
+                accelerationText_->setText(std::to_string((int) gameData_->car_->acceleration_));
             });
-    registerButton(plusMaxSpeed);
+    registerButton(plusMaxSpeed_);
 }
 
 int Workshop::run() {
-    close = false;
-    while (!close) {
+    close_ = false;
+    while (!close_) {
         bool mouseClick = false; // info for buttons
 
         // EVENT handling
         sf::Event event;
-        while (window->pollEvent(event)) {
-            // "close requested" event: end while loop
+        while (window_->pollEvent(event)) {
+            // "close_ requested" event: end while loop
             if (event.type == sf::Event::Closed) {
-                close = true;
+                close_ = true;
             }
             // handle mouse click
             if (event.type == sf::Event::MouseButtonPressed &&
@@ -98,10 +94,10 @@ int Workshop::run() {
         }
 
         /// BUTTON things
-        std::shared_ptr <Button> activeButton = nullptr;
-        sf::Vector2f mousePos = sf::Vector2f(sf::Mouse::getPosition(*window));
+        std::shared_ptr<Button> activeButton = nullptr;
+        sf::Vector2f mousePos = sf::Vector2f(sf::Mouse::getPosition(*window_));
         // select hovered button, change style
-        for (auto &button : buttons) {
+        for (auto &button : buttons_) {
             if (button->toggleHover(mousePos)) {
                 activeButton = button;
             }
@@ -111,11 +107,11 @@ int Workshop::run() {
         }
 
         // DRAWING
-        window->clear(sf::Color(60, 70, 80));
-        for (auto &drawableObject : objects) {
-            drawableObject->draw(window);
+        window_->clear(sf::Color(60, 70, 80));
+        for (auto &drawableObject : objects_) {
+            drawableObject->draw(window_);
         }
-        window->display();
+        window_->display();
     }
     return 0;
 }
