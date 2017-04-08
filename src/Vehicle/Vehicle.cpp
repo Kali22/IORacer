@@ -24,7 +24,7 @@ Vehicle::~Vehicle() {
     body->GetWorld()->DestroyJoint(bl_joint);
     body->GetWorld()->DestroyJoint(br_joint);
     for (int i = 0; i < tires.size(); ++i)
-        tires[i]->~Tire();
+        delete tires[i];
     body->GetWorld()->DestroyBody(body);
 }
 

@@ -15,11 +15,11 @@ CheckPointManager::CheckPointManager(std::vector<CheckPoint*> checkPoints)
     }
 }
 
-void CheckPointManager::StartTimer() {
-    if (checkPoints_.empty()) {
-        return;
-    }
-    GetCurrentCheckPoint()->Enable();
+void CheckPointManager::Initialize() {
+    GetCurrentCheckPoint()->SetEnable(false);
+    currentCheckPoint_ = 0;
+    finishedLap_ = 0;
+    GetCurrentCheckPoint()->SetEnable(true);
     clock_.restart();
 }
 
@@ -36,7 +36,7 @@ void CheckPointManager::NotifyCheckPointReached() {
         finishedLap_++;
         currentCheckPoint_ = 0;
     }
-    GetCurrentCheckPoint()->Enable();
+    GetCurrentCheckPoint()->SetEnable(true);
 }
 
 void CheckPointManager::Draw(sf::RenderWindow* window) const {

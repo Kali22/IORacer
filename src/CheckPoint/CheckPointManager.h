@@ -9,7 +9,7 @@ class CheckPointManager : public CheckPointObserver, public Drawable {
 public:
     CheckPointManager(std::vector<CheckPoint*> checkPoints);
 
-    void StartTimer();
+    void Initialize();
     sf::Time GetElapsedTime() const;
 
     void NotifyCheckPointReached();

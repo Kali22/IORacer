@@ -38,6 +38,7 @@ void HandleKeyboard(sf::Event::KeyEvent Event, int *state, int type) {
 }
 
 void Race::Initialize(Vehicle *vehicle) {
+
     vehicle_ = vehicle;
     // Prepare map
     vehicle_->Initialize(world_, 1600, 2200);
@@ -46,7 +47,7 @@ void Race::Initialize(Vehicle *vehicle) {
     map_->AlignCameraViewSize(*window_);
     map_->SetCameraViewPosition(vehicle_->GetPosition());
     world_->SetContactListener(&contactListener_);
-    checkPointManager_->StartTimer();
+    checkPointManager_->Initialize();
 }
 
 int Race::run() {
@@ -97,6 +98,7 @@ int Race::run() {
         hud_->Draw(window_);
         window_->display();
     }
+    // delete car from world
     return 0;
 }
 

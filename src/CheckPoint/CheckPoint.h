@@ -18,7 +18,7 @@ public:
     void Draw(sf::RenderWindow* window) const;
     virtual int GetEntityType() const;
 
-    void Enable();
+    void SetEnable(bool value);
     bool IsEnabled() const;
 
     void SetObserver(CheckPointObserver* observer);
@@ -28,6 +28,6 @@ public:
 private:
     Area* area_;
     CheckPointObserver* observer_;
-    bool isActive_;
+    bool enable_;
 };
 

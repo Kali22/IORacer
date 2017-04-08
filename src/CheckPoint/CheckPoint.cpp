@@ -21,23 +21,23 @@ void CheckPoint::SetObserver(CheckPointObserver* observer) {
     observer_ = observer;
 }
 
-void CheckPoint::Enable() {
-    isActive_ = true;
+void CheckPoint::SetEnable(bool value) {
+    enable_ = value;
 }
 
 bool CheckPoint::IsEnabled() const {
-    return isActive_;
+    return enable_;
 }
 
 void CheckPoint::Draw(sf::RenderWindow *window) const {
-    if (isActive_) {
+    if (enable_) {
         area_->Draw(window);
     }
 }
 
 void CheckPoint::BeginContact() {
-    if (isActive_) {
-        isActive_ = false;
+    if (enable_) {
+        enable_ = false;
         if (observer_ != nullptr) {
             observer_->NotifyCheckPointReached();
         }
