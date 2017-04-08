@@ -21,6 +21,8 @@ public:
 
     Vehicle *getVehicle();
 
+    void Reset();
+
     void Initialize(Vehicle* vehicle);
 private:
     //sf::RenderWindow &window;
@@ -31,9 +33,6 @@ private:
     HUD* hud_;
     ContactListener contactListener_;
     CheckPointManager *checkPointManager_;
-    Vehicle* vehicle_;
-
-    ContactListener contactListener_;
 };
 
 using RacePtr = Race*;

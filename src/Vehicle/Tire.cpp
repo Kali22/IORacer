@@ -100,3 +100,10 @@ void Tire::UpdateDrive(int state, float mod, CarParameters &params) {
     body->ApplyForce(force * currentForwardNormal, body->GetWorldCenter(), true);
 
 }
+
+void Tire::Reset() {
+   body->SetLinearDamping(0);
+   body->SetAngularDamping(0);
+   body->SetAngularVelocity(0);
+   body->SetLinearVelocity(b2Vec2(0,0));
+}

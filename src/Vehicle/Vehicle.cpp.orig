@@ -10,28 +10,34 @@
 #include <Vehicle.h>
 #include <CarControlE.h>
 
-#define SCALE 30.f
-
 int Vehicle::GetEntityType() const {
     return CAR;
 }
 
-Vehicle::Vehicle(CarParameters* params, float scale) : carParameters_(params),
-                                                      scale_(scale) {}
+<<<<<<< HEAD
+Vehicle::Vehicle(CarParameters* params) : carParameters_(params) {}
+=======
+Vehicle::Vehicle(CarParameters &params, float scale) : carParameters(params), scale_(scale) {}
+>>>>>>> e8fb91751b43c0325914237685f01ed5b9f1b74f
 
 Vehicle::~Vehicle() {
     body->GetWorld()->DestroyJoint(fl_joint);
     body->GetWorld()->DestroyJoint(fr_joint);
     body->GetWorld()->DestroyJoint(bl_joint);
     body->GetWorld()->DestroyJoint(br_joint);
+<<<<<<< HEAD
+    for (int i = 0; i < tires.size(); ++i)
+        delete tires[i];
+=======
     //for (int i = 0; i < tires.size(); ++i)
     //    tires[i].reset(); //tires[i]->~Tire();
+>>>>>>> e8fb91751b43c0325914237685f01ed5b9f1b74f
     body->GetWorld()->DestroyBody(body);
 }
 
 void Vehicle::Render(sf::RenderWindow &window) {
-    sprite_chassis.setPosition(SCALE * body->GetPosition().x,
-                               SCALE * body->GetPosition().y);
+    sprite_chassis.setPosition(scale_ * body->GetPosition().x,
+                               scale_ * body->GetPosition().y);
     sprite_chassis.setRotation(body->GetAngle() * 180.f / b2_pi);
     window.draw(sprite_chassis);
     for (int i = 0; i < 4; i++) {
@@ -62,8 +68,8 @@ void Vehicle::createTire(
 void Vehicle::Initialize(b2World *world, int x, int y) {
     //create car body
     b2BodyDef bodyDef;
-    bodyDef.position = b2Vec2(x / scale_ + 25, y / scale_ + 22);
-    bodyDef.angle = b2_pi;
+    bodyDef.position = b2Vec2(x / scale_, y / scale_);
+    bodyDef.angle = 0;
     bodyDef.type = b2_dynamicBody;
     body = world->CreateBody(&bodyDef);
     body->SetUserData(this);
@@ -79,7 +85,6 @@ void Vehicle::Initialize(b2World *world, int x, int y) {
     body->CreateFixture(&FixtureDef);
 
     // Create TIRES
-    // FRONT LEFT
     b2RevoluteJointDef jointDef;
     jointDef.bodyA = body;
     jointDef.referenceAngle = 0;
@@ -100,15 +105,6 @@ void Vehicle::Initialize(b2World *world, int x, int y) {
     texture_chassis.loadFromFile("../resource/car.png");
     sprite_chassis.setTexture(texture_chassis);
     sprite_chassis.setOrigin(16.f, 24.f);
-}
-
-void Vehicle::Reset(int x, int y) {
-    body->SetTransform(b2Vec2(x / scale_, y / scale_), 0);
-    fl_joint->SetLimits(0, 0);
-    fr_joint->SetLimits(0, 0);
-    for (auto t : tires) {
-        t->Reset();
-    }
 }
 
 void Vehicle::updateFriction(Map &map) {

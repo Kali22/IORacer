@@ -18,7 +18,11 @@
 
 class Vehicle : public Entity {
 public:
-    Vehicle(CarParameters *params, float scale);
+<<<<<<< HEAD
+    Vehicle(CarParameters* params);
+=======
+    Vehicle(CarParameters &params, float scale);
+>>>>>>> e8fb91751b43c0325914237685f01ed5b9f1b74f
 
     ~Vehicle();
 
@@ -46,7 +50,6 @@ public:
 
     CarParameters *getCarParameters();
 
-    void Reset(int x, int y);
 private:
     float scale_;
     b2Body *body;

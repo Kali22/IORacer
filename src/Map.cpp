@@ -24,10 +24,14 @@ b2Body *CreateBox(b2World *World, float MouseX, float MouseY, float width, float
     return Body;
 }
 
-Map::Map(b2World *world, float scale) : world_(world), scale_(scale) {
-    //this->world = world;
+Map::Map(b2World *world, float scale, sf::Vector2f startPosition)
+        : world_(world), scale_(scale), startPosition_(startPosition) {
     for (int i = 0; i < 4; ++i)
         bands[i] = NULL;
+}
+
+sf::Vector2f Map::GetStartPosition() {
+    return startPosition_;
 }
 
 Map::~Map() {

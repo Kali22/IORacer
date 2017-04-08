@@ -17,7 +17,7 @@
 
 class Map {
 public:
-    Map(b2World *world, float scale);
+    Map(b2World *world, float scale, sf::Vector2f startPosition);
 
     ~Map();
 
@@ -41,8 +41,10 @@ public:
 
     void RenderBottomLayer(sf::RenderWindow &window);
 
+    sf::Vector2f GetStartPosition();
 private:
     float scale_;
+    sf::Vector2f startPosition_;
     unsigned int max_size;
     std::string name;
     std::string full_name;

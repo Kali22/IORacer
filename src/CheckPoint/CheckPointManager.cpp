@@ -15,7 +15,7 @@ CheckPointManager::CheckPointManager(std::vector<CheckPoint*> checkPoints)
     }
 }
 
-void CheckPointManager::Initialize() {
+void CheckPointManager::Reset() {
     GetCurrentCheckPoint()->SetEnable(false);
     currentCheckPoint_ = 0;
     finishedLap_ = 0;
@@ -24,7 +24,7 @@ void CheckPointManager::Initialize() {
 }
 
 sf::Time CheckPointManager::GetElapsedTime() const {
-    clock_.getElapsedTime();
+    return clock_.getElapsedTime();
 }
 
 void CheckPointManager::NotifyCheckPointReached() {

@@ -37,17 +37,25 @@ void HandleKeyboard(sf::Event::KeyEvent Event, int *state, int type) {
     }
 }
 
-void Race::Initialize(Vehicle *vehicle) {
+void Race::Reset() {
+    sf::Vector2f pos = map_->GetStartPosition();
+    vehicle_->Reset((int)pos.x, (int)pos.y);
+    checkPointManager_->Reset();
+    map_->AlignCameraViewSize(*window_);
+    map_->SetCameraViewPosition(vehicle_->GetPosition());
+}
 
+void Race::Initialize(Vehicle *vehicle) {
+    sf::Vector2f pos = map_->GetStartPosition();
     vehicle_ = vehicle;
     // Prepare map
-    vehicle_->Initialize(world_, 1600, 2200);
+    vehicle_->Initialize(world_, (int)pos.x, (int)pos.y);
 
     hud_->Initialize(vehicle_);
+    checkPointManager_->Reset();
     map_->AlignCameraViewSize(*window_);
     map_->SetCameraViewPosition(vehicle_->GetPosition());
     world_->SetContactListener(&contactListener_);
-    checkPointManager_->Initialize();
 }
 
 int Race::run() {
@@ -79,7 +87,6 @@ int Race::run() {
         hud_->Update();
         /* Rendering */
         map_->SetCameraViewPosition(vehicle_->GetPosition());
-        window_->clear(sf::Color::White);
         window_->clear(sf::Color::White);
         if (cnt == 120) {
             printf("Elapsed time: %f\n", checkPointManager_->GetElapsedTime()

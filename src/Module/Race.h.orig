@@ -1,36 +1,44 @@
-//
-// Created by pawel on 30.03.17.
-//
-
-#ifndef RACE_H
+#pragma once
 
 #include <SFML/Graphics.hpp>
 #include <Box2D/Box2D.h>
+#include <Vehicle.h>
+#include "HUD.h"
 #include <Map.h>
-<<<<<<< HEAD
 #include <CheckPointManager.h>
 #include <ContactListener.h>
-=======
-#include <Vehicle.h>
->>>>>>> origin/map_test
+#include <Module/Module.h>
 
-class Race {
-private:
-    sf::RenderWindow& window;
-    Map map;
-    b2World world;
-<<<<<<< HEAD
-    Car car;
-    ContactListener contactListener;
-    CheckPointManager* checkPointManager_;
-=======
-    Vehicle vehicle;
->>>>>>> origin/map_test
-
-    void Initialize();
+class Race : public Module {
 public:
-    Race(sf::RenderWindow& win) : window(win), world(b2Vec2(0.f, 0.f)), map(&world) { };
-    void Run();
+<<<<<<< HEAD
+    Race(sf::RenderWindow *win, b2World* world, Map* map, HUD* hud,
+         CheckPointManager* checkPointManager) :
+            Module(win), world_(world), map_(map), hud_(hud),
+            checkPointManager_(checkPointManager) {
+=======
+    Race(sf::RenderWindow *win, float scale) :
+            Module(win), scale_(scale) {
+        // Initialize game
+        Initialize();
+>>>>>>> e8fb91751b43c0325914237685f01ed5b9f1b74f
+    };
+
+    int run();
+
+    Vehicle *getVehicle();
+
+    void Initialize(Vehicle* vehicle);
+private:
+    //sf::RenderWindow &window;
+    float scale_;
+    Map* map_;
+    b2World* world_;
+    HUD* hud_;
+    CheckPointManager *checkPointManager_;
+    Vehicle* vehicle_;
+
+    ContactListener contactListener_;
 };
 
-#endif //RACE_H
+using RacePtr = Race*;

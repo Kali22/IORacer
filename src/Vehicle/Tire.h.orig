@@ -24,20 +24,27 @@ public:
     b2Body *body;
     float maxLateralImpulse;
 
+<<<<<<< HEAD
+    Tire(b2World *world);
+=======
     Tire(b2World *world, float scale);
+>>>>>>> e8fb91751b43c0325914237685f01ed5b9f1b74f
 
     ~Tire();
 
-    void Reset();
-
     b2Vec2 getLateralVelocity();
+
     b2Vec2 getForwardVelocity();
+
     void updateFriction(float mod, CarParameters &params);
 
 
     void Render(sf::RenderWindow &window);
+
     void UpdateDrive(int state, float mod, CarParameters &params);
 };
-
+<<<<<<< HEAD
+=======
 
 using TirePtr = std::shared_ptr<Tire>;
+>>>>>>> e8fb91751b43c0325914237685f01ed5b9f1b74f

@@ -21,6 +21,7 @@ Menu::Menu(sf::RenderWindow *window, Race* race) :
             "Play",
             [this]() {
                 race_->run();
+                race_->Reset();
             }
     );
 

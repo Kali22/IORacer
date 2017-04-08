@@ -1,0 +1,26 @@
+#pragma once
+
+#include "Module.h"
+#include "Workshop.h"
+#include "Game.h.depr"
+#include <Button.h>
+#include <Race.h>
+
+class Menu : public Module {
+public:
+<<<<<<< HEAD
+    Menu(sf::RenderWindow *window, Race* race);
+=======
+    Menu(sf::RenderWindow *window, float scale);
+>>>>>>> e8fb91751b43c0325914237685f01ed5b9f1b74f
+
+    int run();
+
+private:
+    RacePtr race_;
+    WorkshopPtr workshop_;
+    ButtonPtr playButton_, workshopButton_, quitButton_;
+
+};
+
+using MenuPtr = std::shared_ptr<Menu>;
