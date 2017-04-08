@@ -16,9 +16,20 @@ private:
     RacePtr race_;
     CarParametersPtr carParams_;
     ButtonPtr returnButton_;
-    TextPtr maxSpeedText_, accelerationText_;
+    TextPtr maxSpeedText_, maxEnginePowerText_, steeringSpeedText_;
+    TextPtr maxSpeedLabel_, maxEnginePowerLabel_, steeringSpeedLabel_;
     ButtonPtr plusMaxSpeed_, minusMaxSpeed_;
-    ButtonPtr plusAcceleration_, minusAcceleration_;
+    ButtonPtr plusMaxEnginePower_, minusMaxEnginePower_;
+    ButtonPtr plusSteeringSpeed_, minusSteeringSpeed_;
+
+    void initMaxSpeedControl(
+            const sf::Vector2f &statsButtonSize, const sf::Vector2f &labelSize, float textSize, int posX, int posY);
+
+    void initMaxEnginePowerControl(const sf::Vector2f &statsButtonSize, const sf::Vector2f &labelSize, float textSize,
+                                   int posX, int posY);
+
+    void initSteeringSpeedControl(const sf::Vector2f &statsButtonSize, const sf::Vector2f &labelSize, float textSize,
+                                  int posX, int posY);
 };
 
 using WorkshopPtr = std::shared_ptr<Workshop>;

@@ -4,17 +4,14 @@
 
 #include "Menu.h"
 
-#include <SFML/Window.hpp>
-#include <SFML/Graphics.hpp>
-#include <bits/stdc++.h>
-
 Menu::Menu(sf::RenderWindow *window) :
         Module(window), race_(new Race(window_)), workshop_(std::make_shared<Workshop>(window_, race_)) {
+    int windowWidth = window->getSize().x, windowHeight = window->getSize().y;
 
     sf::Vector2f menuButtonSize = sf::Vector2f(300, 80);
     // set buttons
     playButton_ = std::make_shared<Button>(
-            sf::Vector2f(400, 150),
+            sf::Vector2f(windowWidth / 2, windowHeight * 1 / 4),
             menuButtonSize,
             "Play",
             [this]() {
@@ -23,7 +20,7 @@ Menu::Menu(sf::RenderWindow *window) :
     );
 
     workshopButton_ = std::make_shared<Button>(
-            sf::Vector2f(400, 300),
+            sf::Vector2f(windowWidth / 2, windowHeight * 2 / 4),
             menuButtonSize,
             "Workshop",
             [this]() {
@@ -32,7 +29,7 @@ Menu::Menu(sf::RenderWindow *window) :
     );
 
     quitButton_ = std::make_shared<Button>(
-            sf::Vector2f(400, 450),
+            sf::Vector2f(windowWidth / 2, windowHeight * 3 / 4),
             menuButtonSize,
             "Quit",
             [this]() {
