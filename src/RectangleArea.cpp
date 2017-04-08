@@ -6,7 +6,7 @@
 #include <MathUtil.h>
 #include <RectangleParams.h>
 
-RectangleArea::RectangleArea(b2World* world, const struct RectangleParams
+RectangleArea::RectangleArea(b2World *world, const struct RectangleParams
 &params) : world_(world) {
     CreateB2Rectangle(params.b2Pos, params.b2Size, params.b2Angle);
     CreateSFMLRectangle(params.sfmlPos, params.sfmlSize, params.sfmlAngle);
@@ -18,12 +18,12 @@ void RectangleArea::Draw(sf::RenderWindow *window) const {
     window->draw(rectangleShape_);
 }
 
-void RectangleArea::SetCollisionUserData(Entity* entity) {
+void RectangleArea::SetCollisionUserData(Entity *entity) {
     body_->SetUserData(entity);
 }
 
 void RectangleArea::CreateB2Rectangle(const b2Vec2 &position, const
-b2Vec2 & size, float angle) {
+b2Vec2 &size, float angle) {
     b2BodyDef bodyDef;
     body_ = world_->CreateBody(&bodyDef);
     b2FixtureDef fixtureDef;

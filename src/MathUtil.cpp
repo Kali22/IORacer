@@ -12,5 +12,3 @@ float MathUtil::DegreeToRadian(float angle) {
 float MathUtil::RadianToDegree(float angle) {
     return angle * 180 / b2_pi;
 }
-
-

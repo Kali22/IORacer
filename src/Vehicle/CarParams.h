@@ -30,4 +30,4 @@ public:
     float steeringSpeed;
 };
 
-using CarParametersPtr = CarParameters*;
+using CarParametersPtr = CarParameters *;

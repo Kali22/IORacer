@@ -14,7 +14,7 @@
 /** Return true if one of Entitys is car.
  *  If one of entities is car replace pointer so that first one is a car.
  */
-bool ContactListener::CheckIfCar(Entity** entity1, Entity** entity2) {
+bool ContactListener::CheckIfCar(Entity **entity1, Entity **entity2) {
     if ((*entity2)->GetEntityType() == CAR) {
         std::swap(*entity1, *entity2);
         return true;
@@ -25,8 +25,8 @@ bool ContactListener::CheckIfCar(Entity** entity1, Entity** entity2) {
     return false;
 }
 
-void ContactListener::BeginContact(b2Contact* contact) {
-    CheckPoint* checkPoint;
+void ContactListener::BeginContact(b2Contact *contact) {
+    CheckPoint *checkPoint;
     if (!GetCheckPointFromContact(contact, &checkPoint)) {
         return;
     }
@@ -37,24 +37,23 @@ ContactListener::ContactListener() {}
 
 ContactListener::~ContactListener() {}
 
-void ContactListener::EndContact(b2Contact* contact) {
-}
+void ContactListener::EndContact(b2Contact *contact) {}
 
 /**
  * if which is 0 check for A body, otherwise for B body
  */
-bool ContactListener::GetUserData(b2Contact* contact, Entity** entity, int
+bool ContactListener::GetUserData(b2Contact *contact, Entity **entity, int
 which) {
-    b2Fixture* fixture = (!which ? contact->GetFixtureA() :
+    b2Fixture *fixture = (!which ? contact->GetFixtureA() :
                           contact->GetFixtureB());
     if (!fixture) {
         return false;
     }
-    b2Body* body = fixture->GetBody();
+    b2Body *body = fixture->GetBody();
     if (!body) {
         return false;
     }
-    *entity = (Entity*)body->GetUserData();
+    *entity = (Entity *) body->GetUserData();
     if (!(*entity)) {
         return false;
     }
@@ -65,9 +64,9 @@ which) {
  *  pointer to checkPoint from collision. Otherwise return false.
  */
 bool ContactListener::GetCheckPointFromContact(
-        b2Contact* contact, CheckPoint** checkPoint) {
-    Entity* entityA;
-    Entity* entityB;
+        b2Contact *contact, CheckPoint **checkPoint) {
+    Entity *entityA;
+    Entity *entityB;
     if (!GetUserData(contact, &entityA, 0) ||
         !GetUserData(contact, &entityB, 1)) {
         return false;
@@ -78,7 +77,7 @@ bool ContactListener::GetCheckPointFromContact(
     if (entityB->GetEntityType() != CHECK_POINT) {
         return false;
     }
-    *checkPoint = static_cast<CheckPoint*>(entityB);
+    *checkPoint = static_cast<CheckPoint *>(entityB);
     return true;
 }
 
