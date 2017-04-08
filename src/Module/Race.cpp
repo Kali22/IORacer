@@ -98,7 +98,6 @@ int Race::run() {
         hud_->Draw(window_);
         window_->display();
     }
-    // delete car from world
     return 0;
 }
 

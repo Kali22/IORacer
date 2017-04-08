@@ -6,7 +6,6 @@
 
 #include <Race.h>
 #include <Module/Menu.h>
-#include <CheckPoint/CheckPointParser.h>
 
 /**
  * Main. Entry point.
@@ -18,6 +17,7 @@ int main(int argc, char **argv) {
     /* Prepare the window */
     sf::RenderWindow window(sf::VideoMode(1200, 800, 32), "IORacer");
     window.setFramerateLimit(60);
+    float scale = 30;
     b2World* world = new b2World(b2Vec2(0, 0));
     Map* map = new Map(world);
     map->LoadMap("map_0", "Mapa testowa");
@@ -35,9 +35,9 @@ int main(int argc, char **argv) {
     Race* race = new Race(&window, world, map, hud, checkPointManager);
 
     CarParameters* carParameters = new CarParameters();
-    Vehicle* vehicle = new Vehicle(carParameters);
+    Vehicle* vehicle = new Vehicle(carParameters, scale);
     race->Initialize(vehicle);
-    MenuPtr menu = std::make_shared<Menu>(&window, race);
+    MenuPtr menu = std::make_shared<Menu>(&window, race, scale);
     menu->run();
     return 0;
 }

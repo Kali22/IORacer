@@ -24,18 +24,18 @@ public:
     b2Body *body;
     float maxLateralImpulse;
 
-    Tire(b2World *world);
+    Tire(b2World *world, float scale);
 
     ~Tire();
 
     b2Vec2 getLateralVelocity();
-
     b2Vec2 getForwardVelocity();
-
     void updateFriction(float mod, CarParameters &params);
 
 
     void Render(sf::RenderWindow &window);
-
     void UpdateDrive(int state, float mod, CarParameters &params);
 };
+
+
+#endif //Tire

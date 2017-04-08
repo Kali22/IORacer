@@ -18,7 +18,7 @@
 
 class Vehicle : public Entity {
 public:
-    Vehicle(CarParameters* params);
+    Vehicle(CarParameters *params, float scale);
 
     ~Vehicle();
 
@@ -45,10 +45,10 @@ public:
     void Initialize(b2World *world, int x, int y);
 
     CarParameters *getCarParameters();
-
 private:
+    float scale_;
     b2Body *body;
-    std::vector<Tire *> tires;
+    std::vector<TirePtr> tires;
     b2RevoluteJoint *fl_joint, *fr_joint; // Front joints
     b2RevoluteJoint *bl_joint, *br_joint; // Back joints
 
@@ -63,6 +63,7 @@ private:
 
     void updateTurn(int controlState);
 
+    void createTire(b2World *world, b2RevoluteJoint **fl_joint, b2RevoluteJointDef &jointDef, float arg1, float arg2);
 };
 
 using VehiclePtr = std::shared_ptr<Vehicle>;

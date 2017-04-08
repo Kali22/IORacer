@@ -26,7 +26,10 @@ private:
     //sf::RenderWindow &window;
     Map* map_;
     b2World* world_;
+    Vehicle* vehicle_;
+    CarParameters carParameters_;
     HUD* hud_;
+    ContactListener contactListener_;
     CheckPointManager *checkPointManager_;
     Vehicle* vehicle_;
 

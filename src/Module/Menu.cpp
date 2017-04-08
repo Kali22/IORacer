@@ -10,11 +10,10 @@
 #include <CarParams.h>
 
 Menu::Menu(sf::RenderWindow *window, Race* race) :
-        Module(window), race_(race), workshop_(std::make_shared<Workshop>
-                                                    (window_, race_)) {
+        Module(window), race_(race), workshop_(std::make_shared<Workshop>(window_, race_)) {
+    int windowWidth = window->getSize().x, windowHeight = window->getSize().y;
 
     sf::Vector2f menuButtonSize = sf::Vector2f(300, 80);
-    int windowWidth = window->getSize().x, windowHeight = window->getSize().y;
     // set buttons
     playButton_ = std::make_shared<Button>(
             sf::Vector2f(windowWidth / 2, windowHeight * 1 / 4),

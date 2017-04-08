@@ -16,15 +16,15 @@ int Vehicle::GetEntityType() const {
     return CAR;
 }
 
-Vehicle::Vehicle(CarParameters* params) : carParameters_(params) {}
+Vehicle::Vehicle(CarParameters &params, float scale) : carParameters(params), scale_(scale) {}
 
 Vehicle::~Vehicle() {
     body->GetWorld()->DestroyJoint(fl_joint);
     body->GetWorld()->DestroyJoint(fr_joint);
     body->GetWorld()->DestroyJoint(bl_joint);
     body->GetWorld()->DestroyJoint(br_joint);
-    for (int i = 0; i < tires.size(); ++i)
-        delete tires[i];
+    //for (int i = 0; i < tires.size(); ++i)
+    //    tires[i].reset(); //tires[i]->~Tire();
     body->GetWorld()->DestroyBody(body);
 }
 
@@ -33,10 +33,9 @@ void Vehicle::Render(sf::RenderWindow &window) {
                                SCALE * body->GetPosition().y);
     sprite_chassis.setRotation(body->GetAngle() * 180.f / b2_pi);
     window.draw(sprite_chassis);
-    tires[0]->Render(window);
-    tires[1]->Render(window);
-    tires[2]->Render(window);
-    tires[3]->Render(window);
+    for (int i = 0; i < 4; i++) {
+        tires[i]->Render(window);
+    }
 }
 
 const sf::Vector2f &Vehicle::GetPosition() const {
@@ -49,10 +48,20 @@ void Vehicle::Update(int state, Map &map) {
     updateTurn(state);
 }
 
+void Vehicle::createTire(
+        b2World *world, b2RevoluteJoint **jointPtr, b2RevoluteJointDef &jointDef, float arg1, float arg2) {
+    TirePtr tire = std::make_shared<Tire>(world, scale_);
+    jointDef.bodyB = tire->body;
+    jointDef.referenceAngle = 0;
+    jointDef.localAnchorA.Set(arg1 / scale_, arg2 / scale_);
+    *jointPtr = (b2RevoluteJoint *) world->CreateJoint(&jointDef);
+    tires.push_back(tire);
+}
+
 void Vehicle::Initialize(b2World *world, int x, int y) {
     //create car body
     b2BodyDef bodyDef;
-    bodyDef.position = b2Vec2(x / SCALE, y / SCALE);
+    bodyDef.position = b2Vec2(x / scale_, y / scale_);
     bodyDef.angle = 0;
     bodyDef.type = b2_dynamicBody;
     body = world->CreateBody(&bodyDef);
@@ -60,7 +69,7 @@ void Vehicle::Initialize(b2World *world, int x, int y) {
 
 
     b2PolygonShape Shape;
-    Shape.SetAsBox((16.f / 2) / SCALE, (48.f / 2) / SCALE);
+    Shape.SetAsBox((16.f / 2) / scale_, (48.f / 2) / scale_);
     b2FixtureDef FixtureDef;
     FixtureDef.density = 4.f;
     FixtureDef.friction = 1.7f;
@@ -78,36 +87,14 @@ void Vehicle::Initialize(b2World *world, int x, int y) {
     jointDef.upperAngle = 0;//...the joint will not move
     jointDef.localAnchorB.SetZero();//joint anchor in tire is always center
 
-    Tire *tire = new Tire(world);
-    jointDef.bodyB = tire->body;
-    jointDef.referenceAngle = 0;
-    jointDef.localAnchorA.Set(-17.f / SCALE, 18.f / SCALE);
-    fl_joint = (b2RevoluteJoint *) world->CreateJoint(&jointDef);
-    tires.push_back(tire);
-
+    // FRONT LEFT
+    createTire(world, &fl_joint, jointDef, -17.f, 18.f);
     // FRONT RIGHT
-    tire = new Tire(world);
-    jointDef.bodyB = tire->body;
-    jointDef.referenceAngle = 0;
-    jointDef.localAnchorA.Set(17.f / SCALE, 18.f / SCALE);
-    fr_joint = (b2RevoluteJoint *) world->CreateJoint(&jointDef);
-    tires.push_back(tire);
-
+    createTire(world, &fr_joint, jointDef, 17.f, 18.f);
     // BACK RIGHT
-    tire = new Tire(world);
-    jointDef.bodyB = tire->body;
-    jointDef.referenceAngle = 0;
-    jointDef.localAnchorA.Set(17.f / SCALE, -17.f / SCALE);
-    br_joint = (b2RevoluteJoint *) world->CreateJoint(&jointDef);
-    tires.push_back(tire);
-
+    createTire(world, &bl_joint, jointDef, 17.f, -17.f);
     // BACK LEFT
-    tire = new Tire(world);
-    jointDef.bodyB = tire->body;
-    jointDef.referenceAngle = 0;
-    jointDef.localAnchorA.Set(-17.f / SCALE, -17.f / SCALE);
-    bl_joint = (b2RevoluteJoint *) world->CreateJoint(&jointDef);
-    tires.push_back(tire);
+    createTire(world, &br_joint, jointDef, -17.f, -17.f);
 
     texture_chassis.loadFromFile("../resource/car.png");
     sprite_chassis.setTexture(texture_chassis);
