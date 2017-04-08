@@ -10,15 +10,16 @@
 
 class CheckPointParser {
 public:
-    CheckPointParser(b2World* world, float scale);
+    CheckPointParser(b2World *world, float scale);
 
-    std::vector<CheckPoint*> ParseFile(const std::string& file);
+    std::vector<CheckPointPtr> ParseFile(const std::string &file);
+
 private:
-    void ParseCheckPoint(struct RectangleParams* params);
+    void ParseCheckPoint(struct RectangleParams *params);
 
     b2Vec2 b2Size_;
     sf::Vector2f sfmlSize_;
-    b2World* world_;
+    b2World *world_;
     float scale_;
     std::ifstream input_;
 };

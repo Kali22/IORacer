@@ -5,12 +5,11 @@
 #include <cassert>
 #include <CheckPoint.h>
 #include <CheckPointManager.h>
-#include <SFML/System/Clock.hpp>
 
-CheckPointManager::CheckPointManager(std::vector<CheckPoint*> checkPoints)
-        :checkPoints_(checkPoints), finishedLap_(0), currentCheckPoint_(0) {
+CheckPointManager::CheckPointManager(std::vector<CheckPointPtr> checkPoints)
+        : checkPoints_(checkPoints), finishedLap_(0), currentCheckPoint_(0) {
     assert(!checkPoints.empty());
-    for (auto *checkPoint : checkPoints) {
+    for (auto checkPoint : checkPoints) {
         checkPoint->SetObserver(this);
     }
 }
@@ -39,12 +38,12 @@ void CheckPointManager::NotifyCheckPointReached() {
     GetCurrentCheckPoint()->SetEnable(true);
 }
 
-void CheckPointManager::Draw(sf::RenderWindow* window) const {
-    auto* checkPoint = GetCurrentCheckPoint();
+void CheckPointManager::Draw(sf::RenderWindow *window) const {
+    auto checkPoint = GetCurrentCheckPoint();
     checkPoint->Draw(window);
 }
 
-CheckPoint* CheckPointManager::GetCurrentCheckPoint() const {
+CheckPointPtr CheckPointManager::GetCurrentCheckPoint() const {
     return checkPoints_[currentCheckPoint_];
 }
 

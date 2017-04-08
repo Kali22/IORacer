@@ -12,13 +12,13 @@
 
 class HUD : public Drawable {
 public:
-    HUD(Vehicle *car, Map *map);
+    HUD(VehiclePtr car, MapPtr map);
 
     ~HUD();
 
     void Draw(sf::RenderWindow *window) const;
 
-    void Initialize(Vehicle* vehicle);
+    void Initialize(VehiclePtr vehicle);
 
     void Update();
 
@@ -26,7 +26,8 @@ private:
     Text sfmlData_;
     Text boxData_;
 
-    Vehicle *vehicle_;
-    Map *map_;
+    VehiclePtr vehicle_;
+    MapPtr map_;
 };
 
+using HUDPtr = std::shared_ptr<HUD>;

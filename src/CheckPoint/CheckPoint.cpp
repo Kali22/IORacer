@@ -1,13 +1,8 @@
-#include <iostream>
 
-#include <Box2D.h>
+
 #include <CheckPoint.h>
-#include <Vehicle.h>
-#include <SFML/Graphics/View.hpp>
-#include <Entity.h>
-#include <Area.h>
 
-CheckPoint::CheckPoint(Area* area) : area_(area) {
+CheckPoint::CheckPoint(Area *area) : area_(area) {
     area_->SetCollisionUserData(this);
 }
 
@@ -17,7 +12,7 @@ int CheckPoint::GetEntityType() const {
     return CHECK_POINT;
 }
 
-void CheckPoint::SetObserver(CheckPointObserver* observer) {
+void CheckPoint::SetObserver(CheckPointObserver *observer) {
     observer_ = observer;
 }
 
@@ -44,7 +39,6 @@ void CheckPoint::BeginContact() {
     }
 }
 
-void CheckPoint::EndContact() {
-}
+void CheckPoint::EndContact() {}
 
 

@@ -4,12 +4,7 @@
 
 #include "Menu.h"
 
-#include <SFML/Window.hpp>
-#include <SFML/Graphics.hpp>
-#include <bits/stdc++.h>
-#include <CarParams.h>
-
-Menu::Menu(sf::RenderWindow *window, Race* race) :
+Menu::Menu(sf::RenderWindow *window, RacePtr race) :
         Module(window), race_(race), workshop_(std::make_shared<Workshop>(window_, race_)) {
     int windowWidth = window->getSize().x, windowHeight = window->getSize().y;
 

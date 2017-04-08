@@ -14,14 +14,14 @@ public:
         activeTireModifier = 1.0f;
         baseTireFriction = 1.0f;
         maxBackwardSpeed = -20.f;
-        maxForwardSpeed = 60.f;
-        maxEnginePower = 30.f;
+        maxForwardSpeed = 30.f;
+        maxEnginePower = 10.f;
         maxSteeringAngle = 20.f;
         steeringSpeed = 120.0;
     }
 
     /*-------- Driving power modifiers ---------*/
-    /// Maximum speed foreward
+    /// Maximum speed forward
     float maxForwardSpeed;
     /// Maximum speed backward
     float maxBackwardSpeed;
@@ -41,4 +41,4 @@ public:
     float steeringSpeed;
 };
 
-using CarParametersPtr = CarParameters *;
+using CarParametersPtr = std::shared_ptr<CarParameters>;

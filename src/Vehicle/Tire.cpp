@@ -76,10 +76,10 @@ void Tire::UpdateDrive(int state, float mod, CarParameters &params) {
     float desiredSpeed = 0;
     switch (state & (UP | DOWN)) {
         case UP:
-            desiredSpeed = 30;
+            desiredSpeed = 30;//params.maxForwardSpeed;
             break;
         case DOWN:
-            desiredSpeed = -20;
+            desiredSpeed = -20;//params.maxBackwardSpeed;
             break;
         default:
             return;//do nothing
@@ -92,9 +92,9 @@ void Tire::UpdateDrive(int state, float mod, CarParameters &params) {
     //apply necessary force
     float force = 0;
     if (desiredSpeed > currentSpeed)
-        force = 10;
+        force = 10;//params.maxEnginePower;
     else if (desiredSpeed < currentSpeed)
-        force = -10;
+        force = -10;//params.maxEnginePower;
     else
         return;
     body->ApplyForce(force * currentForwardNormal, body->GetWorldCenter(), true);

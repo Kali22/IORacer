@@ -4,17 +4,15 @@
 
 #include <RectangleArea.h>
 #include <CheckPointParser.h>
-#include <CheckPoint.h>
-#include <RectangleParams.h>
 #include <MathUtil.h>
 
-CheckPointParser::CheckPointParser(b2World* world, float scale)
+CheckPointParser::CheckPointParser(b2World *world, float scale)
         : world_(world), scale_(scale) {
 }
 
-std::vector<CheckPoint*> CheckPointParser::ParseFile(const std::string& file) {
+std::vector<CheckPointPtr> CheckPointParser::ParseFile(const std::string &file) {
     input_.open(file);
-    std::vector<CheckPoint*> res;
+    std::vector<CheckPointPtr> res;
     std::string paramName;
     float val1, val2;
 
@@ -28,8 +26,7 @@ std::vector<CheckPoint*> CheckPointParser::ParseFile(const std::string& file) {
     while (input_ >> paramName >> val1) {
         struct RectangleParams params;
         ParseCheckPoint(&params);
-        CheckPoint* checkPoint =
-                new CheckPoint(new RectangleArea(world_, params));
+        CheckPointPtr checkPoint = std::make_shared<CheckPoint>(new RectangleArea(world_, params));
         res.push_back(checkPoint);
     }
 
@@ -37,7 +34,7 @@ std::vector<CheckPoint*> CheckPointParser::ParseFile(const std::string& file) {
     return res;
 }
 
-void CheckPointParser::ParseCheckPoint(struct RectangleParams* params) {
+void CheckPointParser::ParseCheckPoint(struct RectangleParams *params) {
     std::string paramName;
     float val1, val2;
 

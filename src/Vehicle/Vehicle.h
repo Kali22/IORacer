@@ -18,7 +18,7 @@
 
 class Vehicle : public Entity {
 public:
-    Vehicle(CarParameters *params, float scale);
+    Vehicle(CarParametersPtr params, float scale);
 
     ~Vehicle();
 
@@ -44,7 +44,7 @@ public:
 
     void Initialize(b2World *world, int x, int y);
 
-    CarParameters *getCarParameters();
+    CarParametersPtr getCarParameters();
 
     void Reset(int x, int y);
 private:
@@ -57,7 +57,7 @@ private:
     sf::Texture texture_chassis;
     sf::Sprite sprite_chassis;
 
-    CarParameters* carParameters_;
+    CarParametersPtr carParameters_;
 
     void updateFriction(Map &map);
 

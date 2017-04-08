@@ -4,7 +4,6 @@
 
 #include <Race.h>
 
-#include <CheckPointParser.h>
 #include <Vehicle/CarControlE.h>
 
 void setclr(int *reg, int mask, int type) {
@@ -45,7 +44,7 @@ void Race::Reset() {
     map_->SetCameraViewPosition(vehicle_->GetPosition());
 }
 
-void Race::Initialize(Vehicle *vehicle) {
+void Race::Initialize(VehiclePtr vehicle) {
     sf::Vector2f pos = map_->GetStartPosition();
     vehicle_ = vehicle;
     // Prepare map
@@ -108,6 +107,6 @@ int Race::run() {
     return 0;
 }
 
-Vehicle *Race::getVehicle() {
+VehiclePtr Race::getVehicle() {
     return vehicle_;
 }

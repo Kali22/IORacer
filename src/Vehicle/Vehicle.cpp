@@ -10,14 +10,11 @@
 #include <Vehicle.h>
 #include <CarControlE.h>
 
-#define SCALE 30.f
-
 int Vehicle::GetEntityType() const {
     return CAR;
 }
 
-Vehicle::Vehicle(CarParameters* params, float scale) : carParameters_(params),
-                                                      scale_(scale) {}
+Vehicle::Vehicle(CarParametersPtr params, float scale) : carParameters_(params), scale_(scale) {}
 
 Vehicle::~Vehicle() {
     body->GetWorld()->DestroyJoint(fl_joint);
@@ -30,8 +27,8 @@ Vehicle::~Vehicle() {
 }
 
 void Vehicle::Render(sf::RenderWindow &window) {
-    sprite_chassis.setPosition(SCALE * body->GetPosition().x,
-                               SCALE * body->GetPosition().y);
+    sprite_chassis.setPosition(scale_ * body->GetPosition().x,
+                               scale_ * body->GetPosition().y);
     sprite_chassis.setRotation(body->GetAngle() * 180.f / b2_pi);
     window.draw(sprite_chassis);
     for (int i = 0; i < 4; i++) {
@@ -175,9 +172,8 @@ float Vehicle::GetTireModifier(int i, Map &map) {
 void Vehicle::PrintPos() {
     std::cout << "Car " << body->GetPosition().x << " "
               << body->GetPosition().y << std::endl;
-
 }
 
-CarParameters *Vehicle::getCarParameters() {
+CarParametersPtr Vehicle::getCarParameters() {
     return carParameters_;
 }
