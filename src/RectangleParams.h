@@ -11,5 +11,3 @@ struct RectangleParams {
     sf::Vector2f sfmlSize;
     float sfmlAngle;
 };
-
-

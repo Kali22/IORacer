@@ -42,23 +42,24 @@ public:
     void RenderBottomLayer(sf::RenderWindow &window);
 
     sf::Vector2f GetStartPosition();
+
 private:
     float scale_;
     sf::Vector2f startPosition_;
-    unsigned int max_size;
-    std::string name;
-    std::string full_name;
-    sf::Texture map_view;   //!< Visual part, in GPU memory
-    sf::Image image_view;   //!< Visual part, in CPU memory
-    sf::Texture map_friction; //!< Friction modulator map, in GPU memory
-    sf::Image image_friction;   //!< Friction modulator map, in CPU memory
-    sf::Sprite sprite_map;
-    sf::Sprite sprite_friction;
+    unsigned int max_size_;
+    std::string name_;
+    std::string full_name_;
+    sf::Texture map_view_;   //!< Visual part, in GPU memory
+    sf::Image image_view_;   //!< Visual part, in CPU memory
+    sf::Texture map_friction_; //!< Friction modulator map, in GPU memory
+    sf::Image image_friction_;   //!< Friction modulator map, in CPU memory
+    sf::Sprite sprite_map_;
+    sf::Sprite sprite_friction_;
 
-    sf::View camera;
-    sf::View minimap;
+    sf::View camera_;
+    sf::View minimap_;
 
     b2World *world_;
-    b2Body *bands[4]; //!< Outside bands
-    sf::Sprite bands_sprite[4];
+    b2Body *bands_[4]; //!< Outside bands
+    sf::Sprite bands_sprite_[4];
 };
