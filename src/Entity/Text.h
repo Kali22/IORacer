@@ -4,7 +4,8 @@
 
 class Text : public Drawable {
 public:
-    Text(std::string text, std::string fontPath, sf::Vector2f position);
+    Text(std::string text, std::string fontPath, sf::Vector2f position, float
+    size);
 
     void Draw(sf::RenderWindow *window) const;
 

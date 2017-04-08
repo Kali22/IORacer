@@ -4,12 +4,13 @@ std::map<std::string, std::string> font{
         std::make_pair("impact", "/usr/share/fonts/truetype/msttcorefonts/impact.ttf")
 };
 
-Text::Text(std::string text, std::string fontName, sf::Vector2f position) {
+Text::Text(std::string text, std::string fontName, sf::Vector2f position,
+           float size) {
     if (!sfFont_.loadFromFile(font[fontName])) {
         throw std::runtime_error("Font loading failed");
     }
     sfText_.setFont(sfFont_);
-    sfText_.setCharacterSize(50);
+    sfText_.setCharacterSize(size);
     sfText_.setString(text);
     sfText_.setColor(sf::Color::White);
     // centering string

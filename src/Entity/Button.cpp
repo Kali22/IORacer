@@ -11,7 +11,7 @@ bool Button::hovered(sf::Vector2f mousePosition) {
 Button::Button(sf::Vector2f pos, sf::Vector2f size, std::string txt, std::function<void()> action) :
         background_(size),
         position_(pos),
-        text_(txt, "impact", pos),
+        text_(txt, "impact", pos, 50),
         action_(action) {
     background_.setPosition(pos - size / 2.0f);
     background_.setFillColor(sf::Color(128, 128, 128)); // Grey

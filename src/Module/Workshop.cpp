@@ -7,12 +7,13 @@ void Workshop::addButton(const sf::Vector2f &position,
     registerButton(std::make_shared<RedirectButton>(position, button_size, text, func));
 }*/
 
-Workshop::Workshop(sf::RenderWindow *window, RacePtr race) : 
+Workshop::Workshop(sf::RenderWindow *window, RacePtr race) :
         Module(window), race_(race), carParams_(race_->getVehicle()->getCarParameters()) {
 
     const sf::Vector2f gameButtonSize = sf::Vector2f(400, 80);
     const sf::Vector2f statsButtonSize = sf::Vector2f(50, 50);
     const sf::Vector2f textFieldSize = sf::Vector2f(200, 60);
+    const float textSize = 50;
 
     returnButton_ = std::make_shared<Button>(
             sf::Vector2f(400, 520),
@@ -28,7 +29,7 @@ Workshop::Workshop(sf::RenderWindow *window, RacePtr race) :
     std::string minus = "-";
     maxSpeedText_ = std::make_shared<Text>(
             std::to_string((int) carParams_->maxForwardSpeed), "impact",
-            sf::Vector2f(400, 100));
+            sf::Vector2f(400, 100), textSize);
     objects_.push_back(maxSpeedText_);
 
     minusMaxSpeed_ = std::make_shared<Button>(
@@ -55,7 +56,7 @@ Workshop::Workshop(sf::RenderWindow *window, RacePtr race) :
 
     accelerationText_ = std::make_shared<Text>(
             std::to_string((int) carParams_->maxEnginePower), "impact",
-            sf::Vector2f(400, 200));
+            sf::Vector2f(400, 200), textSize);
     objects_.push_back(accelerationText_);
 
     minusMaxSpeed_ = std::make_shared<Button>(

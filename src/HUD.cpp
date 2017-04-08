@@ -9,10 +9,11 @@
 #include <Text.h>
 #include <sstream>
 
-HUD::HUD(Vehicle* vehicle, Map* map) : vehicle_(vehicle),
-                                       sfmlData_("x","impact",sf::Vector2f(50,50)),
-                                       boxData_("y","impact",sf::Vector2f(50,300)),
-                                       map_(map)
+HUD::HUD(Vehicle* vehicle, Map* map)
+        : vehicle_(vehicle),
+          sfmlData_("x","impact",sf::Vector2f(50,50), 20),
+          boxData_("y","impact",sf::Vector2f(50,300), 20),
+          map_(map)
 {
 }
 
