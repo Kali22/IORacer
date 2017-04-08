@@ -12,7 +12,7 @@
 
 #define SCALE 30.f
 
-int Vehicle::GetEntityType() {
+int Vehicle::GetEntityType() const {
     return CAR;
 }
 
@@ -141,7 +141,7 @@ void Vehicle::updateTurn(int controlState) {
             break;
         default:;//nothing
     }
-    desiredAngle *= (1.f - abs(GetSpeed()) / carParameters.maxForwardSpeed_);
+    desiredAngle *= (1.f - abs(GetSpeed()) / carParameters.maxForwardSpeed);
     float angleNow = fl_joint->GetJointAngle();
     float angleToTurn = desiredAngle - angleNow;
     angleToTurn = b2Clamp(angleToTurn, -turnPerTimeStep, turnPerTimeStep);

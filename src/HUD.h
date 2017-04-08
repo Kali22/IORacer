@@ -1,3 +1,4 @@
+#pragma once
 /**
  *  @file
  *  @ingroup xxx
@@ -5,27 +6,22 @@
  *  @date 4/5/17
  */
 
-#ifndef _HUD_H_
-#define _HUD_H_
-
-
 #include <Drawable.h>
 #include <Vehicle.h>
-#include <Entity/Text.h>
+#include <Text.h>
 
 class HUD : public Drawable{
-private:
-    Text sfmlData;
-    Text boxData;
-
-    Vehicle &vehicle;
-    Map &map;
-
 public:
-    HUD(Vehicle &car, Map &map);
+    HUD(Vehicle* car, Map* map);
     ~HUD();
-    void draw(sf::RenderWindow *window);
+    void Draw(sf::RenderWindow *window) const;
+
+    void Update();
+private:
+    Text sfmlData_;
+    Text boxData_;
+
+    Vehicle* vehicle_;
+    Map* map_;
 };
 
-
-#endif //HUD

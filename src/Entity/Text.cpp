@@ -20,10 +20,10 @@ Text::Text(std::string text, std::string fontName, sf::Vector2f position) {
     sfText_.setPosition(center);
 }
 
-void Text::draw(sf::RenderWindow *window) {
+void Text::Draw(sf::RenderWindow *window) const {
     window->draw(sfText_);
 }
 
-void Text::setText(std::string txt) {
+void Text::SetText(std::string txt) {
     sfText_.setString(txt);
 }

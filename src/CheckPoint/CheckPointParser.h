@@ -8,14 +8,11 @@
 #include <SFML/Graphics.hpp>
 #include <CheckPoint.h>
 
-
-
 class CheckPointParser {
 public:
     CheckPointParser(b2World* world, float scale);
 
     std::vector<CheckPoint*> ParseFile(const std::string& file);
-
 private:
     void ParseCheckPoint(struct RectangleParams* params);
 
@@ -23,6 +20,6 @@ private:
     sf::Vector2f sfmlSize_;
     b2World* world_;
     float scale_;
-
     std::ifstream input_;
 };
+

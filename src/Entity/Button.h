@@ -13,7 +13,7 @@ public:
 
     void onClick();
 
-    void draw(sf::RenderWindow *window);
+    void Draw(sf::RenderWindow *window) const;
 
 protected:
     sf::RectangleShape background_;

@@ -5,36 +5,29 @@
 
 #include <Box2D.h>
 #include <SFML/Graphics/View.hpp>
-#include <Car.h.depr>
 #include <CheckPointObserver.h>
 #include <RectangleArea.h>
 #include <RectangleParams.h>
+#include <Area.h>
 
 class CheckPoint : public Entity {
 public:
-    virtual int GetEntityType();
+    CheckPoint(Area* area);
+    ~CheckPoint();
+
+    void Draw(sf::RenderWindow* window) const;
+    virtual int GetEntityType() const;
 
     void Enable();
-
-    bool IsEnabled();
+    bool IsEnabled() const;
 
     void SetObserver(CheckPointObserver* observer);
 
-    void Draw(sf::Window* window);
-
-    CheckPoint(b2World* world, const struct RectangleParams& params);
-
-    ~CheckPoint();
-
     void BeginContact();
-
     void EndContact();
-
-    void Draw(sf::RenderWindow* window);
 private:
-    RectangleArea rectangleArea_;
+    Area* area_;
     CheckPointObserver* observer_;
-    b2World* world_;
     bool isActive_;
 };
 

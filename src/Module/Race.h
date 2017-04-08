@@ -12,7 +12,7 @@
 class Race : public Module {
 public:
     Race(sf::RenderWindow *win) :
-            Module(win), world(b2Vec2(0.f, 0.f)), map(&world), vehicle(carParameters), hud(vehicle, map) {
+            Module(win) {
         // Initialize game
         Initialize();
     };
@@ -23,12 +23,12 @@ public:
 
 private:
     //sf::RenderWindow &window;
-    Map map;
-    b2World world;
-    Vehicle vehicle;
-    CarParameters carParameters;
-    HUD hud;
-    ContactListener contactListener;
+    Map* map_;
+    b2World* world_;
+    Vehicle* vehicle_;
+    CarParameters carParameters_;
+    HUD* hud_;
+    ContactListener contactListener_;
     CheckPointManager *checkPointManager_;
 
     void Initialize();

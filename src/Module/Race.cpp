@@ -2,15 +2,10 @@
 // Created by pawel on 30.03.17.
 //
 
-#include "Race.h"
+#include <Race.h>
 
 #include <CheckPointParser.h>
 #include <Vehicle/CarControlE.h>
-
-//#ifndef DEGTORAD
-//#define DEGTORAD 0.0174532925199432957f
-//#define RADTODEG 57.295779513082320876f
-//#endif
 
 void setclr(int *reg, int mask, int type) {
     if (type)
@@ -43,37 +38,38 @@ void HandleKeyboard(sf::Event::KeyEvent Event, int *state, int type) {
 }
 
 void Race::Initialize() {
-    // Prepare map
-    map.LoadMap("map_0", "Mapa testowa");
-    /// TODO add race builder
-    CheckPointParser parser(&world, 30); // scale
-    /// @TODO move checkPointsParser to map Load
-    std::vector<CheckPoint *> checkPoints = parser.ParseFile(
-            "../resource/maps/map_0/checkpoints_list");
-    checkPointManager_ = new CheckPointManager(checkPoints);
-    vehicle.Initialize(&world, 1600, 2200);
+    world_ = new b2World(b2Vec2(0, 0));
+    map_ = new Map(world_);
+    map_->LoadMap("map_0", "Mapa testowa");
 
     // Set initiial car params
-    carParameters.activeTireModifier = 1.0f;
-    carParameters.baseTireFriction = 1.0f;
-    carParameters.maxBackwardSpeed_ = -20.f;
-    carParameters.maxForwardSpeed_ = 60.f;
-    carParameters.maxEnginePower_ = 30.f;
-    carParameters.maxSteeringAngle = 20.f;
-    carParameters.steeringSpeed = 120.0;
+    carParameters_.activeTireModifier = 1.0f;
+    carParameters_.baseTireFriction = 1.0f;
+    carParameters_.maxBackwardSpeed = -20.f;
+    carParameters_.maxForwardSpeed = 60.f;
+    carParameters_.maxEnginePower = 30.f;
+    carParameters_.maxSteeringAngle = 20.f;
+    carParameters_.steeringSpeed = 120.0;
 
+    vehicle_ = new Vehicle(carParameters_);
+    hud_ = new HUD(vehicle_, map_);
+    /// TODO add race builder
+    CheckPointParser parser(world_, 30); // scale
+    /// @TODO move checkPointsParser to map Load
+    std::vector < CheckPoint * > checkPoints = parser.ParseFile(
+            "../resource/maps/map_0/checkpoints_list");
+    checkPointManager_ = new CheckPointManager(checkPoints);
 
-    /// @TODO inject parameter rather than hardcode it
-    //Vehicle.setCharacteristics(40, -10, 50);
+    // Prepare map
+    vehicle_->Initialize(world_, 1600, 2200);
 
-    map.AlignCameraViewSize(*window_);
-    map.SetCameraViewPosition(vehicle.GetPosition());
-    world.SetContactListener(&contactListener);
+    map_->AlignCameraViewSize(*window_);
+    map_->SetCameraViewPosition(vehicle_->GetPosition());
+    world_->SetContactListener(&contactListener_);
     checkPointManager_->StartTimer();
 }
 
 int Race::run() {
-
     int carState = 0;
 
     int cnt = 0;
@@ -95,42 +91,35 @@ int Race::run() {
         }
 
         /* Update states */
-        vehicle.Update(carState, map);
+        vehicle_->Update(carState, *map_);
 
         /* Simulate the world */
-        world.Step(1 / 60.f, 8, 3);
-
+        world_->Step(1 / 60.f, 8, 3);
+        hud_->Update();
         /* Rendering */
-        map.SetCameraViewPosition(vehicle.GetPosition());
+        map_->SetCameraViewPosition(vehicle_->GetPosition());
         window_->clear(sf::Color::White);
-//        float zoom = 0.8f + Vehicle.GetSpeed()/70;
-//        map.SetCameraViewZoom(zoom);
         window_->clear(sf::Color::White);
         if (cnt == 120) {
             printf("Elapsed time: %f\n", checkPointManager_->GetElapsedTime()
                     .asSeconds());
-            vehicle.PrintPos();
+            vehicle_->PrintPos();
             cnt = 0;
         } else {
             cnt++;
         }
-        //checkPoint->DebugPrint();
-        map.RenderBottomLayer(*window_);
-        window_->setView(map.GetCameraView());
-        checkPointManager_->DrawCheckPoints(window_);
-//        map.SetCameraViewZoom(1.f / zoom);
-//        window_->setView(map.GetMinimapView());
-//        window_->draw(map.GetViewMap());
-//        window_->draw(Vehicle.GetSprite());
-        vehicle.Render(*window_);
+        map_->RenderBottomLayer(*window_);
+        window_->setView(map_->GetCameraView());
+        checkPointManager_->Draw(window_);
+        vehicle_->Render(*window_);
         window_->setView(window_->getDefaultView());
 
-        hud.draw(window_);
+        hud_->Draw(window_);
         window_->display();
     }
     return 0;
 }
 
 Vehicle *Race::getVehicle() {
-    return &vehicle;
+    return vehicle_;
 }

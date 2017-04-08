@@ -87,7 +87,7 @@ int Menu::run() {
         // DRAWING
         window_->clear(sf::Color(60, 70, 80));
         for (auto &drawableObject : objects_) {
-            drawableObject->draw(window_);
+            drawableObject->Draw(window_);
         }
         window_->display();
     }

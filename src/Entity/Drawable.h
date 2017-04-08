@@ -6,7 +6,7 @@
 
 class Drawable {
 public:
-    virtual void draw(sf::RenderWindow *window)=0;
+    virtual void Draw(sf::RenderWindow *window) const = 0;
 };
 
 using DrawablePtr = std::shared_ptr<Drawable>;

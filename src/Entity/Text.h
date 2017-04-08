@@ -6,9 +6,9 @@ class Text : public Drawable {
 public:
     Text(std::string text, std::string fontPath, sf::Vector2f position);
 
-    void draw(sf::RenderWindow *window);
+    void Draw(sf::RenderWindow *window) const;
 
-    void setText(std::string txt);
+    void SetText(std::string txt);
 
 private:
     sf::Font sfFont_;

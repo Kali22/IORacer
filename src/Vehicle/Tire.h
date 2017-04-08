@@ -18,7 +18,7 @@
 
 class Tire : public Entity {
 public:
-    virtual int GetEntityType();
+    virtual int GetEntityType() const;
 
     sf::Texture tireTexture;
     sf::Sprite tireSprite;

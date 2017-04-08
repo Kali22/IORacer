@@ -1,16 +1,19 @@
-//
-// Created by pawel on 03.04.17.
-//
-
 #include <iostream>
 
 #include <Box2D.h>
 #include <CheckPoint.h>
-#include <Car.h.depr>
+#include <Vehicle.h>
 #include <SFML/Graphics/View.hpp>
 #include <Entity.h>
+#include <Area.h>
 
-int CheckPoint::GetEntityType() {
+CheckPoint::CheckPoint(Area* area) : area_(area) {
+    area_->SetCollisionUserData(this);
+}
+
+CheckPoint::~CheckPoint() {}
+
+int CheckPoint::GetEntityType() const {
     return CHECK_POINT;
 }
 
@@ -22,18 +25,13 @@ void CheckPoint::Enable() {
     isActive_ = true;
 }
 
-bool CheckPoint::IsEnabled() {
+bool CheckPoint::IsEnabled() const {
     return isActive_;
 }
 
-CheckPoint::CheckPoint(b2World *world,
-                       const struct RectangleParams& params)
-        : world_(world), rectangleArea_(world, params, this) {
-}
-
-void CheckPoint::Draw(sf::RenderWindow *window) {
+void CheckPoint::Draw(sf::RenderWindow *window) const {
     if (isActive_) {
-        rectangleArea_.Draw(window);
+        area_->Draw(window);
     }
 }
 
@@ -44,11 +42,9 @@ void CheckPoint::BeginContact() {
             observer_->NotifyCheckPointReached();
         }
     }
-    std::cout << "Begin contact\n";
 }
 
 void CheckPoint::EndContact() {
 }
 
-CheckPoint::~CheckPoint() {}
 

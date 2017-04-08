@@ -27,7 +27,8 @@ Workshop::Workshop(sf::RenderWindow *window, RacePtr race) :
     std::string plus = "+";
     std::string minus = "-";
     maxSpeedText_ = std::make_shared<Text>(
-            std::to_string((int) carParams_->maxForwardSpeed_), "impact", sf::Vector2f(400, 100));
+            std::to_string((int) carParams_->maxForwardSpeed), "impact",
+            sf::Vector2f(400, 100));
     objects_.push_back(maxSpeedText_);
 
     minusMaxSpeed_ = std::make_shared<Button>(
@@ -35,8 +36,9 @@ Workshop::Workshop(sf::RenderWindow *window, RacePtr race) :
             statsButtonSize,
             minus,
             [this]() {
-                carParams_->maxForwardSpeed_--;
-                maxSpeedText_->setText(std::to_string((int) carParams_->maxForwardSpeed_));
+                carParams_->maxForwardSpeed--;
+                maxSpeedText_->SetText(std::to_string((int)
+                                                              carParams_->maxForwardSpeed));
             });
     registerButton(minusMaxSpeed_);
 
@@ -45,13 +47,15 @@ Workshop::Workshop(sf::RenderWindow *window, RacePtr race) :
             statsButtonSize,
             plus,
             [this]() {
-                carParams_->maxForwardSpeed_++;
-                maxSpeedText_->setText(std::to_string((int) carParams_->maxForwardSpeed_));
+                carParams_->maxForwardSpeed++;
+                maxSpeedText_->SetText(std::to_string((int)
+                                                              carParams_->maxForwardSpeed));
             });
     registerButton(plusMaxSpeed_);
 
     accelerationText_ = std::make_shared<Text>(
-            std::to_string((int) carParams_->maxEnginePower_), "impact", sf::Vector2f(400, 200));
+            std::to_string((int) carParams_->maxEnginePower), "impact",
+            sf::Vector2f(400, 200));
     objects_.push_back(accelerationText_);
 
     minusMaxSpeed_ = std::make_shared<Button>(
@@ -59,8 +63,9 @@ Workshop::Workshop(sf::RenderWindow *window, RacePtr race) :
             statsButtonSize,
             minus,
             [this]() {
-                carParams_->maxEnginePower_--;
-                accelerationText_->setText(std::to_string((int) carParams_->maxEnginePower_));
+                carParams_->maxEnginePower--;
+                accelerationText_->SetText(std::to_string((int)
+                                                                  carParams_->maxEnginePower));
             });
     registerButton(minusMaxSpeed_);
 
@@ -69,8 +74,9 @@ Workshop::Workshop(sf::RenderWindow *window, RacePtr race) :
             statsButtonSize,
             plus,
             [this]() {
-                carParams_->maxEnginePower_++;
-                accelerationText_->setText(std::to_string((int) carParams_->maxEnginePower_));
+                carParams_->maxEnginePower++;
+                accelerationText_->SetText(std::to_string((int)
+                                                                  carParams_->maxEnginePower));
             });
     registerButton(plusMaxSpeed_);
 }
@@ -110,7 +116,7 @@ int Workshop::run() {
         // DRAWING
         window_->clear(sf::Color(60, 70, 80));
         for (auto &drawableObject : objects_) {
-            drawableObject->draw(window_);
+            drawableObject->Draw(window_);
         }
         window_->display();
     }

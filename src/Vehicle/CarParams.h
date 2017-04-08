@@ -11,11 +11,11 @@ class CarParameters {
 public:
     /*-------- Driving power modifiers ---------*/
     /// Maximum speed foreward
-    float maxForwardSpeed_;
+    float maxForwardSpeed;
     /// Maximum speed backward
-    float maxBackwardSpeed_;
+    float maxBackwardSpeed;
     /// Engine power, how fast we accelerate
-    float maxEnginePower_;
+    float maxEnginePower;
 
     /*---------- Friction modifiers ------------*/
     /// Tires base friction

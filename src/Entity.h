@@ -13,5 +13,5 @@ enum entityType {
 
 class Entity {
 public:
-    virtual int GetEntityType() = 0;
+    virtual int GetEntityType() const = 0;
 };
