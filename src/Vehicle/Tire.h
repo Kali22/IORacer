@@ -24,7 +24,7 @@ public:
     b2Body *body;
     float maxLateralImpulse;
 
-    Tire(b2World *world);
+    Tire(b2World *world, float scale);
 
     ~Tire();
 
@@ -39,3 +39,5 @@ public:
 
     void UpdateDrive(int state, float mod, CarParameters &params);
 };
+
+using TirePtr = std::shared_ptr<Tire>;

@@ -11,8 +11,8 @@
 
 class Race : public Module {
 public:
-    Race(sf::RenderWindow *win) :
-            Module(win) {
+    Race(sf::RenderWindow *win, float scale) :
+            Module(win), scale_(scale) {
         // Initialize game
         Initialize();
     };
@@ -23,6 +23,7 @@ public:
 
 private:
     //sf::RenderWindow &window;
+    float scale_;
     Map* map_;
     b2World* world_;
     Vehicle* vehicle_;

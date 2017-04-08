@@ -4,8 +4,8 @@
 
 #include "Menu.h"
 
-Menu::Menu(sf::RenderWindow *window) :
-        Module(window), race_(new Race(window_)), workshop_(std::make_shared<Workshop>(window_, race_)) {
+Menu::Menu(sf::RenderWindow *window, float scale) :
+        Module(window), race_(new Race(window_, scale)), workshop_(std::make_shared<Workshop>(window_, race_)) {
     int windowWidth = window->getSize().x, windowHeight = window->getSize().y;
 
     sf::Vector2f menuButtonSize = sf::Vector2f(300, 80);

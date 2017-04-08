@@ -6,21 +6,17 @@
  */
 
 #include "Map.h"
-#include <cstdio>
 #include <Box2D.h>
 #include <SFML/Window.hpp>
 
-
-#define SCALE 30.f
-
-b2Body *CreateBox(b2World *World, float MouseX, float MouseY, float width, float height) {
+b2Body *CreateBox(b2World *World, float MouseX, float MouseY, float width, float height, float scale) {
     b2BodyDef BodyDef;
-    BodyDef.position = b2Vec2(MouseX / SCALE, MouseY / SCALE);
+    BodyDef.position = b2Vec2(MouseX / scale, MouseY / scale);
     BodyDef.type = b2_staticBody;
     b2Body *Body = World->CreateBody(&BodyDef);
 
     b2PolygonShape Shape;
-    Shape.SetAsBox((width / 2) / SCALE, (height / 2) / SCALE);
+    Shape.SetAsBox((width / 2) / scale, (height / 2) / scale);
     b2FixtureDef FixtureDef;
     FixtureDef.density = 0;
     FixtureDef.shape = &Shape;
@@ -28,8 +24,8 @@ b2Body *CreateBox(b2World *World, float MouseX, float MouseY, float width, float
     return Body;
 }
 
-Map::Map(b2World *world) {
-    this->world = world;
+Map::Map(b2World *world, float scale) : world_(world), scale_(scale) {
+    //this->world = world;
     for (int i = 0; i < 4; ++i)
         bands[i] = NULL;
 }
@@ -69,10 +65,10 @@ void Map::LoadMap(const std::string &name, const std::string &full_name) {
     camera.setSize(1200, 800);
     camera.setViewport(sf::FloatRect(0, 0, 1.f, 1.f));
 
-    bands[0] = CreateBox(world, image_size.x / 2.f, 0, image_size.x + 10.f, 10.f);
-    bands[1] = CreateBox(world, image_size.x / 2.f, image_size.y, image_size.x + 10.f, 10.f);
-    bands[2] = CreateBox(world, 0, image_size.y / 2.f, 10.f, image_size.y + 10.f);
-    bands[3] = CreateBox(world, image_size.x, image_size.y / 2.f, 10.f, image_size.y + 10.f);
+    bands[0] = CreateBox(world_, image_size.x / 2.f, 0, image_size.x + 10.f, 10.f, scale_);
+    bands[1] = CreateBox(world_, image_size.x / 2.f, image_size.y, image_size.x + 10.f, 10.f, scale_);
+    bands[2] = CreateBox(world_, 0, image_size.y / 2.f, 10.f, image_size.y + 10.f, scale_);
+    bands[3] = CreateBox(world_, image_size.x, image_size.y / 2.f, 10.f, image_size.y + 10.f, scale_);
     for (int i = 0; i < 4; ++i) {
         bands_sprite[i].setOrigin(0, 0);
         bands_sprite[i].setTextureRect(sf::IntRect(0, 0, image_size.x, 10));

@@ -7,7 +7,7 @@
 
 class Menu : public Module {
 public:
-    Menu(sf::RenderWindow *window);
+    Menu(sf::RenderWindow *window, float scale);
 
     int run();
 

@@ -17,7 +17,7 @@
 
 class Map {
 public:
-    Map(b2World *world);
+    Map(b2World *world, float scale);
 
     ~Map();
 
@@ -42,6 +42,7 @@ public:
     void RenderBottomLayer(sf::RenderWindow &window);
 
 private:
+    float scale_;
     unsigned int max_size;
     std::string name;
     std::string full_name;
@@ -55,7 +56,7 @@ private:
     sf::View camera;
     sf::View minimap;
 
-    b2World *world;
+    b2World *world_;
     b2Body *bands[4]; //!< Outside bands
     sf::Sprite bands_sprite[4];
 };

@@ -10,7 +10,7 @@ set(${PROJECT_NAME}_VERSION_MAJOR 3)
 set(${PROJECT_NAME}_VERSION_MINOR 0)
 
 # Set C++11 standard
-set(CMAKE_CXX_STANDARD 11)
+set(CMAKE_CXX_STANDARD 14)
 # Define the path of our additional CMake modules
 set(CMAKE_MODULE_PATH "${PROJECT_SOURCE_DIR}/cmake-modules")
 

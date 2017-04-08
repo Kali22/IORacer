@@ -8,9 +8,6 @@
 #include <Tire.h>
 #include <Dynamics/b2World.h>
 #include <Collision/Shapes/b2PolygonShape.h>
-#include <Entity.h>
-
-#define SCALE 30.f
 
 enum tire_control_e {
     LEFT    =   0x01,
@@ -24,14 +21,14 @@ int Tire::GetEntityType() const {
     return TIRE;
 }
 
-Tire::Tire(b2World *world) {
+Tire::Tire(b2World *world, float scale) {
     b2BodyDef bodyDef;
     bodyDef.type = b2_dynamicBody;
     bodyDef.angle = 0;
     body = world->CreateBody(&bodyDef);
 
     b2PolygonShape polygonShape;
-    polygonShape.SetAsBox((6.f / 2.f) / SCALE, (12.f / 2.f) / SCALE);
+    polygonShape.SetAsBox((6.f / 2.f) / scale, (12.f / 2.f) / scale);
     body->CreateFixture(&polygonShape, 2.f);//shape, density
     body->SetUserData(this);
     tireTexture.loadFromFile("../resource/tire.png");

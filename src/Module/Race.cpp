@@ -39,7 +39,7 @@ void HandleKeyboard(sf::Event::KeyEvent Event, int *state, int type) {
 
 void Race::Initialize() {
     world_ = new b2World(b2Vec2(0, 0));
-    map_ = new Map(world_);
+    map_ = new Map(world_, scale_);
     map_->LoadMap("map_0", "Mapa testowa");
 
     // Set initiial car params
@@ -51,7 +51,7 @@ void Race::Initialize() {
     carParameters_.maxSteeringAngle = 20.f;
     carParameters_.steeringSpeed = 120.0;
 
-    vehicle_ = new Vehicle(carParameters_);
+    vehicle_ = new Vehicle(carParameters_, scale_);
     hud_ = new HUD(vehicle_, map_);
     /// TODO add race builder
     CheckPointParser parser(world_, 30); // scale
