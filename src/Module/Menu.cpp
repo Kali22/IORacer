@@ -7,11 +7,14 @@
 #include <SFML/Window.hpp>
 #include <SFML/Graphics.hpp>
 #include <bits/stdc++.h>
+#include <CarParams.h>
 
-Menu::Menu(sf::RenderWindow *window) :
-        Module(window), race_(new Race(window_)), workshop_(std::make_shared<Workshop>(window_, race_)) {
+Menu::Menu(sf::RenderWindow *window, Race* race) :
+        Module(window), race_(race), workshop_(std::make_shared<Workshop>
+                                                    (window_, race_)) {
 
     sf::Vector2f menuButtonSize = sf::Vector2f(300, 80);
+
     // set buttons
     playButton_ = std::make_shared<Button>(
             sf::Vector2f(400, 150),

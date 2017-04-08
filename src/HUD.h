@@ -16,6 +16,8 @@ public:
     ~HUD();
     void Draw(sf::RenderWindow *window) const;
 
+    void Initialize(Vehicle* vehicle);
+
     void Update();
 private:
     Text sfmlData_;

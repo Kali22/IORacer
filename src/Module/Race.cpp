@@ -37,32 +37,12 @@ void HandleKeyboard(sf::Event::KeyEvent Event, int *state, int type) {
     }
 }
 
-void Race::Initialize() {
-    world_ = new b2World(b2Vec2(0, 0));
-    map_ = new Map(world_);
-    map_->LoadMap("map_0", "Mapa testowa");
-
-    // Set initiial car params
-    carParameters_.activeTireModifier = 1.0f;
-    carParameters_.baseTireFriction = 1.0f;
-    carParameters_.maxBackwardSpeed = -20.f;
-    carParameters_.maxForwardSpeed = 60.f;
-    carParameters_.maxEnginePower = 30.f;
-    carParameters_.maxSteeringAngle = 20.f;
-    carParameters_.steeringSpeed = 120.0;
-
-    vehicle_ = new Vehicle(carParameters_);
-    hud_ = new HUD(vehicle_, map_);
-    /// TODO add race builder
-    CheckPointParser parser(world_, 30); // scale
-    /// @TODO move checkPointsParser to map Load
-    std::vector < CheckPoint * > checkPoints = parser.ParseFile(
-            "../resource/maps/map_0/checkpoints_list");
-    checkPointManager_ = new CheckPointManager(checkPoints);
-
+void Race::Initialize(Vehicle *vehicle) {
+    vehicle_ = vehicle;
     // Prepare map
     vehicle_->Initialize(world_, 1600, 2200);
 
+    hud_->Initialize(vehicle_);
     map_->AlignCameraViewSize(*window_);
     map_->SetCameraViewPosition(vehicle_->GetPosition());
     world_->SetContactListener(&contactListener_);

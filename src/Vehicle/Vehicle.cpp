@@ -16,7 +16,7 @@ int Vehicle::GetEntityType() const {
     return CAR;
 }
 
-Vehicle::Vehicle(CarParameters &params) : carParameters(params) {}
+Vehicle::Vehicle(CarParameters* params) : carParameters_(params) {}
 
 Vehicle::~Vehicle() {
     body->GetWorld()->DestroyJoint(fl_joint);
@@ -117,31 +117,31 @@ void Vehicle::Initialize(b2World *world, int x, int y) {
 void Vehicle::updateFriction(Map &map) {
     for (int i = 0; i < 4; i++) {
         float modifier = map.GetFrictionModifier(tires[i]->tireSprite.getPosition());
-        tires[i]->updateFriction(modifier, carParameters);
+        tires[i]->updateFriction(modifier, *carParameters_);
     }
 }
 
 void Vehicle::updateDrive(int controlState, Map &map) {
     for (int i = 0; i < 4; i++) {
         float modifier = map.GetFrictionModifier(tires[i]->tireSprite.getPosition());
-        tires[i]->UpdateDrive(controlState, modifier, carParameters);
+        tires[i]->UpdateDrive(controlState, modifier, *carParameters_);
     }
 }
 
 void Vehicle::updateTurn(int controlState) {
-    float turnSpeedPerSec = carParameters.steeringSpeed * b2_pi / 180.f;
+    float turnSpeedPerSec = carParameters_->steeringSpeed * b2_pi / 180.f;
     float turnPerTimeStep = turnSpeedPerSec / 60.0f;
     float desiredAngle = 0;
     switch (controlState & (LEFT | RIGHT)) {
         case LEFT:
-            desiredAngle = -carParameters.maxSteeringAngle * b2_pi / 180.f;
+            desiredAngle = -carParameters_->maxSteeringAngle * b2_pi / 180.f;
             break;
         case RIGHT:
-            desiredAngle = carParameters.maxSteeringAngle * b2_pi / 180.f;
+            desiredAngle = carParameters_->maxSteeringAngle * b2_pi / 180.f;
             break;
         default:;//nothing
     }
-    desiredAngle *= (1.f - abs(GetSpeed()) / carParameters.maxForwardSpeed);
+    desiredAngle *= (1.f - abs(GetSpeed()) / carParameters_->maxForwardSpeed);
     float angleNow = fl_joint->GetJointAngle();
     float angleToTurn = desiredAngle - angleNow;
     angleToTurn = b2Clamp(angleToTurn, -turnPerTimeStep, turnPerTimeStep);
@@ -182,5 +182,5 @@ void Vehicle::PrintPos() {
 }
 
 CarParameters *Vehicle::getCarParameters() {
-    return &carParameters;
+    return carParameters_;
 }

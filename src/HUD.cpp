@@ -20,7 +20,14 @@ HUD::HUD(Vehicle* vehicle, Map* map)
 HUD::~HUD() {
 }
 
+void HUD::Initialize(Vehicle* vehicle) {
+    vehicle_ = vehicle;
+}
+
 void HUD::Update() {
+    if (vehicle_ == nullptr) {
+        return;
+    }
     std::stringstream ss;
     sf::Vector2f mapPos = vehicle_->GetPosition();
     sf::Vector2f boxPos = vehicle_->GetBoxPosition();

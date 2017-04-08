@@ -4,10 +4,11 @@
 #include "Workshop.h"
 #include "Game.h.depr"
 #include <Button.h>
+#include <Race.h>
 
 class Menu : public Module {
 public:
-    Menu(sf::RenderWindow *window);
+    Menu(sf::RenderWindow *window, Race* race);
 
     int run();
 

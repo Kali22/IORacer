@@ -18,7 +18,7 @@
 
 class Vehicle : public Entity {
 public:
-    Vehicle(CarParameters &params);
+    Vehicle(CarParameters* params);
 
     ~Vehicle();
 
@@ -54,7 +54,7 @@ private:
     sf::Texture texture_chassis;
     sf::Sprite sprite_chassis;
 
-    CarParameters &carParameters;
+    CarParameters* carParameters_;
 
     void updateFriction(Map &map);
 

@@ -11,27 +11,26 @@
 
 class Race : public Module {
 public:
-    Race(sf::RenderWindow *win) :
-            Module(win) {
-        // Initialize game
-        Initialize();
+    Race(sf::RenderWindow *win, b2World* world, Map* map, HUD* hud,
+         CheckPointManager* checkPointManager) :
+            Module(win), world_(world), map_(map), hud_(hud),
+            checkPointManager_(checkPointManager) {
     };
 
     int run();
 
     Vehicle *getVehicle();
 
+    void Initialize(Vehicle* vehicle);
 private:
     //sf::RenderWindow &window;
     Map* map_;
     b2World* world_;
-    Vehicle* vehicle_;
-    CarParameters carParameters_;
     HUD* hud_;
-    ContactListener contactListener_;
     CheckPointManager *checkPointManager_;
+    Vehicle* vehicle_;
 
-    void Initialize();
+    ContactListener contactListener_;
 };
 
 using RacePtr = Race*;
