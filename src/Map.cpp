@@ -74,15 +74,15 @@ void Map::LoadMap(const std::string &name, const std::string &full_name) {
     bands[2] = CreateBox(world, 0, image_size.y / 2.f, 10.f, image_size.y + 10.f);
     bands[3] = CreateBox(world, image_size.x, image_size.y / 2.f, 10.f, image_size.y + 10.f);
     for (int i = 0; i < 4; ++i) {
-        bands_sprite[i].setOrigin(0,0);
-        bands_sprite[i].setTextureRect(sf::IntRect(0,0,image_size.x,10));
+        bands_sprite[i].setOrigin(0, 0);
+        bands_sprite[i].setTextureRect(sf::IntRect(0, 0, image_size.x, 10));
         bands_sprite[i].setTexture(map_friction);
     }
-    bands_sprite[0].setPosition(0,0);
-    bands_sprite[1].setPosition(image_size.x,0);
+    bands_sprite[0].setPosition(0, 0);
+    bands_sprite[1].setPosition(image_size.x, 0);
     bands_sprite[1].setRotation(90);
-    bands_sprite[2].setPosition(0,image_size.y - 10);
-    bands_sprite[3].setPosition(10,0);
+    bands_sprite[2].setPosition(0, image_size.y - 10);
+    bands_sprite[3].setPosition(10, 0);
     bands_sprite[3].setRotation(90);
 
 }

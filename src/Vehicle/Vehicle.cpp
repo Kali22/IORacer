@@ -168,7 +168,7 @@ float Vehicle::GetBoxAngle() {
 
 float Vehicle::GetSpeed() {
     b2Vec2 vel = this->body->GetLinearVelocity();
-    return sqrt(b2Dot(vel,vel));
+    return sqrt(b2Dot(vel, vel));
 }
 
 float Vehicle::GetTireModifier(int i, Map &map) {

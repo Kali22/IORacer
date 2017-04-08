@@ -13,11 +13,11 @@
 #define SCALE 30.f
 
 enum tire_control_e {
-    LEFT = 0x01,
-    RIGHT = 0x02,
-    UP = 0x04,
-    DOWN = 0x08,
-    BRAKE = 0x10
+    LEFT    =   0x01,
+    RIGHT   =   0x02,
+    UP      =   0x04,
+    DOWN    =   0x08,
+    BRAKE   =   0x10
 };
 
 int Tire::GetEntityType() const {

@@ -10,20 +10,23 @@
 #include <Vehicle.h>
 #include <Text.h>
 
-class HUD : public Drawable{
+class HUD : public Drawable {
 public:
-    HUD(Vehicle* car, Map* map);
+    HUD(Vehicle *car, Map *map);
+
     ~HUD();
+
     void Draw(sf::RenderWindow *window) const;
 
     void Initialize(Vehicle* vehicle);
 
     void Update();
+
 private:
     Text sfmlData_;
     Text boxData_;
 
-    Vehicle* vehicle_;
-    Map* map_;
+    Vehicle *vehicle_;
+    Map *map_;
 };
 

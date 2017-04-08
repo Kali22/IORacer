@@ -1,6 +1,5 @@
 #pragma once
 
-
 class MathUtil {
 public:
     static float DegreeToRadian(float angle);

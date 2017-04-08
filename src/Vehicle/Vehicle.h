@@ -45,6 +45,7 @@ public:
     void Initialize(b2World *world, int x, int y);
 
     CarParameters *getCarParameters();
+
 private:
     b2Body *body;
     std::vector<Tire *> tires;

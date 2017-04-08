@@ -5,9 +5,7 @@
  *  @date 4/1/17
  */
 
-#ifndef _Tire_H_
-#define _Tire_H_
-
+#pragma once
 
 #include <Dynamics/b2Body.h>
 #include <SFML/Graphics/Sprite.hpp>
@@ -27,16 +25,17 @@ public:
     float maxLateralImpulse;
 
     Tire(b2World *world);
+
     ~Tire();
 
     b2Vec2 getLateralVelocity();
+
     b2Vec2 getForwardVelocity();
+
     void updateFriction(float mod, CarParameters &params);
 
 
     void Render(sf::RenderWindow &window);
+
     void UpdateDrive(int state, float mod, CarParameters &params);
 };
-
-
-#endif //Tire
