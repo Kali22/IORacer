@@ -5,16 +5,30 @@
 #include <SFML/System/Clock.hpp>
 #include <Drawable.h>
 
+/**
+ * Store list of chekpoints. Track and update active checkpoint.
+ */
 class CheckPointManager : public CheckPointObserver, public Drawable {
 public:
     CheckPointManager(std::vector<CheckPointPtr> checkPoints);
 
+    /**
+     * Reset active checkpoint to first on the list.
+     */
     void Reset();
 
     sf::Time GetElapsedTime() const;
 
+    /**
+     * When function is called move active checkpoint indext to next checkpoint
+     * if current active checkpoint was already set to disabled.
+     * Call SetEnable(true) on new active checkpoint.
+     */
     void NotifyCheckPointReached();
 
+    /**
+     * Draw active checkpoint.
+     */
     void Draw(sf::RenderWindow *window) const;
 
 private:

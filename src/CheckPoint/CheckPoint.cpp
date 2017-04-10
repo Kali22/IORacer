@@ -1,5 +1,3 @@
-
-
 #include <CheckPoint.h>
 
 CheckPoint::CheckPoint(Area *area) : area_(area) {
@@ -25,9 +23,7 @@ bool CheckPoint::IsEnabled() const {
 }
 
 void CheckPoint::Draw(sf::RenderWindow *window) const {
-    if (enable_) {
-        area_->Draw(window);
-    }
+    area_->Draw(window);
 }
 
 void CheckPoint::BeginContact() {

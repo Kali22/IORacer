@@ -1,7 +1,6 @@
 //
 // Created by pawel on 04.04.17.
 //
-
 #include <cassert>
 #include <CheckPoint.h>
 #include <CheckPointManager.h>

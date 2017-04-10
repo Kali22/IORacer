@@ -10,6 +10,10 @@
 #include <RectangleParams.h>
 #include <Area.h>
 
+/**
+ * Check point is specyfic area. When car reach area enabled checkpoint
+ * notify observer about change and set its state to disable.
+ */
 class CheckPoint : public Entity {
 public:
     CheckPoint(Area *area);
@@ -24,8 +28,16 @@ public:
 
     bool IsEnabled() const;
 
+    /**
+     * Set observer who is notifed each time when enabled checkpoint is
+     * reached by car.
+     */
     void SetObserver(CheckPointObserver *observer);
 
+    /**
+     * Set enable to false and notify observer. Should be called by contact
+     * listener when car reach checkpoint.
+     */
     void BeginContact();
 
     void EndContact();
