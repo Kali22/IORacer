@@ -48,8 +48,8 @@ void Vehicle::Update(int state, Map &map) {
 }
 
 void Vehicle::CreateTire(
-        b2World *world, b2RevoluteJoint **jointPtr, b2RevoluteJointDef &jointDef, float arg1, float arg2) {
-    TirePtr tire = std::make_shared<Tire>(world, scale_);
+        b2World *world, b2RevoluteJoint **jointPtr, b2RevoluteJointDef &jointDef, float arg1, float arg2, float x, float y) {
+    TirePtr tire = std::make_shared<Tire>(world, scale_, x, y);
     jointDef.bodyB = tire->body;
     jointDef.localAnchorA.Set(arg1 / scale_, arg2 / scale_);
     *jointPtr = (b2RevoluteJoint *) world->CreateJoint(&jointDef);
@@ -59,7 +59,7 @@ void Vehicle::CreateTire(
 void Vehicle::Initialize(b2World *world, int x, int y) {
     //create car body
     b2BodyDef bodyDef;
-    bodyDef.position = b2Vec2(x / scale_ + 25, y / scale_ + 22);
+    bodyDef.position = b2Vec2(x / scale_, y / scale_);
     bodyDef.angle = b2_pi / 2;
     bodyDef.type = b2_dynamicBody;
     body = world->CreateBody(&bodyDef);
@@ -87,13 +87,13 @@ void Vehicle::Initialize(b2World *world, int x, int y) {
     jointDef.localAnchorB.SetZero();//joint anchor in tire is always center
 
     // FRONT LEFT
-    CreateTire(world, &fl_joint, jointDef, -17.f, 18.f);
+    CreateTire(world, &fl_joint, jointDef, -17.f, 18.f, x, y);
     // FRONT RIGHT
-    CreateTire(world, &fr_joint, jointDef, 17.f, 18.f);
+    CreateTire(world, &fr_joint, jointDef, 17.f, 18.f, x, y);
     // BACK RIGHT
-    CreateTire(world, &bl_joint, jointDef, 17.f, -17.f);
+    CreateTire(world, &bl_joint, jointDef, 17.f, -17.f, x, y);
     // BACK LEFT
-    CreateTire(world, &br_joint, jointDef, -17.f, -17.f);
+    CreateTire(world, &br_joint, jointDef, -17.f, -17.f, x, y);
 
     texture_chassis.loadFromFile("../resource/car.png");
     sprite_chassis.setTexture(texture_chassis);
@@ -107,7 +107,7 @@ void Vehicle::Reset(int x, int y) {
     fl_joint->SetLimits(0, 0);
     fr_joint->SetLimits(0, 0);
     for (auto tire : tires) {
-        tire->Reset();
+        tire->Reset(x / scale_, y / scale_);
     }
 }
 
@@ -138,7 +138,7 @@ void Vehicle::UpdateTurn(int controlState) {
             break;
         default:;//nothing
     }
-    desiredAngle *= (1.f - 0.7f * abs((int) GetSpeed()) / carParameters_->maxForwardSpeed);
+    desiredAngle *= (1.f - 0.8f * abs((int) GetSpeed()) / carParameters_->maxForwardSpeed);
     float angleNow = fl_joint->GetJointAngle();
     float angleToTurn = desiredAngle - angleNow;
     angleToTurn = b2Clamp(angleToTurn, -turnPerTimeStep, turnPerTimeStep);

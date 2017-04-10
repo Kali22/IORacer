@@ -17,7 +17,7 @@ public:
         maxForwardSpeed = 30.f;
         maxEnginePower = 10.f;
         maxSteeringAngle = 20.f;
-        steeringSpeed = 4000.f; //everything above 40 allows reaching max angle immediately; this allows testing
+        steeringSpeed = 40.f;
     }
 
     /*-------- Driving power modifiers ---------*/

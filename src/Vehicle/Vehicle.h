@@ -48,7 +48,6 @@ public:
 
     virtual int GetEntityType() const;
 
-
 private:
     float scale_;
     b2Body *body;
@@ -67,7 +66,9 @@ private:
 
     void UpdateTurn(int controlState);
 
-    void CreateTire(b2World *world, b2RevoluteJoint **joint, b2RevoluteJointDef &jointDef, float arg1, float arg2);
+    void
+    CreateTire(b2World *world, b2RevoluteJoint **joint, b2RevoluteJointDef &jointDef,
+               float arg1, float arg2, float x, float y);
 };
 
 using VehiclePtr = std::shared_ptr<Vehicle>;

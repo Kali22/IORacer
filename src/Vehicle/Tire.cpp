@@ -15,11 +15,11 @@ int Tire::GetEntityType() const {
     return TIRE;
 }
 
-Tire::Tire(b2World *world, float scale) {//}, float x, float y) {
+Tire::Tire(b2World *world, float scale, float x, float y) {
     b2BodyDef bodyDef;
     bodyDef.type = b2_dynamicBody;
     bodyDef.angle = b2_pi / 2;
-    bodyDef.position = b2Vec2(100, 100);
+    bodyDef.position = b2Vec2(x / scale, y / scale);
     body = world->CreateBody(&bodyDef);
     b2PolygonShape polygonShape;
     polygonShape.SetAsBox((6.f / 2.f) / scale, (12.f / 2.f) / scale);
@@ -93,9 +93,10 @@ void Tire::UpdateDrive(int state, float mod, CarParameters &params) {
     body->ApplyForce(force * currentForwardNormal, body->GetWorldCenter(), true);
 }
 
-void Tire::Reset() {
-    body->SetLinearDamping(0);
-    body->SetAngularDamping(0);
+void Tire::Reset(float x, float y) {
+    //body->SetLinearDamping(0);
+    //body->SetAngularDamping(0);
     body->SetAngularVelocity(0);
     body->SetLinearVelocity(b2Vec2(0, 0));
+    body->SetTransform(b2Vec2(x, y), b2_pi / 2);
 }

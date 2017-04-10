@@ -22,7 +22,7 @@ int main(int argc, char **argv) {
 
     /* Load map */
     b2World *world = new b2World(b2Vec2(0, 0));
-    MapPtr map = std::make_shared<Map>(world, scale, sf::Vector2f(4800, 3890));
+    MapPtr map = std::make_shared<Map>(world, scale, sf::Vector2f(4250, 3890));
     map->LoadMap("map_0", "Mapa testowa");
     HUDPtr hud = std::make_shared<HUD>(nullptr, map);
 
