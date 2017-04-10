@@ -8,7 +8,7 @@
 #include <Tire.h>
 #include <Dynamics/b2World.h>
 #include <Collision/Shapes/b2PolygonShape.h>
-#include <Entity.h>
+#include <Tools/Entity.h>
 
 #define SCALE 30.f
 
@@ -50,7 +50,7 @@ b2Vec2 Tire::getLateralVelocity() {
 
 }
 
-void Tire::updateFriction(float mod, CarParameters &params) {
+void Tire::UpdateFriction(float mod, CarParameters &params) {
     b2Vec2 impulse = body->GetMass() * -getLateralVelocity();
     if (impulse.Length() > 5 * mod * maxLateralImpulse)
         impulse *= 5 * mod * maxLateralImpulse / impulse.Length();

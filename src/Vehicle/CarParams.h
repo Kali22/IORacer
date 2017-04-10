@@ -11,13 +11,13 @@ class CarParameters {
 public:
     CarParameters() {
         // Set default value
-        activeTireModifier = 1.0f;
-        baseTireFriction = 1.0f;
+        activeTireModifier = 1.f;
+        baseTireFriction = 1.f;
         maxBackwardSpeed = -20.f;
         maxForwardSpeed = 30.f;
         maxEnginePower = 10.f;
         maxSteeringAngle = 20.f;
-        steeringSpeed = 120.0;
+        steeringSpeed = 4000.f; //everything above 40 allows reaching max angle immediately; this allows testing
     }
 
     /*-------- Driving power modifiers ---------*/

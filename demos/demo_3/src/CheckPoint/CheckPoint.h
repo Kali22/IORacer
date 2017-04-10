@@ -2,11 +2,11 @@
 
 #include <Box2D.h>
 #include <SFML/Graphics/View.hpp>
-#include <Area.h>
+#include <Tools/Area.h>
 #include <Car.h>
 #include <CheckPointObserver.h>
-#include <RectangleArea.h>
-#include <RectangleParams.h>
+#include <Tools/RectangleArea.h>
+#include <Tools/RectangleParams.h>
 
 class CheckPoint : public Entity {
 public:

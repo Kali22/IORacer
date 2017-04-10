@@ -4,7 +4,7 @@
 #pragma once
 
 #include <Box2D.h>
-#include <Entity.h>
+#include <Tools/Entity.h>
 #include <CheckPoint.h>
 
 class ContactListener : public b2ContactListener {

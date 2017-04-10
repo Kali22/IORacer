@@ -2,7 +2,6 @@
 
 #include "Module.h"
 #include "Workshop.h"
-#include "Game.h.depr"
 #include <Button.h>
 #include <Race.h>
 
@@ -10,7 +9,7 @@ class Menu : public Module {
 public:
     Menu(sf::RenderWindow *window, RacePtr race);
 
-    int run();
+    int Run();
 
 private:
     RacePtr race_;

@@ -5,13 +5,13 @@
 
 class Button : public Drawable {
 public:
-    bool hovered(sf::Vector2f mousePosition);
+    bool Hovered(sf::Vector2f mousePosition);
 
     Button(sf::Vector2f pos, sf::Vector2f size, std::string txt, std::function<void()> action);
 
-    bool toggleHover(sf::Vector2f mousePosition);
+    bool ToggleHover(sf::Vector2f mousePosition);
 
-    void onClick();
+    void OnClick();
 
     void Draw(sf::RenderWindow *window) const;
 

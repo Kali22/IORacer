@@ -3,10 +3,10 @@
 #include <SFML/Graphics.hpp>
 #include <Box2D/Box2D.h>
 #include <Vehicle.h>
-#include <HUD.h>
-#include <Map.h>
+#include <Tools/HUD.h>
+#include <Tools/Map.h>
 #include <CheckPointManager.h>
-#include <ContactListener.h>
+#include <Tools/ContactListener.h>
 
 class Race {
 public:

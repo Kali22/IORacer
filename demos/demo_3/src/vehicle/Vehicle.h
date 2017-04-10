@@ -12,8 +12,8 @@
 #include <SFML/Graphics/RenderWindow.hpp>
 #include <SFML/Graphics/Texture.hpp>
 #include <SFML/Graphics/Sprite.hpp>
-#include <Map.h>
-#include <Entity.h>
+#include <Tools/Map.h>
+#include <Tools/Entity.h>
 
 class Vehicle : public Entity {
 public:

@@ -12,7 +12,7 @@
 #include <SFML/Graphics/Texture.hpp>
 #include <SFML/Graphics/RenderWindow.hpp>
 #include "CarParams.h"
-#include <Entity.h>
+#include <Tools/Entity.h>
 
 class Tire : public Entity {
 public:
@@ -30,9 +30,9 @@ public:
 
     void Reset();
 
-    b2Vec2 getLateralVelocity();
-    b2Vec2 getForwardVelocity();
-    void updateFriction(float mod, CarParameters &params);
+    b2Vec2 GetLateralVelocity();
+    b2Vec2 GetForwardVelocity();
+    void UpdateFriction(float mod, CarParameters &params);
 
 
     void Render(sf::RenderWindow &window);

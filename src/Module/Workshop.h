@@ -10,7 +10,7 @@ class Workshop : public Module {
 public:
     Workshop(sf::RenderWindow *window, RacePtr race);
 
-    int run();
+    int Run();
 
 private:
     RacePtr race_;

@@ -15,7 +15,9 @@ Menu::Menu(sf::RenderWindow *window, RacePtr race) :
             menuButtonSize,
             "Play",
             [this]() {
-                race_->run();
+                if (race_->Run() != 0) {
+                    close_ = true;
+                };
                 race_->Reset();
             }
     );
@@ -25,7 +27,9 @@ Menu::Menu(sf::RenderWindow *window, RacePtr race) :
             menuButtonSize,
             "Workshop",
             [this]() {
-                workshop_->run();
+                if (workshop_->Run() != 0) {
+                    close_ = true;
+                };
             }
     );
 
@@ -50,7 +54,7 @@ Menu::Menu(sf::RenderWindow *window, RacePtr race) :
 }
 
 
-int Menu::run() {
+int Menu::Run() {
     close_ = false;
     while (!close_) {
         bool mouseClick = false; // info for buttons
@@ -72,14 +76,14 @@ int Menu::run() {
         /// BUTTON things
         std::shared_ptr<Button> activeButton = nullptr;
         sf::Vector2f mousePos = sf::Vector2f(sf::Mouse::getPosition(*window_));
-        // select hovered button, change style
+        // select Hovered button, change style
         for (auto &button : buttons_) {
-            if (button->toggleHover(mousePos)) {
+            if (button->ToggleHover(mousePos)) {
                 activeButton = button;
             }
         }
         if (activeButton != nullptr && mouseClick) {
-            activeButton->onClick();
+            activeButton->OnClick();
         }
 
         // DRAWING

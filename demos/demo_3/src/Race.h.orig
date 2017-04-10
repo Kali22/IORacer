@@ -6,10 +6,10 @@
 
 #include <SFML/Graphics.hpp>
 #include <Box2D/Box2D.h>
-#include <Map.h>
+#include <Tools/Map.h>
 <<<<<<< HEAD
 #include <CheckPointManager.h>
-#include <ContactListener.h>
+#include <Tools/ContactListener.h>
 =======
 #include <Vehicle.h>
 >>>>>>> origin/map_test

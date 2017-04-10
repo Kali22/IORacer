@@ -1,6 +1,6 @@
 #pragma once
 
-enum car_control_e {
+enum tire_control_e {
     LEFT    =   0x01,
     RIGHT   =   0x02,
     UP      =   0x04,

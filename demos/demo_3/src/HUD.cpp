@@ -5,7 +5,7 @@
  *  @date 4/5/17
  */
 
-#include <HUD.h>
+#include <Tools/HUD.h>
 #include <sstream>
 
 HUD::HUD(Vehicle* vehicle, Map* map) : vehicle_(vehicle),

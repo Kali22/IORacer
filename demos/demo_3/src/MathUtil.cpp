@@ -3,7 +3,7 @@
 //
 
 #include <Box2D/Box2D.h>
-#include <MathUtil.h>
+#include <Tools/MathUtil.h>
 
 float MathUtil::DegreeToRadian(float angle) {
     return angle * b2_pi / 180;

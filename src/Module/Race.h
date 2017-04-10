@@ -3,10 +3,10 @@
 #include <SFML/Graphics.hpp>
 #include <Box2D/Box2D.h>
 #include <Vehicle.h>
-#include "HUD.h"
-#include <Map.h>
+#include "Tools/HUD.h"
+#include <Tools/Map.h>
 #include <CheckPointManager.h>
-#include <ContactListener.h>
+#include <Tools/ContactListener.h>
 #include <Module/Module.h>
 
 class Race : public Module {
@@ -14,9 +14,9 @@ public:
     Race(sf::RenderWindow *win, b2World *world, MapPtr map, HUDPtr hud, CheckPointManagerPtr checkPointManager) :
             Module(win), world_(world), map_(map), hud_(hud), checkPointManager_(checkPointManager) {};
 
-    int run();
+    int Run();
 
-    VehiclePtr getVehicle();
+    VehiclePtr GetVehicle();
 
     void Reset();
 

@@ -11,7 +11,7 @@ class Module {
 public:
     Module(sf::RenderWindow *window) : close_(false), window_(window) {}
 
-    virtual int run()=0;
+    virtual int Run()=0;
 
 protected:
     bool close_;

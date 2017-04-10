@@ -1,12 +1,5 @@
 #include "Workshop.h"
 
-/*
-void Workshop::addButton(const sf::Vector2f &position,
-                         const sf::Vector2f &button_size, std::string text,
-                         std::function<void(sf::RenderWindow *window_)> func) {
-    registerButton(std::make_shared<RedirectButton>(position, button_size, text, func));
-}*/
-
 void Workshop::initMaxSpeedControl(
         const sf::Vector2f &statsButtonSize, const sf::Vector2f &labelSize, float textSize, int posX, int posY) {
     maxSpeedLabel_ = std::make_shared<Text>("Speed", "impact", sf::Vector2f(150, posY), textSize);
@@ -101,7 +94,7 @@ void Workshop::initSteeringSpeedControl(
 }
 
 Workshop::Workshop(sf::RenderWindow *window, RacePtr race) :
-        Module(window), race_(race), carParams_(race_->getVehicle()->getCarParameters()) {
+        Module(window), race_(race), carParams_(race_->GetVehicle()->GetCarParameters()) {
     int windowWidth = window->getSize().x, windowHeight = window->getSize().y;
 
     const sf::Vector2f gameButtonSize = sf::Vector2f(400, 80);
@@ -124,7 +117,7 @@ Workshop::Workshop(sf::RenderWindow *window, RacePtr race) :
 
 }
 
-int Workshop::run() {
+int Workshop::Run() {
     close_ = false;
     while (!close_) {
         bool mouseClick = false; // info for buttons
@@ -134,7 +127,8 @@ int Workshop::run() {
         while (window_->pollEvent(event)) {
             // "close_ requested" event: end while loop
             if (event.type == sf::Event::Closed) {
-                close_ = true;
+                window_->close();
+                return 1;
             }
             // handle mouse click
             if (event.type == sf::Event::MouseButtonPressed &&
@@ -146,14 +140,14 @@ int Workshop::run() {
         /// BUTTON things
         std::shared_ptr<Button> activeButton = nullptr;
         sf::Vector2f mousePos = sf::Vector2f(sf::Mouse::getPosition(*window_));
-        // select hovered button, change style
+        // select Hovered button, change style
         for (auto &button : buttons_) {
-            if (button->toggleHover(mousePos)) {
+            if (button->ToggleHover(mousePos)) {
                 activeButton = button;
             }
         }
         if (activeButton != nullptr && mouseClick) {
-            activeButton->onClick();
+            activeButton->OnClick();
         }
 
         // DRAWING

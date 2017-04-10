@@ -8,11 +8,11 @@
 #include <iostream>
 
 #include <Vehicle.h>
-#include <Map.h>
+#include <Tools/Map.h>
 #include "Vehicle.h"
 #include "CarParams.h"
 #include <CarControlE.h>
-#include <Entity.h>
+#include <Tools/Entity.h>
 
 #define SCALE 30.f
 
@@ -121,7 +121,7 @@ void Vehicle::Initialize(b2World *world, int x, int y) {
 void Vehicle::updateFriction(Map &map) {
     for (int i = 0; i < 4; i++) {
         float modifier = map.GetFrictionModifier(tires[i]->tireSprite.getPosition());
-        tires[i]->updateFriction(modifier, carParameters);
+        tires[i]->UpdateFriction(modifier, carParameters);
     }
 }
 

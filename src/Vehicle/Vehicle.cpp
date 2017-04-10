@@ -8,7 +8,8 @@
 #include <iostream>
 
 #include <Vehicle.h>
-#include <CarControlE.h>
+#include <TireControlE.h>
+#include <MathUtil.h>
 
 int Vehicle::GetEntityType() const {
     return CAR;
@@ -29,10 +30,10 @@ Vehicle::~Vehicle() {
 void Vehicle::Render(sf::RenderWindow &window) {
     sprite_chassis.setPosition(scale_ * body->GetPosition().x,
                                scale_ * body->GetPosition().y);
-    sprite_chassis.setRotation(body->GetAngle() * 180.f / b2_pi);
+    sprite_chassis.setRotation(MathUtil::RadianToDegree(body->GetAngle()));
     window.draw(sprite_chassis);
-    for (int i = 0; i < 4; i++) {
-        tires[i]->Render(window);
+    for (auto &tire : tires) {
+        tire->Render(window);
     }
 }
 
@@ -41,16 +42,15 @@ const sf::Vector2f &Vehicle::GetPosition() const {
 }
 
 void Vehicle::Update(int state, Map &map) {
-    updateFriction(map);
-    updateDrive(state, map);
-    updateTurn(state);
+    UpdateFriction(map);
+    UpdateDrive(state, map);
+    UpdateTurn(state);
 }
 
-void Vehicle::createTire(
+void Vehicle::CreateTire(
         b2World *world, b2RevoluteJoint **jointPtr, b2RevoluteJointDef &jointDef, float arg1, float arg2) {
     TirePtr tire = std::make_shared<Tire>(world, scale_);
     jointDef.bodyB = tire->body;
-    jointDef.referenceAngle = 0;
     jointDef.localAnchorA.Set(arg1 / scale_, arg2 / scale_);
     *jointPtr = (b2RevoluteJoint *) world->CreateJoint(&jointDef);
     tires.push_back(tire);
@@ -60,11 +60,13 @@ void Vehicle::Initialize(b2World *world, int x, int y) {
     //create car body
     b2BodyDef bodyDef;
     bodyDef.position = b2Vec2(x / scale_ + 25, y / scale_ + 22);
-    bodyDef.angle = b2_pi;
+    bodyDef.angle = b2_pi / 2;
     bodyDef.type = b2_dynamicBody;
     body = world->CreateBody(&bodyDef);
     body->SetUserData(this);
 
+    body->SetAngularVelocity(0);
+    body->SetLinearVelocity(b2Vec2(0, 0));
 
     b2PolygonShape Shape;
     Shape.SetAsBox((16.f / 2) / scale_, (48.f / 2) / scale_);
@@ -76,7 +78,6 @@ void Vehicle::Initialize(b2World *world, int x, int y) {
     body->CreateFixture(&FixtureDef);
 
     // Create TIRES
-    // FRONT LEFT
     b2RevoluteJointDef jointDef;
     jointDef.bodyA = body;
     jointDef.referenceAngle = 0;
@@ -86,13 +87,13 @@ void Vehicle::Initialize(b2World *world, int x, int y) {
     jointDef.localAnchorB.SetZero();//joint anchor in tire is always center
 
     // FRONT LEFT
-    createTire(world, &fl_joint, jointDef, -17.f, 18.f);
+    CreateTire(world, &fl_joint, jointDef, -17.f, 18.f);
     // FRONT RIGHT
-    createTire(world, &fr_joint, jointDef, 17.f, 18.f);
+    CreateTire(world, &fr_joint, jointDef, 17.f, 18.f);
     // BACK RIGHT
-    createTire(world, &bl_joint, jointDef, 17.f, -17.f);
+    CreateTire(world, &bl_joint, jointDef, 17.f, -17.f);
     // BACK LEFT
-    createTire(world, &br_joint, jointDef, -17.f, -17.f);
+    CreateTire(world, &br_joint, jointDef, -17.f, -17.f);
 
     texture_chassis.loadFromFile("../resource/car.png");
     sprite_chassis.setTexture(texture_chassis);
@@ -100,42 +101,44 @@ void Vehicle::Initialize(b2World *world, int x, int y) {
 }
 
 void Vehicle::Reset(int x, int y) {
-    body->SetTransform(b2Vec2(x / scale_, y / scale_), 0);
+    body->SetAngularVelocity(0);
+    body->SetLinearVelocity(b2Vec2(0, 0));
+    body->SetTransform(b2Vec2(x / scale_, y / scale_), b2_pi / 2);
     fl_joint->SetLimits(0, 0);
     fr_joint->SetLimits(0, 0);
-    for (auto t : tires) {
-        t->Reset();
+    for (auto tire : tires) {
+        tire->Reset();
     }
 }
 
-void Vehicle::updateFriction(Map &map) {
-    for (int i = 0; i < 4; i++) {
-        float modifier = map.GetFrictionModifier(tires[i]->tireSprite.getPosition());
-        tires[i]->updateFriction(modifier, *carParameters_);
+void Vehicle::UpdateFriction(Map &map) {
+    for (auto &tire : tires) {
+        float modifier = map.GetFrictionModifier(tire->tireSprite.getPosition());
+        tire->UpdateFriction(modifier, *carParameters_);
     }
 }
 
-void Vehicle::updateDrive(int controlState, Map &map) {
-    for (int i = 0; i < 4; i++) {
-        float modifier = map.GetFrictionModifier(tires[i]->tireSprite.getPosition());
-        tires[i]->UpdateDrive(controlState, modifier, *carParameters_);
+void Vehicle::UpdateDrive(int controlState, Map &map) {
+    for (auto &tire : tires) {
+        float modifier = map.GetFrictionModifier(tire->tireSprite.getPosition());
+        tire->UpdateDrive(controlState, modifier, *carParameters_);
     }
 }
 
-void Vehicle::updateTurn(int controlState) {
-    float turnSpeedPerSec = carParameters_->steeringSpeed * b2_pi / 180.f;
+void Vehicle::UpdateTurn(int controlState) {
+    float turnSpeedPerSec = MathUtil::DegreeToRadian(carParameters_->steeringSpeed);
     float turnPerTimeStep = turnSpeedPerSec / 60.0f;
     float desiredAngle = 0;
     switch (controlState & (LEFT | RIGHT)) {
         case LEFT:
-            desiredAngle = -carParameters_->maxSteeringAngle * b2_pi / 180.f;
+            desiredAngle = -MathUtil::DegreeToRadian(carParameters_->maxSteeringAngle);
             break;
         case RIGHT:
-            desiredAngle = carParameters_->maxSteeringAngle * b2_pi / 180.f;
+            desiredAngle = MathUtil::DegreeToRadian(carParameters_->maxSteeringAngle);
             break;
         default:;//nothing
     }
-    desiredAngle *= (1.f - abs(GetSpeed()) / carParameters_->maxForwardSpeed);
+    desiredAngle *= (1.f - 0.7f * abs((int) GetSpeed()) / carParameters_->maxForwardSpeed);
     float angleNow = fl_joint->GetJointAngle();
     float angleToTurn = desiredAngle - angleNow;
     angleToTurn = b2Clamp(angleToTurn, -turnPerTimeStep, turnPerTimeStep);
@@ -152,28 +155,28 @@ sf::Vector2f Vehicle::GetBoxPosition() const {
     return pos;
 }
 
-float Vehicle::GetAngle() {
+float Vehicle::GetAngle() const {
     return sprite_chassis.getRotation();
 }
 
-float Vehicle::GetBoxAngle() {
+float Vehicle::GetBoxAngle() const {
     return body->GetAngle();
 }
 
-float Vehicle::GetSpeed() {
+float Vehicle::GetSpeed() const {
     b2Vec2 vel = this->body->GetLinearVelocity();
-    return sqrt(b2Dot(vel, vel));
+    return (float) sqrt(b2Dot(vel, vel));
 }
 
-float Vehicle::GetTireModifier(int i, Map &map) {
+float Vehicle::GetTireModifier(int i, Map &map) const {
     return map.GetFrictionModifier(tires[i]->tireSprite.getPosition());
 }
 
-void Vehicle::PrintPos() {
+void Vehicle::PrintPos() const {
     std::cout << "Car " << body->GetPosition().x << " "
               << body->GetPosition().y << std::endl;
 }
 
-CarParametersPtr Vehicle::getCarParameters() {
+CarParametersPtr Vehicle::GetCarParameters() const {
     return carParameters_;
 }

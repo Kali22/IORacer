@@ -15,7 +15,7 @@
 
 #include <Box2D/Box2D.h>
 #include <SFML/Graphics.hpp>
-#include <Entity.h>
+#include <Tools/Entity.h>
 #include <CarControlE.h>
 
 class Car : public Entity {

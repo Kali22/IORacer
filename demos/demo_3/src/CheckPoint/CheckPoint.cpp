@@ -4,8 +4,8 @@
 #include <CheckPoint.h>
 #include <Car.h>
 #include <SFML/Graphics/View.hpp>
-#include <Entity.h>
-#include <Area.h>
+#include <Tools/Entity.h>
+#include <Tools/Area.h>
 
 CheckPoint::CheckPoint(Area* area) : area_(area) {
     area_->SetCollisionUserData(this);

@@ -1,10 +1,10 @@
 #include <Box2D.h>
 #include <SFML/Graphics/View.hpp>
 #include <SFML/Graphics.hpp>
-#include <Entity.h>
-#include <RectangleArea.h>
-#include <MathUtil.h>
-#include <RectangleParams.h>
+#include <Tools/Entity.h>
+#include <Tools/RectangleArea.h>
+#include <Tools/MathUtil.h>
+#include <Tools/RectangleParams.h>
 
 RectangleArea::RectangleArea(b2World* world, const struct RectangleParams
 &params) : world_(world) {

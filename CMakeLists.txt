@@ -6,8 +6,8 @@ project(alpha)
 set(CMAKE_BUILD_TYPE Debug)
 
 # Set version information in a config.h file
-set(${PROJECT_NAME}_VERSION_MAJOR 3)
-set(${PROJECT_NAME}_VERSION_MINOR 0)
+set(${PROJECT_NAME}_VERSION_MAJOR 4)
+set(${PROJECT_NAME}_VERSION_MINOR 1)
 
 # Set C++11 standard
 set(CMAKE_CXX_STANDARD 14)

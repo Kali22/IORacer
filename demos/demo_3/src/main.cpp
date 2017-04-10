@@ -8,9 +8,9 @@
 #include <Box2D/Box2D.h>
 #include <SFML/Graphics.hpp>
 #include <Vehicle.h>
-#include <Map.h>
+#include <Tools/Map.h>
 #include <CheckPointManager.h>
-#include <HUD.h>
+#include <Tools/HUD.h>
 #include <CheckPointParser.h>
 #include <CarParams.h>
 

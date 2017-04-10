@@ -6,9 +6,9 @@
 #include <Box2D.h>
 #include <SFML/Graphics/View.hpp>
 #include <CheckPointObserver.h>
-#include <RectangleArea.h>
-#include <RectangleParams.h>
-#include <Area.h>
+#include <Tools/RectangleArea.h>
+#include <Tools/RectangleParams.h>
+#include <Tools/Area.h>
 
 /**
  * Check point is specyfic area. When car reach area enabled checkpoint

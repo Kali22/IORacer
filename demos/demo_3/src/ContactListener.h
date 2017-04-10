@@ -3,7 +3,7 @@
 //
 
 #include <Box2D.h>
-#include <Entity.h>
+#include <Tools/Entity.h>
 #include <CheckPoint.h>
 
 #ifndef PROJECT_CONTACTLISTENER_H

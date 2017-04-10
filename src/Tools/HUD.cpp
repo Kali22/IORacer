@@ -5,7 +5,7 @@
  *  @date 4/5/17
  */
 
-#include <HUD.h>
+#include <Tools/HUD.h>
 
 HUD::HUD(VehiclePtr vehicle, MapPtr map)
         : vehicle_(vehicle),

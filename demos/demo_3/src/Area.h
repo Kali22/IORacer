@@ -2,7 +2,7 @@
 
 #include <SFML/Graphics.hpp>
 #include <Drawable.h>
-#include <Entity.h>
+#include <Tools/Entity.h>
 
 
 class Area : public Drawable {

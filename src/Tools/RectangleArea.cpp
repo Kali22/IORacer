@@ -1,8 +1,8 @@
 #include <Box2D.h>
 #include <SFML/Graphics/View.hpp>
 #include <SFML/Graphics.hpp>
-#include <Entity.h>
-#include <RectangleArea.h>
+#include <Tools/Entity.h>
+#include <Tools/RectangleArea.h>
 
 RectangleArea::RectangleArea(b2World *world, const struct RectangleParams &params) : world_(world) {
     CreateB2Rectangle(params.b2Pos, params.b2Size, params.b2Angle);

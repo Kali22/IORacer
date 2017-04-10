@@ -4,12 +4,11 @@
 
 #include <utility>
 #include <iostream>
-#include <cassert>
 
 #include <Box2D.h>
-#include <Entity.h>
+#include <Tools/Entity.h>
 #include <CheckPoint.h>
-#include <ContactListener.h>
+#include <Tools/ContactListener.h>
 
 /** Return true if one of Entitys is car.
  *  If one of entities is car replace pointer so that first one is a car.

@@ -7,12 +7,12 @@
 
 #pragma once
 
-#include <Box2D.h>
 #include <vector>
-#include <Tire.h>
+#include <Box2D.h>
 #include <SFML/Graphics/RenderWindow.hpp>
 #include <SFML/Graphics/Texture.hpp>
 #include <SFML/Graphics/Sprite.hpp>
+#include <Tire.h>
 #include <Map.h>
 #include <Entity.h>
 
@@ -22,31 +22,33 @@ public:
 
     ~Vehicle();
 
-    void PrintPos();
+    void Initialize(b2World *world, int x, int y);
 
-    virtual int GetEntityType() const;
+    void Update(int state, Map &map);
+
+    void Reset(int x, int y);
 
     void Render(sf::RenderWindow &window);
 
     const sf::Vector2f &GetPosition() const;
 
-    float GetAngle();
-
-    float GetBoxAngle();
-
-    float GetSpeed();
-
-    float GetTireModifier(int i, Map &map);
-
     sf::Vector2f GetBoxPosition() const;
 
-    void Update(int state, Map &map);
+    CarParametersPtr GetCarParameters() const;
 
-    void Initialize(b2World *world, int x, int y);
+    float GetAngle() const;
 
-    CarParametersPtr getCarParameters();
+    float GetBoxAngle() const;
 
-    void Reset(int x, int y);
+    float GetSpeed() const;
+
+    float GetTireModifier(int i, Map &map) const;
+
+    void PrintPos() const;
+
+    virtual int GetEntityType() const;
+
+
 private:
     float scale_;
     b2Body *body;
@@ -59,13 +61,13 @@ private:
 
     CarParametersPtr carParameters_;
 
-    void updateFriction(Map &map);
+    void UpdateFriction(Map &map);
 
-    void updateDrive(int controlState, Map &map);
+    void UpdateDrive(int controlState, Map &map);
 
-    void updateTurn(int controlState);
+    void UpdateTurn(int controlState);
 
-    void createTire(b2World *world, b2RevoluteJoint **fl_joint, b2RevoluteJointDef &jointDef, float arg1, float arg2);
+    void CreateTire(b2World *world, b2RevoluteJoint **joint, b2RevoluteJointDef &jointDef, float arg1, float arg2);
 };
 
 using VehiclePtr = std::shared_ptr<Vehicle>;

@@ -3,9 +3,9 @@
 #include <Box2D.h>
 #include <SFML/Graphics/View.hpp>
 #include <SFML/Graphics.hpp>
-#include <Entity.h>
-#include <RectangleParams.h>
-#include <Area.h>
+#include <Tools/Entity.h>
+#include <Tools/RectangleParams.h>
+#include <Tools/Area.h>
 
 class RectangleArea : public Area {
 public:

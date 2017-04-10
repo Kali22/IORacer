@@ -2,11 +2,11 @@
 #include <string>
 #include <fstream>
 
-#include <RectangleArea.h>
+#include <Tools/RectangleArea.h>
 #include <CheckPointParser.h>
 #include <CheckPoint.h>
-#include <RectangleParams.h>
-#include <MathUtil.h>
+#include <Tools/RectangleParams.h>
+#include <Tools/MathUtil.h>
 
 CheckPointParser::CheckPointParser(b2World* world, float scale)
         : world_(world), scale_(scale) {

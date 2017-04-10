@@ -4,7 +4,7 @@
 
 #include <Race.h>
 
-#include <Vehicle/CarControlE.h>
+#include <Vehicle/TireControlE.h>
 
 void setclr(int *reg, int mask, int type) {
     if (type)
@@ -57,7 +57,7 @@ void Race::Initialize(VehiclePtr vehicle) {
     world_->SetContactListener(&contactListener_);
 }
 
-int Race::run() {
+int Race::Run() {
     int carState = 0;
 
     int cnt = 0;
@@ -67,7 +67,8 @@ int Race::run() {
         while (window_->pollEvent(Event)) {
             // Close window : exit
             if (Event.type == sf::Event::Closed) {
-                close_ = true;
+                window_->close();
+                return 1;
             } else if (Event.type == sf::Event::KeyPressed) {
                 if (Event.key.code == sf::Keyboard::Key::Escape) {
                     close_ = true;
@@ -107,6 +108,6 @@ int Race::run() {
     return 0;
 }
 
-VehiclePtr Race::getVehicle() {
+VehiclePtr Race::GetVehicle() {
     return vehicle_;
 }

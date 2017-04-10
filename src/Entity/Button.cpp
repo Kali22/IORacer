@@ -4,7 +4,7 @@
 
 #include "Button.h"
 
-bool Button::hovered(sf::Vector2f mousePosition) {
+bool Button::Hovered(sf::Vector2f mousePosition) {
     return background_.getGlobalBounds().contains(mousePosition);
 }
 
@@ -18,8 +18,8 @@ Button::Button(sf::Vector2f pos, sf::Vector2f size, std::string txt, std::functi
     background_.setOutlineColor(sf::Color(50, 120, 70));
 }
 
-bool Button::toggleHover(sf::Vector2f mousePosition) {
-    if (hovered(mousePosition)) {
+bool Button::ToggleHover(sf::Vector2f mousePosition) {
+    if (Hovered(mousePosition)) {
         background_.setFillColor(sf::Color(64, 64, 64)); // Dark Grey
         background_.setOutlineThickness(2);
         return true;
@@ -35,6 +35,6 @@ void Button::Draw(sf::RenderWindow *window) const {
     text_.Draw(window);
 }
 
-void Button::onClick() {
+void Button::OnClick() {
     action_();
 }
