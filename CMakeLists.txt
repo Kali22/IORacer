@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION 3.5)
 
-project(alpha)
+project(IORacer)
 
 # define the build type
 set(CMAKE_BUILD_TYPE Debug)
@@ -23,11 +23,11 @@ file(COPY ${CMAKE_CURRENT_SOURCE_DIR}/resource DESTINATION ${CMAKE_CURRENT_BINAR
 find_package(Doxygen)
 if(DOXYGEN_FOUND)
     configure_file(${CMAKE_CURRENT_SOURCE_DIR}/Doxyfile.in ${CMAKE_CURRENT_BINARY_DIR}/Doxyfile @ONLY)
-#    add_custom_target(doc
-#            ${DOXYGEN_EXECUTABLE} ${CMAKE_CURRENT_BINARY_DIR}/Doxyfile
-#            WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}
-#            COMMENT "Generating API documentation with Doxygen" VERBATIM
-#            )
+    add_custom_target(doc
+            ${DOXYGEN_EXECUTABLE} ${CMAKE_CURRENT_BINARY_DIR}/Doxyfile
+            WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}
+            COMMENT "Generating API documentation with Doxygen" VERBATIM
+            )
 endif(DOXYGEN_FOUND)
 
 install(PROGRAMS ${CMAKE_CURRENT_BINARY_DIR}/src/${PROJECT_NAME} DESTINATION ${CMAKE_CURRENT_BINARY_DIR})
