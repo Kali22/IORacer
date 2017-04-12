@@ -7,7 +7,7 @@ TruckTire::TruckTire(b2World *world, int x, int y, int angle, float scale) {
     static float tireSize = 64.f;
     scale_ = scale;
     if (!loaded) {
-        tireTexture.loadFromFile("../resource/box.png");
+        tireTexture.loadFromFile("../resource/truckTire.png");
         loaded = true;
     }
 
@@ -26,7 +26,7 @@ TruckTire::TruckTire(b2World *world, int x, int y, int angle, float scale) {
     Shape.SetAsBox((tireSize / 2) / scale, (tireSize / 2) / scale);
     b2FixtureDef FixtureDef;
     FixtureDef.friction = 0.2f;
-    FixtureDef.restitution = 0.8f;
+    FixtureDef.restitution = 0.5f;
     FixtureDef.shape = &Shape;
     body_->CreateFixture(&FixtureDef);
 }

@@ -1,3 +1,4 @@
+#include <iostream>
 #include "Box.h"
 
 Box::Box(b2World *world, int x, int y, int angle, float scale) {
@@ -5,6 +6,7 @@ Box::Box(b2World *world, int x, int y, int angle, float scale) {
     static sf::Texture boxTexture;
     static bool loaded = false;
     static float boxSize = 48.f;
+    scale_ = scale;
     if (!loaded) {
         boxTexture.loadFromFile("../resource/box.png");
         loaded = true;
@@ -19,7 +21,7 @@ Box::Box(b2World *world, int x, int y, int angle, float scale) {
     bodyDef.angle = angle * b2_pi / 180.f;
     bodyDef.type = b2_dynamicBody;
     bodyDef.angularDamping = 1.0f;
-    bodyDef.linearDamping = 1.0f;
+    bodyDef.linearDamping = 2.0f;
     body_ = world->CreateBody(&bodyDef);
     body_->SetUserData(this);
 

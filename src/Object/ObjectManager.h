@@ -3,7 +3,6 @@
 #include <string>
 #include <Box2D.h>
 #include <memory.h>
-#include "Box.h"
 #include "Object.h"
 
 class ObjectManager {
