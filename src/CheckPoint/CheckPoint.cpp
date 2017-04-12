@@ -37,4 +37,8 @@ void CheckPoint::BeginContact() {
 
 void CheckPoint::EndContact() {}
 
+sf::Vector2f CheckPoint::GetPosition() const {
+    return area_->GetPosition();
+}
+
 

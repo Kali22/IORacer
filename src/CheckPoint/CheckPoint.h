@@ -42,6 +42,7 @@ public:
 
     void EndContact();
 
+    sf::Vector2f GetPosition() const;
 private:
     Area *area_;
     CheckPointObserver *observer_;

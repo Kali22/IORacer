@@ -50,8 +50,8 @@ void Race::Initialize(VehiclePtr vehicle) {
     // Prepare map
     vehicle_->Initialize(world_, (int)pos.x, (int)pos.y);
 
-    hud_->Initialize(vehicle_);
     checkPointManager_->Reset();
+    hud_->Initialize(vehicle_, checkPointManager_);
     map_->AlignCameraViewSize(*window_);
     map_->SetCameraViewPosition(vehicle_->GetPosition());
     world_->SetContactListener(&contactListener_);

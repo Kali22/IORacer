@@ -42,3 +42,7 @@ void RectangleArea::CreateSFMLRectangle(const sf::Vector2f &position,
     rectangleShape_.setRotation(angle);
 }
 
+sf::Vector2f RectangleArea::GetPosition() const {
+    return sf::Vector2f(rectangleShape_.getPosition());
+}
+

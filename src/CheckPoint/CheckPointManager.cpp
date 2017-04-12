@@ -46,3 +46,7 @@ CheckPointPtr CheckPointManager::GetCurrentCheckPoint() const {
     return checkPoints_[currentCheckPoint_];
 }
 
+sf::Vector2f CheckPointManager::GetNextCheckPointPosition() const {
+    return GetCurrentCheckPoint()->GetPosition();
+}
+

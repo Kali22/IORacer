@@ -31,6 +31,12 @@ public:
      */
     void Draw(sf::RenderWindow *window) const;
 
+    /**
+     * Return next checkpoint coordinates.
+     * @return checkpoint position
+     */
+    sf::Vector2f GetNextCheckPointPosition() const;
+
 private:
     CheckPointPtr GetCurrentCheckPoint() const;
 
