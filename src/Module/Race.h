@@ -31,6 +31,8 @@ private:
     HUDPtr hud_;
     ContactListener contactListener_;
     CheckPointManagerPtr checkPointManager_;
+
+    void HandleKeyboard(sf::Event::KeyEvent Event, int *state, int type);
 };
 
 using RacePtr = std::shared_ptr<Race>;

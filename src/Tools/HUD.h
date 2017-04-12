@@ -60,6 +60,11 @@ public:
      */
     void DebugDisplay(bool option);
 
+    /**
+     * Toggle debug display.
+     */
+    void DebugDisplayToggle();
+
 private:
     /// HUD reference screen
     sf::View hudView_;

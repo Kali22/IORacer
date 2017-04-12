@@ -82,17 +82,20 @@ void HUD::Update() {
 
     // Prepare lap and time data
     ss.str("");
-    /// @TODO CheckPointManager - get active checkpoint
-    /// @TODO CheckPointManager - get # of checkpoints
-    ss << 1 << " / " << 5 << "\n";
-    /// @TODO CheckPointManager - get active lap
-    /// @TODO CheckPointManager - get total # of laps
-    ss << 0 << " / " << 50;
+    int currentCheckPoint = checkPointManager_->GetCurrentCheckPointNumber();
+    int totalCheckPoints = checkPointManager_->GetTotalNumberOfCheckPoints();
+    int currentLap = checkPointManager_->GetCurrentLap();
+    int totalLaps = checkPointManager_->GetTotalLaps();
+    ss << currentCheckPoint << " / " << totalCheckPoints << "\n";
+    ss << currentLap << " / " << totalLaps;
     lapData_.SetText(ss.str());
 
     ss.str("");
-    /// @TODO CheckPointManager - get active lap time (float ?)
-    ss << "\n" << 1 << ":" << 50 << "." << 324 << "\n";
+    float currentLapTime = checkPointManager_->GetCurrentLapTime();
+    float latLapTime = checkPointManager_->GetLastLapTime();
+    float bestLapTime = checkPointManager_->GetBestLapTime();
+    ss << "\n";
+    ss << (int) (currentLapTime / 60.) << ":" << (((int) currentLapTime) % 60) << "." << (int) (currentLapTime * 1000.0f) % 1000 << "\n";
     /// @TODO CheckPointManager - get last lap time (float ?)
     ss << 1 << ":" << 50 << "." << 324 << "\n";
     /// @TODO CheckPointManager - get best lap time (float ?)
@@ -158,5 +161,12 @@ void HUD::PrintBackBox(sf::RenderWindow *window, float posX, float posY, float s
     back.setSize(sf::Vector2f(sizeX, sizeY));
     back.setPosition(posX, posY);
     window->draw(back);
+}
+
+void HUD::DebugDisplayToggle() {
+    if (showDebug_)
+        DebugDisplay(false);
+    else
+        DebugDisplay(true);
 }
 

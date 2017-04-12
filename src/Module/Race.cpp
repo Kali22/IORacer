@@ -13,7 +13,7 @@ void setclr(int *reg, int mask, int type) {
         *reg &= ~mask;
 }
 
-void HandleKeyboard(sf::Event::KeyEvent Event, int *state, int type) {
+void Race::HandleKeyboard(sf::Event::KeyEvent Event, int *state, int type) {
     /// @TODO change to map
     switch (Event.code) {
         case sf::Keyboard::Key::Left:
@@ -30,6 +30,10 @@ void HandleKeyboard(sf::Event::KeyEvent Event, int *state, int type) {
             break;
         case sf::Keyboard::Key::B:
             setclr(state, BRAKE, type);
+            break;
+        case sf::Keyboard::Key::D:
+            if (type)
+                hud_->DebugDisplayToggle();
             break;
         default:
             break;

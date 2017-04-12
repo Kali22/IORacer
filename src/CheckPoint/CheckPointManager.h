@@ -37,11 +37,56 @@ public:
      */
     sf::Vector2f GetNextCheckPointPosition() const;
 
+    /**
+     * Returns current lap time.
+     * Time elapsed from crossing first checkpoint.
+     * @return time in seconds, -1.0 if unavailable
+     */
+    float GetCurrentLapTime() const;
+
+    /**
+     * Returns last lap time.
+     * @return time in seconds, -1.0 if unavailable
+     */
+    float GetLastLapTime() const;
+
+    /**
+     * Returns best lap time.
+     * @return time in seconds, -1.0 if unavailable
+     */
+    float GetBestLapTime() const;
+
+    /**
+     * Returns current lap.
+     * @return current lap number
+     */
+    int GetCurrentLap() const;
+
+    /**
+     * Total number of laps in race
+     * @return # of laps
+     */
+    int GetTotalLaps() const;
+
+    /**
+     * Returns id of recently crossed checkpoint.
+     * @return id of recent checkpoint
+     */
+    int GetCurrentCheckPointNumber() const;
+
+    /**
+     * Total # of checkpoints in lap.
+     * @return # of checkpoints
+     */
+    int GetTotalNumberOfCheckPoints() const;
+
 private:
     CheckPointPtr GetCurrentCheckPoint() const;
 
     std::vector<CheckPointPtr> checkPoints_;
+    std::vector<std::vector<float> > lapTimes_;
     int finishedLap_;
+    int totalLaps_;
     int currentCheckPoint_;
     sf::Clock clock_;
 };
