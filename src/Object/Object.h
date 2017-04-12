@@ -1,14 +1,14 @@
-//
-// Created by maciej on 12.04.17.
-//
+#pragma once
 
-#ifndef IORACER_OBJECT_H
-#define IORACER_OBJECT_H
-
+#include <Box2D.h>
+#include <SFML/Graphics.hpp>
 
 class Object {
+protected:
+    float scale_;
+    b2Body *body_;
+    sf::Sprite sprite_;
 
+public:
+    virtual void draw(sf::RenderWindow *window) = 0;
 };
-
-
-#endif //IORACER_OBJECT_H

@@ -8,6 +8,8 @@ enum entityType {
     CAR,
     CHECK_POINT,
     TIRE,
+    BOX,
+    STATIC_TIRE
 };
 
 

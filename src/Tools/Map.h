@@ -14,6 +14,7 @@
 #include <SFML/Graphics/View.hpp>
 #include <Dynamics/b2Body.h>
 #include <Dynamics/b2World.h>
+#include <Object/ObjectManager.h>
 
 class Map {
 public:
@@ -62,6 +63,8 @@ private:
     b2World *world_;
     b2Body *bands_[4];          //!< Outside bands
     sf::Sprite bands_sprite_[4];
+
+    ObjectManager objectManager;
 };
 
 using MapPtr = std::shared_ptr<Map>;

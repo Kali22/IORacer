@@ -11,7 +11,7 @@ void ObjectManager::draw(sf::RenderWindow *window) {
     }
 }
 
-void ObjectManager::LoadObjects(b2World *world, std::string map_name) {
+void ObjectManager::LoadObjects(b2World *world, std::string map_name, float scale) {
     std::ifstream description;
     description.open("../../resource/maps/" + map_name + "/description");
     char type;
@@ -19,17 +19,10 @@ void ObjectManager::LoadObjects(b2World *world, std::string map_name) {
     while (description >> type >> x >> y >> angle) {
         switch (type) {
             case 'c':
-                objects.push_back(std::make_shared<Box>(world, x, y, angle));
+                objects.push_back(std::make_shared<Box>(world, x, y, angle, scale));
                 break;
             default:
                 std::cerr << "Invalid entity type" << std::endl;
         }
     }
 }
-
-
-
-
-
-
-

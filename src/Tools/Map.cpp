@@ -85,6 +85,7 @@ void Map::LoadMap(const std::string &name, const std::string &full_name) {
     bands_sprite_[3].setPosition(10, 0);
     bands_sprite_[3].setRotation(90);
 
+    objectManager.LoadObjects(world_, name, scale_);
 }
 
 const sf::Drawable &Map::GetViewMap() {
@@ -138,5 +139,6 @@ void Map::RenderBottomLayer(sf::RenderWindow &window) {
     window.draw(bands_sprite_[1]);
     window.draw(bands_sprite_[2]);
     window.draw(bands_sprite_[3]);
+    objectManager.draw(&window);
     window.setView(window.getDefaultView());
 }

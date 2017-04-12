@@ -19,6 +19,7 @@ set(INCLUDE_DIRS
 		${PROJECT_SOURCE_DIR}/src/Module
         ${PROJECT_SOURCE_DIR}/src/Entity
         ${PROJECT_SOURCE_DIR}/src/CheckPoint
+		${PROJECT_SOURCE_DIR}/src/Object
 	${SFML_INCLUDE_DIR}
         ${BOX2D_INCLUDE_DIR}/Box2D
         )
