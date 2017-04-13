@@ -83,23 +83,18 @@ int Race::Run() {
             }
         }
 
-        /* Update states */
+        /* Update physics object states */
         vehicle_->Update(carState, *map_);
 
         /* Simulate the world */
         world_->Step(1 / 60.f, 8, 3);
+
+        /* Update game objects */
         hud_->Update();
+
         /* Rendering */
         map_->SetCameraViewPosition(vehicle_->GetPosition());
         window_->clear(sf::Color::White);
-        if (cnt == 120) {
-            printf("Elapsed time: %f\n", checkPointManager_->GetElapsedTime()
-                    .asSeconds());
-            vehicle_->PrintPos();
-            cnt = 0;
-        } else {
-            cnt++;
-        }
         map_->RenderBottomLayer(*window_);
         window_->setView(map_->GetCameraView());
         checkPointManager_->Draw(window_);

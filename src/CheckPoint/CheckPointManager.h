@@ -7,6 +7,7 @@
 
 /**
  * Store list of chekpoints. Track and update active checkpoint.
+ * @TODO Check and fix laps counting
  */
 class CheckPointManager : public CheckPointObserver, public Drawable {
 public:
@@ -72,23 +73,69 @@ public:
      * Returns id of recently crossed checkpoint.
      * @return id of recent checkpoint
      */
-    int GetCurrentCheckPointNumber() const;
+    int GetCurrentSectorNumber() const;
 
     /**
      * Total # of checkpoints in lap.
      * @return # of checkpoints
      */
-    int GetTotalNumberOfCheckPoints() const;
+    int GetTotalNumberOfSectors() const;
+
+    /**
+     * Chceck whether new lap begin.
+     * @return true for some time after crossing start/meta line
+     */
+    bool IsLapFinished() const;
+
+    /**
+     * Chceck whether new sector begin.
+     * @return true for some time after reaching checkpoint
+     */
+    bool IsSectorFinished() const;
+
+    /**
+     * Returns time in recent sector.
+     * @return time in recent sector in seconds
+     */
+    float GetLastSectorTime() const;
 
 private:
     CheckPointPtr GetCurrentCheckPoint() const;
 
     std::vector<CheckPointPtr> checkPoints_;
-    std::vector<std::vector<float> > lapTimes_;
-    int finishedLap_;
-    int totalLaps_;
-    int currentCheckPoint_;
-    sf::Clock clock_;
+
+    /// Lap time max value
+    const float lapTimeLimit_ = 5999.f;
+
+    /// Current lap wall clock
+    sf::Clock lapClock_;
+    /// Current sector wall clock
+    sf::Clock sectorClock_;
+
+    /// Accumulative sectors times in each lap
+    std::vector<std::vector<float> > accmulativeSectorsTimes_;
+    /// Current sector number
+    int currentSector_;
+    /// Total number of track's sectors
+    unsigned int totalSectors_;
+    /// Current lap number
+    int currentLap_;
+    /// Total number of laps in race
+    unsigned int totalLaps_;
+
+    /// Number of lap with best time
+    int bestLapTimeNumber_;
+    /// Best lap time ever :)
+    float bestLapTime_;
+    /// Number of lap with best time in given sector
+    std::vector<int> bestSectorTimeNumber_;
+    /// Best time in given sector
+    std::vector<float> bestSectorTime_;
+
+    /// Lap finished notification duration in seconds.
+    const float lapFinishIndicatorTime = 5.f;
+    /// Sector finished notification duration in seconds.
+    const float sectorFinishIndicatorTime = 2.f;
 };
 
 using CheckPointManagerPtr = std::shared_ptr<CheckPointManager>;

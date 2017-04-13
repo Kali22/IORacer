@@ -83,6 +83,11 @@ private:
     /// Lap data
     Text lapData_;
 
+    /// Finished lap indicator
+    Text lapFinishedIndicator_;
+    /// Finished sector indicator
+    Text sectorFinishedIndicator_;
+
     /// Vehicle pointer
     VehiclePtr vehicle_;
     /// Map pointer

@@ -15,6 +15,8 @@ HUD::HUD(VehiclePtr vehicle, MapPtr map)
           lapData_("y", "impact", sf::Vector2f(120, 550), 20),
           timeLabels_("y", "impact", sf::Vector2f(0, 625), 20),
           timeData_("y", "impact", sf::Vector2f(85, 625), 20),
+          lapFinishedIndicator_("y", "impact", sf::Vector2f(500, 100), 40),
+          sectorFinishedIndicator_("y", "impact", sf::Vector2f(500, 150), 20),
           map_(map) {
     hudView_.setSize(1200, 800);
     hudView_.setCenter(550, 350);
@@ -82,8 +84,8 @@ void HUD::Update() {
 
     // Prepare lap and time data
     ss.str("");
-    int currentCheckPoint = checkPointManager_->GetCurrentCheckPointNumber();
-    int totalCheckPoints = checkPointManager_->GetTotalNumberOfCheckPoints();
+    int currentCheckPoint = checkPointManager_->GetCurrentSectorNumber();
+    int totalCheckPoints = checkPointManager_->GetTotalNumberOfSectors();
     int currentLap = checkPointManager_->GetCurrentLap();
     int totalLaps = checkPointManager_->GetTotalLaps();
     ss << currentCheckPoint << " / " << totalCheckPoints << "\n";
@@ -92,15 +94,26 @@ void HUD::Update() {
 
     ss.str("");
     float currentLapTime = checkPointManager_->GetCurrentLapTime();
-    float latLapTime = checkPointManager_->GetLastLapTime();
+    float lastLapTime = checkPointManager_->GetLastLapTime();
     float bestLapTime = checkPointManager_->GetBestLapTime();
     ss << "\n";
     ss << (int) (currentLapTime / 60.) << ":" << (((int) currentLapTime) % 60) << "." << (int) (currentLapTime * 1000.0f) % 1000 << "\n";
-    /// @TODO CheckPointManager - get last lap time (float ?)
-    ss << 1 << ":" << 50 << "." << 324 << "\n";
-    /// @TODO CheckPointManager - get best lap time (float ?)
-    ss << 1 << ":" << 50 << "." << 324 << "\n";
+    ss << (int) (lastLapTime / 60.) << ":" << (((int) lastLapTime) % 60) << "." << (int) (lastLapTime * 1000.0f) % 1000 << "\n";
+    ss << (int) (bestLapTime / 60.) << ":" << (((int) bestLapTime) % 60) << "." << (int) (bestLapTime * 1000.0f) % 1000 << "\n";
     timeData_.SetText(ss.str());
+
+    if (checkPointManager_->IsLapFinished()) {
+        ss.str("");
+        ss << (int) (lastLapTime / 60.) << ":" << (((int) lastLapTime) % 60) << "." << (int) (lastLapTime * 1000.0f) % 1000 << "\n";
+        lapFinishedIndicator_.SetText(ss.str());
+    }
+
+    if (checkPointManager_->IsSectorFinished()) {
+        ss.str("");
+        float lastSectorTime = checkPointManager_->GetLastSectorTime();
+        ss << (int) (lastSectorTime / 60.) << ":" << (((int) lastSectorTime) % 60) << "." << (int) (lastSectorTime * 1000.0f) % 1000 << "\n";
+        sectorFinishedIndicator_.SetText(ss.str());
+    }
 }
 
 void HUD::Draw(sf::RenderWindow *window) const {
@@ -145,6 +158,15 @@ void HUD::Draw(sf::RenderWindow *window) const {
     checkpointPoint.setPosition(beginX + checkpointPosition.x, beginY + checkpointPosition.y);
     window->draw(checkpointPoint);
     window->draw(vehiclePoint);
+
+    if (checkPointManager_->IsLapFinished()) {
+        lapFinishedIndicator_.Draw(window);
+    }
+
+    if (checkPointManager_->IsSectorFinished()) {
+        sectorFinishedIndicator_.Draw(window);
+    }
+
     window->setView(window->getDefaultView());
 }
 

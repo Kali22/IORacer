@@ -28,3 +28,7 @@ void Text::Draw(sf::RenderWindow *window) const {
 void Text::SetText(std::string txt) {
     sfText_.setString(txt);
 }
+
+void Text::SetColor(sf::Color color) {
+    sfText_.setColor(color);
+}

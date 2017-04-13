@@ -11,6 +11,8 @@ public:
 
     void SetText(std::string txt);
 
+    void SetColor(sf::Color color);
+
 private:
     sf::Font sfFont_;
     sf::Text sfText_;
