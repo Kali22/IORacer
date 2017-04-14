@@ -28,7 +28,7 @@ void Race::HandleKeyboard(sf::Event::KeyEvent Event, int *state, int type) {
         case sf::Keyboard::Key::Right:
             setclr(state, RIGHT, type);
             break;
-        case sf::Keyboard::Key::B:
+        case sf::Keyboard::Key::Space:
             setclr(state, BRAKE, type);
             break;
         case sf::Keyboard::Key::D:
@@ -94,7 +94,7 @@ int Race::Run() {
 
         /* Rendering */
         float zoomParam = vehicle_->GetSpeed() / vehicle_->GetCarParameters()->maxForwardSpeed;
-        float zoom = 1 + zoomParam * zoomParam;
+        float zoom = 1; //+ zoomParam * zoomParam;
         float zoomInv = 1 / zoom;
         map_->SetCameraViewPosition(vehicle_->GetPosition());
         map_->SetCameraViewZoom(zoom);

@@ -1,6 +1,6 @@
 /**
  *  @file
- *  @ingroup xxx
+ *  @ingroup tire
  *  @author Jacek Łysiak <jaceklysiako.o@gmail.com>
  *  @date 4/1/17
  */
@@ -15,7 +15,9 @@ int Tire::GetEntityType() const {
     return TIRE;
 }
 
-Tire::Tire(b2World *world, float scale, float x, float y) {
+Tire::Tire(b2World *world, float scale, float x, float y, CarParametersPtr carParameters, int positionFlags) {
+    carParameters_ = carParameters;
+
     b2BodyDef bodyDef;
     bodyDef.type = b2_dynamicBody;
     bodyDef.angle = b2_pi / 2;
@@ -28,7 +30,8 @@ Tire::Tire(b2World *world, float scale, float x, float y) {
     tireTexture.loadFromFile("../resource/tire.png");
     tireSprite.setTexture(tireTexture);
     tireSprite.setOrigin(3.f, 6.f);
-    maxLateralImpulse = 0.91f;
+    maxTireFrictionForce_ = 1.51f;
+    tirePositionFlags_ = positionFlags;
 }
 
 Tire::~Tire() {
@@ -40,16 +43,24 @@ b2Vec2 Tire::GetLateralVelocity() {
     return b2Dot(currentRightNormal, body->GetLinearVelocity()) * currentRightNormal;
 }
 
-void Tire::UpdateFriction(float mod, CarParameters &params) {
-    b2Vec2 impulse = body->GetMass() * -GetLateralVelocity();
-    if (impulse.Length() > 5 * mod * maxLateralImpulse)
-        impulse *= 5 * mod * maxLateralImpulse / impulse.Length();
-    body->ApplyLinearImpulse(impulse, body->GetWorldCenter(), true);
-    body->ApplyAngularImpulse(0.5f * body->GetInertia() * -body->GetAngularVelocity(), true);
-    b2Vec2 currentForwardNormal = GetForwardVelocity();
-    float currentForwardSpeed = currentForwardNormal.Normalize();
-    float dragForceMagnitude = -(1.0f - mod + 0.15f) * 0.2f * currentForwardSpeed;
-    body->ApplyForce(dragForceMagnitude * currentForwardNormal, body->GetWorldCenter(), true);
+void Tire::UpdateFriction(float mod) {
+    if (locked_) {
+        b2Vec2 impulse = body->GetMass() * -(GetLateralVelocity() + GetForwardVelocity());
+        if (impulse.Length() > mod * maxTireFrictionForce_)
+            impulse *= mod * maxTireFrictionForce_ / impulse.Length();
+        body->ApplyLinearImpulse(impulse, body->GetWorldCenter(), true);
+        body->ApplyAngularImpulse(0.5f * body->GetInertia() * -body->GetAngularVelocity(), true);
+    } else {
+        b2Vec2 impulse = body->GetMass() * -GetLateralVelocity();
+        if (impulse.Length() > mod * maxTireFrictionForce_)
+            impulse *= mod * maxTireFrictionForce_ / impulse.Length();
+        body->ApplyLinearImpulse(impulse, body->GetWorldCenter(), true);
+        body->ApplyAngularImpulse(0.5f * body->GetInertia() * -body->GetAngularVelocity(), true);
+        b2Vec2 currentForwardNormal = GetForwardVelocity();
+        float currentForwardSpeed = currentForwardNormal.Normalize();
+        float dragForceMagnitude = -(1.0f - mod + 0.25f) * 0.2f * currentForwardSpeed;
+        body->ApplyForce(dragForceMagnitude * currentForwardNormal, body->GetWorldCenter(), true);
+    }
 }
 
 void Tire::Render(sf::RenderWindow &window) {
@@ -64,15 +75,21 @@ b2Vec2 Tire::GetForwardVelocity() {
     return b2Dot(currentRightNormal, body->GetLinearVelocity()) * currentRightNormal;
 }
 
-void Tire::UpdateDrive(int state, float mod, CarParameters &params) {
+void Tire::UpdateDrive(int state, float mod) {
     //find desired speed
     float desiredSpeed = 0;
+    locked_ = false;
+
+    if (state & BRAKE) {
+        locked_ = true;
+    }
+
     switch (state & (UP | DOWN)) {
         case UP:
-            desiredSpeed = params.maxForwardSpeed;
+            desiredSpeed = carParameters_->maxForwardSpeed;
             break;
         case DOWN:
-            desiredSpeed = params.maxBackwardSpeed;
+            desiredSpeed = carParameters_->maxBackwardSpeed;
             break;
         default:
             return;//do nothing
@@ -85,12 +102,14 @@ void Tire::UpdateDrive(int state, float mod, CarParameters &params) {
     //apply necessary force
     float force = 0;
     if (desiredSpeed > currentSpeed)
-        force = params.maxEnginePower;
+        force = carParameters_->maxEnginePower;
     else if (desiredSpeed < currentSpeed)
-        force = -params.maxEnginePower;
+        force = -carParameters_->maxEnginePower;
     else
         return;
-    body->ApplyForce(force * currentForwardNormal, body->GetWorldCenter(), true);
+
+    if (!locked_)
+        body->ApplyForce(force * currentForwardNormal, body->GetWorldCenter(), true);
 }
 
 void Tire::Reset(float x, float y) {
@@ -99,4 +118,8 @@ void Tire::Reset(float x, float y) {
     body->SetAngularVelocity(0);
     body->SetLinearVelocity(b2Vec2(0, 0));
     body->SetTransform(b2Vec2(x, y), b2_pi / 2);
+}
+
+int Tire::GetTirePositionFlags() const {
+    return tirePositionFlags_;
 }

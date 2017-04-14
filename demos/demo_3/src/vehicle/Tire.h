@@ -24,7 +24,7 @@ public:
     sf::Sprite tireSprite;
 
     b2Body *body;
-    float maxLateralImpulse;
+    float maxTireFrictionForce_;
 
     Tire(b2World *world);
     ~Tire();

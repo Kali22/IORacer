@@ -1,6 +1,11 @@
 /**
+ * @addtogroup tire
+ * @ingroup vehicle
+ */
+
+/**
  *  @file
- *  @ingroup xxx
+ *  @ingroup tire
  *  @author Jacek Łysiak <jaceklysiako.o@gmail.com>
  *  @date 4/1/17
  */
@@ -22,9 +27,8 @@ public:
     sf::Sprite tireSprite;
 
     b2Body *body;
-    float maxLateralImpulse;
 
-    Tire(b2World *world, float scale, float x, float y);
+    Tire(b2World *world, float scale, float x, float y, CarParametersPtr carParameters, int positionFlags);
 
     ~Tire();
 
@@ -34,11 +38,31 @@ public:
 
     b2Vec2 GetForwardVelocity();
 
-    void UpdateFriction(float mod, CarParameters &params);
+
+    void UpdateFriction(float mod);
 
     void Render(sf::RenderWindow &window);
 
-    void UpdateDrive(int state, float mod, CarParameters &params);
+    void UpdateDrive(int state, float mod);
+
+    /**
+     * Returns tire position flags.
+     * @return position flags
+     */
+    int GetTirePositionFlags() const;
+private:
+    /// Car parameters structure
+    CarParametersPtr carParameters_;
+    /// Tire position in car
+    int tirePositionFlags_;
+    /// Is wheel is locked?
+    bool locked_;
+
+
+    /// Current load at this wheel
+    float loadForce_;
+    /// Max possible friction force
+    float maxTireFrictionForce_; // = frictionBase * frictionMod * loadForce
 };
 
 

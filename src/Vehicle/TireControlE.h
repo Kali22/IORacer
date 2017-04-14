@@ -1,3 +1,8 @@
+/**
+ *  @file
+ *  @ingroup tire
+ *  @date 4/1/17
+ */
 #pragma once
 
 enum tire_control_e {

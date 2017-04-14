@@ -1,6 +1,6 @@
 /**
- *  @file
- *  @ingroup xxx
+ *  @file Car parameters
+ *  @ingroup vehicle
  *  @author Jacek Łysiak <jaceklysiako.o@gmail.com>
  *  @date 4/5/17
  */
@@ -15,7 +15,7 @@ public:
         baseTireFriction = 1.f;
         maxBackwardSpeed = -20.f;
         maxForwardSpeed = 30.f;
-        maxEnginePower = 10.f;
+        maxEnginePower = 20.f;
         maxSteeringAngle = 20.f;
         steeringSpeed = 40.f;
     }

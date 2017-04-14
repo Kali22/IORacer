@@ -82,7 +82,7 @@ void Vehicle::Initialize(b2World *world, int x, int y) {
     jointDef.upperAngle = 0;//...the joint will not move
     jointDef.localAnchorB.SetZero();//joint anchor in tire is always center
 
-    Tire *tire = new Tire(world);
+    Tire *tire = new Tire(world, 0, 0, 0, CarParametersPtr(), 0);
     jointDef.bodyB = tire->body;
     jointDef.referenceAngle = 0;
     jointDef.localAnchorA.Set(-17.f / SCALE, 18.f / SCALE);
@@ -90,7 +90,7 @@ void Vehicle::Initialize(b2World *world, int x, int y) {
     tires.push_back(tire);
 
     // FRONT RIGHT
-    tire = new Tire(world);
+    tire = new Tire(world, 0, 0, 0, CarParametersPtr(), 0);
     jointDef.bodyB = tire->body;
     jointDef.referenceAngle = 0;
     jointDef.localAnchorA.Set(17.f / SCALE, 18.f / SCALE);
@@ -98,7 +98,7 @@ void Vehicle::Initialize(b2World *world, int x, int y) {
     tires.push_back(tire);
 
     // BACK RIGHT
-    tire = new Tire(world);
+    tire = new Tire(world, 0, 0, 0, CarParametersPtr(), 0);
     jointDef.bodyB = tire->body;
     jointDef.referenceAngle = 0;
     jointDef.localAnchorA.Set(17.f / SCALE, -17.f / SCALE);
@@ -106,7 +106,7 @@ void Vehicle::Initialize(b2World *world, int x, int y) {
     tires.push_back(tire);
 
     // BACK LEFT
-    tire = new Tire(world);
+    tire = new Tire(world, 0, 0, 0, CarParametersPtr(), 0);
     jointDef.bodyB = tire->body;
     jointDef.referenceAngle = 0;
     jointDef.localAnchorA.Set(-17.f / SCALE, -17.f / SCALE);
@@ -121,14 +121,14 @@ void Vehicle::Initialize(b2World *world, int x, int y) {
 void Vehicle::updateFriction(Map &map) {
     for (int i = 0; i < 4; i++) {
         float modifier = map.GetFrictionModifier(tires[i]->tireSprite.getPosition());
-        tires[i]->UpdateFriction(modifier, carParameters);
+        tires[i]->UpdateFriction(modifier);
     }
 }
 
 void Vehicle::updateDrive(int controlState, Map &map) {
     for (int i = 0; i < 4; i++) {
         float modifier = map.GetFrictionModifier(tires[i]->tireSprite.getPosition());
-        tires[i]->UpdateDrive(controlState, modifier, carParameters);
+        tires[i]->UpdateDrive(controlState, modifier);
     }
 }
 

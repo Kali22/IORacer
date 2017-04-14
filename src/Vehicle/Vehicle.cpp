@@ -1,14 +1,14 @@
 /**
  *  @file
- *  @ingroup xxx
+ *  @ingroup vehicle
  *  @author Jacek Łysiak <jaceklysiako.o@gmail.com>
  *  @date 4/1/17
  */
 
 #include <iostream>
-
 #include <Vehicle.h>
 #include <TireControlE.h>
+#include <TirePositionE.h>
 #include <MathUtil.h>
 
 int Vehicle::GetEntityType() const {
@@ -22,8 +22,6 @@ Vehicle::~Vehicle() {
     body->GetWorld()->DestroyJoint(fr_joint);
     body->GetWorld()->DestroyJoint(bl_joint);
     body->GetWorld()->DestroyJoint(br_joint);
-    //for (int i = 0; i < tires.size(); ++i)
-    //    tires[i].reset(); //tires[i]->~Tire();
     body->GetWorld()->DestroyBody(body);
 }
 
@@ -47,9 +45,9 @@ void Vehicle::Update(int state, Map &map) {
     UpdateTurn(state);
 }
 
-void Vehicle::CreateTire(
-        b2World *world, b2RevoluteJoint **jointPtr, b2RevoluteJointDef &jointDef, float arg1, float arg2, float x, float y) {
-    TirePtr tire = std::make_shared<Tire>(world, scale_, x, y);
+void Vehicle::CreateTire(b2World *world, b2RevoluteJoint **jointPtr, b2RevoluteJointDef &jointDef, float arg1, float arg2,
+                         float x, float y, int positionFlags) {
+    TirePtr tire = std::make_shared<Tire>(world, scale_, x, y, carParameters_, positionFlags);
     jointDef.bodyB = tire->body;
     jointDef.localAnchorA.Set(arg1 / scale_, arg2 / scale_);
     *jointPtr = (b2RevoluteJoint *) world->CreateJoint(&jointDef);
@@ -82,18 +80,18 @@ void Vehicle::Initialize(b2World *world, int x, int y) {
     jointDef.bodyA = body;
     jointDef.referenceAngle = 0;
     jointDef.enableLimit = true;
-    jointDef.lowerAngle = 0;//with both these at zero...
-    jointDef.upperAngle = 0;//...the joint will not move
+    jointDef.lowerAngle = 0;    //with both these at zero...
+    jointDef.upperAngle = 0;    //...the joint will not move
     jointDef.localAnchorB.SetZero();//joint anchor in tire is always center
 
     // FRONT LEFT
-    CreateTire(world, &fl_joint, jointDef, -17.f, 18.f, x, y);
+    CreateTire(world, &fl_joint, jointDef, -17.f, 18.f, x, y, FRONT_TIRE | LEFT_TIRE);
     // FRONT RIGHT
-    CreateTire(world, &fr_joint, jointDef, 17.f, 18.f, x, y);
+    CreateTire(world, &fr_joint, jointDef, 17.f, 18.f, x, y, FRONT_TIRE | RIGHT_TIRE);
     // BACK RIGHT
-    CreateTire(world, &bl_joint, jointDef, 17.f, -17.f, x, y);
+    CreateTire(world, &bl_joint, jointDef, 17.f, -17.f, x, y, REAR_TIRE | RIGHT_TIRE);
     // BACK LEFT
-    CreateTire(world, &br_joint, jointDef, -17.f, -17.f, x, y);
+    CreateTire(world, &br_joint, jointDef, -17.f, -17.f, x, y, REAR_TIRE | LEFT_TIRE);
 
     texture_chassis.loadFromFile("../resource/car.png");
     sprite_chassis.setTexture(texture_chassis);
@@ -114,14 +112,18 @@ void Vehicle::Reset(int x, int y) {
 void Vehicle::UpdateFriction(Map &map) {
     for (auto &tire : tires) {
         float modifier = map.GetFrictionModifier(tire->tireSprite.getPosition());
-        tire->UpdateFriction(modifier, *carParameters_);
+        tire->UpdateFriction(modifier);
     }
 }
 
 void Vehicle::UpdateDrive(int controlState, Map &map) {
     for (auto &tire : tires) {
         float modifier = map.GetFrictionModifier(tire->tireSprite.getPosition());
-        tire->UpdateDrive(controlState, modifier, *carParameters_);
+
+        if (tire->GetTirePositionFlags() & REAR_TIRE)
+            tire->UpdateDrive(controlState & ~(BRAKE), modifier);
+        else
+            tire->UpdateDrive(controlState & ~UP, modifier);
     }
 }
 
