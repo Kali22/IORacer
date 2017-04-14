@@ -11,10 +11,12 @@
 HUD::HUD(VehiclePtr vehicle, MapPtr map)
         : vehicle_(vehicle),
           debugData_("x", "impact", sf::Vector2f(0, 0), 20),
-          lapLabels_("y", "impact", sf::Vector2f(0, 550), 20),
-          lapData_("y", "impact", sf::Vector2f(120, 550), 20),
-          timeLabels_("y", "impact", sf::Vector2f(0, 625), 20),
-          timeData_("y", "impact", sf::Vector2f(85, 625), 20),
+          lapLabels_("y", "impact", sf::Vector2f(0, 500), 20),
+          lapData_("y", "impact", sf::Vector2f(70, 500), 20),
+          lapTimeLabels_("y", "impact", sf::Vector2f(0, 598), 20),
+          lapTimeData_("y", "impact", sf::Vector2f(100, 598), 20),
+          sectorTimeLabels_("y", "impact", sf::Vector2f(250, 625), 20),
+          sectorTimeData_("y", "impact", sf::Vector2f(330, 625), 20),
           lapFinishedIndicator_("y", "impact", sf::Vector2f(500, 100), 40),
           sectorFinishedIndicator_("y", "impact", sf::Vector2f(500, 150), 20),
           map_(map) {
@@ -34,16 +36,24 @@ void HUD::Initialize(VehiclePtr vehicle, CheckPointManagerPtr checkPointManager)
 
     std::stringstream ss;
     ss.str("");
-    ss << "Checkpoint:\n";
-    ss << "  \t\t\t\tLap:\n";
+    ss << "Sector:\n";
+    ss << "   \tLap:\n";
     lapLabels_.SetText(ss.str());
 
     ss.str("");
-    ss << "\t\t\tTIME\n";
+    ss << "\t\t\tLAP TIME\n";
+    ss << "     Current:\n";
+    ss << "\t         Last:\n";
+    ss << "\t         Best:\n";
+    ss << "Combined:\n";
+    lapTimeLabels_.SetText(ss.str());
+
+    ss.str("");
+    ss << "\t  SECTOR TIME\n";
     ss << "Current:\n";
     ss << "\t    Last:\n";
     ss << "\t    Best:";
-    timeLabels_.SetText(ss.str());
+    sectorTimeLabels_.SetText(ss.str());
 }
 
 void HUD::Update() {
@@ -92,26 +102,48 @@ void HUD::Update() {
     ss << currentLap << " / " << totalLaps;
     lapData_.SetText(ss.str());
 
-    ss.str("");
+
     float currentLapTime = checkPointManager_->GetCurrentLapTime();
     float lastLapTime = checkPointManager_->GetLastLapTime();
     float bestLapTime = checkPointManager_->GetBestLapTime();
+    float currentSectorTime = checkPointManager_->GetCurrentSectorTime();
+    float lastSectorTime = checkPointManager_->GetLastSectorTime();
+    float bestSectorTime = checkPointManager_->GetBestSectorTime();
+    float combineTime = checkPointManager_->GetCombinedBestTime();
+    ss.str("");
     ss << "\n";
-    ss << (int) (currentLapTime / 60.) << ":" << (((int) currentLapTime) % 60) << "." << (int) (currentLapTime * 1000.0f) % 1000 << "\n";
-    ss << (int) (lastLapTime / 60.) << ":" << (((int) lastLapTime) % 60) << "." << (int) (lastLapTime * 1000.0f) % 1000 << "\n";
-    ss << (int) (bestLapTime / 60.) << ":" << (((int) bestLapTime) % 60) << "." << (int) (bestLapTime * 1000.0f) % 1000 << "\n";
-    timeData_.SetText(ss.str());
+    ss << (int) (currentLapTime / 60.) << ":" << (((int) currentLapTime) % 60) << "."
+       << (int) (currentLapTime * 1000.0f) % 1000 << "\n";
+    ss << (int) (lastLapTime / 60.) << ":" << (((int) lastLapTime) % 60) << "." << (int) (lastLapTime * 1000.0f) % 1000
+       << "\n";
+    ss << (int) (bestLapTime / 60.) << ":" << (((int) bestLapTime) % 60) << "." << (int) (bestLapTime * 1000.0f) % 1000
+       << " / " << checkPointManager_->GetBestLapNumber() << "\n";
+    ss << (int) (combineTime / 60.) << ":" << (((int) combineTime) % 60) << "." << (int) (combineTime * 1000.0f) % 1000
+       << "\n";
+    lapTimeData_.SetText(ss.str());
+
+    ss.str("");
+    ss << "\n";
+    ss << (int) (currentSectorTime / 60.) << ":" << (((int) currentSectorTime) % 60) << "."
+       << (int) (currentSectorTime * 1000.0f) % 1000 << "\n";
+    ss << (int) (lastSectorTime / 60.) << ":" << (((int) lastSectorTime) % 60) << "." << (int) (lastSectorTime * 1000.0f) % 1000
+       << "\n";
+    ss << (int) (bestSectorTime / 60.) << ":" << (((int) bestSectorTime) % 60) << "." << (int) (bestSectorTime * 1000.0f) % 1000
+       << " / " << checkPointManager_->GetBestSectorLapNumber() << "\n";
+    sectorTimeData_.SetText(ss.str());
 
     if (checkPointManager_->IsLapFinished()) {
         ss.str("");
-        ss << (int) (lastLapTime / 60.) << ":" << (((int) lastLapTime) % 60) << "." << (int) (lastLapTime * 1000.0f) % 1000 << "\n";
+        ss << (int) (lastLapTime / 60.) << ":" << (((int) lastLapTime) % 60) << "."
+           << (int) (lastLapTime * 1000.0f) % 1000 << "\n";
         lapFinishedIndicator_.SetText(ss.str());
     }
 
     if (checkPointManager_->IsSectorFinished()) {
         ss.str("");
-        float lastSectorTime = checkPointManager_->GetLastSectorTime();
-        ss << (int) (lastSectorTime / 60.) << ":" << (((int) lastSectorTime) % 60) << "." << (int) (lastSectorTime * 1000.0f) % 1000 << "\n";
+        float previousSectorTime = checkPointManager_->GetPreviousSectorTime();
+        ss << (int) (previousSectorTime / 60.) << ":" << (((int) previousSectorTime) % 60) << "."
+           << (int) (previousSectorTime * 1000.0f) % 1000 << "\n";
         sectorFinishedIndicator_.SetText(ss.str());
     }
 }
@@ -120,15 +152,18 @@ void HUD::Draw(sf::RenderWindow *window) const {
     // Draw data
     window->setView(hudView_);
     if (showDebug_) {
-        PrintBackBox(window, -10.f, -20.f, 200, 500);
+        PrintBackBox(window, -10.f, -20.f, 200, 450);
         debugData_.Draw(window);
     }
-    PrintBackBox(window, -10.f, 600.f, 200, 120);
-    PrintBackBox(window, -10.f, 530.f, 200, 56);
-    timeData_.Draw(window);
-    timeLabels_.Draw(window);
+    PrintBackBox(window, -10.f, 570.f, 230, 150);
+    PrintBackBox(window, -10.f, 480.f, 200, 56);
+    PrintBackBox(window, 230.f, 600.f, 200, 120);
+    lapTimeData_.Draw(window);
+    lapTimeLabels_.Draw(window);
     lapData_.Draw(window);
     lapLabels_.Draw(window);
+    sectorTimeData_.Draw(window);
+    sectorTimeLabels_.Draw(window);
 
     // Draw minimap
     sf::Vector2u windowSize = window->getSize();

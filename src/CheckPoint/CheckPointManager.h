@@ -47,15 +47,46 @@ public:
 
     /**
      * Returns last lap time.
-     * @return time in seconds, -1.0 if unavailable
+     * @return time in seconds
      */
     float GetLastLapTime() const;
 
     /**
      * Returns best lap time.
-     * @return time in seconds, -1.0 if unavailable
+     * @return time in seconds
      */
     float GetBestLapTime() const;
+
+    /**
+     * Returns current time in current sector.
+     * Time elapsed from crossing last checkpoint.
+     * @return time in seconds
+     */
+    float GetCurrentSectorTime() const;
+
+    /**
+     * Returns last time in current sector.
+     * @return time in seconds
+     */
+    float GetLastSectorTime() const;
+
+    /**
+     * Returns best time in current sector.
+     * @return time in seconds
+     */
+    float GetBestSectorTime() const;
+
+    /**
+     * Returns number of lap with best time in current sector.
+     * @return time in seconds
+     */
+    int GetBestSectorLapNumber() const;
+
+    /**
+     * Returns best lap number.
+     * @return lap number
+     */
+    int GetBestLapNumber() const;
 
     /**
      * Returns current lap.
@@ -94,18 +125,22 @@ public:
     bool IsSectorFinished() const;
 
     /**
-     * Returns time in recent sector.
-     * @return time in recent sector in seconds
+     * Returns time in recently finished sector.
+     * @return time in in seconds
      */
-    float GetLastSectorTime() const;
+    float GetPreviousSectorTime() const;
+
+    /**
+     * Returns combined best lap time.
+     * It's sum of best sector times.
+     * @return time in seconds
+     */
+    float GetCombinedBestTime() const;
 
 private:
     CheckPointPtr GetCurrentCheckPoint() const;
 
     std::vector<CheckPointPtr> checkPoints_;
-
-    /// Lap time max value
-    const float lapTimeLimit_ = 5999.f;
 
     /// Current lap wall clock
     sf::Clock lapClock_;
@@ -113,7 +148,10 @@ private:
     sf::Clock sectorClock_;
 
     /// Accumulative sectors times in each lap
-    std::vector<std::vector<float> > accmulativeSectorsTimes_;
+    std::vector<std::vector<float> > accumulativeSectorsTimes_;
+    /// Sector times
+    std::vector<std::vector<float> > sectorsTimes_;
+
     /// Current sector number
     int currentSector_;
     /// Total number of track's sectors
@@ -127,6 +165,9 @@ private:
     int bestLapTimeNumber_;
     /// Best lap time ever :)
     float bestLapTime_;
+    /// Combined best time
+    float combinedBestTime_;
+    
     /// Number of lap with best time in given sector
     std::vector<int> bestSectorTimeNumber_;
     /// Best time in given sector

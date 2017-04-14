@@ -2,12 +2,6 @@
 /**
  *  @defgroup hud Head-Up Display
  *  Head-Up Display module.
- *
- *  @TODO Show: active lap
- *  @TODO Show: laps to go
- *  @TODO Show: best lap time
- *  @TODO Show: last lap time
- *  @TODO Show: elapsed time
  */
 
 /**
@@ -74,9 +68,15 @@ private:
     Text debugData_;
 
     /// Time labels
-    Text timeLabels_;
+    Text lapTimeLabels_;
     /// Timming data
-    Text timeData_;
+    Text lapTimeData_;
+
+    /// Sector time labels
+    Text sectorTimeLabels_;
+    /// Sector timming data
+    Text sectorTimeData_;
+
 
     /// Lap data labels
     Text lapLabels_;
