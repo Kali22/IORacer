@@ -6,90 +6,38 @@
 #include <CheckPoint.h>
 #include <CheckPointManager.h>
 
-CheckPointManager::CheckPointManager(std::vector<CheckPointPtr> checkPoints)
-        : checkPoints_(checkPoints), currentLap_(1), currentSector_(1) {
+CheckPointManager::CheckPointManager(std::vector<CheckPointPtr> checkPoints, int totalLaps)
+        : checkPoints_(checkPoints), currentLap_(1), currentSector_(0), totalLaps_(totalLaps) {
     assert(!checkPoints.empty());
     for (auto checkPoint : checkPoints) {
         checkPoint->SetObserver(this);
     }
+    totalSectors_ = (int) checkPoints_.size();
+    timeManager_ = std::make_shared<TimeManager>(currentSector_, currentLap_, totalSectors_);
     Reset();
 }
 
 void CheckPointManager::Reset() {
     GetCurrentCheckPoint()->SetEnable(false);
-    currentSector_ = 1;
+    currentSector_ = 0;
     currentLap_ = 1;
     GetCurrentCheckPoint()->SetEnable(true);
-
-    /// @TODO ???? End of race conditions?
-    totalLaps_ = 100;
-    totalSectors_ = (int) checkPoints_.size();
-
-    // No lap finished
-    combinedBestTime_ = 0;
-    bestLapTimeNumber_ = 0;
-    bestLapTime_ = 0;
-    lapClock_.restart();
-    sectorClock_.restart();
-
-    accumulativeSectorsTimes_.clear();
-    sectorsTimes_.clear();
-    bestSectorTimeNumber_.clear();
-    bestSectorTime_.clear();
-    bestSectorTimeNumber_ = std::vector<int>(totalSectors_ + 1, 0);
-    bestSectorTime_ = std::vector<float>(totalSectors_ + 1, 0);
-    // Add zeros in 'guard' zero lap
-    accumulativeSectorsTimes_.push_back(std::vector<float>(totalSectors_ + 1, 0.0));
-    sectorsTimes_.push_back(std::vector<float>(totalSectors_ + 1, 0.0));
-    // Add guards in current lap
-    accumulativeSectorsTimes_.push_back(std::vector<float>(1, 0.0));
-    sectorsTimes_.push_back(std::vector<float>(1, 0.0));
-    assert(accumulativeSectorsTimes_.size() == 2);
-    assert(sectorsTimes_.size() == 2);
-}
-
-sf::Time CheckPointManager::GetElapsedTime() const {
-    return lapClock_.getElapsedTime();
+    timeManager_->Reset();
 }
 
 void CheckPointManager::NotifyCheckPointReached() {
-    // CheckPoint reached?
+    // CheckPoint reached? If reached, CheckPoint should be disabled.
     if (GetCurrentCheckPoint()->IsEnabled()) {
         return;
     }
-    // Sector finished, register times
-    float sectorTime = sectorClock_.getElapsedTime().asSeconds();
-    float lapTime = lapClock_.getElapsedTime().asSeconds();
-    sectorsTimes_[currentLap_].push_back(sectorTime);
-    accumulativeSectorsTimes_[currentLap_].push_back(lapTime);
-    sectorClock_.restart();
-
-    // Check best sector time
-    if ((sectorTime < bestSectorTime_[currentSector_]) || (bestSectorTime_[currentSector_] == 0.f)) {
-        bestSectorTime_[currentSector_] = sectorTime;
-        bestSectorTimeNumber_[currentSector_] = currentLap_;
-    }
-
+    // Sector finished, register sector time
+    timeManager_->BeginNewSector();
     currentSector_++;
-    if (currentSector_ > totalSectors_) {
-        // Check best lap time
-        if ((lapTime < bestLapTime_) || (bestLapTime_ == 0.f)) {
-            bestLapTime_ = lapTime;
-            bestLapTimeNumber_ = currentLap_;
-        }
-        // Recalculate combined best lap time
-        combinedBestTime_ = 0;
-        for (auto t : bestSectorTime_)
-            combinedBestTime_+= t;
-
+    if (currentSector_ == totalSectors_) {
+        // Lap finished, register lap time
+        timeManager_->BeginNewLap();
         currentLap_++;
-        currentSector_ = 1;
-        lapClock_.restart();
-        // Add new vector of times with guard
-        accumulativeSectorsTimes_.push_back(std::vector<float>(1, 0.0));
-        sectorsTimes_.push_back(std::vector<float>(1, 0.0));
-        assert(accumulativeSectorsTimes_.size() == currentLap_ + 1);
-        assert(sectorsTimes_.size() == currentLap_ + 1);
+        currentSector_ = 0;
     }
     GetCurrentCheckPoint()->SetEnable(true);
 }
@@ -100,81 +48,42 @@ void CheckPointManager::Draw(sf::RenderWindow *window) const {
 }
 
 CheckPointPtr CheckPointManager::GetCurrentCheckPoint() const {
-    return checkPoints_[currentSector_ - 1];
+    return checkPoints_[currentSector_];
 }
 
 sf::Vector2f CheckPointManager::GetNextCheckPointPosition() const {
     return GetCurrentCheckPoint()->GetPosition();
 }
 
-float CheckPointManager::GetLastLapTime() const {
-    if (currentLap_ > 1) {
-        return accumulativeSectorsTimes_[currentLap_ - 1][totalSectors_];
-    } else {
-        return 0.f;
-    }
-}
 
-float CheckPointManager::GetBestLapTime() const {
-    return bestLapTime_;
-}
-
-int CheckPointManager::GetCurrentLap() const {
+int CheckPointManager::GetCurrentLapNumber() const {
     return currentLap_;
 }
 
-int CheckPointManager::GetTotalLaps() const {
+int CheckPointManager::GetTotalNumberOfLaps() const {
     return totalLaps_;
 }
 
-float CheckPointManager::GetCurrentLapTime() const {
-    return lapClock_.getElapsedTime().asSeconds();
+int CheckPointManager::GetTotalNumberOfSectors() const {
+    return totalSectors_;
 }
 
 int CheckPointManager::GetCurrentSectorNumber() const {
     return currentSector_;
 }
 
-int CheckPointManager::GetTotalNumberOfSectors() const {
-    return (int) totalSectors_;
+void CheckPointManager::Update() {
+    timeManager_->Update();
 }
 
-bool CheckPointManager::IsSectorFinished() const {
-    return (sectorClock_.getElapsedTime().asSeconds() < sectorFinishIndicatorTime) &&
-           ((currentLap_ > 1) || (currentSector_ > 1));
+TimeManagerPtr CheckPointManager::GetTimeManager() const {
+    return timeManager_;
 }
 
-bool CheckPointManager::IsLapFinished() const {
-    return (lapClock_.getElapsedTime().asSeconds() < lapFinishIndicatorTime) && (currentLap_ > 1);
+bool CheckPointManager::NewSectorBeginNotify() const {
+    return (timeManager_->NewSectorBeginNotify()) && ((currentLap_ > 1) || (currentSector_ > 0));
 }
 
-float CheckPointManager::GetPreviousSectorTime() const {
-    return (currentSector_ > 1 ?
-            sectorsTimes_[currentLap_][currentSector_ - 1] :
-            sectorsTimes_[currentLap_ - 1][totalSectors_]);
+bool CheckPointManager::NewLapBeginNotify() const {
+    return (timeManager_->NewLapBeginNotify()) &&  (currentLap_ > 1);
 }
-
-int CheckPointManager::GetBestLapNumber() const {
-    return bestLapTimeNumber_;
-}
-
-float CheckPointManager::GetCurrentSectorTime() const {
-    return sectorClock_.getElapsedTime().asSeconds();
-}
-
-float CheckPointManager::GetLastSectorTime() const {
-    return sectorsTimes_[currentLap_ - 1][currentSector_];
-}
-
-float CheckPointManager::GetBestSectorTime() const {
-    return bestSectorTime_[currentSector_];
-}
-
-int CheckPointManager::GetBestSectorLapNumber() const {
-    return bestSectorTimeNumber_[currentSector_];
-}
-
-float CheckPointManager::GetCombinedBestTime() const {
-    return combinedBestTime_;
-}
-

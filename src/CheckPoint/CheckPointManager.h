@@ -1,27 +1,26 @@
 #pragma once
 
-#include <CheckPoint.h>
-#include <CheckPointObserver.h>
+#include <CheckPoint/CheckPoint.h>
+#include <CheckPoint/CheckPointObserver.h>
 #include <SFML/System/Clock.hpp>
-#include <Drawable.h>
+#include <Entity/Drawable.h>
+#include <Entity/Updatable.h>
+#include <CheckPoint/TimeManager.h>
 
 /**
  * Store list of chekpoints. Track and update active checkpoint.
- * @TODO Check and fix laps counting
  */
-class CheckPointManager : public CheckPointObserver, public Drawable {
+class CheckPointManager : public CheckPointObserver, public Drawable, public Updatable {
 public:
-    CheckPointManager(std::vector<CheckPointPtr> checkPoints);
+    CheckPointManager(std::vector<CheckPointPtr> checkPoints, int totalLaps);
 
     /**
      * Reset active checkpoint to first on the list.
      */
     void Reset();
 
-    sf::Time GetElapsedTime() const;
-
     /**
-     * When function is called move active checkpoint indext to next checkpoint
+     * When function is called move active checkpoint index to next checkpoint
      * if current active checkpoint was already set to disabled.
      * Call SetEnable(true) on new active checkpoint.
      */
@@ -32,151 +31,37 @@ public:
      */
     void Draw(sf::RenderWindow *window) const;
 
-    /**
-     * Return next checkpoint coordinates.
-     * @return checkpoint position
-     */
+    void Update();
+
     sf::Vector2f GetNextCheckPointPosition() const;
 
-    /**
-     * Returns current lap time.
-     * Time elapsed from crossing first checkpoint.
-     * @return time in seconds, -1.0 if unavailable
-     */
-    float GetCurrentLapTime() const;
+    TimeManagerPtr GetTimeManager() const;
 
-    /**
-     * Returns last lap time.
-     * @return time in seconds
-     */
-    float GetLastLapTime() const;
+    bool NewSectorBeginNotify() const;
 
-    /**
-     * Returns best lap time.
-     * @return time in seconds
-     */
-    float GetBestLapTime() const;
+    bool NewLapBeginNotify() const;
 
-    /**
-     * Returns current time in current sector.
-     * Time elapsed from crossing last checkpoint.
-     * @return time in seconds
-     */
-    float GetCurrentSectorTime() const;
+    int GetTotalNumberOfLaps() const;
 
-    /**
-     * Returns last time in current sector.
-     * @return time in seconds
-     */
-    float GetLastSectorTime() const;
-
-    /**
-     * Returns best time in current sector.
-     * @return time in seconds
-     */
-    float GetBestSectorTime() const;
-
-    /**
-     * Returns number of lap with best time in current sector.
-     * @return time in seconds
-     */
-    int GetBestSectorLapNumber() const;
-
-    /**
-     * Returns best lap number.
-     * @return lap number
-     */
-    int GetBestLapNumber() const;
-
-    /**
-     * Returns current lap.
-     * @return current lap number
-     */
-    int GetCurrentLap() const;
-
-    /**
-     * Total number of laps in race
-     * @return # of laps
-     */
-    int GetTotalLaps() const;
-
-    /**
-     * Returns id of recently crossed checkpoint.
-     * @return id of recent checkpoint
-     */
-    int GetCurrentSectorNumber() const;
-
-    /**
-     * Total # of checkpoints in lap.
-     * @return # of checkpoints
-     */
     int GetTotalNumberOfSectors() const;
 
-    /**
-     * Chceck whether new lap begin.
-     * @return true for some time after crossing start/meta line
-     */
-    bool IsLapFinished() const;
+    int GetCurrentLapNumber() const;
 
-    /**
-     * Chceck whether new sector begin.
-     * @return true for some time after reaching checkpoint
-     */
-    bool IsSectorFinished() const;
-
-    /**
-     * Returns time in recently finished sector.
-     * @return time in in seconds
-     */
-    float GetPreviousSectorTime() const;
-
-    /**
-     * Returns combined best lap time.
-     * It's sum of best sector times.
-     * @return time in seconds
-     */
-    float GetCombinedBestTime() const;
-
+    int GetCurrentSectorNumber() const;
 private:
     CheckPointPtr GetCurrentCheckPoint() const;
 
     std::vector<CheckPointPtr> checkPoints_;
 
-    /// Current lap wall clock
-    sf::Clock lapClock_;
-    /// Current sector wall clock
-    sf::Clock sectorClock_;
-
-    /// Accumulative sectors times in each lap
-    std::vector<std::vector<float> > accumulativeSectorsTimes_;
-    /// Sector times
-    std::vector<std::vector<float> > sectorsTimes_;
-
+    TimeManagerPtr timeManager_;
     /// Current sector number
     int currentSector_;
     /// Total number of track's sectors
-    unsigned int totalSectors_;
+    int totalSectors_;
     /// Current lap number
     int currentLap_;
     /// Total number of laps in race
-    unsigned int totalLaps_;
-
-    /// Number of lap with best time
-    int bestLapTimeNumber_;
-    /// Best lap time ever :)
-    float bestLapTime_;
-    /// Combined best time
-    float combinedBestTime_;
-    
-    /// Number of lap with best time in given sector
-    std::vector<int> bestSectorTimeNumber_;
-    /// Best time in given sector
-    std::vector<float> bestSectorTime_;
-
-    /// Lap finished notification duration in seconds.
-    const float lapFinishIndicatorTime = 5.f;
-    /// Sector finished notification duration in seconds.
-    const float sectorFinishIndicatorTime = 2.f;
+    int totalLaps_;
 };
 
 using CheckPointManagerPtr = std::shared_ptr<CheckPointManager>;

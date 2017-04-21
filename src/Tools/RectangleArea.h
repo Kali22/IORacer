@@ -18,6 +18,8 @@ public:
     void SetCollisionUserData(Entity *entity);
 
     virtual sf::Vector2f GetPosition() const;
+
+    void SetTexture(const sf::Texture *texture);
 private:
     void CreateSFMLRectangle(const sf::Vector2f &position,
                              const sf::Vector2f &size,

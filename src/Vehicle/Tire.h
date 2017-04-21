@@ -58,9 +58,6 @@ private:
     /// Is wheel is locked?
     bool locked_;
 
-
-    /// Current load at this wheel
-    float loadForce_;
     /// Max possible friction force
     float maxTireFrictionForce_; // = frictionBase * frictionMod * loadForce
 };

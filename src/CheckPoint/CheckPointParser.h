@@ -22,5 +22,7 @@ private:
     b2World *world_;
     float scale_;
     std::ifstream input_;
+
+    sf::Texture checkPointTexture_;
 };
 

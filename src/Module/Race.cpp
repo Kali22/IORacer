@@ -90,20 +90,16 @@ int Race::Run() {
         world_->Step(1 / 60.f, 8, 3);
 
         /* Update game objects */
+        checkPointManager_->Update();
         hud_->Update();
 
         /* Rendering */
-        float zoomParam = vehicle_->GetSpeed() / vehicle_->GetCarParameters()->maxForwardSpeed;
-        float zoom = 1; //+ zoomParam * zoomParam;
-        float zoomInv = 1 / zoom;
         map_->SetCameraViewPosition(vehicle_->GetPosition());
-        map_->SetCameraViewZoom(zoom);
         window_->clear(sf::Color::Black);
         map_->RenderBottomLayer(*window_);
         window_->setView(map_->GetCameraView());
         checkPointManager_->Draw(window_);
         vehicle_->Render(*window_);
-        map_->SetCameraViewZoom(zoomInv);
         window_->setView(window_->getDefaultView());
 
         hud_->Draw(window_);

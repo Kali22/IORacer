@@ -6,26 +6,15 @@
  */
 
 #include <Tools/HUD.h>
-#include <iomanip>
+#include <Entity/TimeIndicator.h>
+#include <Entity/IntegerIndicator.h>
 
 HUD::HUD(VehiclePtr vehicle, MapPtr map)
-        : vehicle_(vehicle),
-          debugData_("x", "impact", sf::Vector2f(0, 0), 20),
-          lapLabels_("y", "impact", sf::Vector2f(0, 500), 20),
-          lapData_("y", "impact", sf::Vector2f(70, 500), 20),
-          lapTimeLabels_("y", "impact", sf::Vector2f(0, 598), 20),
-          lapTimeData_("y", "impact", sf::Vector2f(100, 598), 20),
-          sectorTimeLabels_("y", "impact", sf::Vector2f(250, 625), 20),
-          sectorTimeData_("y", "impact", sf::Vector2f(330, 625), 20),
-          lapFinishedIndicator_("y", "impact", sf::Vector2f(500, 100), 40),
-          sectorFinishedIndicator_("y", "impact", sf::Vector2f(500, 150), 20),
-          map_(map) {
+        : vehicle_(vehicle), map_(map) {
     hudView_.setSize(1200, 800);
     hudView_.setCenter(550, 350);
     hudView_.setViewport(sf::FloatRect(0, 0, 1.0f, 1.0f));
-
-    /// @TODO showDebug_ = true temporary true at the begining...
-    showDebug_ = true;
+    showDebug_ = false;
 }
 
 HUD::~HUD() {}
@@ -34,140 +23,38 @@ void HUD::Initialize(VehiclePtr vehicle, CheckPointManagerPtr checkPointManager)
     vehicle_ = vehicle;
     checkPointManager_ = checkPointManager;
 
-    std::stringstream ss;
-    ss.str("");
-    ss << "Sector:\n";
-    ss << "   \tLap:\n";
-    lapLabels_.SetText(ss.str());
-
-    ss.str("");
-    ss << "\t\t\tLAP TIME\n";
-    ss << "     Current:\n";
-    ss << "\t         Last:\n";
-    ss << "\t         Best:\n";
-    ss << "Combined:\n";
-    lapTimeLabels_.SetText(ss.str());
-
-    ss.str("");
-    ss << "\t  SECTOR TIME\n";
-    ss << "Current:\n";
-    ss << "\t    Last:\n";
-    ss << "\t    Best:";
-    sectorTimeLabels_.SetText(ss.str());
+    CreateSectorLapContainer();
+    CreateLapTimeContainer();
+    CreateSectorTimeContainer();
+    CreateNotifyContainer();
 }
 
 void HUD::Update() {
     if (vehicle_ == nullptr || checkPointManager_ == nullptr) {
         return;
     }
-    std::stringstream ss;
 
-    // Get debug data if needed
-    if (showDebug_) {
-        sf::Vector2f mapPos = vehicle_->GetPosition();
-        sf::Vector2f boxPos = vehicle_->GetBoxPosition();
-        ss << std::fixed;
-        ss << std::setprecision(3);
-        ss << "--- SFML ---\n";
-        ss << "X[px]: " << mapPos.x << "\n";
-        ss << "Y[px]: " << mapPos.y << "\n";
-        ss << "[deg]: " << vehicle_->GetAngle() << "\n\n";
-
-        ss << "--- Box 2D ---\n";
-        ss << "X[m]: " << boxPos.x << "\n";
-        ss << "Y[m]: " << boxPos.y << "\n";
-        ss << "[rad]: " << vehicle_->GetBoxAngle() << "\n";
-        ss << "vel[m/s]: " << vehicle_->GetSpeed() << "\n";
-        /// @todo vehicle - get actuall steering angle
-        ss << "steer[deg]: " << 0.000 << "\n";
-        /// @todo vehicle - get lock angle
-        ss << "lock[deg]: " << 0.000 << "\n\n";
-
-
-        ss << "--- Tires ---\n";
-        ss << "FL mod: " << vehicle_->GetTireModifier(0, *map_) << "\n";
-        ss << "FR mod: " << vehicle_->GetTireModifier(1, *map_) << "\n";
-        ss << "BL mod: " << vehicle_->GetTireModifier(3, *map_) << "\n";
-        ss << "BR mod: " << vehicle_->GetTireModifier(2, *map_) << "\n";
-        debugData_.SetText(ss.str());
+    for (auto el : containers_) {
+        el->Update();
     }
 
-    // Prepare lap and time data
-    ss.str("");
-    int currentCheckPoint = checkPointManager_->GetCurrentSectorNumber();
-    int totalCheckPoints = checkPointManager_->GetTotalNumberOfSectors();
-    int currentLap = checkPointManager_->GetCurrentLap();
-    int totalLaps = checkPointManager_->GetTotalLaps();
-    ss << currentCheckPoint << " / " << totalCheckPoints << "\n";
-    ss << currentLap << " / " << totalLaps;
-    lapData_.SetText(ss.str());
-
-
-    float currentLapTime = checkPointManager_->GetCurrentLapTime();
-    float lastLapTime = checkPointManager_->GetLastLapTime();
-    float bestLapTime = checkPointManager_->GetBestLapTime();
-    float currentSectorTime = checkPointManager_->GetCurrentSectorTime();
-    float lastSectorTime = checkPointManager_->GetLastSectorTime();
-    float bestSectorTime = checkPointManager_->GetBestSectorTime();
-    float combineTime = checkPointManager_->GetCombinedBestTime();
-    ss.str("");
-    ss << "\n";
-    ss << (int) (currentLapTime / 60.) << ":" << (((int) currentLapTime) % 60) << "."
-       << (int) (currentLapTime * 1000.0f) % 1000 << "\n";
-    ss << (int) (lastLapTime / 60.) << ":" << (((int) lastLapTime) % 60) << "." << (int) (lastLapTime * 1000.0f) % 1000
-       << "\n";
-    ss << (int) (bestLapTime / 60.) << ":" << (((int) bestLapTime) % 60) << "." << (int) (bestLapTime * 1000.0f) % 1000
-       << " / " << checkPointManager_->GetBestLapNumber() << "\n";
-    ss << (int) (combineTime / 60.) << ":" << (((int) combineTime) % 60) << "." << (int) (combineTime * 1000.0f) % 1000
-       << "\n";
-    lapTimeData_.SetText(ss.str());
-
-    ss.str("");
-    ss << "\n";
-    ss << (int) (currentSectorTime / 60.) << ":" << (((int) currentSectorTime) % 60) << "."
-       << (int) (currentSectorTime * 1000.0f) % 1000 << "\n";
-    ss << (int) (lastSectorTime / 60.) << ":" << (((int) lastSectorTime) % 60) << "." << (int) (lastSectorTime * 1000.0f) % 1000
-       << "\n";
-    ss << (int) (bestSectorTime / 60.) << ":" << (((int) bestSectorTime) % 60) << "." << (int) (bestSectorTime * 1000.0f) % 1000
-       << " / " << checkPointManager_->GetBestSectorLapNumber() << "\n";
-    sectorTimeData_.SetText(ss.str());
-
-    if (checkPointManager_->IsLapFinished()) {
-        ss.str("");
-        ss << (int) (lastLapTime / 60.) << ":" << (((int) lastLapTime) % 60) << "."
-           << (int) (lastLapTime * 1000.0f) % 1000 << "\n";
-        lapFinishedIndicator_.SetText(ss.str());
+    if (checkPointManager_->NewLapBeginNotify()) {
+        lapFinishIndicator_->Show();
+    } else {
+        lapFinishIndicator_->Hide();
     }
 
-    if (checkPointManager_->IsSectorFinished()) {
-        ss.str("");
-        float previousSectorTime = checkPointManager_->GetPreviousSectorTime();
-        ss << (int) (previousSectorTime / 60.) << ":" << (((int) previousSectorTime) % 60) << "."
-           << (int) (previousSectorTime * 1000.0f) % 1000 << "\n";
-        sectorFinishedIndicator_.SetText(ss.str());
+    if (checkPointManager_->NewSectorBeginNotify()) {
+        sectorFinishIndicator_->Show();
+    } else {
+        sectorFinishIndicator_->Hide();
     }
 }
 
 void HUD::Draw(sf::RenderWindow *window) const {
-    // Draw data
     window->setView(hudView_);
-    if (showDebug_) {
-        PrintBackBox(window, -10.f, -20.f, 200, 450);
-        debugData_.Draw(window);
-    }
-    PrintBackBox(window, -10.f, 570.f, 230, 150);
-    PrintBackBox(window, -10.f, 480.f, 200, 56);
-    PrintBackBox(window, 230.f, 600.f, 200, 120);
-    lapTimeData_.Draw(window);
-    lapTimeLabels_.Draw(window);
-    lapData_.Draw(window);
-    lapLabels_.Draw(window);
-    sectorTimeData_.Draw(window);
-    sectorTimeLabels_.Draw(window);
 
-    // Draw minimap
     sf::Vector2u windowSize = window->getSize();
-    PrintBackBox(window, windowSize.x - 360.f, windowSize.y - 250.f, 300, 170.f);
     sf::Sprite &minimap = map_->GetMinimap();
     minimap.setPosition(windowSize.x - 360.f, windowSize.y - 250.f);
     minimap.setScale(0.39, 0.39);
@@ -194,14 +81,10 @@ void HUD::Draw(sf::RenderWindow *window) const {
     window->draw(checkpointPoint);
     window->draw(vehiclePoint);
 
-    if (checkPointManager_->IsLapFinished()) {
-        lapFinishedIndicator_.Draw(window);
+    for (auto el : containers_) {
+        if (el != nullptr)
+            el->Draw(window);
     }
-
-    if (checkPointManager_->IsSectorFinished()) {
-        sectorFinishedIndicator_.Draw(window);
-    }
-
     window->setView(window->getDefaultView());
 }
 
@@ -209,21 +92,157 @@ void HUD::DebugDisplay(bool option) {
     showDebug_ = option;
 }
 
-void HUD::PrintBackBox(sf::RenderWindow *window, float posX, float posY, float sizeX, float sizeY) const {
-    sf::RectangleShape back;
-    back.setFillColor(sf::Color(0, 0, 0, 80));
-    back.setOutlineColor(sf::Color(255, 255, 255, 100));
-    back.setOutlineThickness(2.0);
-    back.setOrigin(0, 0);
-    back.setSize(sf::Vector2f(sizeX, sizeY));
-    back.setPosition(posX, posY);
-    window->draw(back);
-}
-
 void HUD::DebugDisplayToggle() {
-    if (showDebug_)
-        DebugDisplay(false);
-    else
-        DebugDisplay(true);
+    DebugDisplay(!showDebug_);
 }
 
+void HUD::CreateSectorLapContainer() {
+    TextPtr text;
+    ContainerPtr container;
+    IntegerIndicatorPtr indicator;
+    TimeManagerPtr timeManager = checkPointManager_->GetTimeManager();
+    int laps = checkPointManager_->GetTotalNumberOfLaps();
+    int sectors = checkPointManager_->GetTotalNumberOfSectors();
+
+    //-------- Create sector & lap counter container
+    container = std::make_shared<Container>(sf::FloatRect(0, 400, 174, 67));
+    // Create sector counter label
+    text = std::make_shared<Text>("Sector:", "impact", sf::FloatRect(2.5, 2.5, 75, 30), 20, TEXT_RIGHT);
+    container->AddMovable(text);
+    // Create lap counter label
+    text = std::make_shared<Text>("Lap:", "impact", text->GetSameFrameBelow(2.f), 20, TEXT_RIGHT);
+    container->AddMovable(text);
+
+    text = std::make_shared<Text>((std::string("of ") + std::to_string(sectors)).c_str(), "impact",
+                                  sf::FloatRect(100.5, 2.5, 60, 30), 20, TEXT_LEFT);
+    container->AddMovable(text);
+    text = std::make_shared<Text>((std::string("of ") + std::to_string(laps)).c_str(), "impact",
+                                  sf::FloatRect(100.5, 34.5, 60, 30), 20, TEXT_LEFT);
+    container->AddMovable(text);
+
+    // Current sector indicator
+    indicator = std::make_shared<IntegerIndicator>(timeManager->GetCurrentSectorNumber(),
+                                                   sf::FloatRect(79.5, 2.5, 20, 30), TEXT_RIGHT, "impact", 20);
+    container->AddMovable(indicator);
+    container->AddUpdatable(indicator);
+    // Current lap indicator
+    indicator = std::make_shared<IntegerIndicator>(timeManager->GetCurrentLapNumber(),
+                                                   sf::FloatRect(79.5, 34.5, 20, 30), TEXT_RIGHT, "impact", 20);
+    container->AddMovable(indicator);
+    container->AddUpdatable(indicator);
+
+    container->FrameOn();
+    containers_.push_back(container);
+}
+
+void HUD::CreateLapTimeContainer() {
+    TextPtr text;
+    TimeIndicatorPtr indicator;
+    ContainerPtr containter;
+    TimeManagerPtr timeManager = checkPointManager_->GetTimeManager();
+    //-------- Create lap time counter containter
+    containter = std::make_shared<Container>(sf::FloatRect(0, 510, 207, 167));
+    // Create box label
+    text = std::make_shared<Text>("LAP TIME", "impact", sf::FloatRect(2.5, 2.5, 202, 30), 20, TEXT_CENTER);
+    containter->AddMovable(text);
+    // Create current lap time label
+    text = std::make_shared<Text>("Current:", "impact", sf::FloatRect(2.5, 34.5, 100, 30), 20, TEXT_RIGHT);
+    containter->AddMovable(text);
+    // Create last lap time label
+    text = std::make_shared<Text>("Last:", "impact", text->GetSameFrameBelow(2.f), 20, TEXT_RIGHT);
+    containter->AddMovable(text);
+    // Create best lap time label
+    text = std::make_shared<Text>("Best:", "impact", text->GetSameFrameBelow(2.f), 20, TEXT_RIGHT);
+    containter->AddMovable(text);
+    // Create combined lap time label
+    text = std::make_shared<Text>("Combined:", "impact", text->GetSameFrameBelow(2.f), 20, TEXT_RIGHT);
+    containter->AddMovable(text);
+
+    // Create combined lap time data
+    indicator = std::make_shared<TimeIndicator>(timeManager->GetCombinedBestLapTime(), text->GetSameFrameRight(2.f),
+                                                TEXT_LEFT, "impact", 20);
+    containter->AddMovable(indicator);
+    containter->AddUpdatable(indicator);
+    // Create best lap time data
+    indicator = std::make_shared<TimeIndicator>(timeManager->GetBestLapTime(), indicator->GetSameFrameAbove(2.f),
+                                                TEXT_LEFT, "impact", 20);
+    containter->AddMovable(indicator);
+    containter->AddUpdatable(indicator);
+    // Create last lap time data
+    indicator = std::make_shared<TimeIndicator>(timeManager->GetLastLapTime(), indicator->GetSameFrameAbove(2.f),
+                                                TEXT_LEFT, "impact", 20);
+    containter->AddMovable(indicator);
+    containter->AddUpdatable(indicator);
+    // Create current lap time data
+    indicator = std::make_shared<TimeIndicator>(timeManager->GetCurrentLapTime(), indicator->GetSameFrameAbove(2.f),
+                                                TEXT_LEFT, "impact", 20);
+    containter->AddMovable(indicator);
+    containter->AddUpdatable(indicator);
+
+    containter->FrameOn();
+    containers_.push_back(containter);
+}
+
+void HUD::CreateSectorTimeContainer() {
+    TextPtr text;
+    TimeIndicatorPtr indicator;
+    ContainerPtr container;
+    TimeManagerPtr timeManager = checkPointManager_->GetTimeManager();
+    //-------- Create lap time counter container
+    container = std::make_shared<Container>(sf::FloatRect(220, 510, 207, 167));
+    // Create box label
+    text = std::make_shared<Text>("SECTOR TIME", "impact", sf::FloatRect(2.5, 2.5, 202, 30), 20, TEXT_CENTER);
+    container->AddMovable(text);
+    // Create current sector time label
+    text = std::make_shared<Text>("Current:", "impact", sf::FloatRect(2.5, 34.5, 100, 30), 20, TEXT_RIGHT);
+    container->AddMovable(text);
+    // Create last sector time label
+    text = std::make_shared<Text>("Last:", "impact", text->GetSameFrameBelow(2.f), 20, TEXT_RIGHT);
+    container->AddMovable(text);
+    // Create best sector time label
+    text = std::make_shared<Text>("Best:", "impact", text->GetSameFrameBelow(2.f), 20, TEXT_RIGHT);
+    container->AddMovable(text);
+
+    // Create best sector time indicator
+    indicator = std::make_shared<TimeIndicator>(timeManager->GetBestSectorTime(), text->GetSameFrameRight(2.f),
+                                                TEXT_LEFT, "impact", 20);
+    container->AddMovable(indicator);
+    container->AddUpdatable(indicator);
+    // Create last time in current sector indicator
+    indicator = std::make_shared<TimeIndicator>(timeManager->GetLastSectorTime(), indicator->GetSameFrameAbove(2.f),
+                                                TEXT_LEFT, "impact", 20);
+    container->AddMovable(indicator);
+    container->AddUpdatable(indicator);
+    // Create current sector time indicator
+    indicator = std::make_shared<TimeIndicator>(timeManager->GetCurrentSectorTime(), indicator->GetSameFrameAbove(2.f),
+                                                TEXT_LEFT, "impact", 20);
+    container->AddMovable(indicator);
+    container->AddUpdatable(indicator);
+
+    container->FrameOn();
+    containers_.push_back(container);
+}
+
+void HUD::CreateNotifyContainer() {
+    TimeIndicatorPtr indicator;
+    TimeManagerPtr timeManager = checkPointManager_->GetTimeManager();
+    //-------- Create finish lap indicator
+    lapFinishIndicator_ = std::make_shared<Container>(sf::FloatRect(400, 10, 300, 50));
+    indicator = std::make_shared<TimeIndicator>(timeManager->GetLastLapTime(), sf::FloatRect(0, 0, 300, 50),
+                                                TEXT_CENTER, "impact", 40);
+    lapFinishIndicator_->AddMovable(indicator);
+    lapFinishIndicator_->AddUpdatable(indicator);
+    lapFinishIndicator_->FrameOn();
+    lapFinishIndicator_->Hide();
+    containers_.push_back(lapFinishIndicator_);
+
+    //-------- Create finish sector indicator
+    sectorFinishIndicator_ = std::make_shared<Container>(sf::FloatRect(475, 65, 150, 20));
+    indicator = std::make_shared<TimeIndicator>(timeManager->GetPreviousSectorTime(), sf::FloatRect(0, 0, 150, 20),
+                                                TEXT_CENTER, "impact", 20);
+    sectorFinishIndicator_->AddMovable(indicator);
+    sectorFinishIndicator_->AddUpdatable(indicator);
+    sectorFinishIndicator_->FrameOn();
+    sectorFinishIndicator_->Hide();
+    containers_.push_back(sectorFinishIndicator_);
+}

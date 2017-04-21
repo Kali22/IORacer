@@ -15,9 +15,11 @@
 #include <Vehicle.h>
 #include <Text.h>
 #include <CheckPointManager.h>
+#include <Entity/Container.h>
 
 /**
  * Head-Up Display class.
+ * @TODO is finite numeric test while getting time from CheckPointManager
  */
 class HUD : public Drawable {
 public:
@@ -60,33 +62,25 @@ public:
     void DebugDisplayToggle();
 
 private:
+    void CreateSectorLapContainer();
+
+    void CreateLapTimeContainer();
+
+    void CreateSectorTimeContainer();
+
+    void CreateNotifyContainer();
+
+    /// Containers
+    std::vector<ContainerPtr> containers_;
+
     /// HUD reference screen
     sf::View hudView_;
-    /// Show debug data flag
+
     bool showDebug_;
-    /// SFML debugging data
-    Text debugData_;
 
-    /// Time labels
-    Text lapTimeLabels_;
-    /// Timming data
-    Text lapTimeData_;
-
-    /// Sector time labels
-    Text sectorTimeLabels_;
-    /// Sector timming data
-    Text sectorTimeData_;
-
-
-    /// Lap data labels
-    Text lapLabels_;
-    /// Lap data
-    Text lapData_;
-
-    /// Finished lap indicator
-    Text lapFinishedIndicator_;
-    /// Finished sector indicator
-    Text sectorFinishedIndicator_;
+    /*-------- INDICATORS ----------*/
+    ContainerPtr lapFinishIndicator_;
+    ContainerPtr sectorFinishIndicator_;
 
     /// Vehicle pointer
     VehiclePtr vehicle_;
@@ -94,16 +88,6 @@ private:
     MapPtr map_;
     /// Checkpoint manager pointer
     CheckPointManagerPtr checkPointManager_;
-
-    /**
-     * Print hud text background.
-     * @param window render target
-     * @param posX upper-left corner X pos
-     * @param posy upper-left corner Y pos
-     * @param sizeX x size
-     * @param sizeY y size
-     */
-    void PrintBackBox(sf::RenderWindow *window, float posX, float posY, float sizeX, float sizeY) const;
 };
 
 using HUDPtr = std::shared_ptr<HUD>;

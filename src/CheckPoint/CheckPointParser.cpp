@@ -22,11 +22,13 @@ std::vector<CheckPointPtr> CheckPointParser::ParseFile(const std::string &file) 
 
     b2Size_ = b2Vec2(val1, val2);
     sfmlSize_ = sf::Vector2f(val1 * scale_, val2 * scale_);
+    sf::IntRect textureSize(0, 0, val1 * scale_, val2 * scale_);
+    checkPointTexture_.loadFromFile("../resource/checkpoint.png", textureSize);
 
     while (input_ >> paramName >> val1) {
         struct RectangleParams params;
         ParseCheckPoint(&params);
-        CheckPointPtr checkPoint = std::make_shared<CheckPoint>(new RectangleArea(world_, params));
+        CheckPointPtr checkPoint = std::make_shared<CheckPoint>(new RectangleArea(world_, params), &checkPointTexture_);
         res.push_back(checkPoint);
     }
 
