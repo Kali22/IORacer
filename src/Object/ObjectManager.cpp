@@ -23,7 +23,7 @@ void ObjectManager::LoadObjects(b2World *world, std::string map_name, float scal
     float x, y, angle;
     while (description >> type >> x >> y >> angle) {
         switch (type) {
-            case 'c':
+            case 'b':
                 objects.push_back(std::make_shared<Box>(world, x, y, angle, scale));
                 break;
             case 't':

@@ -18,15 +18,18 @@ TruckTire::TruckTire(b2World *world, int x, int y, int angle, float scale) {
     b2BodyDef bodyDef;
     bodyDef.position = b2Vec2(x / scale, y / scale);
     bodyDef.angle = angle * b2_pi / 180.f;
-    bodyDef.type = b2_staticBody;
+    bodyDef.type = b2_dynamicBody;
+    bodyDef.angularDamping = 1.0f;
+    bodyDef.linearDamping = 2.0f;
     body_ = world->CreateBody(&bodyDef);
     body_->SetUserData(this);
 
-    b2PolygonShape Shape;
-    Shape.SetAsBox((tireSize / 2) / scale, (tireSize / 2) / scale);
+    b2CircleShape Shape;
+    Shape.m_radius = (tireSize / 2) / scale;
     b2FixtureDef FixtureDef;
+    FixtureDef.density = 10.f;
     FixtureDef.friction = 0.2f;
-    FixtureDef.restitution = 0.5f;
+    FixtureDef.restitution = 0.4f;
     FixtureDef.shape = &Shape;
     body_->CreateFixture(&FixtureDef);
 }

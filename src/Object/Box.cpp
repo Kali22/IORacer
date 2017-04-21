@@ -30,7 +30,7 @@ Box::Box(b2World *world, int x, int y, int angle, float scale) {
     b2FixtureDef FixtureDef;
     FixtureDef.density = 5.f;
     FixtureDef.friction = 0.5f;
-    FixtureDef.restitution = 0.4f;
+    FixtureDef.restitution = 0.3f;
     FixtureDef.shape = &Shape;
     body_->CreateFixture(&FixtureDef);
 }
