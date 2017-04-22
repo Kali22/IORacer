@@ -1,11 +1,30 @@
 #include "Text.h"
 #include <string>
+
 std::map<std::string, std::string> font{
-        std::make_pair("impact", "../resource/fonts/impact.ttf"),
-        std::make_pair("andale_mono", "../resource/fonts/Andale_Mono.ttf"),
-        std::make_pair("calibri", "../resource/fonts/calibri.ttf"),
-        std::make_pair("calibrib", "../resource/fonts/calibrib.ttf"),
-        std::make_pair("consola", "../resource/fonts/consola.ttf")
+        {"andale_mono", "../resource/fonts/Andale_Mono.ttf"},
+        {"calibrib",    "../resource/fonts/calibrib.ttf"},
+        {"calibrii",    "../resource/fonts/calibrii.ttf"},
+        {"calibri",     "../resource/fonts/calibri.ttf"},
+        {"calibriz",    "../resource/fonts/calibriz.ttf"},
+        {"cambriab",    "../resource/fonts/cambriab.ttf"},
+        {"cambriai",    "../resource/fonts/cambriai.ttf"},
+        {"cambriaz",    "../resource/fonts/cambriaz.ttf"},
+        {"candarab",    "../resource/fonts/candarab.ttf"},
+        {"candarai",    "../resource/fonts/candarai.ttf"},
+        {"candara",     "../resource/fonts/candara.ttf"},
+        {"candaraz",    "../resource/fonts/candaraz.ttf"},
+        {"consolab",    "../resource/fonts/consolab.ttf"},
+        {"consolai",    "../resource/fonts/consolai.ttf"},
+        {"consolaz",    "../resource/fonts/consolaz.ttf"},
+        {"constanb",    "../resource/fonts/constanb.ttf"},
+        {"constani",    "../resource/fonts/constani.ttf"},
+        {"constan",     "../resource/fonts/constan.ttf"},
+        {"constanz",    "../resource/fonts/constanz.ttf"},
+        {"corbelb",     "../resource/fonts/corbelb.ttf"},
+        {"corbeli",     "../resource/fonts/corbeli.ttf"},
+        {"corbel",      "../resource/fonts/corbel.ttf"},
+        {"impact",      "../resource/fonts/impact.ttf"}
 };
 
 Text::Text(std::string text, std::string fontName, sf::Vector2f position,
@@ -64,7 +83,7 @@ void Text::JustifyText() {
     float textPositionX = position.x;
     if (textPosition_ == TEXT_CENTER) {
         textPositionX += size.x / 2.f - width / 2.0f;
-    } else if (textPosition_ == TEXT_RIGHT){
+    } else if (textPosition_ == TEXT_RIGHT) {
         textPositionX += size.x - width - sideMargin_;
     } else {
         textPositionX += sideMargin_;

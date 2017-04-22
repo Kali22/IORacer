@@ -9,14 +9,11 @@
 
 class IntegerIndicator : public Text, public Updatable {
 public:
-    IntegerIndicator(const int &param, sf::Vector2f position, std::string fontName, float size, int minVal = 0, int maxVal = 99,
-                         bool leadingZeros = false, int fieldWidth = 2);
+    IntegerIndicator(const int &param, sf::Vector2f position, std::string fontName,
+                     float size, int minVal = 0, int maxVal = 99, bool leadingZeros = false, int fieldWidth = 2);
 
-    IntegerIndicator(const int &param, sf::FloatRect frame, TextJustification position,
-                         std::string fontName, float size, int minVal = 0, int maxVal = 99, bool leadingZeros = false,
-                         int fieldWidth = 2);
-
-    ~IntegerIndicator();
+    IntegerIndicator(const int &param, sf::FloatRect frame, TextJustification position, std::string fontName,
+                     float size, int minVal = 0, int maxVal = 99, bool leadingZeros = false, int fieldWidth = 2);
 
     void Draw(sf::RenderWindow *window) const;
 

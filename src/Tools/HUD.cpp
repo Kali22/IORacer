@@ -17,8 +17,6 @@ HUD::HUD(VehiclePtr vehicle, MapPtr map)
     showDebug_ = false;
 }
 
-HUD::~HUD() {}
-
 void HUD::Initialize(VehiclePtr vehicle, CheckPointManagerPtr checkPointManager) {
     vehicle_ = vehicle;
     checkPointManager_ = checkPointManager;

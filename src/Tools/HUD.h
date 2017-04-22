@@ -31,8 +31,6 @@ public:
      */
     HUD(VehiclePtr car, MapPtr map);
 
-    ~HUD();
-
     /**
      * Draw HUD on the screen.
      * @param window screen
@@ -52,7 +50,7 @@ public:
 
     /**
      * Enable/Disable gameplay debugger display.
-     * @param option true = debug on, false = ow.
+     * @param option true = debug on, false = off.
      */
     void DebugDisplay(bool option);
 

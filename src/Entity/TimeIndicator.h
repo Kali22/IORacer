@@ -14,14 +14,14 @@ public:
     TimeIndicator(const float &param, sf::FloatRect frame, TextJustification position,
                   std::string fontName, float size);
 
-    ~TimeIndicator();
-
     void Draw(sf::RenderWindow *window) const;
+
     void Update();
 
 protected:
-    const float &data_;
     std::string GetTimeString(float time) const;
+
+    const float &data_;
 };
 
 using TimeIndicatorPtr = std::shared_ptr<TimeIndicator>;

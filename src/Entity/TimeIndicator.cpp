@@ -4,18 +4,17 @@
 
 #include "TimeIndicator.h"
 
-TimeIndicator::TimeIndicator(const float &param, sf::Vector2f position, std::string fontName,
-                             float size): Text(std::string(""), fontName, position, size), data_(param) {
+TimeIndicator::TimeIndicator(const float &param, sf::Vector2f position, std::string fontName, float size):
+        Text(std::string(""), fontName, position, size),
+        data_(param) {
     Update();
 }
 
 TimeIndicator::TimeIndicator(const float &param, sf::FloatRect frame, TextJustification position,
-                             std::string fontName, float size) : Text(std::string(""), fontName, frame, size, position), data_(param) {
+                             std::string fontName, float size) :
+        Text(std::string(""), fontName, frame, size, position),
+        data_(param) {
     Update();
-}
-
-TimeIndicator::~TimeIndicator() {
-
 }
 
 void TimeIndicator::Draw(sf::RenderWindow *window) const {

@@ -45,10 +45,6 @@ void Container::Move(float dx, float dy) {
     rect_.move(dx, dy);
 }
 
-Container::~Container() {
-
-}
-
 void Container::FrameOn() {
     frame_ = true;
 }
@@ -57,7 +53,6 @@ void Container::FrameOff() {
     frame_ = false;
 }
 
-/// Create with std::make_shared<CheckPoint>(new Object);
 void Container::AddMovable(MovablePtr movablePtr) {
     list_.push_back(movablePtr);
 }

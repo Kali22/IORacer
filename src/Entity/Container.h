@@ -10,8 +10,6 @@ class Container : public Movable, public Updatable {
 public:
     Container(sf::FloatRect rect);
 
-    ~Container();
-
     void Draw(sf::RenderWindow *window) const;
 
     void Update();
