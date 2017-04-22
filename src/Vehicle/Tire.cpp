@@ -15,7 +15,7 @@ int Tire::GetEntityType() const {
     return TIRE;
 }
 
-Tire::Tire(b2World *world, float scale, float x, float y, CarParametersPtr carParameters, int positionFlags) {
+Tire::Tire(b2World *world, float scale, float x, float y, CarParametersPtr carParameters, TirePositionE positionFlags) {
     carParameters_ = carParameters;
 
     b2BodyDef bodyDef;
@@ -31,7 +31,7 @@ Tire::Tire(b2World *world, float scale, float x, float y, CarParametersPtr carPa
     tireSprite.setTexture(tireTexture);
     tireSprite.setOrigin(3.f, 6.f);
     maxTireFrictionForce_ = 1.51f;
-    tirePositionFlags_ = positionFlags;
+    tirePosition_ = positionFlags;
 }
 
 Tire::~Tire() {
@@ -120,6 +120,10 @@ void Tire::Reset(float x, float y) {
     body->SetTransform(b2Vec2(x, y), b2_pi / 2);
 }
 
-int Tire::GetTirePositionFlags() const {
-    return tirePositionFlags_;
+bool Tire::IsLeft() const {
+    return tirePosition_ == LEFT_FRONT_TIRE || tirePosition_== LEFT_REAR_TIRE;
+}
+
+bool Tire::IsFront() const {
+    return tirePosition_ == LEFT_FRONT_TIRE || tirePosition_ == RIGHT_FRONT_TIRE;
 }

@@ -2,17 +2,12 @@
 // Created by jacek on 20.04.17.
 //
 
-#include "TimeManager.h"
-
+#include <CheckPoint/TimeManager.h>
 
 TimeManager::TimeManager(const int &currentSector, const int &currentLap, const int &totalSectors) :
         currentLap_(currentLap), currentSector_(currentSector), totalSectors_(totalSectors) {
     Reset();
     Update();
-}
-
-TimeManager::~TimeManager() {
-
 }
 
 void TimeManager::Update() {

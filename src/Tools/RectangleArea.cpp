@@ -44,7 +44,7 @@ void RectangleArea::CreateSFMLRectangle(const sf::Vector2f &position,
 }
 
 sf::Vector2f RectangleArea::GetPosition() const {
-    return sf::Vector2f(rectangleShape_.getPosition());
+    return rectangleShape_.getPosition();
 }
 
 void RectangleArea::SetTexture(const sf::Texture *texture) {

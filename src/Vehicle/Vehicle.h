@@ -73,7 +73,7 @@ private:
 
     void
     CreateTire(b2World *world, b2RevoluteJoint **joint, b2RevoluteJointDef &jointDef, float arg1, float arg2,
-                   float x, float y, int positionFlags);
+               float x, float y, TirePositionE positionFlags);
 };
 
 using VehiclePtr = std::shared_ptr<Vehicle>;

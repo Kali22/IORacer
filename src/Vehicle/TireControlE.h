@@ -5,7 +5,10 @@
  */
 #pragma once
 
-enum tire_control_e {
+/**
+ * Wheel control flags.
+ */
+enum TireControlE {
     LEFT    =   0x01,
     RIGHT   =   0x02,
     UP      =   0x04,

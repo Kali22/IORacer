@@ -15,8 +15,6 @@ class TimeManager : public Updatable {
 public:
     TimeManager(const int &currentSector, const int &currentLap, const int &totalSectors);
 
-    ~TimeManager();
-
     void Update();
 
     void Reset();

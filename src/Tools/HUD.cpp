@@ -21,10 +21,10 @@ void HUD::Initialize(VehiclePtr vehicle, CheckPointManagerPtr checkPointManager)
     vehicle_ = vehicle;
     checkPointManager_ = checkPointManager;
 
-    CreateSectorLapContainer();
-    CreateLapTimeContainer();
-    CreateSectorTimeContainer();
-    CreateNotifyContainer();
+    CreateSectorLapContainer(sf::FloatRect(440, 0, 207, 70));
+    CreateLapTimeContainer(sf::FloatRect(0, 0, 207, 167));
+    CreateSectorTimeContainer(sf::FloatRect(900, 0, 207, 167));
+    CreateNotifyContainer(sf::FloatRect(400, 100, 300, 50), sf::FloatRect(425, 160, 250, 50));
 }
 
 void HUD::Update() {
@@ -94,153 +94,104 @@ void HUD::DebugDisplayToggle() {
     DebugDisplay(!showDebug_);
 }
 
-void HUD::CreateSectorLapContainer() {
-    TextPtr text;
-    ContainerPtr container;
-    IntegerIndicatorPtr indicator;
-    TimeManagerPtr timeManager = checkPointManager_->GetTimeManager();
+void HUD::CreateSectorLapContainer(sf::FloatRect frame) {
     int laps = checkPointManager_->GetTotalNumberOfLaps();
     int sectors = checkPointManager_->GetTotalNumberOfSectors();
-
-    //-------- Create sector & lap counter container
-    container = std::make_shared<Container>(sf::FloatRect(0, 400, 174, 67));
-    // Create sector counter label
-    text = std::make_shared<Text>("Sector:", "impact", sf::FloatRect(2.5, 2.5, 75, 30), 20, TEXT_RIGHT);
-    container->AddMovable(text);
-    // Create lap counter label
-    text = std::make_shared<Text>("Lap:", "impact", text->GetSameFrameBelow(2.f), 20, TEXT_RIGHT);
-    container->AddMovable(text);
-
-    text = std::make_shared<Text>((std::string("of ") + std::to_string(sectors)).c_str(), "impact",
-                                  sf::FloatRect(100.5, 2.5, 60, 30), 20, TEXT_LEFT);
-    container->AddMovable(text);
-    text = std::make_shared<Text>((std::string("of ") + std::to_string(laps)).c_str(), "impact",
-                                  sf::FloatRect(100.5, 34.5, 60, 30), 20, TEXT_LEFT);
-    container->AddMovable(text);
-
-    // Current sector indicator
-    indicator = std::make_shared<IntegerIndicator>(timeManager->GetCurrentSectorNumber(),
-                                                   sf::FloatRect(79.5, 2.5, 20, 30), TEXT_RIGHT, "impact", 20);
-    container->AddMovable(indicator);
-    container->AddUpdatable(indicator);
-    // Current lap indicator
-    indicator = std::make_shared<IntegerIndicator>(timeManager->GetCurrentLapNumber(),
-                                                   sf::FloatRect(79.5, 34.5, 20, 30), TEXT_RIGHT, "impact", 20);
-    container->AddMovable(indicator);
-    container->AddUpdatable(indicator);
-
+    TimeManagerPtr timeManager = checkPointManager_->GetTimeManager();
+    ContainerPtr container = std::make_shared<Container>(frame);
+    AddIntegerIndicator(container, "Sector:", timeManager->GetCurrentSectorNumber(), sectors, sf::IntRect(1, 2, 0, 0));
+    AddIntegerIndicator(container, "Lap:", timeManager->GetCurrentLapNumber(), laps, sf::IntRect(1, 2, 0, 1));
     container->FrameOn();
     containers_.push_back(container);
 }
 
-void HUD::CreateLapTimeContainer() {
-    TextPtr text;
-    TimeIndicatorPtr indicator;
-    ContainerPtr containter;
-    TimeManagerPtr timeManager = checkPointManager_->GetTimeManager();
-    //-------- Create lap time counter containter
-    containter = std::make_shared<Container>(sf::FloatRect(0, 510, 207, 167));
-    // Create box label
-    text = std::make_shared<Text>("LAP TIME", "impact", sf::FloatRect(2.5, 2.5, 202, 30), 20, TEXT_CENTER);
-    containter->AddMovable(text);
-    // Create current lap time label
-    text = std::make_shared<Text>("Current:", "impact", sf::FloatRect(2.5, 34.5, 100, 30), 20, TEXT_RIGHT);
-    containter->AddMovable(text);
-    // Create last lap time label
-    text = std::make_shared<Text>("Last:", "impact", text->GetSameFrameBelow(2.f), 20, TEXT_RIGHT);
-    containter->AddMovable(text);
-    // Create best lap time label
-    text = std::make_shared<Text>("Best:", "impact", text->GetSameFrameBelow(2.f), 20, TEXT_RIGHT);
-    containter->AddMovable(text);
-    // Create combined lap time label
-    text = std::make_shared<Text>("Combined:", "impact", text->GetSameFrameBelow(2.f), 20, TEXT_RIGHT);
-    containter->AddMovable(text);
-
-    // Create combined lap time data
-    indicator = std::make_shared<TimeIndicator>(timeManager->GetCombinedBestLapTime(), text->GetSameFrameRight(2.f),
-                                                TEXT_LEFT, "impact", 20);
-    containter->AddMovable(indicator);
-    containter->AddUpdatable(indicator);
-    // Create best lap time data
-    indicator = std::make_shared<TimeIndicator>(timeManager->GetBestLapTime(), indicator->GetSameFrameAbove(2.f),
-                                                TEXT_LEFT, "impact", 20);
-    containter->AddMovable(indicator);
-    containter->AddUpdatable(indicator);
-    // Create last lap time data
-    indicator = std::make_shared<TimeIndicator>(timeManager->GetLastLapTime(), indicator->GetSameFrameAbove(2.f),
-                                                TEXT_LEFT, "impact", 20);
-    containter->AddMovable(indicator);
-    containter->AddUpdatable(indicator);
-    // Create current lap time data
-    indicator = std::make_shared<TimeIndicator>(timeManager->GetCurrentLapTime(), indicator->GetSameFrameAbove(2.f),
-                                                TEXT_LEFT, "impact", 20);
-    containter->AddMovable(indicator);
-    containter->AddUpdatable(indicator);
-
-    containter->FrameOn();
-    containers_.push_back(containter);
-}
-
-void HUD::CreateSectorTimeContainer() {
+void HUD::CreateLapTimeContainer(sf::FloatRect frame) {
     TextPtr text;
     TimeIndicatorPtr indicator;
     ContainerPtr container;
     TimeManagerPtr timeManager = checkPointManager_->GetTimeManager();
-    //-------- Create lap time counter container
-    container = std::make_shared<Container>(sf::FloatRect(220, 510, 207, 167));
-    // Create box label
-    text = std::make_shared<Text>("SECTOR TIME", "impact", sf::FloatRect(2.5, 2.5, 202, 30), 20, TEXT_CENTER);
-    container->AddMovable(text);
-    // Create current sector time label
-    text = std::make_shared<Text>("Current:", "impact", sf::FloatRect(2.5, 34.5, 100, 30), 20, TEXT_RIGHT);
-    container->AddMovable(text);
-    // Create last sector time label
-    text = std::make_shared<Text>("Last:", "impact", text->GetSameFrameBelow(2.f), 20, TEXT_RIGHT);
-    container->AddMovable(text);
-    // Create best sector time label
-    text = std::make_shared<Text>("Best:", "impact", text->GetSameFrameBelow(2.f), 20, TEXT_RIGHT);
-    container->AddMovable(text);
-
-    // Create best sector time indicator
-    indicator = std::make_shared<TimeIndicator>(timeManager->GetBestSectorTime(), text->GetSameFrameRight(2.f),
-                                                TEXT_LEFT, "impact", 20);
-    container->AddMovable(indicator);
-    container->AddUpdatable(indicator);
-    // Create last time in current sector indicator
-    indicator = std::make_shared<TimeIndicator>(timeManager->GetLastSectorTime(), indicator->GetSameFrameAbove(2.f),
-                                                TEXT_LEFT, "impact", 20);
-    container->AddMovable(indicator);
-    container->AddUpdatable(indicator);
-    // Create current sector time indicator
-    indicator = std::make_shared<TimeIndicator>(timeManager->GetCurrentSectorTime(), indicator->GetSameFrameAbove(2.f),
-                                                TEXT_LEFT, "impact", 20);
-    container->AddMovable(indicator);
-    container->AddUpdatable(indicator);
-
+    container = std::make_shared<Container>(frame);
+    AddContainerTitle(container, "LAP TIME");
+    AddTimeIndicator(container, "Current:", timeManager->GetCurrentLapTime(),sf::IntRect(1, 5, 0, 1));
+    AddTimeIndicator(container, "Last:", timeManager->GetLastLapTime(),sf::IntRect(1, 5, 0, 2));
+    AddTimeIndicator(container, "Best:", timeManager->GetBestLapTime(),sf::IntRect(1, 5, 0, 3));
+    AddTimeIndicator(container, "Combined:", timeManager->GetCombinedBestLapTime(),sf::IntRect(1, 5, 0, 4));
     container->FrameOn();
     containers_.push_back(container);
 }
 
-void HUD::CreateNotifyContainer() {
+void HUD::CreateSectorTimeContainer(sf::FloatRect frame) {
+    TextPtr text;
     TimeIndicatorPtr indicator;
+    ContainerPtr container;
     TimeManagerPtr timeManager = checkPointManager_->GetTimeManager();
-    //-------- Create finish lap indicator
-    lapFinishIndicator_ = std::make_shared<Container>(sf::FloatRect(400, 10, 300, 50));
-    indicator = std::make_shared<TimeIndicator>(timeManager->GetLastLapTime(), sf::FloatRect(0, 0, 300, 50),
-                                                TEXT_CENTER, "impact", 40);
-    lapFinishIndicator_->AddMovable(indicator);
-    lapFinishIndicator_->AddUpdatable(indicator);
+    container = std::make_shared<Container>(frame);
+    AddContainerTitle(container, "SECTOR TIME");
+    AddTimeIndicator(container, "Current:", timeManager->GetCurrentSectorTime(),sf::IntRect(1, 4, 0, 1));
+    AddTimeIndicator(container, "Last:", timeManager->GetLastSectorTime(),sf::IntRect(1, 4, 0, 2));
+    AddTimeIndicator(container, "Best:", timeManager->GetBestSectorTime(),sf::IntRect(1, 4, 0, 3));
+    container->FrameOn();
+    containers_.push_back(container);
+}
+
+void HUD::CreateNotifyContainer(sf::FloatRect lapFrame, sf::FloatRect sectorFrame) {
+    TimeManagerPtr timeManager = checkPointManager_->GetTimeManager();
+    lapFinishIndicator_ = std::make_shared<Container>(lapFrame);
+    AddTimeIndicatorWithoutTitle(lapFinishIndicator_, timeManager->GetLastLapTime(), sf::IntRect(1, 1, 0, 0), 40);
     lapFinishIndicator_->FrameOn();
     lapFinishIndicator_->Hide();
     containers_.push_back(lapFinishIndicator_);
 
-    //-------- Create finish sector indicator
-    sectorFinishIndicator_ = std::make_shared<Container>(sf::FloatRect(475, 65, 150, 20));
-    indicator = std::make_shared<TimeIndicator>(timeManager->GetPreviousSectorTime(), sf::FloatRect(0, 0, 150, 20),
-                                                TEXT_CENTER, "impact", 20);
-    sectorFinishIndicator_->AddMovable(indicator);
-    sectorFinishIndicator_->AddUpdatable(indicator);
+    sectorFinishIndicator_ = std::make_shared<Container>(sectorFrame);
+    AddTimeIndicatorWithoutTitle(sectorFinishIndicator_, timeManager->GetPreviousSectorTime(), sf::IntRect(1, 1, 0, 0), 30);
     sectorFinishIndicator_->FrameOn();
     sectorFinishIndicator_->Hide();
     containers_.push_back(sectorFinishIndicator_);
+}
+
+void HUD::AddContainerTitle(ContainerPtr container, std::string title) {
+    TextPtr text;
+    sf::Vector2f containerSize = container->GetSize();
+    sf::FloatRect pos(2.5, 2.5, containerSize.x - 5.f, 25.f);
+    text = std::make_shared<Text>(title, "impact", pos, 20, TEXT_CENTER);
+    container->AddMovable(text);
+}
+
+void HUD::AddTimeIndicator(ContainerPtr container, std::string title, const float &data, sf::IntRect grid) {
+    TextPtr text;
+    TimeIndicatorPtr indicator;
+    sf::FloatRect frame = container->GetGridElement(grid.left, grid.top, grid.width, grid.height, 2.5f);
+    frame.width /= 2;
+    text = std::make_shared<Text>(title, "impact", frame, 20, TEXT_RIGHT);
+    container->AddMovable(text);
+    frame.left += frame.width;
+    indicator = std::make_shared<TimeIndicator>(data, frame, TEXT_LEFT, "impact", 20);
+    container->AddMovable(indicator);
+    container->AddUpdatable(indicator);
+}
+
+void HUD::AddIntegerIndicator(ContainerPtr container, std::string title, const int &data, int limit, sf::IntRect grid) {
+    TextPtr text;
+    IntegerIndicatorPtr indicator;
+    sf::FloatRect frame = container->GetGridElement(grid.left, grid.top, grid.width, grid.height, 2.5f);
+    frame.width /= 2;
+    text = std::make_shared<Text>(title, "impact", frame, 20, TEXT_RIGHT);
+    container->AddMovable(text);
+    frame.left += frame.width;
+    frame.width /= 2;
+    indicator = std::make_shared<IntegerIndicator>(data, frame, TEXT_RIGHT, "impact", 20);
+    container->AddMovable(indicator);
+    container->AddUpdatable(indicator);
+    frame.left += frame.width;
+    text = std::make_shared<Text>((std::string("of ") + std::to_string(limit)).c_str(), "impact", frame, 20, TEXT_LEFT);
+    container->AddMovable(text);
+}
+
+void HUD::AddTimeIndicatorWithoutTitle(ContainerPtr container, const float &data, sf::IntRect grid, float fontSize) {
+    TextPtr text;
+    TimeIndicatorPtr indicator;
+    sf::FloatRect frame = container->GetGridElement(grid.left, grid.top, grid.width, grid.height, 2.5f);
+    indicator = std::make_shared<TimeIndicator>(data, frame, TEXT_CENTER, "impact", 20);
+    container->AddMovable(indicator);
+    container->AddUpdatable(indicator);
 }

@@ -6,6 +6,10 @@
 #include <Entity/Movable.h>
 #include <Entity/Updatable.h>
 
+/**
+ * Container for graphics.
+ * @TODO auto space arrangement?
+ */
 class Container : public Movable, public Updatable {
 public:
     Container(sf::FloatRect rect);
@@ -33,6 +37,10 @@ public:
     void Show();
 
     void Hide();
+
+    sf::FloatRect GetGridElement(int cols, int rows, int colEl, int rowEl, float padding);
+
+    sf::Vector2f GetSize() const;
 
 private:
     bool visible_;

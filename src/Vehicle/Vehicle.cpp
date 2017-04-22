@@ -45,8 +45,9 @@ void Vehicle::Update(int state, Map &map) {
     UpdateTurn(state);
 }
 
-void Vehicle::CreateTire(b2World *world, b2RevoluteJoint **jointPtr, b2RevoluteJointDef &jointDef, float arg1, float arg2,
-                         float x, float y, int positionFlags) {
+void Vehicle::CreateTire(b2World *world, b2RevoluteJoint **jointPtr, b2RevoluteJointDef &jointDef, float arg1,
+                         float arg2,
+                         float x, float y, TirePositionE positionFlags) {
     TirePtr tire = std::make_shared<Tire>(world, scale_, x, y, carParameters_, positionFlags);
     jointDef.bodyB = tire->body;
     jointDef.localAnchorA.Set(arg1 / scale_, arg2 / scale_);
@@ -85,13 +86,13 @@ void Vehicle::Initialize(b2World *world, int x, int y) {
     jointDef.localAnchorB.SetZero();//joint anchor in tire is always center
 
     // FRONT LEFT
-    CreateTire(world, &fl_joint, jointDef, -17.f, 18.f, x, y, FRONT_TIRE | LEFT_TIRE);
+    CreateTire(world, &fl_joint, jointDef, -17.f, 18.f, x, y, LEFT_FRONT_TIRE);
     // FRONT RIGHT
-    CreateTire(world, &fr_joint, jointDef, 17.f, 18.f, x, y, FRONT_TIRE | RIGHT_TIRE);
+    CreateTire(world, &fr_joint, jointDef, 17.f, 18.f, x, y, RIGHT_FRONT_TIRE);
     // BACK RIGHT
-    CreateTire(world, &bl_joint, jointDef, 17.f, -17.f, x, y, REAR_TIRE | RIGHT_TIRE);
+    CreateTire(world, &bl_joint, jointDef, 17.f, -17.f, x, y, RIGHT_REAR_TIRE);
     // BACK LEFT
-    CreateTire(world, &br_joint, jointDef, -17.f, -17.f, x, y, REAR_TIRE | LEFT_TIRE);
+    CreateTire(world, &br_joint, jointDef, -17.f, -17.f, x, y, LEFT_REAR_TIRE);
 
     texture_chassis.loadFromFile("../resource/car.png");
     sprite_chassis.setTexture(texture_chassis);
@@ -120,10 +121,10 @@ void Vehicle::UpdateDrive(int controlState, Map &map) {
     for (auto &tire : tires) {
         float modifier = map.GetFrictionModifier(tire->tireSprite.getPosition());
 
-        if (tire->GetTirePositionFlags() & REAR_TIRE)
-            tire->UpdateDrive(controlState & ~(BRAKE), modifier);
-        else
+        if (tire->IsFront())
             tire->UpdateDrive(controlState & ~UP, modifier);
+        else
+            tire->UpdateDrive(controlState & ~(BRAKE), modifier);
     }
 }
 

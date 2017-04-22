@@ -74,3 +74,27 @@ void Container::Update() {
 void Container::AddUpdatable(UpdatablePtr updatablePtr) {
     updatableList_.push_back(updatablePtr);
 }
+
+/**
+ * Calculate rectangle area of given cell (colEl, rowEl)
+ * within container assuming that container is divided onto
+ * 'cols' cols and 'rows' rows with 'padding' padding.
+ * @param cols # of cols in grid
+ * @param rows # of rows in grid
+ * @param colEl column element, in range [0, cols-1]
+ * @param rowEl row element, in range [0, rows-1]
+ * @param padding just padding...
+ * @return
+ */
+sf::FloatRect Container::GetGridElement(int cols, int rows, int colEl, int rowEl, float padding) {
+    sf::Vector2f containerSize = rect_.getSize();
+    float dX = (containerSize.x - 2 * padding) / cols;
+    float dY = (containerSize.y - 2 * padding) / rows;
+    float posX = padding + dX * colEl;
+    float posY = padding + dY * rowEl;
+    return sf::FloatRect(posX, posY, dX, dY);
+}
+
+sf::Vector2f Container::GetSize() const {
+    return rect_.getSize();
+}

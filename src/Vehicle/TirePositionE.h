@@ -6,9 +6,12 @@
  */
 #pragma once
 
+/**
+ * Wheel position in vehicle.
+ */
 enum TirePositionE {
-    LEFT_TIRE = 0x01,
-    RIGHT_TIRE = 0x02,
-    FRONT_TIRE = 0x04,
-    REAR_TIRE = 0x08
+    LEFT_FRONT_TIRE,
+    RIGHT_FRONT_TIRE,
+    LEFT_REAR_TIRE,
+    RIGHT_REAR_TIRE
 };

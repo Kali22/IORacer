@@ -60,13 +60,21 @@ public:
     void DebugDisplayToggle();
 
 private:
-    void CreateSectorLapContainer();
+    void CreateSectorLapContainer(sf::FloatRect frame);
 
-    void CreateLapTimeContainer();
+    void CreateLapTimeContainer(sf::FloatRect frame);
 
-    void CreateSectorTimeContainer();
+    void CreateSectorTimeContainer(sf::FloatRect frame);
 
-    void CreateNotifyContainer();
+    void CreateNotifyContainer(sf::FloatRect lapFrame, sf::FloatRect sectorFrame);
+
+    void AddContainerTitle(ContainerPtr container, std::string title);
+
+    void AddTimeIndicator(ContainerPtr container, std::string title, const float &data, sf::IntRect grid);
+
+    void AddTimeIndicatorWithoutTitle(ContainerPtr container, const float &data, sf::IntRect grid, float fontSize);
+
+    void AddIntegerIndicator(ContainerPtr container, std::string title, const int &data, int limit, sf::IntRect grid);
 
     /// Containers
     std::vector<ContainerPtr> containers_;

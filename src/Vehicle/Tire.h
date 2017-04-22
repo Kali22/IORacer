@@ -1,13 +1,9 @@
 /**
+ * @file
  * @addtogroup tire
  * @ingroup vehicle
- */
-
-/**
- *  @file
- *  @ingroup tire
- *  @author Jacek Łysiak <jaceklysiako.o@gmail.com>
- *  @date 4/1/17
+ * @author Jacek Łysiak <jaceklysiako.o@gmail.com>
+ * @date 4/1/17
  */
 
 #pragma once
@@ -16,9 +12,15 @@
 #include <SFML/Graphics/Sprite.hpp>
 #include <SFML/Graphics/Texture.hpp>
 #include <SFML/Graphics/RenderWindow.hpp>
-#include "CarParams.h"
+#include <Vehicle/CarParams.h>
 #include <Tools/Entity.h>
+#include <Vehicle/TirePositionE.h>
 
+/**
+ * Tire class.
+ * Vehicle component.
+ * Responsible for interaction with ground.
+ */
 class Tire : public Entity {
 public:
     virtual int GetEntityType() const;
@@ -28,7 +30,7 @@ public:
 
     b2Body *body;
 
-    Tire(b2World *world, float scale, float x, float y, CarParametersPtr carParameters, int positionFlags);
+    Tire(b2World *world, float scale, float x, float y, CarParametersPtr carParameters, TirePositionE positionFlags);
 
     ~Tire();
 
@@ -38,29 +40,27 @@ public:
 
     b2Vec2 GetForwardVelocity();
 
-
     void UpdateFriction(float mod);
 
     void Render(sf::RenderWindow &window);
 
     void UpdateDrive(int state, float mod);
 
-    /**
-     * Returns tire position flags.
-     * @return position flags
-     */
-    int GetTirePositionFlags() const;
+    bool IsLeft() const;
+
+    bool IsFront() const;
+
 private:
     /// Car parameters structure
     CarParametersPtr carParameters_;
     /// Tire position in car
-    int tirePositionFlags_;
-    /// Is wheel is locked?
+    TirePositionE tirePosition_;
+    /// Is wheel locked?
     bool locked_;
 
-    /// Max possible friction force
-    float maxTireFrictionForce_; // = frictionBase * frictionMod * loadForce
+    /// Max possible friction force.
+    /// = frictionBase * frictionMod * loadForce
+    float maxTireFrictionForce_;
 };
-
 
 using TirePtr = std::shared_ptr<Tire>;
