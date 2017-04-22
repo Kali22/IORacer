@@ -9,14 +9,8 @@
 #include <ButtonStateHold.h>
 #include <ButtonStateType.h>
 
-ButtonManager::ButtonManager(std::vector<ButtonPtr> buttons,
-                             int timeToUpdateSlowMsc,
-                             int timeToUpdateFastMsc,
-                             int timeToSpeedUpMsc)
+ButtonManager::ButtonManager(std::vector<ButtonPtr> buttons)
         : buttons_(buttons),
-          timeToUpdateSlowMsc_(timeToUpdateSlowMsc),
-          timeToUpdateFastMsc_(timeToUpdateFastMsc),
-          timeToSpeedUpMsc_(timeToSpeedUpMsc),
           buttonState_(std::make_shared<ButtonStateReleased>()) {
 }
 

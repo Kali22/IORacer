@@ -9,11 +9,6 @@
 #include <ButtonStateType.h>
 #include <utility>
 
-typedef enum {
-    SLOW,
-    FAST,
-} ButtonSpeed;
-
 /// Shared from this http://stackoverflow.com/questions/11711034/stdshared-ptr-of-this
 /// http://en.cppreference.com/w/cpp/memory/enable_shared_from_this
 class ButtonStateHold : public ButtonState,
@@ -33,7 +28,6 @@ private:
     const int timeToSpeedUpMsc_;
     sf::Clock timeHold_;
     sf::Clock timeHoldUpdate_;
-    ButtonSpeed buttonSpeed_;
 };
 
 

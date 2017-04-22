@@ -1,9 +1,5 @@
 #include "Workshop.h"
 
-#define BUTTON_TIME_TO_UPDATE_SLOW 400
-#define BUTTON_TIME_TO_UPDATE_FAST 50
-#define BUTTON_TIME_TO_SPEED_UP 1200
-
 void Workshop::initMaxSpeedControl(
         const sf::Vector2f &statsButtonSize, const sf::Vector2f &labelSize, float textSize, int posX, int posY) {
     maxSpeedLabel_ = std::make_shared<Text>("Speed", "impact", sf::Vector2f(150, posY), textSize);
@@ -98,8 +94,9 @@ void Workshop::initSteeringSpeedControl(
 }
 
 Workshop::Workshop(sf::RenderWindow *window, RacePtr race) :
-        Module(window), race_(race), carParams_(race_->GetVehicle()
-                                                         ->GetCarParameters()) {
+        Module(window),
+        race_(race),
+        carParams_(race_->GetVehicle()->GetCarParameters()) {
     int windowWidth = window->getSize().x, windowHeight = window->getSize().y;
 
     const sf::Vector2f gameButtonSize = sf::Vector2f(400, 80);
@@ -119,10 +116,7 @@ Workshop::Workshop(sf::RenderWindow *window, RacePtr race) :
     initMaxSpeedControl(statsButtonSize, labelSize, textSize, windowWidth / 2, 100);
     initMaxEnginePowerControl(statsButtonSize, labelSize, textSize, windowWidth / 2, 200);
     initSteeringSpeedControl(statsButtonSize, labelSize, textSize, windowWidth / 2, 300);
-    buttonManager_ = std::make_unique<ButtonManager>(buttons_,
-                                                     BUTTON_TIME_TO_UPDATE_SLOW,
-                                                     BUTTON_TIME_TO_UPDATE_FAST,
-                                                     BUTTON_TIME_TO_SPEED_UP);
+    buttonManager_ = std::make_unique<ButtonManager>(buttons_);
 }
 
 int Workshop::Run() {
