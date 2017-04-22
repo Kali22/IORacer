@@ -4,7 +4,7 @@
 #include "Module.h"
 #include <Button.h>
 #include <Race.h>
-
+#include <ButtonManager.h>
 
 class Workshop : public Module {
 public:
@@ -14,6 +14,7 @@ public:
 
 private:
     RacePtr race_;
+    ButtonManagerPtr buttonManager_;
     CarParametersPtr carParams_;
     ButtonPtr returnButton_;
     TextPtr maxSpeedText_, maxEnginePowerText_, steeringSpeedText_;

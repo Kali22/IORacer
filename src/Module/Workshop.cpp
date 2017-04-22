@@ -94,7 +94,9 @@ void Workshop::initSteeringSpeedControl(
 }
 
 Workshop::Workshop(sf::RenderWindow *window, RacePtr race) :
-        Module(window), race_(race), carParams_(race_->GetVehicle()->GetCarParameters()) {
+        Module(window),
+        race_(race),
+        carParams_(race_->GetVehicle()->GetCarParameters()) {
     int windowWidth = window->getSize().x, windowHeight = window->getSize().y;
 
     const sf::Vector2f gameButtonSize = sf::Vector2f(400, 80);
@@ -114,16 +116,15 @@ Workshop::Workshop(sf::RenderWindow *window, RacePtr race) :
     initMaxSpeedControl(statsButtonSize, labelSize, textSize, windowWidth / 2, 100);
     initMaxEnginePowerControl(statsButtonSize, labelSize, textSize, windowWidth / 2, 200);
     initSteeringSpeedControl(statsButtonSize, labelSize, textSize, windowWidth / 2, 300);
-
+    buttonManager_ = std::make_unique<ButtonManager>(buttons_);
 }
 
 int Workshop::Run() {
     close_ = false;
     while (!close_) {
-        bool mouseClick = false; // info for buttons
-
         // EVENT handling
         sf::Event event;
+        sf::Vector2f mousePos = sf::Vector2f(sf::Mouse::getPosition(*window_));
         while (window_->pollEvent(event)) {
             // "close_ requested" event: end while loop
             if (event.type == sf::Event::Closed) {
@@ -131,25 +132,10 @@ int Workshop::Run() {
                 return 1;
             }
             // handle mouse click
-            if (event.type == sf::Event::MouseButtonPressed &&
-                event.mouseButton.button == sf::Mouse::Left) {
-                mouseClick = true;
-            }
+            buttonManager_->ProcessEvent(event, mousePos);
         }
-
-        /// BUTTON things
-        std::shared_ptr<Button> activeButton = nullptr;
-        sf::Vector2f mousePos = sf::Vector2f(sf::Mouse::getPosition(*window_));
-        // select Hovered button, change style
-        for (auto &button : buttons_) {
-            if (button->ToggleHover(mousePos)) {
-                activeButton = button;
-            }
-        }
-        if (activeButton != nullptr && mouseClick) {
-            activeButton->OnClick();
-        }
-
+        buttonManager_->ManageClicks();
+        buttonManager_->ManageHover(mousePos);
         // DRAWING
         window_->clear(sf::Color(60, 70, 80));
         for (auto &drawableObject : objects_) {
@@ -157,5 +143,6 @@ int Workshop::Run() {
         }
         window_->display();
     }
+    buttonManager_->ReleaseButton();
     return 0;
 }
