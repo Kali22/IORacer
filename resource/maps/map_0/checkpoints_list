@@ -1,32 +1,32 @@
 box_size_x: 10
-box_size_y: 2
+box_size_y: 1
 
 check 1
-box_x: 128.101
-box_y: 129.355
-angle: 90
-
-check 2
 box_x: 26.30
 box_y: 47.34
 angle: 0
 
-check 3
+check 2
 box_x: 122.30
 box_y: 102.34
 angle: 249
 
-check 4
+check 3
 box_x: 200.30
 box_y: 32.34
 angle: 291
 
-check 5
+check 4
 box_x: 246.703
 box_y: 25.8415
 angle: 321
 
-check 6
+check 5
 box_x: 248.30
 box_y: 100.34
 angle: 0
+
+check 6
+box_x: 128.101
+box_y: 129.355
+angle: 90

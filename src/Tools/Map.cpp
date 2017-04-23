@@ -48,23 +48,24 @@ void Map::LoadMap(const std::string &name, const std::string &full_name) {
     printf("Maximum texture size on this GPU is %d\n", max_size_);
     printf("Loading map %s...\n", name.c_str());
     std::string path("../resource/maps/");
-    std::string name_view("/view.png");
-    std::string name_friction("/friction.png");
+    std::string nameView("/view.png");
+    std::string nameFriction("/friction.png");
+    std::string nameMinimamp("/minimap.png");
 
-    image_view_.loadFromFile(path + name + name_view);
+    image_view_.loadFromFile(path + name + nameView);
     map_view_.loadFromImage(image_view_);
-    image_friction_.loadFromFile(path + name + name_friction);
+    minimapImage_.loadFromFile(path + name + nameMinimamp);
+    image_friction_.loadFromFile(path + name + nameFriction);
     map_friction_.loadFromImage(image_friction_);
+    minimapTexture_.loadFromImage(minimapImage_);
+    minimapSprite_.setTexture(minimapTexture_);
     this->name_ = name;
     this->full_name_ = full_name;
-
     sprite_map_.setTexture(map_view_);
     sprite_friction_.setTexture(map_friction_);
     printf("Loading map %s done!\n", name.c_str());
 
     sf::Vector2u image_size = image_friction_.getSize();
-    minimap_.reset(sf::FloatRect(0, 0, image_size.x, image_size.y));
-    minimap_.setViewport(sf::FloatRect(0, 0, 0.3f, 0.3f));
     camera_.setCenter(300, 300);
     camera_.setSize(1200, 800);
     camera_.setViewport(sf::FloatRect(0, 0, 1.f, 1.f));
@@ -112,10 +113,6 @@ const sf::View &Map::GetCameraView() {
     return camera_;
 }
 
-const sf::View &Map::GetMinimapView() {
-    return minimap_;
-}
-
 void Map::SetCameraViewPosition(const sf::Vector2f &pos) {
     sf::Vector2f margin = camera_.getSize();
     margin = margin / 2.0f;
@@ -141,4 +138,13 @@ void Map::RenderBottomLayer(sf::RenderWindow &window) {
     window.draw(bands_sprite_[3]);
     objectManager.draw(&window);
     window.setView(window.getDefaultView());
+}
+
+sf::Sprite &Map::GetMinimap() {
+    return minimapSprite_;
+}
+
+sf::Vector2f Map::GetMapSize() {
+    sf::Vector2u mapSize = map_friction_.getSize();
+    return sf::Vector2f(mapSize.x, mapSize.y);
 }

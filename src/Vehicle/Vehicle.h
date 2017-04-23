@@ -1,6 +1,11 @@
 /**
+ *  @defgroup vehicle Vehicle
+ *  Vehicle model control
+ */
+
+/**
  *  @file
- *  @ingroup xxx
+ *  @ingroup vehicle
  *  @author Jacek Łysiak <jaceklysiako.o@gmail.com>
  *  @date 4/1/17
  */
@@ -67,8 +72,8 @@ private:
     void UpdateTurn(int controlState);
 
     void
-    CreateTire(b2World *world, b2RevoluteJoint **joint, b2RevoluteJointDef &jointDef,
-               float arg1, float arg2, float x, float y);
+    CreateTire(b2World *world, b2RevoluteJoint **joint, b2RevoluteJointDef &jointDef, float arg1, float arg2,
+               float x, float y, TirePositionE positionFlags);
 };
 
 using VehiclePtr = std::shared_ptr<Vehicle>;

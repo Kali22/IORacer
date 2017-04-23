@@ -16,7 +16,7 @@
  */
 class CheckPoint : public Entity {
 public:
-    CheckPoint(Area *area);
+    CheckPoint(RectangleArea *area, const sf::Texture *texture);
 
     ~CheckPoint();
 
@@ -42,8 +42,9 @@ public:
 
     void EndContact();
 
+    sf::Vector2f GetPosition() const;
 private:
-    Area *area_;
+    RectangleArea *area_;
     CheckPointObserver *observer_;
     bool enable_;
 };

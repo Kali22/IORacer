@@ -32,8 +32,6 @@ public:
 
     const sf::View &GetCameraView();
 
-    const sf::View &GetMinimapView();
-
     void AlignCameraViewSize(const sf::Window &window);
 
     void SetCameraViewPosition(const sf::Vector2f &pos);
@@ -43,6 +41,10 @@ public:
     void RenderBottomLayer(sf::RenderWindow &window);
 
     sf::Vector2f GetStartPosition();
+
+    sf::Sprite &GetMinimap();
+
+    sf::Vector2f GetMapSize();
 
 private:
     float scale_;
@@ -57,8 +59,11 @@ private:
     sf::Sprite sprite_map_;
     sf::Sprite sprite_friction_;
 
+    sf::Image minimapImage_;
+    sf::Texture minimapTexture_;
+    sf::Sprite minimapSprite_;
+
     sf::View camera_;
-    sf::View minimap_;
 
     b2World *world_;
     b2Body *bands_[4];          //!< Outside bands

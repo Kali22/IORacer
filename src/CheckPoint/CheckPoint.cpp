@@ -1,7 +1,8 @@
 #include <CheckPoint.h>
 
-CheckPoint::CheckPoint(Area *area) : area_(area) {
+CheckPoint::CheckPoint(RectangleArea *area, const sf::Texture *texture) : area_(area) {
     area_->SetCollisionUserData(this);
+    area_->SetTexture(texture);
 }
 
 CheckPoint::~CheckPoint() {}
@@ -36,5 +37,9 @@ void CheckPoint::BeginContact() {
 }
 
 void CheckPoint::EndContact() {}
+
+sf::Vector2f CheckPoint::GetPosition() const {
+    return area_->GetPosition();
+}
 
 

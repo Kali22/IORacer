@@ -27,11 +27,11 @@ int main(int argc, char **argv) {
     HUDPtr hud = std::make_shared<HUD>(nullptr, map);
 
     /* Set checkpoints */
-    /// TODO add race builder
+    /// @TODO add race builder
     /// @TODO move checkPointsParser to map Load
     CheckPointParser parser(world, 30); // scale
     std::vector<CheckPointPtr> checkPoints = parser.ParseFile("../resource/maps/map_0/checkpoints_list");
-    CheckPointManagerPtr checkPointManager = std::make_shared<CheckPointManager>(checkPoints);
+    CheckPointManagerPtr checkPointManager = std::make_shared<CheckPointManager>(checkPoints, 15);
 
     /* Set initial car params */
     CarParametersPtr carParameters = std::make_shared<CarParameters>();

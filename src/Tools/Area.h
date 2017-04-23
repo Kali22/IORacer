@@ -10,5 +10,7 @@ public:
     virtual void SetCollisionUserData(Entity *entity) = 0;
 
     virtual void Draw(sf::RenderWindow *window) const = 0;
+
+    virtual sf::Vector2f GetPosition() const = 0;
 };
 

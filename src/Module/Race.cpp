@@ -13,7 +13,7 @@ void setclr(int *reg, int mask, int type) {
         *reg &= ~mask;
 }
 
-void HandleKeyboard(sf::Event::KeyEvent Event, int *state, int type) {
+void Race::HandleKeyboard(sf::Event::KeyEvent Event, int *state, int type) {
     /// @TODO change to map
     switch (Event.code) {
         case sf::Keyboard::Key::Left:
@@ -28,8 +28,12 @@ void HandleKeyboard(sf::Event::KeyEvent Event, int *state, int type) {
         case sf::Keyboard::Key::Right:
             setclr(state, RIGHT, type);
             break;
-        case sf::Keyboard::Key::B:
+        case sf::Keyboard::Key::Space:
             setclr(state, BRAKE, type);
+            break;
+        case sf::Keyboard::Key::D:
+            if (type)
+                hud_->DebugDisplayToggle();
             break;
         default:
             break;
@@ -50,8 +54,8 @@ void Race::Initialize(VehiclePtr vehicle) {
     // Prepare map
     vehicle_->Initialize(world_, (int)pos.x, (int)pos.y);
 
-    hud_->Initialize(vehicle_);
     checkPointManager_->Reset();
+    hud_->Initialize(vehicle_, checkPointManager_);
     map_->AlignCameraViewSize(*window_);
     map_->SetCameraViewPosition(vehicle_->GetPosition());
     world_->SetContactListener(&contactListener_);
@@ -79,23 +83,19 @@ int Race::Run() {
             }
         }
 
-        /* Update states */
+        /* Update physics object states */
         vehicle_->Update(carState, *map_);
 
         /* Simulate the world */
         world_->Step(1 / 60.f, 8, 3);
+
+        /* Update game objects */
+        checkPointManager_->Update();
         hud_->Update();
+
         /* Rendering */
         map_->SetCameraViewPosition(vehicle_->GetPosition());
-        window_->clear(sf::Color::White);
-        if (cnt == 120) {
-            printf("Elapsed time: %f\n", checkPointManager_->GetElapsedTime()
-                    .asSeconds());
-            vehicle_->PrintPos();
-            cnt = 0;
-        } else {
-            cnt++;
-        }
+        window_->clear(sf::Color::Black);
         map_->RenderBottomLayer(*window_);
         window_->setView(map_->GetCameraView());
         checkPointManager_->Draw(window_);
