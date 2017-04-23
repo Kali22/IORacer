@@ -21,9 +21,9 @@ void HUD::Initialize(VehiclePtr vehicle, CheckPointManagerPtr checkPointManager)
     vehicle_ = vehicle;
     checkPointManager_ = checkPointManager;
 
-    CreateSectorLapContainer(sf::FloatRect(440, 0, 207, 70));
-    CreateLapTimeContainer(sf::FloatRect(0, 0, 207, 167));
-    CreateSectorTimeContainer(sf::FloatRect(900, 0, 207, 167));
+    CreateSectorLapContainer(sf::FloatRect(0, 450, 207, 70));
+    CreateLapTimeContainer(sf::FloatRect(0, 550, 207, 167));
+    CreateSectorTimeContainer(sf::FloatRect(215, 550, 207, 167));
     CreateNotifyContainer(sf::FloatRect(400, 100, 300, 50), sf::FloatRect(425, 160, 250, 50));
 }
 
@@ -127,9 +127,9 @@ void HUD::CreateSectorTimeContainer(sf::FloatRect frame) {
     TimeManagerPtr timeManager = checkPointManager_->GetTimeManager();
     container = std::make_shared<Container>(frame);
     AddContainerTitle(container, "SECTOR TIME");
-    AddTimeIndicator(container, "Current:", timeManager->GetCurrentSectorTime(),sf::IntRect(1, 4, 0, 1));
-    AddTimeIndicator(container, "Last:", timeManager->GetLastSectorTime(),sf::IntRect(1, 4, 0, 2));
-    AddTimeIndicator(container, "Best:", timeManager->GetBestSectorTime(),sf::IntRect(1, 4, 0, 3));
+    AddTimeIndicator(container, "Current:", timeManager->GetCurrentSectorTime(),sf::IntRect(1, 5, 0, 1));
+    AddTimeIndicator(container, "Last:", timeManager->GetLastSectorTime(),sf::IntRect(1, 5, 0, 2));
+    AddTimeIndicator(container, "Best:", timeManager->GetBestSectorTime(),sf::IntRect(1, 5, 0, 3));
     container->FrameOn();
     containers_.push_back(container);
 }
