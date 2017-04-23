@@ -29,22 +29,24 @@ std::map<std::string, std::string> font{
 
 Text::Text(std::string text, std::string fontName, sf::Vector2f position,
            float size) {
-    CreateText(text, fontName, size);
-    frame_ = false;
-    SetTextFrame(sf::FloatRect(position.x, position.y, 0.f, 0.f));
-    SetDefaultFrameStyle();
     textPosition_ = TEXT_CENTER;
-    SetDefaultMargin();
+    frame_ = false;
+    CreateText(text, fontName, size);
+    rectangleFrame_.setOrigin(0, 0);
+    rectangleFrame_.setSize(sf::Vector2f(0.f, 0.f));
+    rectangleFrame_.setPosition(position.x, position.y);
+    SetDefaultFrameStyle();
+    sideMargin_ = 0.f;
     JustifyText();
 }
 
 Text::Text(std::string text, std::string fontName, sf::FloatRect frame, float size, TextJustification position) {
     CreateText(text, fontName, size);
     frame_ = false;
-    SetTextFrame(frame);
-    SetDefaultFrameStyle();
     textPosition_ = position;
+    SetDefaultFrameStyle();
     SetDefaultMargin();
+    SetTextFrame(frame);
     JustifyText();
 }
 
@@ -56,6 +58,8 @@ void Text::Draw(sf::RenderWindow *window) const {
 
 void Text::SetText(std::string txt) {
     sfText_.setString(txt);
+    sf::FloatRect rect = sfText_.getLocalBounds();
+    sfText_.setOrigin(rect.left, rect.top);
     JustifyText();
 }
 
@@ -71,22 +75,28 @@ void Text::CreateText(std::string text, std::string fontName, float size) {
     sfText_.setCharacterSize(size);
     sfText_.setString(text);
     sfText_.setColor(sf::Color::White);
+    sf::FloatRect rect = sfText_.getLocalBounds();
+    sfText_.setOrigin(rect.left, rect.top);
 }
 
 void Text::JustifyText() {
     auto position = rectangleFrame_.getPosition();
     auto size = rectangleFrame_.getSize();
-    auto bounds = sfText_.getGlobalBounds();
-    float width = bounds.width;
-    float height = bounds.height;
-    float textPositionY = position.y + size.y / 2.f - height / 2.0f * 1.5f;
-    float textPositionX = position.x;
+    auto rect = sfText_.getLocalBounds();
+    float width = rect.width;
+    float height = rect.height;
+    float textPositionY;
+    float textPositionX;
+
     if (textPosition_ == TEXT_CENTER) {
-        textPositionX += size.x / 2.f - width / 2.0f;
+        textPositionY = position.y + size.y / 2.f - height / 2.f;
+        textPositionX = position.x + size.x / 2.f - width / 2.f;
     } else if (textPosition_ == TEXT_RIGHT) {
-        textPositionX += size.x - width - sideMargin_;
+        textPositionY = position.y + size.y / 2.f - height / 2.f;
+        textPositionX = position.x + size.x - width - sideMargin_;
     } else {
-        textPositionX += sideMargin_;
+        textPositionY = position.y + size.y / 2.f - height / 2.f;
+        textPositionX = position.x + sideMargin_;
     }
     sfText_.setPosition(textPositionX, textPositionY);
 }
