@@ -1,2 +1,2 @@
 # IORacer
-Gra wyścigowa 2d z widokiem z góry
+2D Race game
