@@ -100,7 +100,7 @@ void Tire::UpdateDrive(int state, float mod) {
     float desiredSpeed = GetDesiredSpeed(state);
 
     float force = GetNecessaryForce(currentSpeed, desiredSpeed);
-    body->ApplyForce(mod * force * currentForwardNormal, body->GetWorldCenter(), true);
+    body->ApplyForce(/*mod * */force * currentForwardNormal, body->GetWorldCenter(), true);
 }
 
 float Tire::GetDesiredSpeed(int state) {
