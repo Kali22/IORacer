@@ -1,8 +1,4 @@
-#include <Box2D.h>
-#include <SFML/Graphics/View.hpp>
-#include <SFML/Graphics.hpp>
-#include <Tools/Entity.h>
-#include <Tools/RectangleArea.h>
+#include <RectangleArea.h>
 
 RectangleArea::RectangleArea(b2World *world, const struct RectangleParams &params) : world_(world) {
     CreateB2Rectangle(params.b2Pos, params.b2Size, params.b2Angle);
@@ -25,7 +21,7 @@ void RectangleArea::CreateB2Rectangle(const b2Vec2 &position, const b2Vec2 &size
     b2FixtureDef fixtureDef;
 
     b2PolygonShape polygonShape;
-    polygonShape.SetAsBox(size.x / 2, size.y / 2, position, angle); // is center
+    polygonShape.SetAsBox(size.x / 2, size.y / 2, position, angle); // center
 
     fixtureDef.shape = &polygonShape;
     fixtureDef.isSensor = true;

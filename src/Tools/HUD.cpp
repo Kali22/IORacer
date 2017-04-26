@@ -9,8 +9,7 @@
 #include <Entity/TimeIndicator.h>
 #include <Entity/IntegerIndicator.h>
 
-HUD::HUD(VehiclePtr vehicle, MapPtr map)
-        : vehicle_(vehicle), map_(map) {
+HUD::HUD(VehiclePtr vehicle, MapPtr map) : vehicle_(vehicle), map_(map) {
     hudView_.setSize(1200, 800);
     hudView_.setCenter(550, 350);
     hudView_.setViewport(sf::FloatRect(0, 0, 1.0f, 1.0f));
@@ -32,7 +31,7 @@ void HUD::Update() {
         return;
     }
 
-    for (auto el : containers_) {
+    for (auto &el : containers_) {
         el->Update();
     }
 
@@ -52,38 +51,59 @@ void HUD::Update() {
 void HUD::Draw(sf::RenderWindow *window) const {
     window->setView(hudView_);
 
-    sf::Vector2u windowSize = window->getSize();
-    sf::Sprite &minimap = map_->GetMinimap();
-    minimap.setPosition(windowSize.x - 360.f, windowSize.y - 250.f);
-    minimap.setScale(0.39, 0.39);
-    window->draw(minimap);
-
-    float beginX = windowSize.x - 360.f;
-    float beginY = windowSize.y - 250.f;
-    sf::Vector2f checkpointPosition = checkPointManager_->GetNextCheckPointPosition();
-    sf::Vector2f vehiclePosition = vehicle_->GetPosition();
-    sf::Vector2f mapSize = map_->GetMapSize();
-    float posX = vehiclePosition.x / mapSize.x * 290;
-    float posY = vehiclePosition.y / mapSize.y * 160;
-    checkpointPosition.x *= 290 / mapSize.x;
-    checkpointPosition.y *= 160 / mapSize.y;
-
-    sf::CircleShape vehiclePoint(5);
-    sf::CircleShape checkpointPoint(5);
-    vehiclePoint.setFillColor(sf::Color(255, 50, 0, 250));
-    vehiclePoint.setOutlineColor(sf::Color(0, 0, 0, 150));
-    vehiclePoint.setPosition(beginX + posX, beginY + posY);
-    checkpointPoint.setFillColor(sf::Color(0, 250, 200, 250));
-    checkpointPoint.setOutlineColor(sf::Color(0, 0, 0, 150));
-    checkpointPoint.setPosition(beginX + checkpointPosition.x, beginY + checkpointPosition.y);
-    window->draw(checkpointPoint);
-    window->draw(vehiclePoint);
+    DrawMinimap(window);
 
     for (auto el : containers_) {
         if (el != nullptr)
             el->Draw(window);
     }
     window->setView(window->getDefaultView());
+}
+
+void HUD::DrawMinimap(sf::RenderWindow *window) const {
+    sf::Vector2u windowSize = window->getSize();
+    float beginX = windowSize.x - 360.f;
+    float beginY = windowSize.y - 250.f;
+    sf::Vector2f mapSize = map_->GetMapSize();
+
+    DrawMinimapBackground(window, windowSize);
+    DrawMinimapVehicle(window, mapSize, beginX, beginY);
+    DrawMinimapCheckpoint(window, mapSize, beginX, beginY);
+}
+
+void HUD::DrawMinimapBackground(sf::RenderWindow *window, const sf::Vector2u &windowSize) const {
+    sf::Sprite &minimap = map_->GetMinimap();
+    minimap.setPosition(windowSize.x - 360.f, windowSize.y - 250.f);
+    minimap.setScale(0.39, 0.39);
+    window->draw(minimap);
+}
+
+void HUD::DrawMinimapVehicle(sf::RenderWindow *window,
+                             const sf::Vector2f &mapSize,
+                             float beginX, float beginY) const {
+    sf::Vector2f vehiclePosition = vehicle_->GetPosition();
+    float posX = vehiclePosition.x / mapSize.x * 290;
+    float posY = vehiclePosition.y / mapSize.y * 160;
+
+    sf::CircleShape vehiclePoint(5);
+    vehiclePoint.setFillColor(sf::Color(255, 50, 0, 250));
+    vehiclePoint.setOutlineColor(sf::Color(0, 0, 0, 150));
+    vehiclePoint.setPosition(beginX + posX, beginY + posY);
+    window->draw(vehiclePoint);
+}
+
+void HUD::DrawMinimapCheckpoint(sf::RenderWindow *window,
+                                const sf::Vector2f &mapSize,
+                                float beginX, float beginY) const {
+    sf::Vector2f checkpointPosition = checkPointManager_->GetNextCheckPointPosition();
+    float posX = checkpointPosition.x / mapSize.x * 290;
+    float posY = checkpointPosition.y / mapSize.y * 160;
+
+    sf::CircleShape checkpointPoint(5);
+    checkpointPoint.setFillColor(sf::Color(0, 250, 200, 250));
+    checkpointPoint.setOutlineColor(sf::Color(0, 0, 0, 150));
+    checkpointPoint.setPosition(beginX + posX, beginY + posY);
+    window->draw(checkpointPoint);
 }
 
 void HUD::DebugDisplay(bool option) {
@@ -112,10 +132,10 @@ void HUD::CreateLapTimeContainer(sf::FloatRect frame) {
     TimeManagerPtr timeManager = checkPointManager_->GetTimeManager();
     container = std::make_shared<Container>(frame);
     AddContainerTitle(container, "LAP TIME");
-    AddTimeIndicator(container, "Current:", timeManager->GetCurrentLapTime(),sf::IntRect(1, 5, 0, 1));
-    AddTimeIndicator(container, "Last:", timeManager->GetLastLapTime(),sf::IntRect(1, 5, 0, 2));
-    AddTimeIndicator(container, "Best:", timeManager->GetBestLapTime(),sf::IntRect(1, 5, 0, 3));
-    AddTimeIndicator(container, "Combined:", timeManager->GetCombinedBestLapTime(),sf::IntRect(1, 5, 0, 4));
+    AddTimeIndicator(container, "Current:", timeManager->GetCurrentLapTime(), sf::IntRect(1, 5, 0, 1));
+    AddTimeIndicator(container, "Last:", timeManager->GetLastLapTime(), sf::IntRect(1, 5, 0, 2));
+    AddTimeIndicator(container, "Best:", timeManager->GetBestLapTime(), sf::IntRect(1, 5, 0, 3));
+    AddTimeIndicator(container, "Combined:", timeManager->GetCombinedBestLapTime(), sf::IntRect(1, 5, 0, 4));
     container->FrameOn();
     containers_.push_back(container);
 }
@@ -127,9 +147,9 @@ void HUD::CreateSectorTimeContainer(sf::FloatRect frame) {
     TimeManagerPtr timeManager = checkPointManager_->GetTimeManager();
     container = std::make_shared<Container>(frame);
     AddContainerTitle(container, "SECTOR TIME");
-    AddTimeIndicator(container, "Current:", timeManager->GetCurrentSectorTime(),sf::IntRect(1, 5, 0, 1));
-    AddTimeIndicator(container, "Last:", timeManager->GetLastSectorTime(),sf::IntRect(1, 5, 0, 2));
-    AddTimeIndicator(container, "Best:", timeManager->GetBestSectorTime(),sf::IntRect(1, 5, 0, 3));
+    AddTimeIndicator(container, "Current:", timeManager->GetCurrentSectorTime(), sf::IntRect(1, 5, 0, 1));
+    AddTimeIndicator(container, "Last:", timeManager->GetLastSectorTime(), sf::IntRect(1, 5, 0, 2));
+    AddTimeIndicator(container, "Best:", timeManager->GetBestSectorTime(), sf::IntRect(1, 5, 0, 3));
     container->FrameOn();
     containers_.push_back(container);
 }
@@ -143,7 +163,8 @@ void HUD::CreateNotifyContainer(sf::FloatRect lapFrame, sf::FloatRect sectorFram
     containers_.push_back(lapFinishIndicator_);
 
     sectorFinishIndicator_ = std::make_shared<Container>(sectorFrame);
-    AddTimeIndicatorWithoutTitle(sectorFinishIndicator_, timeManager->GetPreviousSectorTime(), sf::IntRect(1, 1, 0, 0), 30);
+    AddTimeIndicatorWithoutTitle(
+            sectorFinishIndicator_, timeManager->GetPreviousSectorTime(), sf::IntRect(1, 1, 0, 0), 30);
     sectorFinishIndicator_->FrameOn();
     sectorFinishIndicator_->Hide();
     containers_.push_back(sectorFinishIndicator_);

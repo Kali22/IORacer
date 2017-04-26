@@ -6,22 +6,20 @@
  */
 
 #include "Map.h"
-#include <Box2D.h>
-#include <SFML/Window.hpp>
 
 b2Body *CreateBox(b2World *World, float MouseX, float MouseY, float width, float height, float scale) {
-    b2BodyDef BodyDef;
-    BodyDef.position = b2Vec2(MouseX / scale, MouseY / scale);
-    BodyDef.type = b2_staticBody;
-    b2Body *Body = World->CreateBody(&BodyDef);
+    b2BodyDef bodyDef;
+    bodyDef.position = b2Vec2(MouseX / scale, MouseY / scale);
+    bodyDef.type = b2_staticBody;
+    b2Body *body = World->CreateBody(&bodyDef);
 
-    b2PolygonShape Shape;
-    Shape.SetAsBox((width / 2) / scale, (height / 2) / scale);
+    b2PolygonShape polygonShape;
+    polygonShape.SetAsBox((width / 2) / scale, (height / 2) / scale);
     b2FixtureDef FixtureDef;
     FixtureDef.density = 0;
-    FixtureDef.shape = &Shape;
-    Body->CreateFixture(&FixtureDef);
-    return Body;
+    FixtureDef.shape = &polygonShape;
+    body->CreateFixture(&FixtureDef);
+    return body;
 }
 
 Map::Map(b2World *world, float scale, sf::Vector2f startPosition)
@@ -86,7 +84,7 @@ void Map::LoadMap(const std::string &name, const std::string &full_name) {
     bands_sprite_[3].setPosition(10, 0);
     bands_sprite_[3].setRotation(90);
 
-    objectManager.LoadObjects(world_, name, scale_);
+    objectManager_.LoadObjects(world_, name, scale_);
 }
 
 const sf::Drawable &Map::GetViewMap() {
@@ -136,7 +134,7 @@ void Map::RenderBottomLayer(sf::RenderWindow &window) {
     window.draw(bands_sprite_[1]);
     window.draw(bands_sprite_[2]);
     window.draw(bands_sprite_[3]);
-    objectManager.draw(&window);
+    objectManager_.draw(&window);
     window.setView(window.getDefaultView());
 }
 

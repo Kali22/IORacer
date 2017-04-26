@@ -94,6 +94,14 @@ private:
     MapPtr map_;
     /// Checkpoint manager pointer
     CheckPointManagerPtr checkPointManager_;
+
+    void DrawMinimap(sf::RenderWindow *window) const;
+
+    void DrawMinimapBackground(sf::RenderWindow *window, const sf::Vector2u &windowSize) const;
+
+    void DrawMinimapVehicle(sf::RenderWindow *window, const sf::Vector2f &mapSize, float beginX, float beginY) const;
+
+    void DrawMinimapCheckpoint(sf::RenderWindow *window, const sf::Vector2f &mapSize, float beginX, float beginY) const;
 };
 
 using HUDPtr = std::shared_ptr<HUD>;

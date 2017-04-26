@@ -69,7 +69,7 @@ private:
     b2Body *bands_[4];          //!< Outside bands
     sf::Sprite bands_sprite_[4];
 
-    ObjectManager objectManager;
+    ObjectManager objectManager_;
 };
 
 using MapPtr = std::shared_ptr<Map>;

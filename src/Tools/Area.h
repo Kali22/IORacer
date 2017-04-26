@@ -13,4 +13,3 @@ public:
 
     virtual sf::Vector2f GetPosition() const = 0;
 };
-
