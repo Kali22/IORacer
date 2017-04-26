@@ -1,32 +1,31 @@
 #include <iostream>
+#include <Tools/MathUtil.h>
 #include "Box.h"
 
-Box::Box(b2World *world, int x, int y, int angle, float scale) {
+Box::Box(b2World *world, int x, int y, int angle, float scale) : scale_(scale) {
     // SFML
-    static sf::Texture boxTexture;
-    static bool loaded = false;
-    static float boxSize = 48.f;
-    scale_ = scale;
-    if (!loaded) {
-        boxTexture.loadFromFile("../resource/box.png");
-        loaded = true;
-    }
-
-    sprite_.setTexture(boxTexture);
-    sprite_.setOrigin(boxSize / 2, boxSize / 2);
+    sprite_.setTexture(GetTexture());
+    sprite_.setOrigin(boxSize_ / 2, boxSize_ / 2);
 
     // Box2D
+    InitializeBody(world, x, y, angle);
+    InitializeFixture();
+}
+
+void Box::InitializeBody(b2World *world, int x, int y, int angle) {
     b2BodyDef bodyDef;
-    bodyDef.position = b2Vec2(x / scale, y / scale);
-    bodyDef.angle = angle * b2_pi / 180.f;
+    bodyDef.position = b2Vec2(x / scale_, y / scale_);
+    bodyDef.angle = MathUtil::DegreeToRadian(angle);
     bodyDef.type = b2_dynamicBody;
     bodyDef.angularDamping = 1.0f;
     bodyDef.linearDamping = 2.0f;
     body_ = world->CreateBody(&bodyDef);
     body_->SetUserData(this);
+}
 
+void Box::InitializeFixture() {
     b2PolygonShape Shape;
-    Shape.SetAsBox((boxSize / 2) / scale, (boxSize / 2) / scale);
+    Shape.SetAsBox((boxSize_ / 2) / scale_, (boxSize_ / 2) / scale_);
     b2FixtureDef FixtureDef;
     FixtureDef.density = 5.f;
     FixtureDef.friction = 0.5f;
@@ -35,9 +34,17 @@ Box::Box(b2World *world, int x, int y, int angle, float scale) {
     body_->CreateFixture(&FixtureDef);
 }
 
+static sf::Texture Box::GetTexture() const {
+    if (!loaded_) {
+        boxTexture_.loadFromFile("../resource/box.png");
+        loaded_ = true;
+    }
+    return boxTexture_;
+}
+
 void Box::draw(sf::RenderWindow *window) {
     sprite_.setPosition(body_->GetPosition().x * scale_, body_->GetPosition().y * scale_);
-    sprite_.setRotation(body_->GetAngle()  * 180.f / b2_pi);
+    sprite_.setRotation(MathUtil::RadianToDegree(body_->GetAngle()));
     window->draw(sprite_);
 }
 

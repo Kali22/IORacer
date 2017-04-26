@@ -1,31 +1,28 @@
+#include <Tools/MathUtil.h>
 #include "TruckTire.h"
 
-TruckTire::TruckTire(b2World *world, int x, int y, int angle, float scale) {
-    // SFML
-    static sf::Texture tireTexture;
-    static bool loaded = false;
-    static float tireSize = 64.f;
-    scale_ = scale;
-    if (!loaded) {
-        tireTexture.loadFromFile("../resource/truckTire.png");
-        loaded = true;
-    }
+TruckTire::TruckTire(b2World *world, int x, int y, int angle, float scale) : scale_(scale) {
+    sprite_.setTexture(GetTexture());
+    sprite_.setOrigin(tireSize_ / 2, tireSize_ / 2);
 
-    sprite_.setTexture(tireTexture);
-    sprite_.setOrigin(tireSize / 2, tireSize / 2);
+    InitializeBody(world, x, y, angle);
+    InitializeFixture();
+}
 
-    // Box2D
+void TruckTire::InitializeBody(b2World *world, int x, int y, int angle) {
     b2BodyDef bodyDef;
-    bodyDef.position = b2Vec2(x / scale, y / scale);
-    bodyDef.angle = angle * b2_pi / 180.f;
+    bodyDef.position = b2Vec2(x / scale_, y / scale_);
+    bodyDef.angle = MathUtil::DegreeToRadian(angle);
     bodyDef.type = b2_dynamicBody;
     bodyDef.angularDamping = 1.0f;
     bodyDef.linearDamping = 2.0f;
     body_ = world->CreateBody(&bodyDef);
     body_->SetUserData(this);
+}
 
+void TruckTire::InitializeFixture() {
     b2CircleShape Shape;
-    Shape.m_radius = (tireSize / 2) / scale;
+    Shape.m_radius = (tireSize_ / 2) / scale_;
     b2FixtureDef FixtureDef;
     FixtureDef.density = 10.f;
     FixtureDef.friction = 0.2f;
@@ -34,9 +31,17 @@ TruckTire::TruckTire(b2World *world, int x, int y, int angle, float scale) {
     body_->CreateFixture(&FixtureDef);
 }
 
+static sf::Texture TruckTire::GetTexture() {
+    if (!loaded_) {
+        tireTexture_.loadFromFile("../resource/truckTire.png");
+        loaded_ = true;
+    }
+    return tireTexture_;
+}
+
 void TruckTire::draw(sf::RenderWindow *window) {
     sprite_.setPosition(body_->GetPosition().x * scale_, body_->GetPosition().y * scale_);
-    sprite_.setRotation(body_->GetAngle()  * 180.f / b2_pi);
+    sprite_.setRotation(MathUtil::RadianToDegree(body_->GetAngle()));
     window->draw(sprite_);
 }
 

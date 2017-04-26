@@ -6,9 +6,13 @@
 #include "Object.h"
 
 class ObjectManager {
-    std::vector<std::shared_ptr<Object> > objects;
 public:
     ObjectManager();
+
     void LoadObjects(b2World *world, std::string map_name, float scale);
+
     void draw(sf::RenderWindow *window);
+
+private:
+    std::vector<std::shared_ptr<Object> > objects_;
 };
