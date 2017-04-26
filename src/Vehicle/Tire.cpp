@@ -109,7 +109,7 @@ void Tire::UpdateDrive(int state, float mod) {
         return;
 
     if (!locked_)
-        body->ApplyForce(mod * force * currentForwardNormal, body->GetWorldCenter(), true);
+        body->ApplyForce(force * currentForwardNormal, body->GetWorldCenter(), true);
 }
 
 void Tire::Reset(float x, float y) {
