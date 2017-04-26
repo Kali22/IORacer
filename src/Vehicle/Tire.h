@@ -70,7 +70,7 @@ private:
 
     float GetDesiredSpeed(int state);
 
-    float GetNecessaryForce(float currentSpeed, float desiredSpeed);
+    float GetForce(float currentSpeed, float desiredSpeed);
 };
 
 using TirePtr = std::shared_ptr<Tire>;

@@ -7,6 +7,8 @@ class Object {
 public:
     virtual void draw(sf::RenderWindow *window) = 0;
 
+    Object(float scale) : scale_(scale) {}
+
 protected:
     float scale_;
     b2Body *body_;
