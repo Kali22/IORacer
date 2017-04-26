@@ -27,7 +27,7 @@ public:
 
     ~Vehicle();
 
-    void Initialize(b2World *world, int x, int y);
+    void Initialize(b2World *world, int posX, int posY);
 
     void Update(int state, Map &map);
 
@@ -55,13 +55,13 @@ public:
 
 private:
     float scale_;
-    b2Body *body;
-    std::vector<TirePtr> tires;
-    b2RevoluteJoint *fl_joint, *fr_joint; // Front joints
-    b2RevoluteJoint *bl_joint, *br_joint; // Back joints
+    b2Body *body_;
+    std::vector<TirePtr> tires_;
+    b2RevoluteJoint *fl_joint_, *fr_joint_; // Front joints
+    b2RevoluteJoint *bl_joint_, *br_joint_; // Back joints
 
-    sf::Texture texture_chassis;
-    sf::Sprite sprite_chassis;
+    sf::Texture texture_chassis_;
+    sf::Sprite sprite_chassis_;
 
     CarParametersPtr carParameters_;
 
@@ -71,9 +71,17 @@ private:
 
     void UpdateTurn(int controlState);
 
-    void
-    CreateTire(b2World *world, b2RevoluteJoint **joint, b2RevoluteJointDef &jointDef, float arg1, float arg2,
-               float x, float y, TirePositionE positionFlags);
+    void CreateTire(b2World *world, b2RevoluteJoint **joint, b2RevoluteJointDef &jointDef,
+                    float bodyOffSetX, float bodyOffSetY,
+                    float posX, float posY, TirePositionE positionFlags);
+
+    void CreateTires(b2World *world, int posX, int posY);
+
+    void InitializeBody(b2World *world, int posX, int posY, float angle);
+
+    void InitializeBodyFixture();
+
+    float GetDesiredAngle(int controlState);
 };
 
 using VehiclePtr = std::shared_ptr<Vehicle>;

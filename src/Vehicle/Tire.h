@@ -61,6 +61,16 @@ private:
     /// Max possible friction force.
     /// = frictionBase * frictionMod * loadForce
     float maxTireFrictionForce_;
+
+    void UpdateFrictionLocked(float mod);
+
+    void UpdateFrictionNotLocked(float mod);
+
+    void InitializeBody(b2World *world, float scale, float x, float y);
+
+    float GetDesiredSpeed(int state);
+
+    float GetNecessaryForce(float currentSpeed, float desiredSpeed);
 };
 
 using TirePtr = std::shared_ptr<Tire>;
