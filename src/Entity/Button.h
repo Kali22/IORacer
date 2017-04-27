@@ -20,7 +20,6 @@ protected:
     sf::Vector2f position_;
     Text text_;
     std::function<void()> action_;
-
 };
 
 using ButtonPtr = std::shared_ptr<Button>;

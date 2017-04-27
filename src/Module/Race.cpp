@@ -28,8 +28,8 @@ void Race::Reset() {
 }
 
 int Race::Run() {
-    int carState = 0;
     close_ = false;
+    int carState = 0;
     bool interrupted = false;
     while (!close_) {
         interrupted = HandleEvents(carState);
