@@ -44,6 +44,10 @@ private:
                            int posX, int posY, float &value, TextPtr &text);
 
     void InitializeReturnButton(const sf::Vector2f &gameButtonSize, int windowWidth, int windowHeight);
+
+    bool HandleEvents();
+
+    void Draw();
 };
 
 using WorkshopPtr = std::shared_ptr<Workshop>;

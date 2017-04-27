@@ -21,6 +21,12 @@ private:
     void InitializeWorkshopButton(int windowWidth, int windowHeight, const sf::Vector2f &menuButtonSize);
 
     void InitializeQuitButton(int windowWidth, int windowHeight, const sf::Vector2f &menuButtonSize);
+
+    void HandleEvent(bool &mouseClick);
+
+    void ServeButtons(bool &mouseClick);
+
+    void Draw();
 };
 
 using MenuPtr = std::shared_ptr<Menu>;

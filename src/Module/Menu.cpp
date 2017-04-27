@@ -56,40 +56,49 @@ int Menu::Run() {
     while (!close_) {
         bool mouseClick = false; // info for buttons
 
-        // EVENT handling
-        sf::Event event;
-        while (window_->pollEvent(event)) {
-            // "close_ requested" event: end while loop
-            if (event.type == sf::Event::Closed ||
-                (event.type == sf::Event::KeyPressed && event.key.code == sf::Keyboard::Key::Escape)) {
-                close_ = true;
-            }
-            // handle mouse click
-            if (event.type == sf::Event::MouseButtonPressed && event.mouseButton.button == sf::Mouse::Left) {
-                mouseClick = true;
-            }
-        }
+        HandleEvent(mouseClick);
 
-        /// BUTTON things
-        std::shared_ptr<Button> activeButton = nullptr;
-        sf::Vector2f mousePos = sf::Vector2f(sf::Mouse::getPosition(*window_));
-        // select Hovered button, change style
-        for (auto &button : buttons_) {
-            if (button->ToggleHover(mousePos)) {
-                activeButton = button;
-            }
-        }
-        if (activeButton != nullptr && mouseClick) {
-            activeButton->OnClick();
-        }
+        ServeButtons(mouseClick);
 
-        // DRAWING
-        window_->clear(sf::Color(60, 70, 80));
-        for (auto &drawableObject : objects_) {
-            drawableObject->Draw(window_);
-        }
-        window_->display();
+        Draw();
     }
 
     return 0;
+}
+
+void Menu::HandleEvent(bool &mouseClick) {
+    sf::Event event;
+    while (window_->pollEvent(event)) {
+        // "close_ requested" event: end while loop
+        if (event.type == sf::Event::Closed ||
+            (event.type == sf::Event::KeyPressed && event.key.code == sf::Keyboard::Key::Escape)) {
+            close_ = true;
+        }
+        // handle mouse click
+        if (event.type == sf::Event::MouseButtonPressed && event.mouseButton.button == sf::Mouse::Left) {
+            mouseClick = true;
+        }
+    }
+}
+
+void Menu::ServeButtons(bool &mouseClick) {
+    std::shared_ptr<Button> activeButton = nullptr;
+    sf::Vector2f mousePos = sf::Vector2f(sf::Mouse::getPosition(*window_));
+    // select Hovered button, change style
+    for (auto &button : buttons_) {
+        if (button->ToggleHover(mousePos)) {
+            activeButton = button;
+        }
+    }
+    if (activeButton != nullptr && mouseClick) {
+        activeButton->OnClick();
+    }
+}
+
+void Menu::Draw() {
+    window_->clear(sf::Color(60, 70, 80));
+    for (auto &drawableObject : objects_) {
+        drawableObject->Draw(window_);
+    }
+    window_->display();
 }

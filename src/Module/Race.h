@@ -16,11 +16,11 @@ public:
 
     int Run();
 
-    VehiclePtr GetVehicle();
-
     void Reset();
 
     void Initialize(VehiclePtr vehicle);
+
+    VehiclePtr GetVehicle();
 
 private:
     MapPtr map_;
@@ -31,6 +31,12 @@ private:
     CheckPointManagerPtr checkPointManager_;
 
     void HandleKeyboard(sf::Event::KeyEvent Event, int *state, int type);
+
+    bool HandleEvents(int &carState);
+
+    void Update(int &carState);
+
+    void Render();
 };
 
 using RacePtr = std::shared_ptr<Race>;

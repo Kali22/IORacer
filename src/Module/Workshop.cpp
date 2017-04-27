@@ -20,30 +20,41 @@ Workshop::Workshop(sf::RenderWindow *window, RacePtr race) :
 
 int Workshop::Run() {
     close_ = false;
+    bool interrupted = false;
     while (!close_) {
-        // EVENT handling
-        sf::Event event;
-        sf::Vector2f mousePos = sf::Vector2f(sf::Mouse::getPosition(*window_));
-        while (window_->pollEvent(event)) {
-            // "close_ requested" event: end while loop
-            if (event.type == sf::Event::Closed) {
-                window_->close();
-                return 1;
-            }
-            // handle mouse click
-            buttonManager_->ProcessEvent(event, mousePos);
-        }
-        buttonManager_->ManageClicks();
-        buttonManager_->ManageHover(mousePos);
-        // DRAWING
-        window_->clear(sf::Color(60, 70, 80));
-        for (auto &drawableObject : objects_) {
-            drawableObject->Draw(window_);
-        }
-        window_->display();
+        interrupted = HandleEvents();
+
+        Draw();
     }
     buttonManager_->ReleaseButton();
+    return interrupted;
+}
+
+bool Workshop::HandleEvents() {
+    sf::Event event;
+    sf::Vector2f mousePos = sf::Vector2f(sf::Mouse::getPosition(*window_));
+    while (window_->pollEvent(event)) {
+        // "close_ requested" event: end while loop
+        if (event.type == sf::Event::Closed) {
+            window_->close();
+            close_ = true;
+            return 1;
+        }
+        // handle mouse click
+        buttonManager_->ProcessEvent(event, mousePos);
+    }
+    buttonManager_->ManageClicks();
+    buttonManager_->ManageHover(mousePos);
     return 0;
+}
+
+void Workshop::Draw() {
+    // DRAWING
+    window_->clear(sf::Color(60, 70, 80));
+    for (auto &drawableObject : objects_) {
+        drawableObject->Draw(window_);
+    }
+    window_->display();
 }
 
 void Workshop::InitializeMaxSpeedControl(
