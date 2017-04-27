@@ -13,7 +13,8 @@
  */
 class TimeManager : public Updatable {
 public:
-    TimeManager(const int &currentSector, const int &currentLap, const int &totalSectors);
+    TimeManager(const int &currentSector, const int &currentLap,
+                const int &totalSectors);
 
     void Update();
 
@@ -55,6 +56,7 @@ public:
     const int &GetCurrentLapNumber() const;
 
     const int &GetCurrentSectorNumber() const;
+
 private:
     void UpdateTimes();
 

@@ -1,16 +1,17 @@
 #pragma once
 
-#include <CheckPoint/CheckPoint.h>
-#include <CheckPoint/CheckPointObserver.h>
+#include <CheckPoint.h>
+#include <CheckPointObserver.h>
 #include <SFML/System/Clock.hpp>
-#include <Entity/Drawable.h>
-#include <Entity/Updatable.h>
-#include <CheckPoint/TimeManager.h>
+#include <Drawable.h>
+#include <Updatable.h>
+#include <TimeManager.h>
 
 /**
  * Store list of chekpoints. Track and update active checkpoint.
  */
-class CheckPointManager : public CheckPointObserver, public Drawable, public Updatable {
+class CheckPointManager
+        : public CheckPointObserver, public Drawable, public Updatable {
 public:
     CheckPointManager(std::vector<CheckPointPtr> checkPoints, int totalLaps);
 
@@ -48,6 +49,7 @@ public:
     int GetCurrentLapNumber() const;
 
     int GetCurrentSectorNumber() const;
+
 private:
     CheckPointPtr GetCurrentCheckPoint() const;
 

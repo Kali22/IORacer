@@ -1,24 +1,30 @@
 //
 // Created by pawel on 04.04.17.
-// Edited by j_ack on 13.04.17
+// Edited by jack on 13.04.17
 //
+
 #include <cassert>
 #include <CheckPoint.h>
 #include <CheckPointManager.h>
 
-CheckPointManager::CheckPointManager(std::vector<CheckPointPtr> checkPoints, int totalLaps)
-        : checkPoints_(checkPoints), currentLap_(1), currentSector_(0), totalLaps_(totalLaps) {
+CheckPointManager::CheckPointManager(std::vector<CheckPointPtr> checkPoints,
+                                     int totalLaps)
+        : checkPoints_(checkPoints), currentLap_(1), currentSector_(0),
+          totalLaps_(totalLaps) {
     assert(!checkPoints.empty());
     for (auto checkPoint : checkPoints) {
         checkPoint->SetObserver(this);
     }
     totalSectors_ = (int) checkPoints_.size();
-    timeManager_ = std::make_shared<TimeManager>(currentSector_, currentLap_, totalSectors_);
+    timeManager_ = std::make_shared<TimeManager>(currentSector_, currentLap_,
+                                                 totalSectors_);
     Reset();
 }
 
 void CheckPointManager::Reset() {
     GetCurrentCheckPoint()->SetEnable(false);
+
+    // Change to first check point.
     currentSector_ = 0;
     currentLap_ = 1;
     GetCurrentCheckPoint()->SetEnable(true);
@@ -30,6 +36,7 @@ void CheckPointManager::NotifyCheckPointReached() {
     if (GetCurrentCheckPoint()->IsEnabled()) {
         return;
     }
+
     // Sector finished, register sector time
     timeManager_->BeginNewSector();
     currentSector_++;
@@ -81,9 +88,10 @@ TimeManagerPtr CheckPointManager::GetTimeManager() const {
 }
 
 bool CheckPointManager::NewSectorBeginNotify() const {
-    return (timeManager_->NewSectorBeginNotify()) && ((currentLap_ > 1) || (currentSector_ > 0));
+    return (timeManager_->NewSectorBeginNotify()) &&
+           ((currentLap_ > 1) || (currentSector_ > 0));
 }
 
 bool CheckPointManager::NewLapBeginNotify() const {
-    return (timeManager_->NewLapBeginNotify()) &&  (currentLap_ > 1);
+    return (timeManager_->NewLapBeginNotify()) && (currentLap_ > 1);
 }
