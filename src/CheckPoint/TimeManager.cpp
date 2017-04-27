@@ -22,19 +22,19 @@ void TimeManager::Update() {
 void TimeManager::Reset() {
     // No lap finished
     combinedBestLapTime_ = std::numeric_limits<float>::infinity();
-    bestLapNumber_ = 0;
     bestLapTime_ = std::numeric_limits<float>::infinity();
+    bestLapNumber_ = 0;
 
     bestSectorTimeNumber_ = std::vector<int>(totalSectors_, 0);
     bestSectorTimes_ = std::vector<float>(totalSectors_,
                                           std::numeric_limits<float>::infinity());
     // Add zeros in 'guard' zero lap
-    accumulativeSectorsTimes_ = {std::vector<float>(totalSectors_,
-                                                           std::numeric_limits<float>::infinity()), std::vector<float>()};
-    sectorsTimes_ = {std::vector<float>(totalSectors_,
-                                        std::numeric_limits<float>::infinity())};
-    sectorsTimes_.push_back(std::vector<float>());
-    StartClock();
+    accumulativeSectorsTimes_ = {
+            std::vector<float>(totalSectors_,
+                               std::numeric_limits<float>::infinity()),
+            std::vector<float>()};
+    sectorsTimes_ = accumulativeSectorsTimes_,
+            StartClock();
 }
 
 void TimeManager::BeginNewSector() {
@@ -42,6 +42,7 @@ void TimeManager::BeginNewSector() {
     float lapTime = lapClock_.getElapsedTime().asSeconds();
     sectorsTimes_[currentLap_].push_back(sectorTime);
     accumulativeSectorsTimes_[currentLap_].push_back(lapTime);
+
     // Check best sector time
     if (sectorTime < bestSectorTimes_[currentSector_]) {
         bestSectorTimes_[currentSector_] = sectorTime;
@@ -55,10 +56,12 @@ void TimeManager::BeginNewLap() {
         bestLapTime_ = lapTime;
         bestLapNumber_ = currentLap_;
     }
+
     // Recalculate combined best lap time
     combinedBestLapTime_ = 0;
-    for (auto sectorTime : bestSectorTimes_)
+    for (auto sectorTime : bestSectorTimes_) {
         combinedBestLapTime_ += sectorTime;
+    }
 
     accumulativeSectorsTimes_.push_back(std::vector<float>());
     sectorsTimes_.push_back(std::vector<float>());
@@ -133,15 +136,16 @@ const int &TimeManager::GetCurrentSectorNumber() const {
 
 void TimeManager::UpdateTimes() {
     currentSectorTime_ = sectorClock_.getElapsedTime().asSeconds();
-    currentLapTime_ = lapClock_.getElapsedTime().asSeconds();
-    previousSectorTime_ = (currentSector_ > 0 ?
-                           sectorsTimes_[currentLap_][currentSector_ - 1] :
-                           sectorsTimes_[currentLap_ - 1][totalSectors_ - 1]);
     lastSectorTime_ = sectorsTimes_[currentLap_ - 1][currentSector_];
     bestSectorTime_ = bestSectorTimes_[currentSector_];
     bestSectorLapNumber_ = bestSectorTimeNumber_[currentSector_];
-    lastLapTime_ = (currentLap_ > 1 ? accumulativeSectorsTimes_[currentLap_ -
-                                                                1][
-            totalSectors_ - 1]
-                                    : std::numeric_limits<float>::infinity());
+    previousSectorTime_ = (currentSector_ > 0 ?
+                           sectorsTimes_[currentLap_][currentSector_ - 1] :
+                           sectorsTimes_[currentLap_ - 1][totalSectors_ - 1]);
+
+    currentLapTime_ = lapClock_.getElapsedTime().asSeconds();
+    lastLapTime_ =
+            (currentLap_ > 1 ?
+             accumulativeSectorsTimes_[currentLap_ - 1][totalSectors_ - 1] :
+             std::numeric_limits<float>::infinity());
 }
