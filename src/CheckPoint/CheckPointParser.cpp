@@ -10,8 +10,7 @@ CheckPointParser::CheckPointParser(b2World *world, float scale)
         : world_(world), scale_(scale) {
 }
 
-std::vector<CheckPointPtr>
-CheckPointParser::ParseFile(const std::string &file) {
+std::vector<CheckPointPtr> CheckPointParser::ParseFile(const std::string &file) {
     input_.open(file);
 
     ParseRectangleSize();
