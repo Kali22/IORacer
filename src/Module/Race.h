@@ -11,8 +11,8 @@
 
 class Race : public Module {
 public:
-    Race(sf::RenderWindow *win, b2World *world, MapPtr map, HUDPtr hud, CheckPointManagerPtr checkPointManager) :
-            Module(win), world_(world), map_(map), hud_(hud), checkPointManager_(checkPointManager) {};
+    Race(sf::RenderWindow *window, b2World *world, MapPtr map, HUDPtr hud, CheckPointManagerPtr checkPointManager) :
+            Module(window), world_(world), map_(map), hud_(hud), checkPointManager_(checkPointManager) {};
 
     int Run();
 
@@ -23,11 +23,9 @@ public:
     void Initialize(VehiclePtr vehicle);
 
 private:
-    //sf::RenderWindow &window;
     MapPtr map_;
     b2World *world_;
     VehiclePtr vehicle_;
-    //CarParameters carParameters_;
     HUDPtr hud_;
     ContactListener contactListener_;
     CheckPointManagerPtr checkPointManager_;

@@ -1,15 +1,16 @@
-//
-// Created by maciej on 30.03.17.
-//
-
 #include "Menu.h"
 
 Menu::Menu(sf::RenderWindow *window, RacePtr race) :
         Module(window), race_(race), workshop_(std::make_shared<Workshop>(window_, race_)) {
     int windowWidth = window->getSize().x, windowHeight = window->getSize().y;
-
     sf::Vector2f menuButtonSize = sf::Vector2f(300, 80);
-    // set buttons
+
+    InitializePlayButton(windowWidth, windowHeight, menuButtonSize);
+    InitializeWorkshopButton(windowWidth, windowHeight, menuButtonSize);
+    InitializeQuitButton(windowWidth, windowHeight, menuButtonSize);
+}
+
+void Menu::InitializePlayButton(int windowWidth, int windowHeight, const sf::Vector2f &menuButtonSize) {
     playButton_ = std::make_shared<Button>(
             sf::Vector2f(windowWidth / 2, windowHeight * 1 / 4),
             menuButtonSize,
@@ -21,7 +22,10 @@ Menu::Menu(sf::RenderWindow *window, RacePtr race) :
                 race_->Reset();
             }
     );
+    RegisterButton(playButton_);
+}
 
+void Menu::InitializeWorkshopButton(int windowWidth, int windowHeight, const sf::Vector2f &menuButtonSize) {
     workshopButton_ = std::make_shared<Button>(
             sf::Vector2f(windowWidth / 2, windowHeight * 2 / 4),
             menuButtonSize,
@@ -32,7 +36,10 @@ Menu::Menu(sf::RenderWindow *window, RacePtr race) :
                 };
             }
     );
+    RegisterButton(workshopButton_);
+}
 
+void Menu::InitializeQuitButton(int windowWidth, int windowHeight, const sf::Vector2f &menuButtonSize) {
     quitButton_ = std::make_shared<Button>(
             sf::Vector2f(windowWidth / 2, windowHeight * 3 / 4),
             menuButtonSize,
@@ -41,18 +48,8 @@ Menu::Menu(sf::RenderWindow *window, RacePtr race) :
                 close_ = true;
             }
     );
-
-    // every drawable object
-    objects_.push_back(playButton_);
-    objects_.push_back(workshopButton_);
-    objects_.push_back(quitButton_);
-
-    // buttons
-    buttons_.push_back(playButton_);
-    buttons_.push_back(workshopButton_);
-    buttons_.push_back(quitButton_);
+    RegisterButton(quitButton_);
 }
-
 
 int Menu::Run() {
     close_ = false;

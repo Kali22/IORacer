@@ -1,98 +1,5 @@
 #include "Workshop.h"
 
-void Workshop::initMaxSpeedControl(
-        const sf::Vector2f &statsButtonSize, const sf::Vector2f &labelSize, float textSize, int posX, int posY) {
-    maxSpeedLabel_ = std::make_shared<Text>("Speed", "impact", sf::Vector2f(150, posY), textSize);
-    objects_.push_back(maxSpeedLabel_);
-
-    maxSpeedText_ = std::make_shared<Text>(
-            std::to_string((int) carParams_->maxForwardSpeed), "impact",
-            sf::Vector2f(posX, posY), textSize);
-    objects_.push_back(maxSpeedText_);
-
-    minusMaxSpeed_ = std::make_shared<Button>(
-            sf::Vector2f(posX - 150, posY),
-            statsButtonSize,
-            "-",
-            [this]() {
-                carParams_->maxForwardSpeed--;
-                maxSpeedText_->SetText(std::to_string((int) carParams_->maxForwardSpeed));
-            });
-    registerButton(minusMaxSpeed_);
-
-    plusMaxSpeed_ = std::make_shared<Button>(
-            sf::Vector2f(posX + 150, posY),
-            statsButtonSize,
-            "+",
-            [this]() {
-                carParams_->maxForwardSpeed++;
-                maxSpeedText_->SetText(std::to_string((int) carParams_->maxForwardSpeed));
-            });
-    registerButton(plusMaxSpeed_);
-}
-
-void Workshop::initMaxEnginePowerControl(
-        const sf::Vector2f &statsButtonSize, const sf::Vector2f &labelSize, float textSize, int posX, int posY) {
-    maxEnginePowerLabel_ = std::make_shared<Text>("Acceleration", "impact", sf::Vector2f(150, posY), textSize);
-    objects_.push_back(maxEnginePowerLabel_);
-
-    maxEnginePowerText_ = std::make_shared<Text>(
-            std::to_string((int) carParams_->maxEnginePower), "impact",
-            sf::Vector2f(posX, posY), textSize);
-    objects_.push_back(maxEnginePowerText_);
-
-    minusMaxEnginePower_ = std::make_shared<Button>(
-            sf::Vector2f(posX - 150, posY),
-            statsButtonSize,
-            "-",
-            [this]() {
-                carParams_->maxEnginePower--;
-                maxEnginePowerText_->SetText(std::to_string((int) carParams_->maxEnginePower));
-            });
-    registerButton(minusMaxEnginePower_);
-
-    plusMaxEnginePower_ = std::make_shared<Button>(
-            sf::Vector2f(posX + 150, posY),
-            statsButtonSize,
-            "+",
-            [this]() {
-                carParams_->maxEnginePower++;
-                maxEnginePowerText_->SetText(std::to_string((int) carParams_->maxEnginePower));
-            });
-    registerButton(plusMaxEnginePower_);
-}
-
-void Workshop::initSteeringSpeedControl(
-        const sf::Vector2f &statsButtonSize, const sf::Vector2f &labelSize, float textSize, int posX, int posY) {
-    steeringSpeedLabel_ = std::make_shared<Text>("Steering", "impact", sf::Vector2f(150, posY), textSize);
-    objects_.push_back(steeringSpeedLabel_);
-
-    steeringSpeedText_ = std::make_shared<Text>(
-            std::to_string((int) carParams_->steeringSpeed), "impact",
-            sf::Vector2f(posX, posY), textSize);
-    objects_.push_back(steeringSpeedText_);
-
-    minusSteeringSpeed_ = std::make_shared<Button>(
-            sf::Vector2f(posX - 150, posY),
-            statsButtonSize,
-            "-",
-            [this]() {
-                carParams_->steeringSpeed--;
-                steeringSpeedText_->SetText(std::to_string((int) carParams_->steeringSpeed));
-            });
-    registerButton(minusSteeringSpeed_);
-
-    plusSteeringSpeed_ = std::make_shared<Button>(
-            sf::Vector2f(posX + 150, posY),
-            statsButtonSize,
-            "+",
-            [this]() {
-                carParams_->steeringSpeed++;
-                steeringSpeedText_->SetText(std::to_string((int) carParams_->steeringSpeed));
-            });
-    registerButton(plusSteeringSpeed_);
-}
-
 Workshop::Workshop(sf::RenderWindow *window, RacePtr race) :
         Module(window),
         race_(race),
@@ -104,18 +11,10 @@ Workshop::Workshop(sf::RenderWindow *window, RacePtr race) :
     const sf::Vector2f labelSize = sf::Vector2f(200, 60);
     const float textSize = 50;
 
-    returnButton_ = std::make_shared<Button>(
-            sf::Vector2f(windowWidth / 2, windowHeight * 9 / 10),
-            gameButtonSize,
-            "Return to menu",
-            [this]() {
-                close_ = true;
-            });
-    registerButton(returnButton_);
-
-    initMaxSpeedControl(statsButtonSize, labelSize, textSize, windowWidth / 2, 100);
-    initMaxEnginePowerControl(statsButtonSize, labelSize, textSize, windowWidth / 2, 200);
-    initSteeringSpeedControl(statsButtonSize, labelSize, textSize, windowWidth / 2, 300);
+    InitializeReturnButton(gameButtonSize, windowWidth, windowHeight);
+    InitializeMaxSpeedControl(statsButtonSize, labelSize, textSize, windowWidth / 2, 100);
+    InitializeMaxEnginePowerControl(statsButtonSize, labelSize, textSize, windowWidth / 2, 200);
+    InitializeSteeringSpeedControl(statsButtonSize, labelSize, textSize, windowWidth / 2, 300);
     buttonManager_ = std::make_unique<ButtonManager>(buttons_);
 }
 
@@ -145,4 +44,85 @@ int Workshop::Run() {
     }
     buttonManager_->ReleaseButton();
     return 0;
+}
+
+void Workshop::InitializeMaxSpeedControl(
+        const sf::Vector2f &statsButtonSize, const sf::Vector2f &labelSize, float textSize, int posX, int posY) {
+    maxSpeedLabel_ = std::make_shared<Text>("Speed", "impact", sf::Vector2f(150, posY), textSize);
+    objects_.push_back(maxSpeedLabel_);
+
+    InitializeText(maxSpeedText_, std::to_string((int) carParams_->maxForwardSpeed), posX, posY, textSize);
+
+    InitializeMinus(minusMaxSpeed_, statsButtonSize, posX - 150, posY, carParams_->maxForwardSpeed, maxSpeedText_);
+    InitializePlus(plusMaxSpeed_, statsButtonSize, posX + 150, posY, carParams_->maxForwardSpeed, maxSpeedText_);
+}
+
+void Workshop::InitializeMaxEnginePowerControl(
+        const sf::Vector2f &statsButtonSize, const sf::Vector2f &labelSize, float textSize, int posX, int posY) {
+    maxEnginePowerLabel_ = std::make_shared<Text>("Acceleration", "impact", sf::Vector2f(150, posY), textSize);
+    objects_.push_back(maxEnginePowerLabel_);
+
+    InitializeText(maxEnginePowerText_, std::to_string((int) carParams_->maxEnginePower), posX, posY, textSize);
+
+    InitializeMinus(minusMaxEnginePower_, statsButtonSize, posX - 150, posY, carParams_->maxEnginePower,
+                    maxEnginePowerText_);
+    InitializePlus(plusMaxEnginePower_, statsButtonSize, posX + 150, posY, carParams_->maxEnginePower,
+                   maxEnginePowerText_);
+}
+
+void Workshop::InitializeSteeringSpeedControl(
+        const sf::Vector2f &statsButtonSize, const sf::Vector2f &labelSize, float textSize, int posX, int posY) {
+    steeringSpeedLabel_ = std::make_shared<Text>("Steering", "impact", sf::Vector2f(150, posY), textSize);
+    objects_.push_back(steeringSpeedLabel_);
+
+    InitializeText(steeringSpeedText_, std::to_string((int) carParams_->steeringSpeed), posX, posY, textSize);
+
+    InitializeMinus(minusSteeringSpeed_, statsButtonSize, posX - 150, posY, carParams_->steeringSpeed,
+                    steeringSpeedText_);
+    InitializePlus(plusSteeringSpeed_, statsButtonSize, posX + 150, posY, carParams_->steeringSpeed,
+                   steeringSpeedText_);
+}
+
+void Workshop::InitializeText(TextPtr &text, std::string initText, int posX, int posY, float textSize) {
+    text = std::make_shared<Text>(
+            initText, "impact",
+            sf::Vector2f(posX, posY), textSize);
+    objects_.push_back(text);
+}
+
+void Workshop::InitializeMinus(ButtonPtr &button, const sf::Vector2f &statsButtonSize,
+                               int posX, int posY, float &value, TextPtr &text) {
+    button = std::make_shared<Button>(
+            sf::Vector2f(posX, posY),
+            statsButtonSize,
+            "-",
+            [this, &value, &text]() {
+                value--;
+                text->SetText(std::to_string((int) value));
+            });
+    RegisterButton(button);
+}
+
+void Workshop::InitializePlus(ButtonPtr &button, const sf::Vector2f &statsButtonSize,
+                              int posX, int posY, float &value, TextPtr &text) {
+    button = std::make_shared<Button>(
+            sf::Vector2f(posX, posY),
+            statsButtonSize,
+            "+",
+            [this, &value, &text]() {
+                value++;
+                text->SetText(std::to_string((int) value));
+            });
+    RegisterButton(button);
+}
+
+void Workshop::InitializeReturnButton(const sf::Vector2f &gameButtonSize, int windowWidth, int windowHeight) {
+    returnButton_ = std::make_shared<Button>(
+            sf::Vector2f(windowWidth / 2, windowHeight * 9 / 10),
+            gameButtonSize,
+            "Return to menu",
+            [this]() {
+                close_ = true;
+            });
+    RegisterButton(returnButton_);
 }

@@ -16,6 +16,11 @@ private:
     WorkshopPtr workshop_;
     ButtonPtr playButton_, workshopButton_, quitButton_;
 
+    void InitializePlayButton(int windowWidth, int windowHeight, const sf::Vector2f &menuButtonSize);
+
+    void InitializeWorkshopButton(int windowWidth, int windowHeight, const sf::Vector2f &menuButtonSize);
+
+    void InitializeQuitButton(int windowWidth, int windowHeight, const sf::Vector2f &menuButtonSize);
 };
 
 using MenuPtr = std::shared_ptr<Menu>;
