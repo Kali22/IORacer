@@ -2,12 +2,16 @@
 #include <Tools/MathUtil.h>
 #include "Box.h"
 
-Box::Box(b2World *world, int x, int y, int angle, float scale) : scale_(scale) {
-    // SFML
-    sprite_.setTexture(GetTexture());
+Box::Box(b2World *world, int x, int y, int angle, float scale) : Object(scale) {
+    static sf::Texture boxTexture;
+    static bool loaded = false;
+    if (!loaded) {
+        boxTexture.loadFromFile("../resource/box.png");
+        loaded = true;
+    }
+    sprite_.setTexture(boxTexture);
     sprite_.setOrigin(boxSize_ / 2, boxSize_ / 2);
 
-    // Box2D
     InitializeBody(world, x, y, angle);
     InitializeFixture();
 }
@@ -32,14 +36,6 @@ void Box::InitializeFixture() {
     FixtureDef.restitution = 0.3f;
     FixtureDef.shape = &Shape;
     body_->CreateFixture(&FixtureDef);
-}
-
-static sf::Texture Box::GetTexture() const {
-    if (!loaded_) {
-        boxTexture_.loadFromFile("../resource/box.png");
-        loaded_ = true;
-    }
-    return boxTexture_;
 }
 
 void Box::draw(sf::RenderWindow *window) {

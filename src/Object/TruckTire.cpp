@@ -1,8 +1,14 @@
 #include <Tools/MathUtil.h>
 #include "TruckTire.h"
 
-TruckTire::TruckTire(b2World *world, int x, int y, int angle, float scale) : scale_(scale) {
-    sprite_.setTexture(GetTexture());
+TruckTire::TruckTire(b2World *world, int x, int y, int angle, float scale) : Object(scale) {
+    static sf::Texture tireTexture;
+    static bool loaded = false;
+    if (!loaded) {
+        tireTexture.loadFromFile("../resource/truckTire.png");
+        loaded = true;
+    }
+    sprite_.setTexture(tireTexture);
     sprite_.setOrigin(tireSize_ / 2, tireSize_ / 2);
 
     InitializeBody(world, x, y, angle);
@@ -29,14 +35,6 @@ void TruckTire::InitializeFixture() {
     FixtureDef.restitution = 0.4f;
     FixtureDef.shape = &Shape;
     body_->CreateFixture(&FixtureDef);
-}
-
-static sf::Texture TruckTire::GetTexture() {
-    if (!loaded_) {
-        tireTexture_.loadFromFile("../resource/truckTire.png");
-        loaded_ = true;
-    }
-    return tireTexture_;
 }
 
 void TruckTire::draw(sf::RenderWindow *window) {

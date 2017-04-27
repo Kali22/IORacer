@@ -55,7 +55,7 @@ void Vehicle::CreateTire(b2World *world, b2RevoluteJoint **jointPtr, b2RevoluteJ
 }
 
 void Vehicle::Initialize(b2World *world, int posX, int posY) {
-    InitializeBody(world, posX, posY, 180);
+    InitializeBody(world, posX, posY, 90);
     InitializeBodyFixture();
     CreateTires(world, posX, posY);
 

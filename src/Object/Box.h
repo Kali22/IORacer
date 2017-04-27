@@ -12,11 +12,7 @@ public:
     int GetEntityType() const;
 
 private:
-    static sf::Texture boxTexture_;
-    static bool loaded_ = false;
-    static const float boxSize_ = 48.f;
-
-    sf::Texture GetTexture() const;
+    const float boxSize_ = 48.f;
 
     void InitializeBody(b2World *world, int x, int y, int angle);
 

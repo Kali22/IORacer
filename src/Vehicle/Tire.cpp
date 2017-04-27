@@ -95,11 +95,15 @@ void Tire::UpdateDrive(int state, float mod) {
         return;
     }
 
+    float desiredSpeed = GetDesiredSpeed(state);
+    if (desiredSpeed == 0) {
+        return;
+    }
+
     b2Vec2 currentForwardNormal = body->GetWorldVector(b2Vec2(0, 1));
     float currentSpeed = b2Dot(GetForwardVelocity(), currentForwardNormal);
-    float desiredSpeed = GetDesiredSpeed(state);
 
-    float force = GetNecessaryForce(currentSpeed, desiredSpeed);
+    float force = GetForce(currentSpeed, desiredSpeed);
     body->ApplyForce(/*mod * */force * currentForwardNormal, body->GetWorldCenter(), true);
 }
 
@@ -113,7 +117,7 @@ float Tire::GetDesiredSpeed(int state) {
     }
 }
 
-float Tire::GetNecessaryForce(float currentSpeed, float desiredSpeed) {
+float Tire::GetForce(float currentSpeed, float desiredSpeed) {
     float force = carParameters_->maxEnginePower;
     if (desiredSpeed > currentSpeed)
         return force;
