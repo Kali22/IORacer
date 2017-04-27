@@ -4,8 +4,11 @@
 
 #include <CheckPoint/TimeManager.h>
 
-TimeManager::TimeManager(const int &currentSector, const int &currentLap, const int &totalSectors) :
-        currentLap_(currentLap), currentSector_(currentSector), totalSectors_(totalSectors) {
+TimeManager::TimeManager(const int &currentSector, const int &currentLap,
+                         const int &totalSectors) :
+        currentLap_(currentLap),
+        currentSector_(currentSector),
+        totalSectors_(totalSectors) {
     Reset();
     Update();
 }
@@ -22,16 +25,14 @@ void TimeManager::Reset() {
     bestLapNumber_ = 0;
     bestLapTime_ = std::numeric_limits<float>::infinity();
 
-    accumulativeSectorsTimes_.clear();
-    sectorsTimes_.clear();
-    bestSectorTimeNumber_.clear();
-    bestSectorTimes_.clear();
     bestSectorTimeNumber_ = std::vector<int>(totalSectors_, 0);
-    bestSectorTimes_ = std::vector<float>(totalSectors_, std::numeric_limits<float>::infinity());
+    bestSectorTimes_ = std::vector<float>(totalSectors_,
+                                          std::numeric_limits<float>::infinity());
     // Add zeros in 'guard' zero lap
-    accumulativeSectorsTimes_.push_back(std::vector<float>(totalSectors_, std::numeric_limits<float>::infinity()));
-    sectorsTimes_.push_back(std::vector<float>(totalSectors_, std::numeric_limits<float>::infinity()));
-    accumulativeSectorsTimes_.push_back(std::vector<float>());
+    accumulativeSectorsTimes_ = {std::vector<float>(totalSectors_,
+                                                           std::numeric_limits<float>::infinity()), std::vector<float>()};
+    sectorsTimes_ = {std::vector<float>(totalSectors_,
+                                        std::numeric_limits<float>::infinity())};
     sectorsTimes_.push_back(std::vector<float>());
     StartClock();
 }
@@ -139,6 +140,8 @@ void TimeManager::UpdateTimes() {
     lastSectorTime_ = sectorsTimes_[currentLap_ - 1][currentSector_];
     bestSectorTime_ = bestSectorTimes_[currentSector_];
     bestSectorLapNumber_ = bestSectorTimeNumber_[currentSector_];
-    lastLapTime_ = (currentLap_ > 1 ? accumulativeSectorsTimes_[currentLap_ - 1][totalSectors_ - 1]
-                                   : std::numeric_limits<float>::infinity());
+    lastLapTime_ = (currentLap_ > 1 ? accumulativeSectorsTimes_[currentLap_ -
+                                                                1][
+            totalSectors_ - 1]
+                                    : std::numeric_limits<float>::infinity());
 }

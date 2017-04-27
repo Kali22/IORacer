@@ -15,8 +15,7 @@ ButtonStateHold::ButtonStateHold(ButtonPtr pressedButton,
           timeToUpdateSlowMsc_(timeToUpdateSlowMsc),
           timeToUpdateFastMsc_(timeToUpdateFastMsc),
           timeToSpeedUpMsc_(timeToSpeedUpMsc) {
-    /// We call OnClick in constructor to perform first click immediately on
-    /// button click.
+    // Perform first click immediately on button press.
     if (pressedButton_ != nullptr) {
         pressedButton->OnClick();
     }
@@ -33,12 +32,11 @@ ButtonStatePtr ButtonStateHold::ManageClicks() {
 
     int timeToUpdateMsc = timeToUpdateSlowMsc_;
     if (timeHold_.getElapsedTime().asMilliseconds() >
-        timeToSpeedUpMsc_) { /// Change mode to FAST
+        timeToSpeedUpMsc_) { // Change mode to FAST
         timeToUpdateMsc = timeToUpdateFastMsc_;
     }
 
-    if (timeHoldUpdate_.getElapsedTime().asMilliseconds() >
-        timeToUpdateMsc) {
+    if (timeHoldUpdate_.getElapsedTime().asMilliseconds() > timeToUpdateMsc) {
         pressedButton_->OnClick();
         timeHoldUpdate_.restart();
     }
