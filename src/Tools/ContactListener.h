@@ -13,10 +13,6 @@ public:
 
     void EndContact(b2Contact *contact);
 
-    ContactListener();
-
-    ~ContactListener();
-
 private:
     bool GetUserData(b2Contact *contact, Entity **entity, int which);
 
@@ -24,3 +20,5 @@ private:
 
     bool GetCheckPointFromContact(b2Contact *contact, CheckPoint **checkPoint);
 };
+
+using ContactListenerPtr = std::shared_ptr<ContactListener>;

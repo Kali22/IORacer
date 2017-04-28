@@ -18,8 +18,6 @@ class CheckPoint : public Entity {
 public:
     CheckPoint(RectangleArea *area, const sf::Texture *texture);
 
-    ~CheckPoint();
-
     void Draw(sf::RenderWindow *window) const;
 
     virtual int GetEntityType() const;
@@ -43,6 +41,7 @@ public:
     void EndContact();
 
     sf::Vector2f GetPosition() const;
+
 private:
     RectangleArea *area_;
     CheckPointObserver *observer_;
@@ -50,4 +49,3 @@ private:
 };
 
 using CheckPointPtr = std::shared_ptr<CheckPoint>;
-

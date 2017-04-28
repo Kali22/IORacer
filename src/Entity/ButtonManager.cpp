@@ -3,11 +3,8 @@
 //
 #include <Button.h>
 #include <ButtonManager.h>
-#include <SFML/Window.hpp>
-#include <ButtonState.h>
 #include <ButtonStateReleased.h>
 #include <ButtonStateHold.h>
-#include <ButtonStateType.h>
 
 ButtonManager::ButtonManager(std::vector<ButtonPtr> buttons)
         : buttons_(buttons),
@@ -15,7 +12,7 @@ ButtonManager::ButtonManager(std::vector<ButtonPtr> buttons)
 }
 
 void ButtonManager::ProcessEvent(const sf::Event &event,
-                                const sf::Vector2f &mousePos) {
+                                 const sf::Vector2f &mousePos) {
     if (event.type == sf::Event::MouseButtonPressed &&
         event.mouseButton.button == sf::Mouse::Left) {
         ButtonPtr pressedButton = nullptr;
@@ -26,9 +23,9 @@ void ButtonManager::ProcessEvent(const sf::Event &event,
         }
         buttonState_ =
                 std::make_shared<ButtonStateHold>(pressedButton,
-                                                timeToUpdateSlowMsc_,
-                                                timeToUpdateFastMsc_,
-                                                timeToSpeedUpMsc_);
+                                                  timeToUpdateSlowMsc_,
+                                                  timeToUpdateFastMsc_,
+                                                  timeToSpeedUpMsc_);
     } else if (event.type == sf::Event::MouseButtonReleased &&
                event.mouseButton.button == sf::Mouse::Left) {
         buttonState_ = std::make_shared<ButtonStateReleased>();

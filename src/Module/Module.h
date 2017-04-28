@@ -19,7 +19,7 @@ protected:
     std::vector<DrawablePtr> objects_;
     std::vector<ButtonPtr> buttons_;
 
-    void registerButton(ButtonPtr button) {
+    void RegisterButton(ButtonPtr button) {
         objects_.push_back(button);
         buttons_.push_back(button);
     }

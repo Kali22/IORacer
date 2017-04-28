@@ -23,14 +23,33 @@ private:
     ButtonPtr plusMaxEnginePower_, minusMaxEnginePower_;
     ButtonPtr plusSteeringSpeed_, minusSteeringSpeed_;
 
-    void initMaxSpeedControl(
-            const sf::Vector2f &statsButtonSize, const sf::Vector2f &labelSize, float textSize, int posX, int posY);
-
-    void initMaxEnginePowerControl(const sf::Vector2f &statsButtonSize, const sf::Vector2f &labelSize, float textSize,
+    void InitializeMaxSpeedControl(const sf::Vector2f &labelSize,
+                                   float textSize,
                                    int posX, int posY);
 
-    void initSteeringSpeedControl(const sf::Vector2f &statsButtonSize, const sf::Vector2f &labelSize, float textSize,
-                                  int posX, int posY);
+    void InitializeMaxEnginePowerControl(const sf::Vector2f &labelSize,
+                                         float textSize,
+                                         int posX, int posY);
+
+    void InitializeSteeringSpeedControl(const sf::Vector2f &labelSize,
+                                        float textSize,
+                                        int posX, int posY);
+
+    void InitializeText(TextPtr &textPtr, std::string initText, int posX, int posY, float textSize);
+
+    void InitializeMinus(ButtonPtr &button, int posX, int posY, float &value, TextPtr &text);
+
+    void InitializePlus(ButtonPtr &button, int posX, int posY, float &value, TextPtr &text);
+
+    void InitializeDiff(ButtonPtr &button, int posX, int posY, float &value,
+                        TextPtr &text, std::string label, int diff);
+
+    void InitializeReturnButton(const sf::Vector2f &gameButtonSize, int windowWidth, int windowHeight);
+
+    bool HandleEvents();
+
+    void Draw();
+
 };
 
 using WorkshopPtr = std::shared_ptr<Workshop>;

@@ -11,28 +11,31 @@
 
 class Race : public Module {
 public:
-    Race(sf::RenderWindow *win, b2World *world, MapPtr map, HUDPtr hud, CheckPointManagerPtr checkPointManager) :
-            Module(win), world_(world), map_(map), hud_(hud), checkPointManager_(checkPointManager) {};
+    Race(sf::RenderWindow *window, b2World *world, MapPtr map, HUDPtr hud, CheckPointManagerPtr checkPointManager);
 
     int Run();
-
-    VehiclePtr GetVehicle();
 
     void Reset();
 
     void Initialize(VehiclePtr vehicle);
 
+    VehiclePtr GetVehicle();
+
 private:
-    //sf::RenderWindow &window;
     MapPtr map_;
     b2World *world_;
     VehiclePtr vehicle_;
-    //CarParameters carParameters_;
     HUDPtr hud_;
-    ContactListener contactListener_;
+    ContactListenerPtr contactListener_;
     CheckPointManagerPtr checkPointManager_;
 
     void HandleKeyboard(sf::Event::KeyEvent Event, int *state, int type);
+
+    bool HandleEvents(int &carState);
+
+    void Update(int &carState);
+
+    void Render();
 };
 
 using RacePtr = std::shared_ptr<Race>;

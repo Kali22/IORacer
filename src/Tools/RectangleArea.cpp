@@ -5,8 +5,6 @@ RectangleArea::RectangleArea(b2World *world, const struct RectangleParams &param
     CreateSFMLRectangle(params.sfmlPos, params.sfmlSize, params.sfmlAngle);
 }
 
-RectangleArea::~RectangleArea() {}
-
 void RectangleArea::Draw(sf::RenderWindow *window) const {
     window->draw(rectangleShape_);
 }
@@ -46,4 +44,3 @@ sf::Vector2f RectangleArea::GetPosition() const {
 void RectangleArea::SetTexture(const sf::Texture *texture) {
     rectangleShape_.setTexture(texture);
 }
-

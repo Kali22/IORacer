@@ -4,7 +4,7 @@
 
 #include "TimeIndicator.h"
 
-TimeIndicator::TimeIndicator(const float &param, sf::Vector2f position, std::string fontName, float size):
+TimeIndicator::TimeIndicator(const float &param, sf::Vector2f position, std::string fontName, float size) :
         Text(std::string(""), fontName, position, size),
         data_(param) {
     Update();

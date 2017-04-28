@@ -29,4 +29,3 @@ private:
 
     sf::Texture checkPointTexture_;
 };
-

@@ -3,10 +3,6 @@
 //
 
 #include <ButtonStateReleased.h>
-#include <utility>
-
-ButtonStateReleased::ButtonStateReleased() {
-}
 
 ButtonStateType ButtonStateReleased::GetType() const {
     return RELEASED;

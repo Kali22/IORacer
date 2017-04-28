@@ -18,7 +18,7 @@ public:
      * Process events connected with clicking on buttons. Process released
      * mouse event or mouse pressed.
      */
-    void ProcessEvent(const sf::Event& event, const sf::Vector2f& mousePos);
+    void ProcessEvent(const sf::Event &event, const sf::Vector2f &mousePos);
 
     /**
      * If button has been pressed and time from last click is big enough, call
@@ -29,12 +29,13 @@ public:
     /**
      * If any button hasn't been pressed toggle hover on buttons.
      */
-    void ManageHover(const sf::Vector2f& mousePos);
+    void ManageHover(const sf::Vector2f &mousePos);
 
     /**
      * We should release buttons on exiting from menu.
      */
     void ReleaseButton();
+
 private:
     std::vector<ButtonPtr> buttons_;
     const int timeToUpdateSlowMsc_ = BUTTON_TIME_TO_UPDATE_SLOW;
@@ -44,4 +45,3 @@ private:
 };
 
 using ButtonManagerPtr = std::shared_ptr<ButtonManager>;
-

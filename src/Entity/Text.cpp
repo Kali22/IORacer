@@ -72,7 +72,7 @@ void Text::CreateText(std::string text, std::string fontName, float size) {
         throw std::runtime_error("Font loading failed");
     }
     sfText_.setFont(sfFont_);
-    sfText_.setCharacterSize(size);
+    sfText_.setCharacterSize((unsigned int) size);
     sfText_.setString(text);
     sfText_.setColor(sf::Color::White);
     sf::FloatRect rect = sfText_.getLocalBounds();
@@ -181,4 +181,3 @@ void Text::Move(float dx, float dy) {
     rectangleFrame_.move(dx, dy);
     JustifyText();
 }
-
