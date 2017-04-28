@@ -45,4 +45,3 @@ private:
 };
 
 using ButtonManagerPtr = std::shared_ptr<ButtonManager>;
-

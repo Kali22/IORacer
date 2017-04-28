@@ -7,8 +7,6 @@
 
 class ObjectManager {
 public:
-    ObjectManager();
-
     void LoadObjects(b2World *world, std::string map_name, float scale);
 
     void draw(sf::RenderWindow *window);

@@ -8,4 +8,3 @@ typedef enum {
     PRESSED,
     HOLD,
 } ButtonStateType;
-

@@ -25,16 +25,13 @@ bool ContactListener::CheckIfCar(Entity **entity1, Entity **entity2) {
 }
 
 void ContactListener::BeginContact(b2Contact *contact) {
+    std::cout << "foo" << std::endl;
     CheckPoint *checkPoint;
     if (!GetCheckPointFromContact(contact, &checkPoint)) {
         return;
     }
     checkPoint->BeginContact();
 }
-
-ContactListener::ContactListener() {}
-
-ContactListener::~ContactListener() {}
 
 void ContactListener::EndContact(b2Contact *contact) {}
 

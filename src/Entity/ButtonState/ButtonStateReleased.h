@@ -12,8 +12,6 @@
 class ButtonStateReleased : public ButtonState,
                             public std::enable_shared_from_this<ButtonStateReleased> {
 public:
-    ButtonStateReleased();
-
     virtual ButtonStatePtr ManageClicks();
 
     virtual ButtonStateType GetType() const;

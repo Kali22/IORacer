@@ -47,9 +47,3 @@ void Box::draw(sf::RenderWindow *window) {
 int Box::GetEntityType() const {
     return BOX;
 }
-
-
-
-
-
-

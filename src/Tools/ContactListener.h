@@ -13,10 +13,6 @@ public:
 
     void EndContact(b2Contact *contact);
 
-    ContactListener();
-
-    ~ContactListener();
-
 private:
     bool GetUserData(b2Contact *contact, Entity **entity, int which);
 

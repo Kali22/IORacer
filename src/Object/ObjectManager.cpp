@@ -4,8 +4,6 @@
 #include "TruckTire.h"
 #include "Box.h"
 
-ObjectManager::ObjectManager() {}
-
 void ObjectManager::draw(sf::RenderWindow *window) {
     for (auto& object : objects_) {
         object->draw(window);

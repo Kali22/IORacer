@@ -11,8 +11,6 @@ class RectangleArea : public Area {
 public:
     RectangleArea(b2World *world, const struct RectangleParams &params);
 
-    ~RectangleArea();
-
     void Draw(sf::RenderWindow *window) const;
 
     void SetCollisionUserData(Entity *entity);
@@ -33,4 +31,3 @@ private:
     void CreateB2Rectangle(const b2Vec2 &position, const b2Vec2 &size,
                            float angle);
 };
-

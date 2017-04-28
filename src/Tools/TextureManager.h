@@ -4,6 +4,7 @@
 
 #pragma once
 
+// Placeholder file
 class TextureManager {
 
 };

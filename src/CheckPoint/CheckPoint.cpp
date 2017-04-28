@@ -1,12 +1,10 @@
 #include <CheckPoint.h>
 
-CheckPoint::CheckPoint(RectangleArea *area, const sf::Texture *texture) 
+CheckPoint::CheckPoint(RectangleArea *area, const sf::Texture *texture)
         : area_(area) {
     area_->SetCollisionUserData(this);
     area_->SetTexture(texture);
 }
-
-CheckPoint::~CheckPoint() {}
 
 int CheckPoint::GetEntityType() const {
     return CHECK_POINT;
