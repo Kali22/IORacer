@@ -69,7 +69,7 @@ int Menu::Run() {
 void Menu::HandleEvent(bool &mouseClick) {
     sf::Event event;
     while (window_->pollEvent(event)) {
-        // "close_ requested" event: end while loop
+        // Module closing event requested
         if (event.type == sf::Event::Closed ||
             (event.type == sf::Event::KeyPressed && event.key.code == sf::Keyboard::Key::Escape)) {
             close_ = true;
@@ -81,7 +81,7 @@ void Menu::HandleEvent(bool &mouseClick) {
     }
 }
 
-void Menu::ServeButtons(bool &mouseClick) {
+void Menu::ServeButtons(bool mouseClick) {
     std::shared_ptr<Button> activeButton = nullptr;
     sf::Vector2f mousePos = sf::Vector2f(sf::Mouse::getPosition(*window_));
     // select Hovered button, change style

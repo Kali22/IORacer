@@ -38,14 +38,14 @@ bool Workshop::HandleEvents() {
         if (event.type == sf::Event::Closed) {
             window_->close();
             close_ = true;
-            return 1;
+            return true;
         }
         // handle mouse click
         buttonManager_->ProcessEvent(event, mousePos);
     }
     buttonManager_->ManageClicks();
     buttonManager_->ManageHover(mousePos);
-    return 0;
+    return false;
 }
 
 void Workshop::Draw() {

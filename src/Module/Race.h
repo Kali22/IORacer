@@ -11,8 +11,7 @@
 
 class Race : public Module {
 public:
-    Race(sf::RenderWindow *window, b2World *world, MapPtr map, HUDPtr hud, CheckPointManagerPtr checkPointManager) :
-            Module(window), world_(world), map_(map), hud_(hud), checkPointManager_(checkPointManager) {};
+    Race(sf::RenderWindow *window, b2World *world, MapPtr map, HUDPtr hud, CheckPointManagerPtr checkPointManager);
 
     int Run();
 
@@ -27,7 +26,7 @@ private:
     b2World *world_;
     VehiclePtr vehicle_;
     HUDPtr hud_;
-    ContactListener contactListener_;
+    ContactListenerPtr contactListener_; //@TODO field not set??
     CheckPointManagerPtr checkPointManager_;
 
     void HandleKeyboard(sf::Event::KeyEvent Event, int *state, int type);

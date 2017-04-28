@@ -24,7 +24,7 @@ private:
 
     void HandleEvent(bool &mouseClick);
 
-    void ServeButtons(bool &mouseClick);
+    void ServeButtons(bool mouseClick);
 
     void Draw();
 };

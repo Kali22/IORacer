@@ -24,3 +24,5 @@ private:
 
     bool GetCheckPointFromContact(b2Contact *contact, CheckPoint **checkPoint);
 };
+
+using ContactListenerPtr = std::shared_ptr<ContactListener>;

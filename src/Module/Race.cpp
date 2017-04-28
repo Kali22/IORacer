@@ -6,17 +6,21 @@
 
 #include <Vehicle/TireControlE.h>
 
+
+Race::Race(sf::RenderWindow *window, b2World *world, MapPtr map, HUDPtr hud, CheckPointManagerPtr checkPointManager) :
+        Module(window), world_(world), map_(map), hud_(hud), checkPointManager_(checkPointManager) {};
+
 void Race::Initialize(VehiclePtr vehicle) {
     sf::Vector2f pos = map_->GetStartPosition();
     vehicle_ = vehicle;
-    // Prepare map
     vehicle_->Initialize(world_, (int) pos.x, (int) pos.y);
 
+    // Prepare map
     checkPointManager_->Reset();
     hud_->Initialize(vehicle_, checkPointManager_);
     map_->AlignCameraViewSize(*window_);
     map_->SetCameraViewPosition(vehicle_->GetPosition());
-    world_->SetContactListener(&contactListener_);
+    world_->SetContactListener(contactListener_.get());
 }
 
 void Race::Reset() {
@@ -48,7 +52,7 @@ bool Race::HandleEvents(int &carState) {
         if (Event.type == sf::Event::Closed) {
             window_->close();
             close_ = true;
-            return 1;
+            return true;
         } else if (Event.type == sf::Event::KeyPressed) {
             if (Event.key.code == sf::Keyboard::Key::Escape) {
                 close_ = true;
@@ -58,7 +62,7 @@ bool Race::HandleEvents(int &carState) {
             HandleKeyboard(Event.key, &carState, 0);
         }
     }
-    return 0;
+    return false;
 }
 
 void Race::Update(int &carState) {
@@ -90,7 +94,7 @@ VehiclePtr Race::GetVehicle() {
     return vehicle_;
 }
 
-void setclr(int *reg, int mask, int type) {
+void SetBitmask(int *reg, int mask, int type) {
     if (type)
         *reg |= mask;
     else
@@ -101,19 +105,19 @@ void Race::HandleKeyboard(sf::Event::KeyEvent Event, int *state, int type) {
     /// @TODO change to map
     switch (Event.code) {
         case sf::Keyboard::Key::Left:
-            setclr(state, LEFT, type);
+            SetBitmask(state, LEFT, type);
             break;
         case sf::Keyboard::Key::Up:
-            setclr(state, UP, type);
+            SetBitmask(state, UP, type);
             break;
         case sf::Keyboard::Key::Down:
-            setclr(state, DOWN, type);
+            SetBitmask(state, DOWN, type);
             break;
         case sf::Keyboard::Key::Right:
-            setclr(state, RIGHT, type);
+            SetBitmask(state, RIGHT, type);
             break;
         case sf::Keyboard::Key::Space:
-            setclr(state, BRAKE, type);
+            SetBitmask(state, BRAKE, type);
             break;
         case sf::Keyboard::Key::D:
             if (type)
