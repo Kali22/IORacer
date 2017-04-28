@@ -15,7 +15,11 @@ public:
     std::vector<CheckPointPtr> ParseFile(const std::string &file);
 
 private:
+    std::vector<CheckPointPtr> ParseCheckPoints();
+
     void ParseCheckPoint(struct RectangleParams *params);
+
+    void ParseRectangleSize();
 
     b2Vec2 b2Size_;
     sf::Vector2f sfmlSize_;
