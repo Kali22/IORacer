@@ -8,7 +8,8 @@
 
 
 Race::Race(sf::RenderWindow *window, b2World *world, MapPtr map, HUDPtr hud, CheckPointManagerPtr checkPointManager) :
-        Module(window), world_(world), map_(map), hud_(hud), checkPointManager_(checkPointManager) {};
+        Module(window), world_(world), map_(map), hud_(hud), checkPointManager_(checkPointManager),
+        contactListener_(std::make_shared<ContactListener>()) {};
 
 void Race::Initialize(VehiclePtr vehicle) {
     sf::Vector2f pos = map_->GetStartPosition();

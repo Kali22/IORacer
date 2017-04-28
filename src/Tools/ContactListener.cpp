@@ -10,8 +10,8 @@
 #include <CheckPoint.h>
 #include <Tools/ContactListener.h>
 
-/** Return true if one of Entitys is car.
- *  If one of entities is car replace pointer so that first one is a car.
+/** Return true if one of Entities is a car.
+ *  If one of the entities is a car replace pointer so that the first one is the car.
  */
 bool ContactListener::CheckIfCar(Entity **entity1, Entity **entity2) {
     if ((*entity2)->GetEntityType() == CAR) {
@@ -25,7 +25,6 @@ bool ContactListener::CheckIfCar(Entity **entity1, Entity **entity2) {
 }
 
 void ContactListener::BeginContact(b2Contact *contact) {
-    std::cout << "foo" << std::endl;
     CheckPoint *checkPoint;
     if (!GetCheckPointFromContact(contact, &checkPoint)) {
         return;
@@ -38,8 +37,7 @@ void ContactListener::EndContact(b2Contact *contact) {}
 /**
  * if which is 0 check for A body, otherwise for B body
  */
-bool ContactListener::GetUserData(b2Contact *contact, Entity **entity, int
-which) {
+bool ContactListener::GetUserData(b2Contact *contact, Entity **entity, int which) {
     b2Fixture *fixture = (!which ? contact->GetFixtureA() :
                           contact->GetFixtureB());
     if (!fixture) {
@@ -76,4 +74,3 @@ bool ContactListener::GetCheckPointFromContact(
     *checkPoint = static_cast<CheckPoint *>(entityB);
     return true;
 }
-

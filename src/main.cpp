@@ -15,19 +15,8 @@
  * @return exit code
  */
 
-CheckPointManagerPtr SetCheckpoints(b2World *world) {
-    /// @TODO add race builder
-    /// @TODO move checkPointsParser to map Load
-    CheckPointParser parser(world, 30); // scale
-    std::vector<CheckPointPtr> checkPoints = parser.ParseFile("../resource/maps/map_0/checkpoints_list");
-    CheckPointManagerPtr checkPointManager = std::make_shared<CheckPointManager>(checkPoints, 15);
-    return checkPointManager;
-}
-
-RacePtr InitializeRace(b2World *world, float scale, sf::RenderWindow &window) {
-    /* Set checkpoints */
-    CheckPointManagerPtr checkPointManager = SetCheckpoints(world);
-
+RacePtr InitializeRace(b2World *world, float scale, sf::RenderWindow &window,
+                       CheckPointManagerPtr checkPointManager) {
     /* Load map */
     MapPtr map = std::make_shared<Map>(world, scale, sf::Vector2f(4250, 3890));
     map->LoadMap("map_0", "Mapa testowa");
@@ -53,8 +42,15 @@ int main(int argc, char **argv) {
     /* Create world */
     b2World *world = new b2World(b2Vec2(0, 0));
 
+    /* Set checkpoints */
+    /// @TODO add race builder
+    /// @TODO move checkPointsParser to map Load
+    CheckPointParser parser(world, scale);
+    std::vector<CheckPointPtr> checkPoints = parser.ParseFile("../resource/maps/map_0/checkpoints_list");
+    CheckPointManagerPtr checkPointManager = std::make_shared<CheckPointManager>(checkPoints, 15);
+
     /* Initialize application */
-    RacePtr race = InitializeRace(world, scale, window);
+    RacePtr race = InitializeRace(world, scale, window, checkPointManager);
     MenuPtr menu = std::make_shared<Menu>(&window, race);
 
     menu->Run();

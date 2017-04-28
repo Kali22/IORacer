@@ -49,4 +49,3 @@ private:
 };
 
 using CheckPointPtr = std::shared_ptr<CheckPoint>;
-

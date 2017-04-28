@@ -26,7 +26,7 @@ private:
     b2World *world_;
     VehiclePtr vehicle_;
     HUDPtr hud_;
-    ContactListenerPtr contactListener_; //@TODO field not set??
+    ContactListenerPtr contactListener_;
     CheckPointManagerPtr checkPointManager_;
 
     void HandleKeyboard(sf::Event::KeyEvent Event, int *state, int type);
