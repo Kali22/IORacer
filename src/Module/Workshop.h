@@ -8,7 +8,7 @@
 
 class Workshop : public Module {
 public:
-    Workshop(sf::RenderWindow *window, RacePtr race);
+    Workshop(RenderWindowPtr window, RacePtr race);
 
     int Run();
 

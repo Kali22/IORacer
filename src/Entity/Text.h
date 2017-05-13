@@ -1,6 +1,7 @@
 #pragma once
 
-#include <Entity/Movable.h>
+#include <Movable.h>
+#include <Drawable.h>
 
 /**
  * Text position within frame.
@@ -15,7 +16,7 @@ enum TextJustification {
  * Drawable piece of text.
  * @TODO Editable by streams...
  */
-class Text : public Movable {
+class Text : public Movable, public Drawable {
 public:
     /**
      * Create floating text.
@@ -28,7 +29,7 @@ public:
      */
     Text(std::string text, std::string fontName, sf::FloatRect frame, float size, TextJustification position);
 
-    void Draw(sf::RenderWindow *window) const;
+    void Draw(RenderWindowPtr window) const;
 
     void SetText(std::string txt);
 

@@ -2,7 +2,7 @@
 // Created by jacek on 21.04.17.
 //
 
-#include <Entity/IntegerIndicator.h>
+#include <IntegerIndicator.h>
 
 IntegerIndicator::IntegerIndicator(const int &param, sf::Vector2f position, std::string fontName,
                                    float size, int minVal, int maxVal, bool leadingZeros, int fieldWidth) :
@@ -27,7 +27,7 @@ IntegerIndicator::IntegerIndicator(const int &param, sf::FloatRect frame,
     Update();
 }
 
-void IntegerIndicator::Draw(sf::RenderWindow *window) const {
+void IntegerIndicator::Draw(RenderWindowPtr window) const {
     Text::Draw(window);
 }
 

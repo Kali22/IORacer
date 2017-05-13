@@ -14,7 +14,7 @@ Container::Container(sf::FloatRect rect) {
     visible_ = true;
 }
 
-void Container::Draw(sf::RenderWindow *window) const {
+void Container::Draw(RenderWindowPtr window) const {
     if (visible_) {
         if (frame_)
             window->draw(rect_);

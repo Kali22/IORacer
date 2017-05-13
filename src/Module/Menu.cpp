@@ -1,6 +1,6 @@
 #include "Menu.h"
 
-Menu::Menu(sf::RenderWindow *window, RacePtr race) :
+Menu::Menu(RenderWindowPtr window, RacePtr race) :
         Module(window), race_(race), workshop_(std::make_shared<Workshop>(window_, race_)) {
     int windowWidth = window->getSize().x, windowHeight = window->getSize().y;
     sf::Vector2f menuButtonSize = sf::Vector2f(300, 80);
@@ -19,7 +19,7 @@ void Menu::InitializePlayButton(int windowWidth, int windowHeight, const sf::Vec
                 if (race_->Run() != 0) {
                     close_ = true;
                 };
-                race_->Reset();
+                //race_->Reset(); TODO setup re initialization
             }
     );
     RegisterButton(playButton_);

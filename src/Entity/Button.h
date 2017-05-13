@@ -1,6 +1,6 @@
 #pragma once
 
-#include "Drawable.h"
+#include <Drawable.h>
 #include "Text.h"
 
 class Button : public Drawable {
@@ -13,8 +13,7 @@ public:
 
     void OnClick();
 
-    void Draw(sf::RenderWindow *window) const;
-
+    void Draw(RenderWindowPtr window) const;
 protected:
     sf::RectangleShape background_;
     sf::Vector2f position_;

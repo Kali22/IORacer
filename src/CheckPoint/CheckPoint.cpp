@@ -1,12 +1,12 @@
 #include <CheckPoint.h>
 
-CheckPoint::CheckPoint(RectangleArea *area, const sf::Texture *texture)
-        : area_(area) {
-    area_->SetCollisionUserData(this);
-    area_->SetTexture(texture);
+CheckPoint::CheckPoint(b2World *world, VisualObjectPtr visualObject)
+        : Object(CheckPoint::InitializeBody(world, visualObject->GetSize()),
+                 visualObject) {
+    body_->SetUserData(this);
 }
 
-int CheckPoint::GetEntityType() const {
+int CheckPoint::GetObjectType() const {
     return CHECK_POINT;
 }
 
@@ -18,12 +18,8 @@ void CheckPoint::SetEnable(bool value) {
     enable_ = value;
 }
 
-bool CheckPoint::IsEnabled() const {
+bool CheckPoint::IsEnable() const {
     return enable_;
-}
-
-void CheckPoint::Draw(sf::RenderWindow *window) const {
-    area_->Draw(window);
 }
 
 void CheckPoint::BeginContact() {
@@ -35,10 +31,27 @@ void CheckPoint::BeginContact() {
     }
 }
 
-void CheckPoint::EndContact() {}
-
-sf::Vector2f CheckPoint::GetPosition() const {
-    return area_->GetPosition();
+void CheckPoint::Draw(RenderWindowPtr window) {
+    if (IsEnable()) {
+        Object::Draw(window);
+    }
 }
 
+void CheckPoint::EndContact() {}
+
+b2Body *CheckPoint::InitializeBody(b2World *world, const RealVec &size) {
+    b2BodyDef bodyDef;
+    b2Body *body = world->CreateBody(&bodyDef);
+
+    b2FixtureDef fixtureDef;
+    b2PolygonShape polygonShape;
+    polygonShape.SetAsBox(size.x / 2, size.y / 2, b2Vec2(0, 0), 0); // center
+    // TODO is size set correct?
+
+    fixtureDef.shape = &polygonShape;
+    fixtureDef.isSensor = true;
+
+    body->CreateFixture(&fixtureDef);
+    return body;
+}
 

@@ -1,4 +1,5 @@
-#include "Text.h"
+#include <Text.h>
+#include <map>
 #include <string>
 
 std::map<std::string, std::string> font{
@@ -50,10 +51,7 @@ Text::Text(std::string text, std::string fontName, sf::FloatRect frame, float si
     JustifyText();
 }
 
-void Text::Draw(sf::RenderWindow *window) const {
-    if (frame_)
-        window->draw(rectangleFrame_);
-    window->draw(sfText_);
+void Text::Draw(RenderWindowPtr window) const {
 }
 
 void Text::SetText(std::string txt) {

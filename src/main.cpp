@@ -4,9 +4,16 @@
  *  Main entry point.
  */
 
+#include <bits/stdc++.h>
 #include <Race.h>
-#include <Module/Menu.h>
-#include <CheckPointParser.h>
+#include <Menu.h>
+#include <Drawable.h>
+#include <ObjectManager.h>
+#include <TextureManager.h>
+#include <MapManager.h>
+#include <CheckPoint.h>
+#include <MathUtil.h>
+#include <VehicleObject.h>
 
 /**
  * Main. Entry point.
@@ -15,43 +22,64 @@
  * @return exit code
  */
 
-RacePtr InitializeRace(b2World *world, float scale, sf::RenderWindow &window,
-                       CheckPointManagerPtr checkPointManager) {
+RacePtr InitializeRace(b2World *world, RenderWindowPtr window,
+                       CheckPointManagerPtr checkPointManager, MapPtr map,
+                       ObjectManagerPtr objectManager) {
     /* Load map */
-    MapPtr map = std::make_shared<Map>(world, scale, sf::Vector2f(4250, 3890));
-    map->LoadMap("map_0", "Mapa testowa");
     HUDPtr hud = std::make_shared<HUD>(nullptr, map);
 
+    const int scale = 30; // TODO remove in vehicle use case
     /* Set initial car params */
     CarParametersPtr carParameters = std::make_shared<CarParameters>();
-    VehiclePtr vehicle = std::make_shared<Vehicle>(carParameters, scale);
+    VehicleObjectPtr vehicleObject = std::dynamic_pointer_cast<VehicleObject>
+            (objectManager->GetObjectInstanceByName("vehicle"));
+    if (vehicleObject == nullptr) {
+        std::cerr << "Failed to getting vehicle object.";
+        exit(1);
+    }
+    sf::Vector2f pos = map->GetStartPosition();
+    vehicleObject->SetPosition(pos.x, pos.y);
+    vehicleObject->SetRotation(MathUtil::DegreeToRadian(90));
+
+    VehiclePtr vehicle = std::make_shared<Vehicle>(carParameters,
+                                                   vehicleObject);
 
     /* Initialize race */
-    RacePtr race = std::make_shared<Race>(&window, world, map, hud, checkPointManager);
+    RacePtr race = std::make_shared<Race>(window, world, map, hud,
+                                          checkPointManager);
     race->Initialize(vehicle);
-
     return race;
 }
 
 int main(int argc, char **argv) {
-    /* Prepare the window */
-    sf::RenderWindow window(sf::VideoMode(1200, 800, 32), "IORacer");
-    window.setFramerateLimit(60);
-    float scale = 30;
-
     /* Create world */
     b2World *world = new b2World(b2Vec2(0, 0));
 
+    TextureManagerPtr textureManager = std::make_shared<TextureManager>();
+    ObjectManagerPtr objectManager = std::make_shared<ObjectManager>
+            (textureManager, world);
+    MapManagerPtr mapManager = std::make_shared<MapManager>(textureManager,
+                                                            objectManager);
+    MapPtr map = mapManager->CreateMap("map_1");
+    map->SetStartPosition(sf::Vector2f(4250, 3890)); // TODO read from conf
+
+    /* Prepare the window */
+    RenderWindowPtr window = std::make_shared<sf::RenderWindow>
+            (sf::VideoMode::getDesktopMode(), "IORacer",
+             sf::Style::Fullscreen);
+    window->setFramerateLimit(60);
+
+    const int totalLaps = 15; // TODO move to config file
     /* Set checkpoints */
     /// @TODO add race builder
     /// @TODO move checkPointsParser to map Load
-    CheckPointParser parser(world, scale);
-    std::vector<CheckPointPtr> checkPoints = parser.ParseFile("../resource/maps/map_0/checkpoints_list");
-    CheckPointManagerPtr checkPointManager = std::make_shared<CheckPointManager>(checkPoints, 15);
+    CheckPointManagerPtr checkPointManager =
+            std::make_shared<CheckPointManager>(map->GetCheckpoints(),
+                                                totalLaps);
 
     /* Initialize application */
-    RacePtr race = InitializeRace(world, scale, window, checkPointManager);
-    MenuPtr menu = std::make_shared<Menu>(&window, race);
+    RacePtr race = InitializeRace(world, window, checkPointManager, map, objectManager);
+    MenuPtr menu = std::make_shared<Menu>(window, race);
 
     menu->Run();
 

@@ -7,7 +7,7 @@
 
 class Menu : public Module {
 public:
-    Menu(sf::RenderWindow *window, RacePtr race);
+    Menu(RenderWindowPtr window, RacePtr race);
 
     int Run();
 

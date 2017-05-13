@@ -5,9 +5,10 @@
  *  @date 4/5/17
  */
 
-#include <Tools/HUD.h>
-#include <Entity/TimeIndicator.h>
-#include <Entity/IntegerIndicator.h>
+#include <HUD.h>
+#include <TimeIndicator.h>
+#include <IntegerIndicator.h>
+#include <Drawable.h>
 
 HUD::HUD(VehiclePtr vehicle, MapPtr map) : vehicle_(vehicle), map_(map) {
     hudView_.setSize(1200, 800);
@@ -48,10 +49,10 @@ void HUD::Update() {
     }
 }
 
-void HUD::Draw(sf::RenderWindow *window) const {
+void HUD::Draw(RenderWindowPtr window) const {
     window->setView(hudView_);
 
-    DrawMinimap(window);
+    // DrawMinimap(window);
 
     for (auto el : containers_) {
         if (el != nullptr)
@@ -59,7 +60,7 @@ void HUD::Draw(sf::RenderWindow *window) const {
     }
     window->setView(window->getDefaultView());
 }
-
+/*
 void HUD::DrawMinimap(sf::RenderWindow *window) const {
     sf::Vector2u windowSize = window->getSize();
     float beginX = windowSize.x - 360.f;
@@ -104,7 +105,7 @@ void HUD::DrawMinimapCheckpoint(sf::RenderWindow *window,
     checkpointPoint.setOutlineColor(sf::Color(0, 0, 0, 150));
     checkpointPoint.setPosition(beginX + posX, beginY + posY);
     window->draw(checkpointPoint);
-}
+}*/
 
 void HUD::DebugDisplay(bool option) {
     showDebug_ = option;

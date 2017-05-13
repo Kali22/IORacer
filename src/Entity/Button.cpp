@@ -30,7 +30,7 @@ bool Button::ToggleHover(sf::Vector2f mousePosition) {
     }
 }
 
-void Button::Draw(sf::RenderWindow *window) const {
+void Button::Draw(RenderWindowPtr window) const {
     window->draw(background_);
     text_.Draw(window);
 }

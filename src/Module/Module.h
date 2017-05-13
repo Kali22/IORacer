@@ -9,13 +9,13 @@
 
 class Module {
 public:
-    Module(sf::RenderWindow *window) : close_(false), window_(window) {}
+    Module(RenderWindowPtr window) : close_(false), window_(window) {}
 
     virtual int Run()=0;
 
 protected:
     bool close_;
-    sf::RenderWindow *window_;
+    RenderWindowPtr window_;
     std::vector<DrawablePtr> objects_;
     std::vector<ButtonPtr> buttons_;
 

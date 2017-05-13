@@ -11,7 +11,7 @@
  * Store list of chekpoints. Track and update active checkpoint.
  */
 class CheckPointManager
-        : public CheckPointObserver, public Drawable, public Updatable {
+        : public CheckPointObserver, public Updatable {
 public:
     CheckPointManager(std::vector<CheckPointPtr> checkPoints, int totalLaps);
 
@@ -26,11 +26,6 @@ public:
      * Call SetEnable(true) on new active checkpoint.
      */
     void NotifyCheckPointReached();
-
-    /**
-     * Draw active checkpoint.
-     */
-    void Draw(sf::RenderWindow *window) const;
 
     void Update();
 

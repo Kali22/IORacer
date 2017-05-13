@@ -4,8 +4,8 @@
 
 #pragma once
 
-#include <Entity/Text.h>
-#include <Entity/Updatable.h>
+#include <Text.h>
+#include <Updatable.h>
 
 class TimeIndicator : public Text, public Updatable {
 public:
@@ -14,7 +14,7 @@ public:
     TimeIndicator(const float &param, sf::FloatRect frame, TextJustification position,
                   std::string fontName, float size);
 
-    void Draw(sf::RenderWindow *window) const;
+    void Draw(RenderWindowPtr window) const;
 
     void Update();
 

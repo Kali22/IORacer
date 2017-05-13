@@ -33,7 +33,7 @@ void CheckPointManager::Reset() {
 
 void CheckPointManager::NotifyCheckPointReached() {
     // CheckPoint reached? If reached, CheckPoint should be disabled.
-    if (GetCurrentCheckPoint()->IsEnabled()) {
+    if (GetCurrentCheckPoint()->IsEnable()) {
         return;
     }
 
@@ -47,11 +47,6 @@ void CheckPointManager::NotifyCheckPointReached() {
         currentSector_ = 0;
     }
     GetCurrentCheckPoint()->SetEnable(true);
-}
-
-void CheckPointManager::Draw(sf::RenderWindow *window) const {
-    auto checkPoint = GetCurrentCheckPoint();
-    checkPoint->Draw(window);
 }
 
 CheckPointPtr CheckPointManager::GetCurrentCheckPoint() const {

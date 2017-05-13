@@ -4,8 +4,8 @@
 #pragma once
 
 #include <Box2D.h>
-#include <Tools/Entity.h>
 #include <CheckPoint.h>
+#include <Object.h>
 
 class ContactListener : public b2ContactListener {
 public:
@@ -14,9 +14,9 @@ public:
     void EndContact(b2Contact *contact);
 
 private:
-    bool GetUserData(b2Contact *contact, Entity **entity, int which);
+    bool GetUserData(b2Contact *contact, Object **entity, int which);
 
-    bool CheckIfCar(Entity **entity1, Entity **entity2);
+    bool CheckIfCar(Object **entity1, Object **entity2);
 
     bool GetCheckPointFromContact(b2Contact *contact, CheckPoint **checkPoint);
 };

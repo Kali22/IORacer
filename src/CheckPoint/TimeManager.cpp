@@ -2,7 +2,7 @@
 // Created by jacek on 20.04.17.
 //
 
-#include <CheckPoint/TimeManager.h>
+#include <TimeManager.h>
 
 TimeManager::TimeManager(const int &currentSector, const int &currentLap,
                          const int &totalSectors) :

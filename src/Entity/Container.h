@@ -3,18 +3,21 @@
 //
 #pragma once
 
-#include <Entity/Movable.h>
-#include <Entity/Updatable.h>
+#include <Movable.h>
+#include <Updatable.h>
+#include <Drawable.h>
+#include <SFML/Window.hpp>
+#include <SFML/Graphics.hpp>
 
 /**
  * Container for graphics.
  * @TODO auto space arrangement?
  */
-class Container : public Movable, public Updatable {
+class Container : public Movable, public Updatable, public Drawable {
 public:
     Container(sf::FloatRect rect);
 
-    void Draw(sf::RenderWindow *window) const;
+    void Draw(RenderWindowPtr window) const;
 
     void Update();
 

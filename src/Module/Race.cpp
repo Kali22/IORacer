@@ -4,17 +4,19 @@
 
 #include <Race.h>
 
-#include <Vehicle/TireControlE.h>
+#include <TireControlE.h>
+#include <Drawable.h>
 
 
-Race::Race(sf::RenderWindow *window, b2World *world, MapPtr map, HUDPtr hud, CheckPointManagerPtr checkPointManager) :
+Race::Race(RenderWindowPtr window, b2World *world, MapPtr map, HUDPtr hud,
+           CheckPointManagerPtr checkPointManager) :
         Module(window), world_(world), map_(map), hud_(hud), checkPointManager_(checkPointManager),
         contactListener_(std::make_shared<ContactListener>()) {};
 
 void Race::Initialize(VehiclePtr vehicle) {
     sf::Vector2f pos = map_->GetStartPosition();
     vehicle_ = vehicle;
-    vehicle_->Initialize(world_, (int) pos.x, (int) pos.y);
+    //vehicle_->Initialize(world_, (int) pos.x, (int) pos.y);
 
     // Prepare map
     checkPointManager_->Reset();
@@ -68,7 +70,7 @@ bool Race::HandleEvents(int &carState) {
 
 void Race::Update(int &carState) {
 /* Update physics object states */
-    vehicle_->Update(carState, *map_);
+    vehicle_->Update(carState, map_);
 
 /* Simulate the world */
     world_->Step(1 / 60.f, 8, 3);
@@ -81,10 +83,9 @@ void Race::Update(int &carState) {
 void Race::Render() {
     map_->SetCameraViewPosition(vehicle_->GetPosition());
     window_->clear(sf::Color::Black);
-    map_->RenderBottomLayer(*window_);
+    // map_->RenderBottomLayer(*window_); TODO
     window_->setView(map_->GetCameraView());
-    checkPointManager_->Draw(window_);
-    vehicle_->Render(*window_);
+    vehicle_->Draw(window_);
     window_->setView(window_->getDefaultView());
 
     hud_->Draw(window_);

@@ -6,26 +6,26 @@
 #include <Box2D.h>
 #include <SFML/Graphics/View.hpp>
 #include <CheckPointObserver.h>
-#include <Tools/RectangleArea.h>
-#include <Tools/RectangleParams.h>
-#include <Tools/Area.h>
+#include <Object.h>
+#include <VisualObject.h>
 
 /**
  * Check point is specyfic area. When car reach area enabled checkpoint
  * notify observer about change and set its state to disable.
  */
-class CheckPoint : public Entity {
+class CheckPoint : public Object {
 public:
-    CheckPoint(RectangleArea *area, const sf::Texture *texture);
+    // TODO set size in object manager RealVec
+    CheckPoint(b2World* world, VisualObjectPtr
+            visualObject);
 
-    void Draw(sf::RenderWindow *window) const;
-
-    virtual int GetEntityType() const;
+    virtual int GetObjectType() const;
 
     void SetEnable(bool value);
 
-    bool IsEnabled() const;
+    bool IsEnable() const;
 
+    void Draw(RenderWindowPtr window);
     /**
      * Set observer who is notifed each time when enabled checkpoint is
      * reached by car.
@@ -39,11 +39,8 @@ public:
     void BeginContact();
 
     void EndContact();
-
-    sf::Vector2f GetPosition() const;
-
 private:
-    RectangleArea *area_;
+    static b2Body* InitializeBody(b2World* world, const RealVec& size);
     CheckPointObserver *observer_;
     bool enable_;
 };

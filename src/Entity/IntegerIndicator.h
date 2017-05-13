@@ -4,8 +4,8 @@
 
 #pragma once
 
-#include <Entity/Text.h>
-#include <Entity/Updatable.h>
+#include <Text.h>
+#include <Updatable.h>
 
 class IntegerIndicator : public Text, public Updatable {
 public:
@@ -15,7 +15,7 @@ public:
     IntegerIndicator(const int &param, sf::FloatRect frame, TextJustification position, std::string fontName,
                      float size, int minVal = 0, int maxVal = 99, bool leadingZeros = false, int fieldWidth = 2);
 
-    void Draw(sf::RenderWindow *window) const;
+    void Draw(RenderWindowPtr window) const;
 
     void Update();
 

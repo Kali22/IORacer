@@ -6,7 +6,7 @@
 
 #include <SFML/System/Clock.hpp>
 #include <vector>
-#include <Entity/Updatable.h>
+#include <Updatable.h>
 
 /**
  * Race time management.

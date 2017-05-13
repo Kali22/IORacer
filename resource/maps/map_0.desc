@@ -1,0 +1,35 @@
+# Map description
+# 1: Full beautiful name
+# 2: <physical size x [m]> <physical size y [m]>
+# 3: view texture name
+# 4: friction texture name
+# number of checkpoints
+# list of checkpoints: <posx> <posy> <rot>
+# list of items <object name> <posx> <posy> <rot>
+First small test map
+500 200
+map_0_view
+map_0_friction
+10
+0 0 0
+0 -10 0
+0 -20 0
+0 -30 0
+0 -40 0
+0 10 0
+0 20 0
+0 30 0
+0 40 0
+0 50 0
+box 0 0 0
+box 10 0 0
+box 20 0 0
+box 30 0 0
+box 40 0 0
+box 50 0 0
+tire 0 0 0
+tire 20 10 0
+tire 30 10 0
+tyre 40 10 0
+tyre 50 10 0
+tyre 60 10 0

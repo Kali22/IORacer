@@ -1,6 +1,6 @@
 #include "Workshop.h"
 
-Workshop::Workshop(sf::RenderWindow *window, RacePtr race) :
+Workshop::Workshop(RenderWindowPtr window, RacePtr race) :
         Module(window),
         race_(race),
         carParams_(race_->GetVehicle()->GetCarParameters()) {

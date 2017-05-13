@@ -11,11 +11,11 @@
  *  @date 4/5/17
  */
 
-#include <Drawable.h>
 #include <Vehicle.h>
 #include <Text.h>
 #include <CheckPointManager.h>
-#include <Entity/Container.h>
+#include <Container.h>
+#include <Drawable.h>
 
 /**
  * Head-Up Display class.
@@ -35,7 +35,7 @@ public:
      * Draw HUD on the screen.
      * @param window screen
      */
-    void Draw(sf::RenderWindow *window) const;
+    void Draw(RenderWindowPtr window) const;
 
     /**
      * Initialize HUD and bind vehicle.
@@ -76,6 +76,22 @@ private:
 
     void AddIntegerIndicator(ContainerPtr container, std::string title, const int &data, int limit, sf::IntRect grid);
 
+    void DrawMinimap(RenderWindowPtr window) const;
+
+    void DrawMinimapBackground(RenderWindowPtr window, const sf::Vector2u
+    &windowSize)
+    const;
+
+    void DrawMinimapVehicle(RenderWindowPtr window, const sf::Vector2f
+    &mapSize,
+                            float
+    beginX, float beginY) const;
+
+    void DrawMinimapCheckpoint(RenderWindowPtr window, const sf::Vector2f
+    &mapSize,
+                               float
+    beginX, float beginY) const;
+
     /// Containers
     std::vector<ContainerPtr> containers_;
 
@@ -95,13 +111,6 @@ private:
     /// Checkpoint manager pointer
     CheckPointManagerPtr checkPointManager_;
 
-    void DrawMinimap(sf::RenderWindow *window) const;
-
-    void DrawMinimapBackground(sf::RenderWindow *window, const sf::Vector2u &windowSize) const;
-
-    void DrawMinimapVehicle(sf::RenderWindow *window, const sf::Vector2f &mapSize, float beginX, float beginY) const;
-
-    void DrawMinimapCheckpoint(sf::RenderWindow *window, const sf::Vector2f &mapSize, float beginX, float beginY) const;
 };
 
 using HUDPtr = std::shared_ptr<HUD>;

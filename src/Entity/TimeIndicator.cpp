@@ -17,7 +17,7 @@ TimeIndicator::TimeIndicator(const float &param, sf::FloatRect frame, TextJustif
     Update();
 }
 
-void TimeIndicator::Draw(sf::RenderWindow *window) const {
+void TimeIndicator::Draw(RenderWindowPtr window) const {
     Text::Draw(window);
 }
 
