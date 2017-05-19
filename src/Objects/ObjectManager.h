@@ -1,6 +1,6 @@
 #pragma once
 
-#include <TextureManager.h>
+#include <Texture/TextureManager.h>
 #include <VisualObject.h>
 #include <Object.h>
 #include <CheckPoint.h>

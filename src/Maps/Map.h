@@ -18,7 +18,7 @@
 
 
 #include <RealVec.h>
-#include <Texture.h>
+#include <Texture/Texture.h>
 #include <Object.h>
 #include <CheckPoint.h>
 

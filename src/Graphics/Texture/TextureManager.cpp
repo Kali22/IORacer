@@ -1,4 +1,5 @@
 #include "TextureManager.h"
+#include "Sprite.h"
 
 TextureManager::TextureManager() {
     std::ifstream file(resourcePath_ + "textures_list.cnfg");
@@ -23,4 +24,13 @@ TexturePtr TextureManager::GetTextureByName(std::string name) {
         return textures_[name];
     else
         return nullptr;
+}
+
+SpritePtr TextureManager::GetSpriteFromTexture(std::string name) {
+    TexturePtr texture = GetTextureByName(name);
+    if (texture == nullptr) {
+        fprintf(stderr, "No such texture in resources!\n");
+        exit(1);
+    }
+    return std::make_shared<Sprite>(texture);
 }

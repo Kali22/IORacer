@@ -1,5 +1,5 @@
 #include "ObjectManager.h"
-#include <Box.h>
+#include <BoxObj.h>
 #include <TruckTire.h>
 #include <CheckPoint.h>
 #include <Tire.h>
@@ -68,7 +68,7 @@ objectName) {
 ObjectPtr ObjectManager::GetObjectInstanceByName(const std::string& objectName,
                                                  VisualObjectPtr visualObject) {
     if (objectName == "box") {
-        return std::make_shared<Box>(world_, visualObject);
+        return std::make_shared<BoxObj>(world_, visualObject);
     }
     if (objectName == "tyre") {
         return std::make_shared<TruckTire>(world_, visualObject);

@@ -69,7 +69,7 @@ int Menu::Run() {
 void Menu::HandleEvent(bool &mouseClick) {
     sf::Event event;
     while (window_->pollEvent(event)) {
-        // Module closing event requested
+        // Modules closing event requested
         if (event.type == sf::Event::Closed ||
             (event.type == sf::Event::KeyPressed && event.key.code == sf::Keyboard::Key::Escape)) {
             close_ = true;

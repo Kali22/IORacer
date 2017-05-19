@@ -9,10 +9,6 @@ Scene::Scene(MapPtr map) : map_(map) {
 
 }
 
-//void Scene::Render(RendererPtr renderer) {
-//
-//}
-
 void Scene::AddObject(ObjectPtr object) {
     object->Rescale(map_->GetPixMetersScale());
     objects_.push_back(object);

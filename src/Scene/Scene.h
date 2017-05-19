@@ -3,7 +3,7 @@
 
 #include <bits/stdc++.h>
 #include <Map.h>
-#include <Texture.h>
+#include <Texture/Texture.h>
 #include <Drawable.h>
 #include <Camera.h>
 

@@ -3,7 +3,7 @@
 #include <bits/stdc++.h>
 #include <Box2D/Box2D.h>
 #include <RealVec.h>
-#include <Texture.h>
+#include <Texture/Texture.h>
 #include <Drawable.h>
 #include <Movable.h>
 #include <Scalable.h>

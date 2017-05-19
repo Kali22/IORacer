@@ -6,6 +6,9 @@
 #include <Object.h>
 #include "Map.h"
 
+/**
+ * @TODO -> Change map loader and add starting  positions!!!
+ */
 class MapManager {
 public:
     MapManager(TextureManagerPtr textureManager, ObjectManagerPtr objectManager);

@@ -7,7 +7,7 @@ file(GLOB_RECURSE SOURCE_LIST "*.cpp")
 set(SRC ${SOURCE_LIST})
 
 set(CMAKE_MODULE_PATH "${CMAKE_SOURCE_DIR}/cmake_modules" ${CMAKE_MODULE_PATH})
-find_package(SFML REQUIRED COMPONENTS System Window Graphics)
+find_package(SFML REQUIRED COMPONENTS System Graphics Window)
 find_package(Box2D REQUIRED)
 
 #set headers stuff
@@ -17,19 +17,20 @@ set(INCLUDE_DIRS
         ${PROJECT_SOURCE_DIR}/src/Entity/ButtonState
         ${PROJECT_SOURCE_DIR}/src/Interfaces
         ${PROJECT_SOURCE_DIR}/src/Maps
-        ${PROJECT_SOURCE_DIR}/src/Module
+        ${PROJECT_SOURCE_DIR}/src/Modules
         ${PROJECT_SOURCE_DIR}/src/Objects
         ${PROJECT_SOURCE_DIR}/src/Scene
-        ${PROJECT_SOURCE_DIR}/src/Textures
+        ${PROJECT_SOURCE_DIR}/src/Graphics/Textures
         ${PROJECT_SOURCE_DIR}/src/Tools
         ${PROJECT_SOURCE_DIR}/src/Utils
         ${PROJECT_SOURCE_DIR}/src/Vehicle
+        ${PROJECT_SOURCE_DIR}/src/Events
+        ${PROJECT_SOURCE_DIR}/src/Graphics
+        ${PROJECT_SOURCE_DIR}/src/Graphics/UI
+        ${PROJECT_SOURCE_DIR}/src/Activity
+        ${PROJECT_SOURCE_DIR}/src/Game
         ${SFML_INCLUDE_DIR}
         ${BOX2D_INCLUDE_DIR}/Box2D
-        )
-
-set(INCLUDE_FILES
-        ${PROJECT_SOURCE_DIR}/src/main.cpp
         )
 
 #set lib stuff

@@ -1,14 +1,14 @@
 #include <iostream>
 #include <MathUtil.h>
-#include "Box.h"
+#include "BoxObj.h"
 
-Box::Box(b2World *world, VisualObjectPtr visualObject)
+BoxObj::BoxObj(b2World *world, VisualObjectPtr visualObject)
         : Object(InitializeBody(world, visualObject->GetSize()),
                        visualObject) {
     body_->SetUserData(this);
 }
 
-b2Body* Box::InitializeBody(b2World *world, const RealVec& size) {
+b2Body* BoxObj::InitializeBody(b2World *world, const RealVec& size) {
     b2BodyDef bodyDef;
     bodyDef.type = b2_dynamicBody;
     bodyDef.angularDamping = 1.0f;
@@ -18,7 +18,7 @@ b2Body* Box::InitializeBody(b2World *world, const RealVec& size) {
     return body;
 }
 
-void Box::InitializeFixture(b2Body* body, const RealVec& size) {
+void BoxObj::InitializeFixture(b2Body* body, const RealVec& size) {
     b2PolygonShape Shape;
     Shape.SetAsBox(size.x / 2, size.y / 2);
     b2FixtureDef FixtureDef;
@@ -29,6 +29,6 @@ void Box::InitializeFixture(b2Body* body, const RealVec& size) {
     body->CreateFixture(&FixtureDef);
 }
 
-int Box::GetObjectType() const {
+int BoxObj::GetObjectType() const {
     return BOX;
 }

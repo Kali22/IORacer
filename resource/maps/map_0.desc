@@ -3,8 +3,11 @@
 # 2: <physical size x [m]> <physical size y [m]>
 # 3: view texture name
 # 4: friction texture name
+# 5: minimap view, contour of track with alpha background, same proportions as view texture
 # number of checkpoints
 # list of checkpoints: <posx> <posy> <rot>
+# number of starting positions
+# list of starting positions: <posx> <posy> <rot>
 # list of items <object name> <posx> <posy> <rot>
 First small test map
 500 200

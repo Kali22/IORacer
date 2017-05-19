@@ -6,9 +6,9 @@
 #include "Object.h"
 
 
-class Box : public Object {
+class BoxObj : public Object {
 public:
-    Box(b2World *world, VisualObjectPtr visualObject);
+    BoxObj(b2World *world, VisualObjectPtr visualObject);
 
     virtual int GetObjectType() const;
 private:
