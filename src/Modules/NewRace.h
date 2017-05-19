@@ -20,7 +20,9 @@ private:
 
     void SetTitleStyle(UITextBoxPtr textBox);
 
-    void CreateRace();
+    void SetButtonStyle(UITextBoxPtr button);
+
+    void CreateRace(std::string name);
 };
 
 using NewRacePtr = std::shared_ptr<NewRace>;

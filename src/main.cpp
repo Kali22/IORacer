@@ -3,6 +3,7 @@
 #include <PlayerSelector.h>
 #include <Splash.h>
 #include <NewRace.h>
+#include <MapManager.h>
 
 int main(int argc, char **argv) {
     /*=============== Early inits. Core objects. ===============*/

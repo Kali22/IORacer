@@ -8,6 +8,7 @@
 
 /**
  * @TODO -> Change map loader and add starting  positions!!!
+ * @TODO -> Add minimap provider!?
  */
 class MapManager {
 public:

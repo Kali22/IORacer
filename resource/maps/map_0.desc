@@ -30,9 +30,9 @@ box 20 0 0
 box 30 0 0
 box 40 0 0
 box 50 0 0
-tire 0 0 0
-tire 20 10 0
-tire 30 10 0
+tyre 0 0 0
+tyre 20 10 0
+tyre 30 10 0
 tyre 40 10 0
 tyre 50 10 0
 tyre 60 10 0

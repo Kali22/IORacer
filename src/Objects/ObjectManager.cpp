@@ -1,4 +1,5 @@
 #include "ObjectManager.h"
+#include "ObjectDesc.h"
 #include <BoxObj.h>
 #include <TruckTire.h>
 #include <CheckPoint.h>
@@ -50,8 +51,10 @@ ObjectManager::ObjectManager(TextureManagerPtr textureManager, b2World* world) :
 ObjectPtr ObjectManager::GetObjectInstanceByName(const std::string&
 objectName) {
     std::map<std::string,ObjectDesc>::iterator it = visualObjects_.find(objectName);
-    if (it == visualObjects_.end())
-        return nullptr;
+    if (it == visualObjects_.end()) {
+        std::cerr << "Object name " << visualObjects_[objectName].name << " not found!\n";
+        exit(1);
+    }
 
     TexturePtr texture = textureManager_->GetTextureByName(visualObjects_[objectName].textureName);
     if (texture == nullptr) {
