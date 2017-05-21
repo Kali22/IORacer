@@ -29,18 +29,21 @@ void Gameplay::Init() {
     setup.brakesType = BRAKES_FRONT;
     setup.enginePowerMax = 100000;
     setup.massBalance = 0.5;
-    setup.transmissionType = TRANSMISSION_4X4;
+    setup.transmissionType = TRANSMISSION_REAR;
     setup.vehicleMass = 300;
     /* ---------------------------------------------------------------- TESTS ---- */
 
     StartPositionT start = map->GetStartPosition(0);
     firstPlayerVehicle_ = objectManager_->CreateVehicle(RealVec(start.x, start.y), start.rot, setup, map);
     scene_->AddObject(firstPlayerVehicle_);
-    scene_->AddCamera(0, 40, 0.5);
+    scene_->AddCamera(0, 40, 0.3);
     if (!secondPlayerName_.empty()) {
+        start = map->GetStartPosition(1);
+        setup.vehicleMass = 500;
+        setup.transmissionType = TRANSMISSION_4X4;
         secondPlayerVehicle_= objectManager_->CreateVehicle(RealVec(start.x, start.y), start.rot, setup, map);
         scene_->AddObject(secondPlayerVehicle_);
-        scene_->AddCamera(1, 40, 0.5);
+        scene_->AddCamera(1, 40, 0.3);
     }
 
     world_->Step(1.f / 60.f, 8, 6);
@@ -81,16 +84,19 @@ void Gameplay::EventAction(Event event) {
 void Gameplay::HandleKey(sf::Event::KeyEvent event, bool state) {
     switch (gameState_) {
         case GAMEPLAY_STATE_PREPARE:
-            HandleKeyInPrepareState(event);
+            if (state)
+                HandleKeyInPrepareState(event);
             break;
         case GAMEPLAY_STATE_RUNNING:
             HandleKeyInGameState(event, state);
             break;
         case GAMEPLAY_STATE_PAUSE:
-            HandleKeyInPauseState(event);
+            if (state)
+                HandleKeyInPauseState(event);
             break;
         case GAMEPLAY_STATE_END:
-            HandleKeyInEndState(event);
+            if (state)
+                HandleKeyInEndState(event);
             break;
     }
 }
@@ -148,6 +154,10 @@ void Gameplay::Update() {
 }
 
 void Gameplay::UpdateUIInPrepareState() {
+    UITextBoxPtr title = std::dynamic_pointer_cast<UITextBox>(userInterface_->GetElementByName("title"));
+    std::stringstream ss;
+    ss << "Start in " << (int) ceil(preparationTimeInSeconds - globalTime_) << " seconds!";
+    title->SetText(ss.str());
 }
 
 void Gameplay::UpdateUIInPauseState() {
@@ -157,8 +167,8 @@ void Gameplay::UpdateUIInPauseState() {
 void Gameplay::PrepareUIForPrepareState() {
     UIBoxPtr back = userInterface_->CreateBox("background", sf::FloatRect(0.5, 0.5, 1, 1));
     back->SetBackgroundColor(sf::Color(0, 0, 0, 80));
-    UITextBoxPtr title = userInterface_->CreateTextBox("title", "Prepare to race!", 30,
-                                                       sf::FloatRect(0.5, 0.075, 1, 0.1));
+    UITextBoxPtr title = userInterface_->CreateTextBox("title", "Prepare to race!", 60,
+                                                       sf::FloatRect(0.5, 0.075, 1, 0.2));
     SetTitleStyle(title);
 }
 
@@ -167,7 +177,11 @@ void Gameplay::UpdateHUD() {
 }
 
 void Gameplay::PrepareUIForPauseState() {
-
+    UIBoxPtr back = userInterface_->CreateBox("background", sf::FloatRect(0.5, 0.5, 1, 1));
+    back->SetBackgroundColor(sf::Color(0, 0, 0, 80));
+    UITextBoxPtr title = userInterface_->CreateTextBox("title", "PAUSE", 30,
+                                                       sf::FloatRect(0.5, 0.5, 1, 0.1));
+    SetTitleStyle(title);
 }
 
 void Gameplay::PrepareHUD() {
@@ -229,7 +243,8 @@ void Gameplay::HandleKeyInEndState(sf::Event::KeyEvent event) {
 }
 
 void Gameplay::HandleKeyFirstPlayer(sf::Event::KeyEvent event, bool state) {
-    fprintf(stderr, "CKEY: %d\n", event.code);
+    float ref;
+    float scr;
     switch (event.code) {
         case sf::Keyboard::Up:
             firstPlayerVehicle_->Accelerate(state);
@@ -243,12 +258,24 @@ void Gameplay::HandleKeyFirstPlayer(sf::Event::KeyEvent event, bool state) {
         case sf::Keyboard::Right:
             firstPlayerVehicle_->TurnRight(state);
             break;
+        case sf::Keyboard::PageDown:
+            ref = scene_->GetCamera(0)->GetReferenceHeight();
+            scr = scene_->GetCamera(0)->GetScreenFraction();
+            scene_->GetCamera(0)->ChangeView(ref + 1, scr);
+            break;
+        case sf::Keyboard::PageUp:
+            ref = scene_->GetCamera(0)->GetReferenceHeight();
+            scr = scene_->GetCamera(0)->GetScreenFraction();
+            scene_->GetCamera(0)->ChangeView(ref - 1, scr);
+            break;
         default:
             break;
     }
 }
 
 void Gameplay::HandleKeySecondPlayer(sf::Event::KeyEvent event, bool state) {
+    float ref;
+    float scr;
     switch (event.code) {
         case sf::Keyboard::W:
             secondPlayerVehicle_->Accelerate(state);
@@ -261,6 +288,16 @@ void Gameplay::HandleKeySecondPlayer(sf::Event::KeyEvent event, bool state) {
             break;
         case sf::Keyboard::D:
             secondPlayerVehicle_->TurnRight(state);
+            break;
+        case sf::Keyboard::F1:
+            ref = scene_->GetCamera(1)->GetReferenceHeight();
+            scr = scene_->GetCamera(1)->GetScreenFraction();
+            scene_->GetCamera(1)->ChangeView(ref + 1, scr);
+            break;
+        case sf::Keyboard::F2:
+            ref = scene_->GetCamera(1)->GetReferenceHeight();
+            scr = scene_->GetCamera(1)->GetScreenFraction();
+            scene_->GetCamera(1)->ChangeView(ref - 1, scr);
             break;
         default:
             break;

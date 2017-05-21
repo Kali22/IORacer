@@ -57,3 +57,7 @@ void UITextBox::SetBackgroundColor(sf::Color color) {
 void UITextBox::SetOutlineColor(sf::Color color) {
     normalOutlineColor_ = color;
 }
+
+void UITextBox::SetText(const std::string &text) {
+    text_.setString(text);
+}

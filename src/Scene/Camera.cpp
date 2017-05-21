@@ -31,3 +31,8 @@ RealVec Camera::GetCenter() const {
         return  trackedObject_->GetPosition();
 }
 
+void Camera::ChangeView(float ref, float frac) {
+    referenceHeight_ = ref;
+    screenFraction_ = frac;
+}
+

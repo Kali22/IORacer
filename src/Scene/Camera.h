@@ -15,6 +15,8 @@ public:
 
     RealVec GetCenter() const;
 
+    void ChangeView(float ref, float frac);
+
 private:
     float referenceHeight_;
     float screenFraction_;

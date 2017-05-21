@@ -22,6 +22,8 @@ public:
 
     void SetTextColorHover(sf::Color color);
 
+    void SetText(const std::string &text);
+
     void Render(RenderWindowPtr window);
 
 private:

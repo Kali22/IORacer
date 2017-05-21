@@ -82,7 +82,7 @@ private:
     MapManagerPtr mapManager_;
     b2World *world_;
 
-    const float preparationTimeInSeconds = 1.f;
+    const float preparationTimeInSeconds = 3.f;
 
 
     void HandleKeyFirstPlayer(sf::Event::KeyEvent event, bool state);
