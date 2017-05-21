@@ -22,8 +22,6 @@ public:
 
     void StartClock();
 
-    void StopClock();
-
     bool NewLapBeginNotify() const;
 
     bool NewSectorBeginNotify() const;
@@ -56,12 +54,10 @@ public:
 private:
     void UpdateTimes();
 
-    bool isRunning_;
-
     /// Current lap wall clock
-    sf::Clock lapClock_;
+    float lapClock_;
     /// Current sector wall clock
-    sf::Clock sectorClock_;
+    float sectorClock_;
 
     /// Accumulative sectors times in each lap
     std::vector<std::vector<float> > accumulativeSectorsTimes_;

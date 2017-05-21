@@ -1,7 +1,3 @@
-//
-// Created by jacek on 20.04.17.
-//
-
 #include <CheckPoint/TimeManager.h>
 
 TimeManager::TimeManager(const int &currentSector, const int &currentLap,
@@ -14,6 +10,8 @@ TimeManager::TimeManager(const int &currentSector, const int &currentLap,
 }
 
 void TimeManager::Update(float dt) {
+    lapClock_ += dt;
+    sectorClock_ += dt;
     UpdateTimes();
     currentLapIndicator_ = currentLap_;
     currentSectorIndicator_ = currentSector_ + 1;
@@ -38,8 +36,9 @@ void TimeManager::Reset() {
 }
 
 void TimeManager::BeginNewSector() {
-    float sectorTime = sectorClock_.restart().asSeconds();
-    float lapTime = lapClock_.getElapsedTime().asSeconds();
+    float sectorTime = sectorClock_;
+    sectorClock_ = 0;
+    float lapTime = lapClock_;
     sectorsTimes_[currentLap_].push_back(sectorTime);
     accumulativeSectorsTimes_[currentLap_].push_back(lapTime);
 
@@ -51,7 +50,8 @@ void TimeManager::BeginNewSector() {
 }
 
 void TimeManager::BeginNewLap() {
-    float lapTime = lapClock_.restart().asSeconds();
+    float lapTime = lapClock_;
+    lapClock_ = 0;
     if (lapTime < bestLapTime_) {
         bestLapTime_ = lapTime;
         bestLapNumber_ = currentLap_;
@@ -68,13 +68,8 @@ void TimeManager::BeginNewLap() {
 }
 
 void TimeManager::StartClock() {
-    isRunning_ = true;
-    sectorClock_.restart();
-    lapClock_.restart();
-}
-
-void TimeManager::StopClock() {
-    isRunning_ = false;
+    sectorClock_ = 0;
+    lapClock_ = 0;
 }
 
 bool TimeManager::NewLapBeginNotify() const {
@@ -135,7 +130,7 @@ const int &TimeManager::GetCurrentSectorNumber() const {
 
 
 void TimeManager::UpdateTimes() {
-    currentSectorTime_ = sectorClock_.getElapsedTime().asSeconds();
+    currentSectorTime_ = sectorClock_;
     lastSectorTime_ = sectorsTimes_[currentLap_ - 1][currentSector_];
     bestSectorTime_ = bestSectorTimes_[currentSector_];
     bestSectorLapNumber_ = bestSectorTimeNumber_[currentSector_];
@@ -146,7 +141,7 @@ void TimeManager::UpdateTimes() {
         previousSectorTime_ = sectorsTimes_[currentLap_ - 1][totalSectors_ - 1];
     }
 
-    currentLapTime_ = lapClock_.getElapsedTime().asSeconds();
+    currentLapTime_ = lapClock_;
     if (currentLap_ > 1) {
         lastLapTime_ =
                 accumulativeSectorsTimes_[currentLap_ - 1][totalSectors_ - 1];

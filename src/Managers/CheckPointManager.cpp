@@ -34,7 +34,6 @@ void CheckPointManager::Reset() {
 }
 
 void CheckPointManager::NotifyCheckPointReached() {
-    printf("Yeah! - %d\n", player_->GetId());
     // CheckPoint reached? If reached, CheckPoint should be disabled.
     if (GetCurrentCheckPoint()->IsEnable()) {
         return;

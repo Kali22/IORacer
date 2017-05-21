@@ -44,7 +44,7 @@ void NewRace::EventAction(Event event) {
         }
     } else if (event.type == UI_EVENT) {
         if (event.uiType == UI_EVENT_CLICK) {
-            if (event.uiElenemt == "map_0") /// @todo Solve hardcoded ids
+            if (event.uiElenemt == "map_0")
                 CreateRace("map_0");
             if (event.uiElenemt == "map_1")
                 CreateRace("map_1");
