@@ -9,16 +9,19 @@
 #include <Object.h>
 #include <GameObjects/CheckPoint/CheckPoint.h>
 #include <ContactListener.h>
+#include <GameObjects/Vehicle/Vehicle.h>
 
 /** Return true if one of Entities is a car.
  *  If one of the entities is a car replace pointer so that the first one is the car.
  */
-bool ContactListener::CheckIfCar(Object **entity1, Object **entity2) {
+bool ContactListener::CheckIfCar(Object **entity1, Object **entity2, int *id) {
     if ((*entity2)->GetType() == OBJECT_TYPE_VEHICLE) {
+        *id = dynamic_cast<Vehicle*>(*entity2)->GetId();
         std::swap(*entity1, *entity2);
         return true;
     }
     if ((*entity1)->GetType() == OBJECT_TYPE_VEHICLE) {
+        *id = dynamic_cast<Vehicle*>(*entity1)->GetId();
         return true;
     }
     return false;
@@ -62,16 +65,18 @@ bool ContactListener::GetCheckPointFromContact(
         b2Contact *contact, CheckPoint **checkPoint) {
     Object *entityA;
     Object *entityB;
+    int id;
     if (!GetUserData(contact, &entityA, 0) ||
         !GetUserData(contact, &entityB, 1)) {
         return false;
     }
-    if (!CheckIfCar(&entityA, &entityB)) {
+    if (!CheckIfCar(&entityA, &entityB, &id)) {
         return false;
     }
     if (entityB->GetType() != OBJECT_TYPE_CHECK_POINT) {
         return false;
     }
     *checkPoint = static_cast<CheckPoint *>(entityB);
-    return true;
+
+    return (*checkPoint)->GetId() == id;
 }

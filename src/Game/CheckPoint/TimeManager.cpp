@@ -10,10 +10,10 @@ TimeManager::TimeManager(const int &currentSector, const int &currentLap,
         currentSector_(currentSector),
         totalSectors_(totalSectors) {
     Reset();
-    Update();
+    Update(0);
 }
 
-void TimeManager::Update() {
+void TimeManager::Update(float dt) {
     UpdateTimes();
     currentLapIndicator_ = currentLap_;
     currentSectorIndicator_ = currentSector_ + 1;

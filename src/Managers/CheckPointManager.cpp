@@ -6,14 +6,15 @@
 #include <cassert>
 #include <GameObjects/CheckPoint/CheckPoint.h>
 #include "CheckPointManager.h"
+#include <Vehicle.h>
 
-CheckPointManager::CheckPointManager(std::vector<CheckPointPtr> checkPoints,
-                                     int totalLaps)
+CheckPointManager::CheckPointManager(VehiclePtr player, std::vector<CheckPointPtr> checkPoints, int totalLaps)
         : checkPoints_(checkPoints), currentLap_(1), currentSector_(0),
-          totalLaps_(totalLaps) {
+          totalLaps_(totalLaps), player_(player) {
     assert(!checkPoints.empty());
     for (auto checkPoint : checkPoints) {
         checkPoint->SetObserver(this);
+
     }
     totalSectors_ = (int) checkPoints_.size();
     timeManager_ = std::make_shared<TimeManager>(currentSector_, currentLap_,
@@ -29,9 +30,11 @@ void CheckPointManager::Reset() {
     currentLap_ = 1;
     GetCurrentCheckPoint()->SetEnable(true);
     timeManager_->Reset();
+    player_->SetActiveCheckpoint(GetCurrentCheckPoint());
 }
 
 void CheckPointManager::NotifyCheckPointReached() {
+    printf("Yeah! - %d\n", player_->GetId());
     // CheckPoint reached? If reached, CheckPoint should be disabled.
     if (GetCurrentCheckPoint()->IsEnable()) {
         return;
@@ -47,6 +50,7 @@ void CheckPointManager::NotifyCheckPointReached() {
         currentSector_ = 0;
     }
     GetCurrentCheckPoint()->SetEnable(true);
+    player_->SetActiveCheckpoint(GetCurrentCheckPoint());
 }
 
 CheckPointPtr CheckPointManager::GetCurrentCheckPoint() const {
@@ -74,8 +78,8 @@ int CheckPointManager::GetCurrentSectorNumber() const {
     return currentSector_;
 }
 
-void CheckPointManager::Update() {
-    timeManager_->Update();
+void CheckPointManager::Update(float dt) {
+    timeManager_->Update(dt);
 }
 
 TimeManagerPtr CheckPointManager::GetTimeManager() const {

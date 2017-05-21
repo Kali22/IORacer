@@ -2,6 +2,7 @@
 #include <GameObjects/CheckPoint/CheckPoint.h>
 #include <GameObjects/Vehicle/Vehicle.h>
 #include <TextureManager.h>
+#include <ObjectDesc.h>
 
 ObjectManager::ObjectManager(TextureManagerPtr textureManager, b2World* world) :
         textureManager_(textureManager), world_(world) {
@@ -29,6 +30,12 @@ ObjectManager::ObjectManager(TextureManagerPtr textureManager, b2World* world) :
 
         ObjectDesc desc;
         desc.name = name;
+        for (auto it : ObjectsMap) {
+            if (it.second == name) {
+                desc.objectType = it.first;
+                break;
+            }
+        }
         desc.textureName = textureName;
         desc.objectShape = (ObjectShapeE) type;
         desc.mass = mass;
@@ -48,13 +55,13 @@ ObjectManager::ObjectManager(TextureManagerPtr textureManager, b2World* world) :
     }
 }
 
-VehiclePtr ObjectManager::CreateVehicle(const RealVec &pos, float rot, const VehicleSetupT &setup, MapPtr map) {
+VehiclePtr ObjectManager::CreateVehicle(int id, const RealVec &pos, float rot, const VehicleSetupT &setup, MapPtr map) {
     std::vector<WheelPtr> wheels;
     for(int i = 0; i < 4; ++i)
         wheels.push_back(CreateWheel(pos, rot));
     b2Body *body = InitializeBody(ObjectsMap[OBJECT_TYPE_VEHICLE], pos, rot);
     VisualObjectPtr chassis = GetVisualObjectInstanceByName(ObjectsMap[OBJECT_TYPE_VEHICLE]);
-    return std::make_shared<Vehicle>(body, chassis, std::move(wheels), setup, map);
+    return std::make_shared<Vehicle>(id, body, chassis, std::move(wheels), setup, map);
 }
 
 WheelPtr ObjectManager::CreateWheel(const RealVec &pos, float rot) {
@@ -63,10 +70,11 @@ WheelPtr ObjectManager::CreateWheel(const RealVec &pos, float rot) {
     return std::make_shared<Wheel>(body, wheel);
 }
 
-CheckPointPtr ObjectManager::CreateCheckpoint(const RealVec &pos, float rot) {
+CheckPointPtr ObjectManager::CreateCheckpoint(int id, const RealVec &pos, float rot) {
     b2Body *body = InitializeBody(ObjectsMap[OBJECT_TYPE_CHECK_POINT], pos, rot);
     VisualObjectPtr checkpoint = GetVisualObjectInstanceByName(ObjectsMap[OBJECT_TYPE_CHECK_POINT]);
-    return std::make_shared<CheckPoint>(body, checkpoint);
+    checkpoint->Rescale(pos.GetScale());
+    return std::make_shared<CheckPoint>(id, body, checkpoint);
 }
 
 ObjectPtr ObjectManager::CreateTire(const RealVec &pos, float rot) {
@@ -122,10 +130,17 @@ b2Body *ObjectManager::InitializeBody(const std::string &objectName, const RealV
         shape.m_radius = objectDesc.radius;
         body->CreateFixture(&shape, density);
     } else if (objectDesc.objectShape == OBJECT_SHAPE_RECT){
+        b2FixtureDef fixtureDef;
         b2PolygonShape shape;
         float density = objectDesc.mass / objectDesc.size.x / objectDesc.size.y;
         shape.SetAsBox(objectDesc.size.x * 0.5f, objectDesc.size.y * 0.5f);
-        body->CreateFixture(&shape, density);
+        fixtureDef.shape = &shape;
+        fixtureDef.density = density;
+        if (objectDesc.objectType == OBJECT_TYPE_CHECK_POINT) { // Special case...
+            fixtureDef.isSensor = true;
+            fixtureDef.density = 0;
+        }
+        body->CreateFixture(&fixtureDef);
     }
     return body;
 }

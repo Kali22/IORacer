@@ -3,6 +3,7 @@
 #include <Activity.h>
 #include "../Events/Event.h"
 #include <Vehicle.h>
+#include <ContactListener.h>
 #include "../Managers/MapManager.h"
 
 enum GameplayStateE {
@@ -63,6 +64,12 @@ private:
 
     void PrepareHUD();
 
+    void PrepareFirstPlayer();
+
+    void PrepareSecondPlayer();
+
+
+
 
     int laps_;
     std::string mapName_;
@@ -75,11 +82,14 @@ private:
     std::string secondPlayerName_;
     VehiclePtr firstPlayerVehicle_;
     VehiclePtr secondPlayerVehicle_;
+    CheckPointManagerPtr  firstPlayerManager_;
+    CheckPointManagerPtr  secondPlayerManager_;
 
+    MapPtr map_;
     ScenePtr scene_;
-
     ObjectManagerPtr objectManager_;
     MapManagerPtr mapManager_;
+    ContactListenerPtr contactListener_;
     b2World *world_;
 
     const float preparationTimeInSeconds = 3.f;

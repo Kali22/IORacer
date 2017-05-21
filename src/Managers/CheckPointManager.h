@@ -2,17 +2,15 @@
 
 #include <CheckPoint/CheckPointObserver.h>
 #include <SFML/System/Clock.hpp>
-#include <Drawable.h>
-#include <Updatable.h>
 #include <CheckPoint/TimeManager.h>
 #include <GameObjects/ObjectTypes.h>
 
 /**
  * Store list of chekpoints. Track and update active checkpoint.
  */
-class CheckPointManager : public CheckPointObserver, public Updatable {
+class CheckPointManager : public CheckPointObserver {
 public:
-    CheckPointManager(std::vector<CheckPointPtr> checkPoints, int totalLaps);
+    CheckPointManager(VehiclePtr player, std::vector<CheckPointPtr> checkPoints, int totalLaps);
 
     /**
      * Reset active checkpoint to first on the list.
@@ -26,7 +24,7 @@ public:
      */
     void NotifyCheckPointReached();
 
-    void Update();
+    void Update(float dt);
 
     sf::Vector2f GetNextCheckPointPosition() const;
 
@@ -58,4 +56,6 @@ private:
     int currentLap_;
     /// Total number of laps in race
     int totalLaps_;
+
+    VehiclePtr player_;
 };

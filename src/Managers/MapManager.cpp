@@ -49,7 +49,7 @@ MapPtr MapManager::CreateMap(std::string mapName) {
     TexturePtr minimap;
     int checkpointNumber;
     int standingsNumber;
-    std::vector <CheckPointPtr> checkpoints;
+    std::vector <CheckpointPosition> checkpoints;
     std::vector <ObjectPtr> objects;
     std::vector <StartPositionT> standings;
 
@@ -72,14 +72,11 @@ MapPtr MapManager::CreateMap(std::string mapName) {
 
     for (int i = 0; i < checkpointNumber; ++i) {
         float x, y, r;
-        CheckPointPtr checkpoint;
+        CheckpointPosition checkpoint;
         file >> x >> y >> r;
-        checkpoint = objectManager_->CreateCheckpoint(RealVec(x,  y), MathUtil::DegreeToRadian(r));
-        if (checkpoint == nullptr) {
-            std::cerr << "Checkpoint creating fail!";
-            exit(1);
-        }
+        checkpoint = {x,  y, MathUtil::DegreeToRadian(r)};
         checkpoints.push_back(checkpoint);
+        std::cerr << "Checkpoint: " << x << ", " << y << ", " << r << "\n";
     }
     file >> standingsNumber;
     for (int i = 0; i < standingsNumber; ++i) {

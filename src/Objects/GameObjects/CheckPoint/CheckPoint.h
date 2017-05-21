@@ -15,7 +15,7 @@
  */
 class CheckPoint : public Object {
 public:
-    CheckPoint(b2Body *body, VisualObjectPtr visualObject);
+    CheckPoint(int id, b2Body *body, VisualObjectPtr visualObject);
 
     void SetEnable(bool value);
 
@@ -35,8 +35,10 @@ public:
     void BeginContact();
 
     void EndContact();
+
+    int GetId() const;
 private:
-    static b2Body* InitializeBody(b2World* world, const RealVec& size);
+    int playerId_;
     CheckPointObserver *observer_;
     bool enable_;
 };

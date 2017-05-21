@@ -7,6 +7,7 @@
 class Camera {
 public:
     Camera(RealVec center, float refHeight, float screenFraction);
+
     Camera(ObjectPtr tracked, float refHeight, float screenFraction);
 
     float GetReferenceHeight() const;
@@ -14,6 +15,8 @@ public:
     float GetScreenFraction() const;
 
     RealVec GetCenter() const;
+
+    ObjectPtr GetTrackedObject() const;
 
     void ChangeView(float ref, float frac);
 

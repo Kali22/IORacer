@@ -36,3 +36,7 @@ void Camera::ChangeView(float ref, float frac) {
     screenFraction_ = frac;
 }
 
+ObjectPtr Camera::GetTrackedObject() const{
+    return trackedObject_;
+}
+

@@ -5,10 +5,11 @@
 #include <bits/stdc++.h>
 #include <vector>
 #include "VehicleSetup.h"
+#include <Map.h>
 
 class Vehicle : public Object {
 public:
-    Vehicle(b2Body *body, VisualObjectPtr chassis, std::vector<WheelPtr> &&wheels, const VehicleSetupT &setup,
+    Vehicle(int id, b2Body *body, VisualObjectPtr chassis, std::vector<WheelPtr> &&wheels, const VehicleSetupT &setup,
                 MapPtr map);
 
     ~Vehicle();
@@ -33,7 +34,13 @@ public:
 
     void ChangeVehicleSetup(const VehicleSetupT setup);
 
+    void DrawPrivate(RenderWindowPtr window);
+
     void PrintDiagnostic();
+
+    void SetActiveCheckpoint(CheckPointPtr active);
+
+    int GetId() const;
 
 private:
     void InitializeWheels();
@@ -47,9 +54,11 @@ private:
     void UpdateModifiers();
 
     /* Compounds */
+    int id_;
     std::vector<WheelPtr> wheels_;
     b2RevoluteJoint *fl_joint_, *fr_joint_; // Front joints
     b2RevoluteJoint *bl_joint_, *br_joint_; // Back joints
+    CheckPointPtr activeCheckpoint_;
 
     MapPtr map_;
 

@@ -3,6 +3,7 @@
 #include <RealVec.h>
 #include <SFML/Graphics/RectangleShape.hpp>
 #include <SFML/Graphics/CircleShape.hpp>
+#include <GameObjects/ObjectTypeE.h>
 
 enum ObjectShapeE {
     OBJECT_SHAPE_RECT,
@@ -10,6 +11,7 @@ enum ObjectShapeE {
 };
 
 typedef struct {
+    ObjectTypeE objectType;
     std::string name;
     std::string textureName;
     ObjectShapeE objectShape;

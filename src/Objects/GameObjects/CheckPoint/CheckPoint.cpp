@@ -1,7 +1,7 @@
 #include <GameObjects/CheckPoint/CheckPoint.h>
 
-CheckPoint::CheckPoint(b2Body *body, VisualObjectPtr visualObject)
-        : Object(body, visualObject, OBJECT_TYPE_CHECK_POINT){
+CheckPoint::CheckPoint(int id, b2Body *body, VisualObjectPtr visualObject)
+        : Object(body, visualObject, OBJECT_TYPE_CHECK_POINT), playerId_(id){
     body_->SetUserData(this);
 }
 
@@ -34,19 +34,7 @@ void CheckPoint::Draw(RenderWindowPtr window) {
 
 void CheckPoint::EndContact() {}
 
-b2Body *CheckPoint::InitializeBody(b2World *world, const RealVec &size) {
-    b2BodyDef bodyDef;
-    b2Body *body = world->CreateBody(&bodyDef);
-
-    b2FixtureDef fixtureDef;
-    b2PolygonShape polygonShape;
-    polygonShape.SetAsBox(size.x / 2, size.y / 2, b2Vec2(0, 0), 0); // center
-    // TODO is size set correct?
-
-    fixtureDef.shape = &polygonShape;
-    fixtureDef.isSensor = true;
-
-    body->CreateFixture(&fixtureDef);
-    return body;
+int CheckPoint::GetId() const {
+    return playerId_;
 }
 

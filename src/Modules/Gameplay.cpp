@@ -1,9 +1,13 @@
 #include "../Managers/ActivityManager.h"
 #include "Gameplay.h"
-#include <ctime>
+#include <CheckPointManager.h>
 
 Gameplay::Gameplay(const std::string &mapName, int laps)
-        : Activity("race"), laps_(laps), mapName_(mapName), firstPlayerName_(""), secondPlayerName_("") {
+        : Activity("race"),
+          laps_(laps),
+          mapName_(mapName),
+          firstPlayerName_(""), secondPlayerName_(""),
+          contactListener_(std::make_shared<ContactListener>()) {
 }
 
 sf::Clock clk;
@@ -12,41 +16,20 @@ void Gameplay::Init() {
     world_ = new b2World(b2Vec2(0, 0));
     objectManager_ = std::make_shared<ObjectManager>(activityManager_->GetTextureManager(), world_);
     mapManager_ = std::make_shared<MapManager>(activityManager_->GetTextureManager(), objectManager_);
-    MapPtr map = mapManager_->CreateMap(mapName_);
-    scene_ = std::make_shared<Scene>(map);
+    map_ = mapManager_->CreateMap(mapName_);
+    scene_ = std::make_shared<Scene>(map_);
+    world_->SetContactListener(contactListener_.get());
 
-    /// @TODO Stub, player manager-> get player vehicle attributes and create player vehicle
+    /// @TODO player manager-> get player vehicle attributes and create player vehicle
     if (firstPlayerName_.empty()) {
         fprintf(stderr, "One player at least required!\n");
         ExitGame();
     }
-
-    /* ---------------------------------------------------------------- TESTS ---- */
-    VehicleSetupT setup;
-    setup.steeringAngleMax = 20;
-    setup.steeringAngleSpeed = 45;
-    setup.aerodynamicFriction = 0.01;
-    setup.brakesType = BRAKES_FRONT;
-    setup.enginePowerMax = 100000;
-    setup.massBalance = 0.5;
-    setup.transmissionType = TRANSMISSION_REAR;
-    setup.vehicleMass = 300;
-    /* ---------------------------------------------------------------- TESTS ---- */
-
-    StartPositionT start = map->GetStartPosition(0);
-    firstPlayerVehicle_ = objectManager_->CreateVehicle(RealVec(start.x, start.y), start.rot, setup, map);
-    scene_->AddObject(firstPlayerVehicle_);
-    scene_->AddCamera(0, 40, 0.3);
+    PrepareFirstPlayer();
     if (!secondPlayerName_.empty()) {
-        start = map->GetStartPosition(1);
-        setup.vehicleMass = 500;
-        setup.transmissionType = TRANSMISSION_4X4;
-        secondPlayerVehicle_= objectManager_->CreateVehicle(RealVec(start.x, start.y), start.rot, setup, map);
-        scene_->AddObject(secondPlayerVehicle_);
-        scene_->AddCamera(1, 40, 0.3);
+        PrepareSecondPlayer();
     }
-
-    world_->Step(1.f / 60.f, 8, 6);
+    world_->Step(1.f / 60.f, 8, 6); // Init step
     gameState_ = GAMEPLAY_STATE_PREPARE;
     globalTime_ = 0.f;
     PrepareUIForPrepareState();
@@ -61,7 +44,7 @@ void Gameplay::PrintState() {
 }
 
 void Gameplay::Run() {
-    PrintState();
+//    PrintState();
     Update();
     Render();
 }
@@ -202,10 +185,14 @@ void Gameplay::UpdateGame() {
     globalTime_ += dt;
     world_->Step(dt, 8, 6);
     /// @TODO Send dt tick to time managers!
-    if (firstPlayerVehicle_ != nullptr)
+    if (firstPlayerVehicle_ != nullptr) {
         firstPlayerVehicle_->Update(dt);
-    if (secondPlayerVehicle_ != nullptr)
+        firstPlayerManager_->Update(dt);
+    }
+    if (secondPlayerVehicle_ != nullptr) {
         secondPlayerVehicle_->Update(dt);
+        secondPlayerManager_->Update(dt);
+    }
     UpdateHUD();
 }
 
@@ -312,4 +299,54 @@ void Gameplay::SetTitleStyle(UITextBoxPtr textBox) {
     textBox->SetOutlineColor(sf::Color(0xE1F0FFff));
     textBox->SetOutlineColorHover(sf::Color(0xE1F0FFff));
     textBox->SetOutlineThickness(1.f);
+}
+
+void Gameplay::PrepareSecondPlayer() {
+    VehicleSetupT setup;
+    setup.steeringAngleMax = 20;
+    setup.steeringAngleSpeed = 45;
+    setup.aerodynamicFriction = 0.01;
+    setup.brakesType = BRAKES_REAR;
+    setup.enginePowerMax = 100000;
+    setup.massBalance = 0.5; // Equal load on front and rear wheels
+    setup.transmissionType = TRANSMISSION_FRONT;
+    setup.vehicleMass = 300;
+    /* ---------------------------------------------------------------- TESTS ---- */
+
+    StartPositionT start = map_->GetStartPosition(1);
+    secondPlayerVehicle_ = objectManager_->CreateVehicle(1, RealVec(start.x, start.y), start.rot, setup, map_);
+    std::vector<CheckPointPtr> checkpoints;
+    for (auto el : map_->GetCheckpoints()) {
+        checkpoints.push_back(
+                objectManager_->CreateCheckpoint(1, RealVec(el.x, el.y, map_->GetPixMetersScale()), el.rot));
+    }
+    secondPlayerManager_ = std::make_shared<CheckPointManager>(secondPlayerVehicle_, checkpoints, laps_);
+    scene_->AddObject(secondPlayerVehicle_);
+    scene_->AddCamera(1, 40, 0.3);
+}
+
+void Gameplay::PrepareFirstPlayer() {
+/* ---------------------------------------------------------------- TESTS ---- */
+    VehicleSetupT setup;
+    setup.steeringAngleMax = 20;
+    setup.steeringAngleSpeed = 45;
+    setup.aerodynamicFriction = 0.01;
+    setup.brakesType = BRAKES_FRONT;
+    setup.enginePowerMax = 100000;
+    setup.massBalance = 0.45; // higher load on front wheels
+    setup.transmissionType = TRANSMISSION_REAR;
+    setup.vehicleMass = 300;
+    /* ---------------------------------------------------------------- TESTS ---- */
+
+    StartPositionT start = map_->GetStartPosition(0);
+    firstPlayerVehicle_ = objectManager_->CreateVehicle(0, RealVec(start.x, start.y), start.rot, setup, map_);
+    std::vector<CheckPointPtr> checkpoints;
+    for (auto el : map_->GetCheckpoints()) {
+        checkpoints.push_back(
+                objectManager_->CreateCheckpoint(0, RealVec(el.x, el.y, map_->GetPixMetersScale()), el.rot));
+    }
+    firstPlayerManager_ = std::make_shared<CheckPointManager>(firstPlayerVehicle_, checkpoints, laps_);
+    scene_->AddObject(firstPlayerVehicle_);
+    scene_->AddCamera(0, 40, 0.3);
+
 }

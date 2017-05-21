@@ -2,6 +2,7 @@
 #include <MathUtil.h>
 #include "Vehicle.h"
 #include "WheelPositionE.h"
+#include <CheckPoint/CheckPoint.h>
 
 enum ControllerStateE {
     CTRL_STATE_ACC = 0x01,
@@ -11,12 +12,14 @@ enum ControllerStateE {
     CTRL_STATE_BRK = 0x10,
 };
 
-Vehicle::Vehicle(b2Body *body, VisualObjectPtr chassis, std::vector<WheelPtr> &&wheels, const VehicleSetupT &setup,
+Vehicle::Vehicle(int id, b2Body *body, VisualObjectPtr chassis, std::vector<WheelPtr> &&wheels, const VehicleSetupT &setup,
                  MapPtr map) :
         Object(body, chassis, OBJECT_TYPE_VEHICLE),
         wheels_(std::move(wheels)),
         vehicleSetup_(setup),
-        map_(map)
+        map_(map),
+        activeCheckpoint_(nullptr),
+        id_(id)
 {
     controllerState_ = 0;
     body_->SetUserData(this);
@@ -211,4 +214,18 @@ void Vehicle::PrintDiagnostic() {
         printf("wheel %d: x: %f, y: %f, a: %f\n", wheel->GetWheelType(), wheel->GetBody()->GetPosition().x, wheel->GetBody()->GetPosition().y, wheel->GetBody()->GetAngle());
     printf("speed: m/s:%f, km/h:%f [x: %f, y: %f]\n",body_->GetLinearVelocity().Length(), body_->GetLinearVelocity().Length() * 0.001 * 3600., body_->GetLinearVelocity().x, body_->GetLinearVelocity().y);
 
+}
+
+void Vehicle::DrawPrivate(RenderWindowPtr window) {
+    if (activeCheckpoint_ != nullptr) {
+        activeCheckpoint_->Draw(window);
+    }
+}
+
+void Vehicle::SetActiveCheckpoint(CheckPointPtr active) {
+    activeCheckpoint_ = active;
+}
+
+int Vehicle::GetId() const {
+    return id_;
 }

@@ -8,7 +8,7 @@
  * Once map is created, all object have to be scaled.
  */
 Map::Map(std::string name, std::string description, RealVec size, TexturePtr view, TexturePtr friction,
-         TexturePtr minimap, std::vector<CheckPointPtr> &&checkpoints, std::vector<ObjectPtr> &&objects,
+         TexturePtr minimap, std::vector<CheckpointPosition> &&checkpoints, std::vector<ObjectPtr> &&objects,
          std::vector<StartPositionT> &&standings) :
         mapName_(name),
         mapDescription_(description),
@@ -34,10 +34,6 @@ Map::Map(std::string name, std::string description, RealVec size, TexturePtr vie
     }
     mapView_.setScale(widthScale, 1);
 
-    for (auto obj : checkpoints_) {
-        obj->Rescale(scalePixMeters_);
-    }
-
     for (auto obj : objects_) {
         obj->Rescale(scalePixMeters_);
     }
@@ -60,16 +56,12 @@ float Map::GetFrictionModifier(const RealVec& pos) {
 
 void Map::Draw(RenderWindowPtr window) const {
     window->draw(mapView_);
-    for (auto obj : checkpoints_) {
-        obj->Draw(window);
-    }
-
     for (auto obj : objects_) {
         obj->Draw(window);
     }
 }
 
-std::vector<CheckPointPtr> Map::GetCheckpoints() const {
+const std::vector<CheckpointPosition> &Map::GetCheckpoints() const {
     return checkpoints_;
 }
 

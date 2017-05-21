@@ -12,6 +12,7 @@
 #include <Drawable.h>
 #include <GameObjects/ObjectTypes.h>
 #include <Object.h>
+#include "CheckpointPosition.h"
 
 /**
  * Map class.
@@ -21,7 +22,7 @@
 class Map : public Drawable {
 public:
     Map(std::string name, std::string description, RealVec size, TexturePtr view, TexturePtr friction,
-            TexturePtr minimap, std::vector<CheckPointPtr> &&checkpoints, std::vector<ObjectPtr> &&objects,
+            TexturePtr minimap, std::vector<CheckpointPosition> &&checkpoints, std::vector<ObjectPtr> &&objects,
             std::vector<StartPositionT> &&standings);
 
     float GetPixMetersScale() const;
@@ -30,7 +31,7 @@ public:
 
     virtual void Draw(RenderWindowPtr window) const;
 
-    std::vector<CheckPointPtr> GetCheckpoints() const;
+    const std::vector<CheckpointPosition> &GetCheckpoints() const;
 
     StartPositionT GetStartPosition(int position) const;
 
@@ -45,9 +46,9 @@ private:
     sf::Sprite minimapView_;
 
     std::vector<StartPositionT> startPositions_;
+    std::vector<CheckpointPosition> checkpoints_;
 
     std::vector<ObjectPtr> objects_;
-    std::vector<CheckPointPtr> checkpoints_;
 
     float scalePixMeters_;
 };

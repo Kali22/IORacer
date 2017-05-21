@@ -1,4 +1,5 @@
 #include "Renderer.h"
+#include <Vehicle.h>
 
 Renderer::Renderer(RenderWindowPtr renderWindow) : renderWindow_(renderWindow) {
 }
@@ -52,6 +53,8 @@ void Renderer::RenderCameraInViewport(ScenePtr scene, CameraPtr camera, sf::Floa
     /* Setup view and  let it render! */
     renderWindow_->setView(view);
     scene->Render(renderWindow_);
+    /* Render private view */
+    std::dynamic_pointer_cast<Vehicle>(camera->GetTrackedObject())->DrawPrivate(renderWindow_);
     renderWindow_->setView(renderWindow_->getDefaultView());
 }
 

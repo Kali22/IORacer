@@ -7,12 +7,12 @@
 /**
  * Race time management.
  */
-class TimeManager : public Updatable {
+class TimeManager {
 public:
     TimeManager(const int &currentSector, const int &currentLap,
                 const int &totalSectors);
 
-    void Update();
+    void Update(float dt);
 
     void Reset();
 

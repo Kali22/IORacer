@@ -16,7 +16,7 @@ public:
 private:
     bool GetUserData(b2Contact *contact, Object **entity, int which);
 
-    bool CheckIfCar(Object **entity1, Object **entity2);
+    bool CheckIfCar(Object **entity1, Object **entity2, int *id);
 
     bool GetCheckPointFromContact(b2Contact *contact, CheckPoint **checkPoint);
 };

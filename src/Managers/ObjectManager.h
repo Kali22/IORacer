@@ -12,9 +12,9 @@ public:
     ObjectManager(TextureManagerPtr textureManager, b2World *world);
 
     /* Game object creation. */
-    VehiclePtr CreateVehicle(const RealVec &pos, float rot, const VehicleSetupT &setup, MapPtr map);
+    VehiclePtr CreateVehicle(int id, const RealVec &pos, float rot, const VehicleSetupT &setup, MapPtr map);
 
-    CheckPointPtr CreateCheckpoint(const RealVec &pos, float rot);
+    CheckPointPtr CreateCheckpoint(int id, const RealVec &pos, float rot);
 
     ObjectPtr CreateTire(const RealVec &pos, float rot);
 
