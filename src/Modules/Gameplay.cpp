@@ -6,7 +6,7 @@ Gameplay::Gameplay(const std::string &mapName, int laps)
         : Activity("race"),
           laps_(laps),
           mapName_(mapName),
-          firstPlayerName_(""), secondPlayerName_(""),
+          firstPlayerName_(""), secondPlayerName_(""), isOver_(false),
           contactListener_(std::make_shared<ContactListener>()) {
 }
 
@@ -156,7 +156,21 @@ void Gameplay::PrepareUIForPrepareState() {
 }
 
 void Gameplay::UpdateHUD() {
+    UITextBoxPtr title = std::dynamic_pointer_cast<UITextBox>(userInterface_->GetElementByName("time"));
+    std::stringstream ss;
+    ss << (int) (globalTime_ / 60.) << ":" << ((int) globalTime_) % 60 << ":" << (int) (globalTime_ * 100) % 100;
+    title->SetText(ss.str());
 
+    UITextBoxPtr lap0 = std::dynamic_pointer_cast<UITextBox>(userInterface_->GetElementByName("lap_0"));
+    ss.str("");
+    ss << "Lap: " << firstPlayerManager_->GetCurrentLapNumber() << " / " << firstPlayerManager_->GetTotalNumberOfLaps();
+    lap0->SetText(ss.str());
+    if (secondPlayerVehicle_ != nullptr) {
+        UITextBoxPtr lap0 = std::dynamic_pointer_cast<UITextBox>(userInterface_->GetElementByName("lap_1"));
+        ss.str("");
+        ss << "Lap: " << secondPlayerManager_->GetCurrentLapNumber() << " / " << secondPlayerManager_->GetTotalNumberOfLaps();
+        lap0->SetText(ss.str());
+    }
 }
 
 void Gameplay::PrepareUIForPauseState() {
@@ -170,6 +184,17 @@ void Gameplay::PrepareUIForPauseState() {
 void Gameplay::PrepareHUD() {
     userInterface_->DeleteElementByName("title");
     userInterface_->DeleteElementByName("background");
+    UITextBoxPtr title = userInterface_->CreateTextBox("time", "", 30,
+                                                       sf::FloatRect(0.5, 0.075, 0.2, 0.1));
+    SetTitleStyle(title);
+    UITextBoxPtr lap0 = userInterface_->CreateTextBox("lap_0", "?", 20,
+                                                       sf::FloatRect(0.1, 0.075, 0.2, 0.06));
+    SetTitleStyle(lap0);
+    if (secondPlayerVehicle_ != nullptr) {
+        UITextBoxPtr lap1 = userInterface_->CreateTextBox("lap_1", "?", 20,
+                                                          sf::FloatRect(0.9, 0.075, 0.2, 0.06));
+        SetTitleStyle(lap1);
+    }
 }
 
 void Gameplay::UpdateUIInEndState() {
@@ -177,23 +202,44 @@ void Gameplay::UpdateUIInEndState() {
 }
 
 void Gameplay::PrepareUIForEndState() {
+    userInterface_->DeleteElementByName("time");
+    userInterface_->DeleteElementByName("lap_0");
+    if (secondPlayerVehicle_ != nullptr)
+        userInterface_->DeleteElementByName("lap_1");
 
+    UITextBoxPtr title = userInterface_->CreateTextBox("finish", "", 60,
+                                                       sf::FloatRect(0.5, 0.5, 1, 0.2));
+    SetTitleStyle(title);
+    std::stringstream ss;
+    ss << "Player " << winnerName_ << " won!" ;
+    title->SetText(ss.str());
 }
 
 void Gameplay::UpdateGame() {
     float dt = 1.f / 60.f;
     globalTime_ += dt;
     world_->Step(dt, 8, 6);
-    /// @TODO Send dt tick to time managers!
     if (firstPlayerVehicle_ != nullptr) {
         firstPlayerVehicle_->Update(dt);
         firstPlayerManager_->Update(dt);
+        if (firstPlayerManager_->GetCurrentLapNumber() > laps_) {
+            isOver_ = true;
+            winnerName_ = firstPlayerName_;
+        }
     }
     if (secondPlayerVehicle_ != nullptr) {
         secondPlayerVehicle_->Update(dt);
         secondPlayerManager_->Update(dt);
+        if (secondPlayerManager_->GetCurrentLapNumber() > laps_) {
+            isOver_ = true;
+            winnerName_ = secondPlayerName_;
+        }
     }
     UpdateHUD();
+    if (isOver_) {
+        gameState_ = GAMEPLAY_STATE_END;
+        PrepareUIForEndState();
+    }
 }
 
 void Gameplay::HandleKeyInPauseState(sf::Event::KeyEvent event) {
@@ -294,8 +340,8 @@ void Gameplay::HandleKeySecondPlayer(sf::Event::KeyEvent event, bool state) {
 void Gameplay::SetTitleStyle(UITextBoxPtr textBox) {
     textBox->SetTextColor(sf::Color::White);
     textBox->SetTextColorHover(sf::Color::White);
-    textBox->SetBackgroundColor(sf::Color(0x2B405Bff));
-    textBox->SetBackgroundColorHover(sf::Color(0x2B405Bff));
+    textBox->SetBackgroundColor(sf::Color(0x2B405Bef));
+    textBox->SetBackgroundColorHover(sf::Color(0x2B405Bef));
     textBox->SetOutlineColor(sf::Color(0xE1F0FFff));
     textBox->SetOutlineColorHover(sf::Color(0xE1F0FFff));
     textBox->SetOutlineThickness(1.f);

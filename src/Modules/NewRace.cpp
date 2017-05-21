@@ -71,7 +71,7 @@ void NewRace::SetTitleStyle(UITextBoxPtr textBox) {
 }
 
 void NewRace::CreateRace(std::string name) {
-    GameplayPtr race = std::make_shared<Gameplay>(name, 6);
+    GameplayPtr race = std::make_shared<Gameplay>(name, 2);
     race->SetFirstPlayer("jacek");
     race->SetSecondPlayer("placek");
     activityManager_->AddActivity(race);

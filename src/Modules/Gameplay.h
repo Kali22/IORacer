@@ -68,8 +68,9 @@ private:
 
     void PrepareSecondPlayer();
 
-
-
+    /* xD xD xD */
+    bool isOver_;
+    std::string winnerName_;
 
     int laps_;
     std::string mapName_;
