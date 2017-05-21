@@ -10,32 +10,35 @@ UI::UI(ActivityPtr activity) : activity_(activity) {
 
 void UI::EventAction(sf::Event event) {
     for (auto item : list_)
-        item->EventAction(event);
-}
-
-UIElementPtr UI::GetElementByIdx(int i) {
-    return list_[i];
+        item.second->EventAction(event);
 }
 
 UIBoxPtr UI::CreateBox(std::string name, sf::FloatRect size) {
     UIBoxPtr box = std::make_shared<UIBox>(list_.size(), name, size, activity_);
-
-    list_.push_back(box);
+    list_[name] = box;
     return box;
 }
 
-UIElementPtr UI::GetElementByName(std::string name) {
-    for (auto item : list_) {
-        if (item->GetName() == name)
-            return item;
+UIElementPtr UI::GetElementByName(const std::string &name) {
+    UIElementPtr el  = list_[name];
+    if (el == nullptr)
+    {
+        fprintf(stderr, "UI::GetElementByName: No such element like %s!\n", name.c_str());
+        exit(1);
     }
-
-    fprintf(stderr, "UI::GetElementByName: No such element like %s!\n", name.c_str());
-    exit(1);
+    return el;
 }
 
 UITextBoxPtr UI::CreateTextBox(std::string name, std::string text, int fontSize, sf::FloatRect size) {
     UITextBoxPtr textbox = std::make_shared<UITextBox>(list_.size(), name, text, fontSize, size, activity_);
-    list_.push_back(textbox);
+    list_[name] = textbox;
     return textbox;
+}
+
+void UI::DeleteElementByName(const std::string &name) {
+    list_.erase(name);
+}
+
+std::map<std::string, UIElementPtr>::iterator UI::GetElements() {
+    return list_.begin();
 }

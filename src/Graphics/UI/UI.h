@@ -16,16 +16,17 @@ public:
 
     UITextBoxPtr CreateTextBox(std::string name, std::string text, int fontSize, sf::FloatRect size);
 
-    UIElementPtr GetElementByIdx(int i);
-
-    UIElementPtr GetElementByName(std::string name);
+    UIElementPtr GetElementByName(const std::string &name);
 
     int GetElementsCount() const;
 
     void EventAction(sf::Event event);
 
+    void DeleteElementByName(const std::string &name);
+
+    std::map<std::string, UIElementPtr>::iterator GetElements();
 private:
-    std::vector<UIElementPtr> list_;
+    std::map<std::string, UIElementPtr> list_;
 
     ActivityPtr activity_;
 };

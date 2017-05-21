@@ -3,36 +3,171 @@
 # 2: <physical size x [m]> <physical size y [m]>
 # 3: view texture name
 # 4: friction texture name
-# 5: minimap view, contour of track with alpha background, same proportions as view texture
 # number of checkpoints
 # list of checkpoints: <posx> <posy> <rot>
-# number of starting positions
-# list of starting positions: <posx> <posy> <rot>
 # list of items <object name> <posx> <posy> <rot>
-First small test map
-500 200
-map_0_view
-map_0_friction
+Second small test map
+842.3 478.1
+map_1_view
+map_1_friction
+map_1_mini
 10
-0 0 0
-0 -10 0
-0 -20 0
-0 -30 0
-0 -40 0
-0 10 0
-0 20 0
-0 30 0
-0 40 0
-0 50 0
-box 0 0 0
-box 10 0 0
-box 20 0 0
-box 30 0 0
-box 40 0 0
-box 50 0 0
-tyre 0 0 0
-tyre 20 10 0
-tyre 30 10 0
-tyre 40 10 0
-tyre 50 10 0
-tyre 60 10 0
+100 100 0
+200 100 0
+300 100 0
+400 100 0
+100 150 0
+200 150 0
+300 150 0
+400 150 0
+100 50 0
+200 50 0
+4
+-85 165.1 90
+-80 175.19 90
+-75 165.1 90
+-70 175.19 90
+box -239 152 45
+box -236 152 45
+box -233 152 45
+box -230 152 45
+box -227 152 45
+box -224 152 45
+box -221 152 45
+box -218 152 45
+box -215 152 45
+box -212 152 45
+box -209 152 45
+box -206 152 45
+box -203 152 45
+box -200 152 45
+box -197 152 45
+box -194 152 45
+box -191 152 45
+box -188 152 45
+box -185 152 45
+box -182 152 45
+box -179 152 45
+box -176 152 45
+box -173 152 45
+box -170 152 45
+box -167 152 45
+box -164 152 45
+box -161 152 45
+box -158 152 45
+box -155 152 45
+box -152 152 45
+box -149 152 45
+box -146 152 45
+box -143 152 45
+box -140 152 45
+box -137 152 45
+box -134 152 45
+box -131 152 45
+box -128 152 45
+box -125 152 45
+box -122 152 45
+box -119 152 45
+box -116 152 45
+box -113 152 45
+box -110 152 45
+box -107 152 45
+box -104 152 45
+box -101 152 45
+box -98 152 45
+box -95 152 45
+box -92 152 45
+box -89 152 45
+box -86 152 45
+box -83 152 45
+box -80 152 45
+box -77 152 45
+box -74 152 45
+box -71 152 45
+box -68 152 45
+box -65 152 45
+box -62 152 45
+box -59 152 45
+box -56 152 45
+box -53 152 45
+box -50 152 45
+box -47 152 45
+box -44 152 45
+box -41 152 45
+box -38 152 45
+box -35 152 45
+box -32 152 45
+box -29 152 45
+box -26 152 45
+box -23 152 45
+box -20 152 45
+box -17 152 45
+box -14 152 45
+box -11 152 45
+box -8 152 45
+box -5 152 45
+box -2 152 45
+box 1 152 45
+box 4 152 45
+box 7 152 45
+box 10 152 45
+box 13 152 45
+box 16 152 45
+box 19 152 45
+box 22 152 45
+box 25 152 45
+box 28 152 45
+box 31 152 45
+box 34 152 45
+box 37 152 45
+box 40 152 45
+box 43 152 45
+box 46 152 45
+box 49 152 45
+box 52 152 45
+box 55 152 45
+box 58 152 45
+box 61 152 45
+box 64 152 45
+box 67 152 45
+box 70 152 45
+box 73 152 45
+box 76 152 45
+box 79 152 45
+box 82 152 45
+box 85 152 45
+box 88 152 45
+box 91 152 45
+box 94 152 45
+box 97 152 45
+box 100 152 45
+box 103 152 45
+box 106 152 45
+box 109 152 45
+box 112 152 45
+box 115 152 45
+box 118 152 45
+box 121 152 45
+box 124 152 45
+box 127 152 45
+box 130 152 45
+box 133 152 45
+box 136 152 45
+box 139 152 45
+box 142 152 45
+box 145 152 45
+box 148 152 45
+box 151 152 45
+box 154 152 45
+box 157 152 45
+box 160 152 45
+box 163 152 45
+box 166 152 45
+box 169 152 45
+box 172 152 45
+box 175 152 45
+box 178 152 45
+box 181 152 45
+box 184 152 45
+box 187 152 45
+box 190 152 45

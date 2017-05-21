@@ -19,7 +19,6 @@ VisualObject::VisualObject(ObjectDesc objectDesc, TexturePtr texture) :
 }
 
 void VisualObject::Draw(RenderWindowPtr window) const {
-    // Reset position to match physics
     window->draw(sprite_);
 }
 
@@ -70,6 +69,7 @@ void VisualObject::Rescale(float scale) {
     }
     sprite_.setScale(scaleX, scaleY);
     position_.SetScale(scale);
+    std::cerr << "Object <" << name_ << ">: scale set " << scale <<"!\n";
 }
 
 RealVec VisualObject::GetPosition() const {

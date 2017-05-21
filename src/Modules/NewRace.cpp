@@ -1,4 +1,4 @@
-#include <ActivityManager.h>
+#include "../Managers/ActivityManager.h"
 #include "NewRace.h"
 #include "Gameplay.h"
 
@@ -12,9 +12,13 @@ void NewRace::Init() {
     UITextBoxPtr title = userInterface_->CreateTextBox("title", "Setup your race", 50, sf::FloatRect(0.5, 0.075, 1, 0.1));
     SetTitleStyle(title);
     UITextBoxPtr m0 = userInterface_->CreateTextBox("map_0", "map_0", 30, sf::FloatRect(0.5, 0.5, 0.2, 0.05));
-    UITextBoxPtr m1 = userInterface_->CreateTextBox("map_0", "map_1", 30, sf::FloatRect(0.5, 0.6, 0.2, 0.05));
+    UITextBoxPtr m1 = userInterface_->CreateTextBox("map_1", "map_1", 30, sf::FloatRect(0.5, 0.6, 0.2, 0.05));
     SetButtonStyle(m0);
     SetButtonStyle(m1);
+    UITextBoxPtr right = userInterface_->CreateTextBox("inc_lap", ">", 30, sf::FloatRect(0.55, 0.2, 0.05, 0.05));
+    SetButtonStyle(right);
+    UITextBoxPtr left = userInterface_->CreateTextBox("dec_lap", "<", 30, sf::FloatRect(0.45, 0.2, 0.05, 0.05));
+    SetButtonStyle(left);
 }
 
 void NewRace::Run() {
@@ -39,10 +43,10 @@ void NewRace::EventAction(Event event) {
                 break;
         }
     } else if (event.type == UI_EVENT) {
-        if (event.uiEvent.type == UI_EVENT_CLICK) {
-            if (event.uiEvent.id == 2)
+        if (event.uiType == UI_EVENT_CLICK) {
+            if (event.uiElenemt == "map_0") /// @todo Solve hardcoded ids
                 CreateRace("map_0");
-            if (event.uiEvent.id == 3)
+            if (event.uiElenemt == "map_1")
                 CreateRace("map_1");
         }
     }
@@ -53,10 +57,7 @@ void NewRace::EventAction(Event event) {
 void NewRace::HandleKey(sf::Event::KeyEvent event) {
     if(event.code == sf::Keyboard::Escape) {
         activityManager_->SetAsActive("player_selector");
-    } else if(event.code == sf::Keyboard::Space) {
-        CreateRace(std::__cxx11::string());
     }
-
 }
 
 void NewRace::SetTitleStyle(UITextBoxPtr textBox) {
@@ -71,6 +72,8 @@ void NewRace::SetTitleStyle(UITextBoxPtr textBox) {
 
 void NewRace::CreateRace(std::string name) {
     GameplayPtr race = std::make_shared<Gameplay>(name, 6);
+    race->SetFirstPlayer("jacek");
+    race->SetSecondPlayer("placek");
     activityManager_->AddActivity(race);
     activityManager_->SetAsActive("race");
 }

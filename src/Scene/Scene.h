@@ -11,7 +11,7 @@ class Scene {
 public:
     Scene(MapPtr map);
 
-    void AddObject(ObjectPtr object);
+    void AddObject(VehiclePtr object);
 
     void AddCamera(int trackedObject, float refHeight, float screenFraction);
 
@@ -26,7 +26,7 @@ private:
     float scalePixInMeters_;
 
     MapPtr map_;
-    std::vector<ObjectPtr> objects_; //!< Extra objects... Players or a etc.. :)
+    std::vector<VehiclePtr> objects_; //!< Extra objects... Players or a etc.. :)
     std::vector<CameraPtr> cameras_; //!< Possible views...
 };
 

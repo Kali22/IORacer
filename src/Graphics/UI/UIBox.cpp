@@ -1,6 +1,5 @@
 #include <UIBox.h>
 #include <Texture/Texture.h>
-#include <ActivityManager.h>
 #include <Activity.h>
 
 UIBox::UIBox(int id, std::string name, ActivityPtr activity) : UIElement(id, name, activity) {

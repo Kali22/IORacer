@@ -1,14 +1,14 @@
 #include <Window.h>
 #include <ActivityManager.h>
+#include <TextureManager.h>
 #include <PlayerSelector.h>
 #include <Splash.h>
 #include <NewRace.h>
-#include <MapManager.h>
+
 
 int main(int argc, char **argv) {
     /*=============== Early inits. Core objects. ===============*/
     TextureManagerPtr textureManager = std::make_shared<TextureManager>();
-
     WindowPtr window = std::make_shared<Window>("IORacer");
     ActivityManagerPtr activityManager = std::make_shared<ActivityManager>(window, textureManager);
 

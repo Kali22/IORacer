@@ -16,4 +16,6 @@ typedef struct {
 
     RealVec size;
     float radius;
+    float mass;
+    bool dynamic;
 } ObjectDesc;

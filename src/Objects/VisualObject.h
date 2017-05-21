@@ -1,21 +1,13 @@
 #pragma once
 
 #include <bits/stdc++.h>
-#include <Box2D/Box2D.h>
 #include <RealVec.h>
 #include <Texture/Texture.h>
-#include <Drawable.h>
-#include <Movable.h>
-#include <Scalable.h>
-#include <Trackable.h>
-#include <Rotatable.h>
-#include "ObjectDesc.h"
+#include <ObjectDesc.h>
+#include <GraphicsCommon.h>
+#include <SFML/Graphics/Sprite.hpp>
 
-/**
- * @TODO Należy dodać jakąś warstwę pod spodem, movable musi respektować skalę!
- */
-class VisualObject : public Drawable, public Movable, public Scalable, public
-Trackable, public Rotatable {
+class VisualObject {
 public:
     VisualObject(ObjectDesc objectDesc, TexturePtr texture);
 

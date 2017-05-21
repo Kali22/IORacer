@@ -48,3 +48,7 @@ RealVec &RealVec::operator=(const sf::Vector2f &vec) {
     return *this;
 }
 
+RealVec::RealVec(float x, float y, float scale) : Vector2(x, y), scale_(scale) {
+
+}
+

@@ -1,6 +1,7 @@
 #include "UIElement.h"
 #include <ActivityManager.h>
 #include <Activity.h>
+#include <TextureManager.h>
 
 UIElement::UIElement(int id, std::string name, ActivityPtr activity)
         : name_(name),
@@ -23,18 +24,18 @@ void UIElement::EventAction(sf::Event event) {
     if (event.type == sf::Event::MouseMoved) {
         if (!hover_ && bounds_.getGlobalBounds().contains(event.mouseMove.x, event.mouseMove.y)) {
             hover_ = true;
-            activity_->EventAction(Event(UIEvent(UI_EVENT_MOUSE_OVER, id_)));
+            activity_->EventAction(Event(UI_EVENT_MOUSE_OVER, name_));
         }
 
         if (hover_ && !bounds_.getGlobalBounds().contains(event.mouseMove.x, event.mouseMove.y)) {
             hover_ = false;
-            activity_->EventAction(Event(UIEvent(UI_EVENT_MOUSE_LOST, id_)));
+            activity_->EventAction(Event(UI_EVENT_MOUSE_LOST, name_));
         }
     }
 
     if (event.type == sf::Event::MouseButtonPressed) {
         if (bounds_.getGlobalBounds().contains(event.mouseButton.x, event.mouseButton.y)) {
-            activity_->EventAction(Event(UIEvent(UI_EVENT_CLICK, id_)));
+            activity_->EventAction(Event(UI_EVENT_CLICK, name_));
         }
     }
 

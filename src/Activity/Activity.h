@@ -3,7 +3,7 @@
 #include <bits/stdc++.h>
 #include <Drawable.h>
 #include <Renderer.h>
-#include <ActivityCommon.h>
+#include <Managers.h>
 #include <UI/UI.h>
 #include "../Events/Event.h"
 

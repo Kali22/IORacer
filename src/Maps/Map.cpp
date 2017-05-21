@@ -1,4 +1,5 @@
 #include "Map.h"
+#include <CheckPoint/CheckPoint.h>
 
 /**
  * Creates map and prepare the map's world.
@@ -7,17 +8,19 @@
  * Once map is created, all object have to be scaled.
  */
 Map::Map(std::string name, std::string description, RealVec size, TexturePtr view, TexturePtr friction,
-         std::vector<CheckPointPtr> &&checkpoints, std::vector<ObjectPtr>
-         &&objects) :
+         TexturePtr minimap, std::vector<CheckPointPtr> &&checkpoints, std::vector<ObjectPtr> &&objects,
+         std::vector<StartPositionT> &&standings) :
         mapName_(name),
         mapDescription_(description),
         mapSize_(size),
         checkpoints_(std::move(checkpoints)),
         objects_(std::move(objects)),
-        startPosition_(sf::Vector2f(0, 0)) {
+        startPositions_(std::move(standings)) {
     // Get images and textures
     imageFriction_ = friction->GetTexture()->copyToImage();
     mapView_.setTexture(*view->GetTexture());
+    minimapView_.setTexture(*minimap->GetTexture());
+
     auto textureMapSize = mapView_.getGlobalBounds();
     // Set origin in the middle
     mapView_.setOrigin(.5f * textureMapSize.width, .5f * textureMapSize.height);
@@ -38,10 +41,6 @@ Map::Map(std::string name, std::string description, RealVec size, TexturePtr vie
     for (auto obj : objects_) {
         obj->Rescale(scalePixMeters_);
     }
-    // TODO move to separate class
-    camera_.setCenter(300, 300);
-    camera_.setSize(1200, 800);
-    camera_.setViewport(sf::FloatRect(0, 0, 1.f, 1.f));
 
     std::cerr << mapName_ << ": Map is ready!\n";
     std::cerr << mapName_ << ": width = " << mapSize_.x << " heigth = " << mapSize_.y << "!\n";
@@ -74,35 +73,6 @@ std::vector<CheckPointPtr> Map::GetCheckpoints() const {
     return checkpoints_;
 }
 
-void Map::SetStartPosition(sf::Vector2f pos) {
-    startPosition_ = pos;
-}
-
-sf::Vector2f Map::GetStartPosition() const {
-    return startPosition_;
-}
-
-const sf::View &Map::GetCameraView() const {
-    return camera_;
-}
-
-void Map::SetCameraViewPosition(const sf::Vector2f &pos) {
-    sf::Vector2f margin = camera_.getSize();
-    margin = margin / 2.0f;
-    sf::Vector2u map_size = imageFriction_.getSize();
-    sf::Vector2f new_pos = pos;
-    new_pos.x = (pos.x < margin.x ? margin.x : pos.x);
-    new_pos.x = (pos.x > map_size.x - margin.x ? map_size.x - margin.x : new_pos.x);
-    new_pos.y = (pos.y < margin.y ? margin.y : pos.y);
-    new_pos.y = (pos.y > map_size.y - margin.y ? map_size.y - margin.y : new_pos.y);
-    camera_.setCenter(new_pos);
-}
-
-void Map::SetCameraViewZoom(float f) {
-    camera_.zoom(f);
-}
-
-void Map::AlignCameraViewSize(const sf::Window &window) {
-    sf::Vector2u wnd_size = window.getSize();
-    camera_.setSize(wnd_size.x, wnd_size.y);
+StartPositionT Map::GetStartPosition(int position) const {
+    return startPositions_[position];
 }

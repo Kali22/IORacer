@@ -1,3 +1,4 @@
+#include <Object.h>
 #include "Camera.h"
 
 Camera::Camera(RealVec center, float refHeigth, float screenFraction) :
@@ -8,7 +9,7 @@ Camera::Camera(RealVec center, float refHeigth, float screenFraction) :
 
 }
 
-Camera::Camera(TrackablePtr tracked, float refHeigth, float screenFraction) :
+Camera::Camera(ObjectPtr tracked, float refHeigth, float screenFraction) :
         trackedObject_(tracked),
         center_(tracked->GetPosition()),
         referenceHeight_(refHeigth),

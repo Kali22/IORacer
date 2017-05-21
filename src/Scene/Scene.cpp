@@ -1,4 +1,5 @@
 #include "Scene.h"
+#include <Vehicle.h>
 
 /** Scene is composed of: map, cameras and objects - which are not included in map, i.e. cars.
  * At the beginning map pointer is passed as argument.
@@ -9,7 +10,7 @@ Scene::Scene(MapPtr map) : map_(map) {
 
 }
 
-void Scene::AddObject(ObjectPtr object) {
+void Scene::AddObject(VehiclePtr object) {
     object->Rescale(map_->GetPixMetersScale());
     objects_.push_back(object);
 }

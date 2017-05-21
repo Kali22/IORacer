@@ -1,6 +1,4 @@
-#include <SFML/Graphics/RectangleShape.hpp>
 #include "Renderer.h"
-#include "UI/UIElement.h"
 
 Renderer::Renderer(RenderWindowPtr renderWindow) : renderWindow_(renderWindow) {
 }
@@ -62,9 +60,9 @@ void Renderer::RenderUI(UIPtr ui) {
     int size = ui->GetElementsCount();
     sf::FloatRect relSize;
     sf::FloatRect absSize;
-
-    for (int i = 0; i < size; ++i) {
-        UIElementPtr el = ui->GetElementByIdx(i);
+    std::map<std::string, UIElementPtr>::iterator it = ui->GetElements();
+    for (int i = 0; i < size; ++i, it++) {
+        UIElementPtr el = it->second;
         relSize = el->GetRelativeSize();
         absSize.width = screenSize.x * relSize.width;
         absSize.height = screenSize.y * relSize.height;

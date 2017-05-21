@@ -1,53 +1,42 @@
-//
-// Created by pawel on 10.05.17.
-//
 #pragma once
 
 #include <bits/stdc++.h>
 #include <Box2D.h>
 #include <SFML/Graphics.hpp>
-#include <Texture/Texture.h>
-#include <Drawable.h>
-#include <Movable.h>
-#include <Scalable.h>
-#include <Trackable.h>
 #include <VisualObject.h>
+#include <GameObjects/ObjectTypeE.h>
 
-enum objectType {
-    CAR,
-    CHECK_POINT,
-    TIRE,
-    BOX,
-    STATIC_TIRE
-};
-
-// TODO is each of this interfaces necessary ?
-class Object : public Drawable, public Movable, public Scalable, public
-Trackable, public Rotatable  {
+class Object {
 public:
-    Object(b2Body* body, VisualObjectPtr visualObject);
+    Object(b2Body *body, VisualObjectPtr visualObject, ObjectTypeE type);
 
-    virtual void Draw(RenderWindowPtr window) const;
+    b2Body *GetBody() const;
 
-    virtual int GetObjectType() const = 0;
+    VisualObjectPtr GetVisual() const;
 
-    virtual void SetPosition(const sf::Vector2f &pos);
+    ObjectTypeE GetType() const;
+
+    void SetPosition(const sf::Vector2f &pos);
 
     void SetPosition(float x, float y);
 
-    void Rotate(float angle);
-
-    void SetRotation(float absoluteAngle);
-
-    RealVec GetPosition() const;
-
     void Move(const sf::Vector2f &dr);
 
-    void Rescale(float scale);
-
     void Move(float offsetX, float offsetY);
+
+    virtual void Rotate(float angle);
+
+    virtual void SetRotation(float absoluteAngle);
+
+    virtual void Rescale(float scale);
+
+    virtual RealVec GetPosition() const;
+
+    virtual void Draw(RenderWindowPtr window);
+
 protected:
-    b2Body* body_;
+    ObjectTypeE type_;
+    b2Body *body_;
     VisualObjectPtr visualObject_;
 };
 

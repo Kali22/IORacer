@@ -1,5 +1,5 @@
 #include "PlayerSelector.h"
-#include <ActivityManager.h>
+#include "../Managers/ActivityManager.h"
 
 PlayerSelector::PlayerSelector() : Activity("player_selector") {
 
@@ -36,10 +36,10 @@ void PlayerSelector::EventAction(Event event) {
                 break;
         }
     } else if (event.type == UI_EVENT) {
-        if(event.uiEvent.type == UI_EVENT_CLICK) {
-            if (event.uiEvent.id == 1)
+        if(event.uiType == UI_EVENT_CLICK) {
+            if (event.uiElenemt == "start_game")
                 activityManager_->SetAsActive("new_race");
-            if (event.uiEvent.id == 2)
+            if (event.uiElenemt == "quit_game")
                 activityManager_->RemoveActivity("player_selector");
         }
     }

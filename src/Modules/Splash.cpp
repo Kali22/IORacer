@@ -1,5 +1,5 @@
 #include "Splash.h"
-#include <ActivityManager.h>
+#include "../Managers/ActivityManager.h"
 #include "../Events/Event.h"
 
 Splash::Splash() : Activity("splash") {
@@ -34,7 +34,7 @@ void Splash::EventAction(Event event) {
                 break;
         }
     } else if (event.type == UI_EVENT) {
-        switch (event.uiEvent.type) {
+        switch (event.uiType) {
             case UI_EVENT_CLICK:
                 activityManager_->SetAsActive("player_selector");
                 activityManager_->RemoveActivity("splash");

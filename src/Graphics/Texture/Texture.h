@@ -1,12 +1,12 @@
 #pragma once
 
 #include <bits/stdc++.h>
+#include <string>
 #include <SFML/Graphics/Texture.hpp>
 
 class Texture {
 public:
-    Texture(std::string name, std::string path);
-
+    Texture(const std::string &name, const std::string &path);
     sf::Texture *GetTexture();
 
 private:

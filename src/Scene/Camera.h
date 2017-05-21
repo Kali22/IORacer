@@ -7,7 +7,7 @@
 class Camera {
 public:
     Camera(RealVec center, float refHeight, float screenFraction);
-    Camera(TrackablePtr tracked, float refHeight, float screenFraction);
+    Camera(ObjectPtr tracked, float refHeight, float screenFraction);
 
     float GetReferenceHeight() const;
 
@@ -19,7 +19,7 @@ private:
     float referenceHeight_;
     float screenFraction_;
     RealVec center_;
-    TrackablePtr trackedObject_;
+    ObjectPtr trackedObject_;
 };
 
 using CameraPtr = std::shared_ptr<Camera>;
