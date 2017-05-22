@@ -1,0 +1,173 @@
+# Map description
+# 1: Full beautiful name
+# 2: <physical size x [m]> <physical size y [m]>
+# 3: view texture name
+# 4: friction texture name
+# number of checkpoints
+# list of checkpoints: <posx> <posy> <rot>
+# list of items <object name> <posx> <posy> <rot>
+Second small test map
+842.3 478.1
+map_1_view
+map_1_friction
+map_1_mini
+10
+-90 165.1 90
+-100 165.1 90
+-110 165.1 90
+-120 165.1 90
+-130 165.1 90
+-140 165.1 90
+-150 165.1 90
+-160 165.1 90
+-170 165.1 90
+-180 165.1 90
+4
+-85 165.1 90
+-80 175.19 90
+-75 165.1 90
+-70 175.19 90
+tire -239 152 45
+tire -236 152 45
+tire -233 152 45
+tire -230 152 45
+tire -227 152 45
+tire -224 152 45
+tire -221 152 45
+tire -218 152 45
+tire -215 152 45
+tire -212 152 45
+tire -209 152 45
+tire -206 152 45
+tire -203 152 45
+tire -200 152 45
+tire -197 152 45
+tire -194 152 45
+tire -191 152 45
+tire -188 152 45
+tire -185 152 45
+tire -182 152 45
+tire -179 152 45
+tire -176 152 45
+tire -173 152 45
+tire -170 152 45
+tire -167 152 45
+tire -164 152 45
+tire -161 152 45
+tire -158 152 45
+tire -155 152 45
+tire -152 152 45
+tire -149 152 45
+tire -146 152 45
+tire -143 152 45
+tire -140 152 45
+tire -137 152 45
+tire -134 152 45
+tire -131 152 45
+tire -128 152 45
+tire -125 152 45
+tire -122 152 45
+tire -119 152 45
+tire -116 152 45
+tire -113 152 45
+tire -110 152 45
+tire -107 152 45
+tire -104 152 45
+tire -101 152 45
+tire -98 152 45
+tire -95 152 45
+tire -92 152 45
+tire -89 152 45
+tire -86 152 45
+tire -83 152 45
+tire -80 152 45
+tire -77 152 45
+tire -74 152 45
+tire -71 152 45
+tire -68 152 45
+tire -65 152 45
+tire -62 152 45
+tire -59 152 45
+tire -56 152 45
+tire -53 152 45
+tire -50 152 45
+tire -47 152 45
+tire -44 152 45
+tire -41 152 45
+tire -38 152 45
+tire -35 152 45
+tire -32 152 45
+tire -29 152 45
+tire -26 152 45
+tire -23 152 45
+tire -20 152 45
+tire -17 152 45
+tire -14 152 45
+tire -11 152 45
+tire -8 152 45
+tire -5 152 45
+tire -2 152 45
+tire 1 152 45
+tire 4 152 45
+tire 7 152 45
+tire 10 152 45
+tire 13 152 45
+tire 16 152 45
+tire 19 152 45
+tire 22 152 45
+tire 25 152 45
+tire 28 152 45
+tire 31 152 45
+tire 34 152 45
+tire 37 152 45
+tire 40 152 45
+tire 43 152 45
+tire 46 152 45
+tire 49 152 45
+tire 52 152 45
+tire 55 152 45
+tire 58 152 45
+tire 61 152 45
+tire 64 152 45
+tire 67 152 45
+tire 70 152 45
+tire 73 152 45
+tire 76 152 45
+tire 79 152 45
+tire 82 152 45
+tire 85 152 45
+tire 88 152 45
+tire 91 152 45
+tire 94 152 45
+tire 97 152 45
+tire 100 152 45
+tire 103 152 45
+tire 106 152 45
+tire 109 152 45
+tire 112 152 45
+tire 115 152 45
+tire 118 152 45
+tire 121 152 45
+tire 124 152 45
+tire 127 152 45
+tire 130 152 45
+tire 133 152 45
+tire 136 152 45
+tire 139 152 45
+tire 142 152 45
+tire 145 152 45
+tire 148 152 45
+tire 151 152 45
+tire 154 152 45
+tire 157 152 45
+tire 160 152 45
+tire 163 152 45
+tire 166 152 45
+tire 169 152 45
+tire 172 152 45
+tire 175 152 45
+tire 178 152 45
+tire 181 152 45
+tire 184 152 45
+tire 187 152 45
+tire 190 152 45

@@ -1,60 +1,32 @@
-/**
- *  @file
- *  @author Jacek Łysiak <jaceklysiako.o@gmail.com>
- *  Main entry point.
- */
+#include <Window.h>
+#include <ActivityManager.h>
+#include <PlayerSelector.h>
+#include <Splash.h>
+#include <NewRace.h>
 
-#include <Race.h>
-#include <Module/Menu.h>
-#include <CheckPointParser.h>
-
-/**
- * Main. Entry point.
- * @param argc # of cmd line arguments
- * @param argv cmd line arguments
- * @return exit code
- */
-
-RacePtr InitializeRace(b2World *world, float scale, sf::RenderWindow &window,
-                       CheckPointManagerPtr checkPointManager) {
-    /* Load map */
-    MapPtr map = std::make_shared<Map>(world, scale, sf::Vector2f(4250, 3890));
-    map->LoadMap("map_0", "Mapa testowa");
-    HUDPtr hud = std::make_shared<HUD>(nullptr, map);
-
-    /* Set initial car params */
-    CarParametersPtr carParameters = std::make_shared<CarParameters>();
-    VehiclePtr vehicle = std::make_shared<Vehicle>(carParameters, scale);
-
-    /* Initialize race */
-    RacePtr race = std::make_shared<Race>(&window, world, map, hud, checkPointManager);
-    race->Initialize(vehicle);
-
-    return race;
-}
 
 int main(int argc, char **argv) {
-    /* Prepare the window */
-    sf::RenderWindow window(sf::VideoMode(1200, 800, 32), "IORacer");
-    window.setFramerateLimit(60);
-    float scale = 30;
+    /*=============== Early inits. Core objects. ===============*/
+    TextureManagerPtr textureManager = std::make_shared<TextureManager>();
+    WindowPtr window = std::make_shared<Window>("IORacer");
+    ActivityManagerPtr activityManager = std::make_shared<ActivityManager>(window, textureManager);
 
-    /* Create world */
-    b2World *world = new b2World(b2Vec2(0, 0));
+    /*=============== Activities and game logic. ===============*/
+    SplashPtr splashScreen = std::make_shared<Splash>();
+    PlayerSelectorPrt playerSelector = std::make_shared<PlayerSelector>();
+    NewRacePtr newRace = std::make_shared<NewRace>();
+    activityManager->AddActivity(splashScreen);
+    activityManager->AddActivity(playerSelector);
+    activityManager->AddActivity(newRace);
+    /* Set splash screen as game entry point. */
+    activityManager->SetAsActive("splash");
 
-    /* Set checkpoints */
-    /// @TODO add race builder
-    /// @TODO move checkPointsParser to map Load
-    CheckPointParser parser(world, scale);
-    std::vector<CheckPointPtr> checkPoints = parser.ParseFile("../resource/maps/map_0/checkpoints_list");
-    CheckPointManagerPtr checkPointManager = std::make_shared<CheckPointManager>(checkPoints, 15);
-
-    /* Initialize application */
-    RacePtr race = InitializeRace(world, scale, window, checkPointManager);
-    MenuPtr menu = std::make_shared<Menu>(&window, race);
-
-    menu->Run();
-
-    free(world);
+    /*===============     Let's do your job...   ===============*/
+    while (activityManager->IsRunning()) {
+        /* Get events. */
+        activityManager->Poll();
+        /* Manage activities. */
+        activityManager->Manage();
+    }
     return 0;
 }
