@@ -3,7 +3,7 @@
 #include <bits/stdc++.h>
 #include <Scene.h>
 #include <GraphicsCommon.h>
-#include "UI/UI.h"
+#include <UI.h>
 
 enum ViewTypeE {
     VIEW_TYPE_SINGLE,

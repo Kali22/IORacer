@@ -1,6 +1,6 @@
 #include <SFML/Window/Event.hpp>
-#include "Window.h"
-#include "Renderer.h"
+#include <Window.h>
+#include <Renderer.h>
 
 Window::Window(std::string appName) : appName_(appName),
                                       modes_(sf::VideoMode::getFullscreenModes()),

@@ -1,6 +1,7 @@
 #include "Splash.h"
-#include "../Managers/ActivityManager.h"
-#include "../Events/Event.h"
+
+#include <ActivityManager.h>
+#include <ViewportConst.h>
 
 Splash::Splash() : Activity("splash") {
 
@@ -14,8 +15,8 @@ void Splash::Run() {
 }
 
 void Splash::Init() {
-    fprintf(stderr, "Splash initialized!\n");
-    UIBoxPtr splash = userInterface_->CreateBox("splash_screen", sf::FloatRect(0.5, 0.5, 1, 1));
+    std::cerr << "Splash initialized!" << std::endl;
+    UIBoxPtr splash = userInterface_->CreateBox("splash_screen", centeredFullScreen);
     splash->SetBackgroundTexture("splash");
 }
 
@@ -24,23 +25,15 @@ void Splash::End() {
 }
 
 void Splash::EventAction(Event event) {
-    if (event.type == SFML_EVENT) {
-        switch (event.sfmlEvent.type) {
-            case sf::Event::KeyPressed:
-                HandleKey(event.sfmlEvent.key);
-                break;
-
-            default:
-                break;
+    if (event.GetType() == SFML_EVENT) {
+        sf::Event sfmlEvent = event.GetSFMLEvent();
+        if (sfmlEvent.type == sf::Event::KeyPressed) {
+                HandleKey(sfmlEvent.key);
         }
-    } else if (event.type == UI_EVENT) {
-        switch (event.uiType) {
-            case UI_EVENT_CLICK:
+    } else if (event.GetType() == UI_EVENT) {
+        if (event.GetUIEventType() == UI_EVENT_CLICK) {
                 activityManager_->SetAsActive("player_selector");
                 activityManager_->RemoveActivity("splash");
-                break;
-            default:
-                break;
         }
     }
 }

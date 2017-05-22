@@ -7,7 +7,7 @@
 #include <ActivityCommon.h>
 #include <Renderer.h>
 #include <Managers.h>
-#include "TextureManager.h"
+#include <TextureManager.h>
 
 
 class ActivityManager : public std::enable_shared_from_this<ActivityManager> {

@@ -1,10 +1,10 @@
 #pragma once
 
 
-#include <Activity.h>
-#include <Texture/Texture.h>
 #include <SFML/Graphics/Sprite.hpp>
-#include "../Events/Event.h"
+#include <Activity.h>
+#include <Texture.h>
+#include <Event.h>
 
 class Splash : public Activity {
 public:

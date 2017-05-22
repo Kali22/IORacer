@@ -1,57 +1,44 @@
 #include "ObjectManager.h"
 #include <GameObjects/CheckPoint/CheckPoint.h>
 #include <GameObjects/Vehicle/Vehicle.h>
-#include <TextureManager.h>
-#include <ObjectDesc.h>
 
 ObjectManager::ObjectManager(TextureManagerPtr textureManager, b2World* world) :
         textureManager_(textureManager), world_(world) {
     std::ifstream file(resourcePath_ + "objects_list.cnfg");
     std::string line;
-    std::stringstream data;
-    std::string name;
-    std::string textureName;
-    std::string dynamicType;
-    int type;
-    float radius, x, y, mass;
-
 
     while (getline(file, line)) {
-        if (line[0] == '#')
+        std::stringstream data;
+        float radius, x, y;
+        int type;
+
+        if (line[0] == '#') {
             continue;
+        }
+        ObjectDesc desc;
         data = std::stringstream(line);
-        data >> name >> textureName >> dynamicType >> mass;
+        data >> desc.name >> desc.textureName >> line >> desc.mass;
+        desc.dynamic = line == "dynamic";
         data >> type;
+        desc.objectShape = (ObjectShapeE) type;
         if (type == (int) OBJECT_SHAPE_RECT) {
             data >> x >> y;
+            desc.size = RealVec(sf::Vector2f(x, y));
         } else {
             data >> radius;
+            desc.radius = radius;
         }
 
-        ObjectDesc desc;
-        desc.name = name;
         for (auto it : ObjectsMap) {
-            if (it.second == name) {
+            if (it.second == desc.name) {
                 desc.objectType = it.first;
                 break;
             }
         }
-        desc.textureName = textureName;
-        desc.objectShape = (ObjectShapeE) type;
-        desc.mass = mass;
-        desc.dynamic = dynamicType == "dynamic";
 
-        switch ((ObjectShapeE) type) {
-            case OBJECT_SHAPE_RECT:
-                desc.size = RealVec(sf::Vector2f(x, y));
-                break;
-
-            case OBJECT_SHAPE_CIRC:
-                desc.radius = radius;
-                break;
-        }
-        objectDesc_.insert(std::pair<std::string, ObjectDesc>(name, desc));
-        std::cerr << "Object description loaded: [" << name << ", " << textureName << ", " << type << "]\n";
+        objectDesc_.emplace(desc.name, desc);
+        std::cerr << "Object description loaded: [" << desc.name << ", "
+                  << desc.textureName << ", " << type << "]\n";
     }
 }
 
@@ -112,36 +99,20 @@ b2Body *ObjectManager::InitializeBody(const std::string &objectName, const RealV
     }
     ObjectDesc objectDesc = it->second;
 
-    b2BodyDef body_Def;
-    body_Def.linearDamping = 2;
-    body_Def.angularDamping = 2;
-    body_Def.position.x = pos.x;
-    body_Def.position.y = pos.y;
-    body_Def.angle = rot;
-    if (objectDesc.dynamic)
-        body_Def.type = b2_dynamicBody;
-    else
-        body_Def.type = b2_staticBody;
-    b2Body *body = world_->CreateBody(&body_Def);
-
-    if (objectDesc.objectShape == OBJECT_SHAPE_CIRC) {
-        b2CircleShape shape;
-        float density = objectDesc.mass / objectDesc.radius / objectDesc.radius / b2_pi;
-        shape.m_radius = objectDesc.radius;
-        body->CreateFixture(&shape, density);
-    } else if (objectDesc.objectShape == OBJECT_SHAPE_RECT){
-        b2FixtureDef fixtureDef;
-        b2PolygonShape shape;
-        float density = objectDesc.mass / objectDesc.size.x / objectDesc.size.y;
-        shape.SetAsBox(objectDesc.size.x * 0.5f, objectDesc.size.y * 0.5f);
-        fixtureDef.shape = &shape;
-        fixtureDef.density = density;
-        if (objectDesc.objectType == OBJECT_TYPE_CHECK_POINT) { // Special case...
-            fixtureDef.isSensor = true;
-            fixtureDef.density = 0;
-        }
-        body->CreateFixture(&fixtureDef);
+    b2BodyDef bodyDef;
+    bodyDef.linearDamping = 2;
+    bodyDef.angularDamping = 2;
+    bodyDef.position.x = pos.x;
+    bodyDef.position.y = pos.y;
+    bodyDef.angle = rot;
+    if (objectDesc.dynamic) {
+        bodyDef.type = b2_dynamicBody;
+    } else {
+        bodyDef.type = b2_staticBody;
     }
+    b2Body *body = world_->CreateBody(&bodyDef);
+
+    CreateFixture(body, objectDesc);
     return body;
 }
 
@@ -167,3 +138,25 @@ ObjectPtr ObjectManager::CreateObjectByName(const std::string &name, const RealV
     }
     return obj;
 }
+
+void ObjectManager::CreateFixture(b2Body* body, ObjectDesc objectDesc) const {
+    if (objectDesc.objectShape == OBJECT_SHAPE_CIRC) {
+        b2CircleShape shape;
+        float density = objectDesc.mass / objectDesc.radius / objectDesc.radius / b2_pi;
+        shape.m_radius = objectDesc.radius;
+        body->CreateFixture(&shape, density);
+    } else if (objectDesc.objectShape == OBJECT_SHAPE_RECT){
+        b2FixtureDef fixtureDef;
+        b2PolygonShape shape;
+        float density = objectDesc.mass / objectDesc.size.x / objectDesc.size.y;
+        shape.SetAsBox(objectDesc.size.x * 0.5f, objectDesc.size.y * 0.5f);
+        fixtureDef.shape = &shape;
+        fixtureDef.density = density;
+        if (objectDesc.objectType == OBJECT_TYPE_CHECK_POINT) { // Special case...
+            fixtureDef.isSensor = true;
+            fixtureDef.density = 0;
+        }
+        body->CreateFixture(&fixtureDef);
+    }
+}
+

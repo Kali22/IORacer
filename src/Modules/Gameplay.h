@@ -1,10 +1,10 @@
 #pragma once
 
 #include <Activity.h>
-#include "../Events/Event.h"
+#include <Event.h>
 #include <Vehicle.h>
 #include <ContactListener.h>
-#include "../Managers/MapManager.h"
+#include <MapManager.h>
 
 enum GameplayStateE {
     GAMEPLAY_STATE_PREPARE,

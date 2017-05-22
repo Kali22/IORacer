@@ -3,10 +3,10 @@
 
 #include <bits/stdc++.h>
 #include <SFML/Graphics/Rect.hpp>
-#include <ActivityCommon.h>
 #include <SFML/Graphics/RectangleShape.hpp>
-#include <GraphicsCommon.h>
 #include <SFML/Window/Event.hpp>
+#include <ActivityCommon.h>
+#include <GraphicsCommon.h>
 
 class UIElement;
 

@@ -1,6 +1,8 @@
-#include "../Managers/ActivityManager.h"
 #include "Gameplay.h"
+
+#include <ActivityManager.h>
 #include <CheckPointManager.h>
+#include <ViewportConst.h>
 
 Gameplay::Gameplay(const std::string &mapName, int laps)
         : Activity("race"),
@@ -22,7 +24,7 @@ void Gameplay::Init() {
 
     /// @TODO player manager-> get player vehicle attributes and create player vehicle
     if (firstPlayerName_.empty()) {
-        fprintf(stderr, "One player at least required!\n");
+        std::cerr << "One player at least required!" << std::endl;
         ExitGame();
     }
     PrepareFirstPlayer();
@@ -44,7 +46,6 @@ void Gameplay::PrintState() {
 }
 
 void Gameplay::Run() {
-//    PrintState();
     Update();
     Render();
 }
@@ -54,11 +55,11 @@ void Gameplay::End() {
 }
 
 void Gameplay::EventAction(Event event) {
-    if (event.type == SFML_EVENT) {
-        if (event.sfmlEvent.type == sf::Event::KeyPressed) {
-            HandleKey(event.sfmlEvent.key, true);
-        } else if (event.sfmlEvent.type == sf::Event::KeyReleased) {
-            HandleKey(event.sfmlEvent.key, false);
+    if (event.GetType() == SFML_EVENT) {
+        if (event.GetSFMLEvent().type == sf::Event::KeyPressed) {
+            HandleKey(event.GetSFMLEvent().key, true);
+        } else if (event.GetSFMLEvent().type == sf::Event::KeyReleased) {
+            HandleKey(event.GetSFMLEvent().key, false);
         }
     }
 
@@ -148,7 +149,7 @@ void Gameplay::UpdateUIInPauseState() {
 }
 
 void Gameplay::PrepareUIForPrepareState() {
-    UIBoxPtr back = userInterface_->CreateBox("background", sf::FloatRect(0.5, 0.5, 1, 1));
+    UIBoxPtr back = userInterface_->CreateBox("background", centeredFullScreen);
     back->SetBackgroundColor(sf::Color(0, 0, 0, 80));
     UITextBoxPtr title = userInterface_->CreateTextBox("title", "Prepare to race!", 60,
                                                        sf::FloatRect(0.5, 0.075, 1, 0.2));
@@ -174,7 +175,7 @@ void Gameplay::UpdateHUD() {
 }
 
 void Gameplay::PrepareUIForPauseState() {
-    UIBoxPtr back = userInterface_->CreateBox("background", sf::FloatRect(0.5, 0.5, 1, 1));
+    UIBoxPtr back = userInterface_->CreateBox("background", centeredFullScreen);
     back->SetBackgroundColor(sf::Color(0, 0, 0, 80));
     UITextBoxPtr title = userInterface_->CreateTextBox("title", "PAUSE", 30,
                                                        sf::FloatRect(0.5, 0.5, 1, 0.1));
@@ -198,7 +199,6 @@ void Gameplay::PrepareHUD() {
 }
 
 void Gameplay::UpdateUIInEndState() {
-
 }
 
 void Gameplay::PrepareUIForEndState() {
@@ -275,6 +275,7 @@ void Gameplay::HandleKeyInEndState(sf::Event::KeyEvent event) {
     }
 }
 
+/// TODO handle keyboard for both players in one function
 void Gameplay::HandleKeyFirstPlayer(sf::Event::KeyEvent event, bool state) {
     float ref;
     float scr;

@@ -8,14 +8,14 @@
  * Once map is created, all object have to be scaled.
  */
 Map::Map(std::string name, std::string description, RealVec size, TexturePtr view, TexturePtr friction,
-         TexturePtr minimap, std::vector<CheckpointPosition> &&checkpoints, std::vector<ObjectPtr> &&objects,
-         std::vector<StartPositionT> &&standings) :
+         TexturePtr minimap, std::vector<CheckpointPosition> checkpoints, std::vector<ObjectPtr> objects,
+         std::vector<StartPositionT> standings) :
         mapName_(name),
         mapDescription_(description),
         mapSize_(size),
-        checkpoints_(std::move(checkpoints)),
-        objects_(std::move(objects)),
-        startPositions_(std::move(standings)) {
+        checkpoints_(checkpoints),
+        objects_(objects),
+        startPositions_(standings) {
     /// @TODO: Check imageFriction scaling
     /// @TODO: Check correctness of imageFriction data in GetFrictionModifier call
 
@@ -57,10 +57,10 @@ float Map::GetFrictionModifier(const RealVec& pos) {
     unsigned int sy = imageFriction_.getSize().y;
     unsigned int x = (unsigned int)pos.GetScaledVector().x + sx * 0.5;
     unsigned int y = (unsigned int)pos.GetScaledVector().y + sy * 0.5;
-    x = (unsigned int) (x < 0 ? 0 : x);
-    x = (unsigned int) (x > sx ? sx : x);
-    y = (unsigned int) (y < 0 ? 0 : y);
-    y = (unsigned int) (y > sy ? sy : y);
+    x = (x < 0 ? 0 : x);
+    x = (x > sx ? sx : x);
+    y = (y < 0 ? 0 : y);
+    y = (y > sy ? sy : y);
 
     sf::Color color = imageFriction_.getPixel(x, y);
     float res = 1.f - (color.b + color.r + color.g) / 256.0f / 3.0f;

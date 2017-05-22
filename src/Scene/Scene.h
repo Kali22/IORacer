@@ -13,20 +13,22 @@ public:
 
     void AddObject(VehiclePtr object);
 
-    void AddCamera(int trackedObject, float refHeight, float screenFraction);
+    void AddCamera(unsigned trackedObject, float refHeight,
+                   float screenFraction);
 
     void AddCamera(RealVec center, float refHeight, float screenFraction);
 
-    CameraPtr GetCamera(int n);
+    CameraPtr GetCamera(unsigned n);
 
     float GetScale() const;
 
     void Render(RenderWindowPtr renderWindow) const;
+
 private:
     float scalePixInMeters_;
 
     MapPtr map_;
-    std::vector<VehiclePtr> objects_; //!< Extra objects... Players or a etc.. :)
+    std::vector<VehiclePtr> vehicles_; //!< Extra objects... Players or a etc.. :)
     std::vector<CameraPtr> cameras_; //!< Possible views...
 };
 

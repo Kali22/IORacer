@@ -1,12 +1,13 @@
 #include "PlayerSelector.h"
-#include "../Managers/ActivityManager.h"
+#include <ActivityManager.h>
+#include <ViewportConst.h>
 
 PlayerSelector::PlayerSelector() : Activity("player_selector") {
 
 }
 
 void PlayerSelector::Init() {
-    UIBoxPtr back = userInterface_->CreateBox("background", sf::FloatRect(0.5, 0.5, 1, 1));
+    UIBoxPtr back = userInterface_->CreateBox("background", centeredFullScreen);
     back->SetBackgroundTexture("menu_back");
     UITextBoxPtr play = userInterface_->CreateTextBox("start_game", "Play", 50, sf::FloatRect(0.5, 0.2, 0.2, 0.1));
     UITextBoxPtr quit = userInterface_->CreateTextBox("quit_game", "Quit", 50, sf::FloatRect(0.5, 0.4, 0.2, 0.1));
@@ -26,20 +27,15 @@ void PlayerSelector::End() {
 }
 
 void PlayerSelector::EventAction(Event event) {
-    if (event.type == SFML_EVENT){
-        switch (event.sfmlEvent.type) {
-            case sf::Event::KeyPressed:
-                HandleKey(event.sfmlEvent.key);
-                break;
-
-            default:
-                break;
+    if (event.GetType() == SFML_EVENT) {
+        if (event.GetSFMLEvent().type == sf::Event::KeyPressed) {
+                HandleKey(event.GetSFMLEvent().key);
         }
-    } else if (event.type == UI_EVENT) {
-        if(event.uiType == UI_EVENT_CLICK) {
-            if (event.uiElenemt == "start_game")
+    } else if (event.GetType() == UI_EVENT) {
+        if(event.GetUIEventType() == UI_EVENT_CLICK) {
+            if (event.GetUIElement() == "start_game")
                 activityManager_->SetAsActive("new_race");
-            if (event.uiElenemt == "quit_game")
+            if (event.GetUIElement() == "quit_game")
                 activityManager_->RemoveActivity("player_selector");
         }
     }

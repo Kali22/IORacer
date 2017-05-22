@@ -2,7 +2,7 @@
 
 
 #include <Activity.h>
-#include "../Events/Event.h"
+#include <Event.h>
 
 class PlayerSelector : public Activity {
 public:

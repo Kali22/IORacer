@@ -1,9 +1,25 @@
 #include "Event.h"
 
-Event::Event(UIEventType type, const std::string &name) : type(UI_EVENT), uiType(type), uiElenemt(name) {
+Event::Event(UIEventTypeE type, const std::string &name)
+        : type_(UI_EVENT), uiType_(type), uiElement_(name) {
+}
+
+Event::Event(const sf::Event &event) : type_(SFML_EVENT), sfmlEvent_(event) {
 
 }
 
-Event::Event(const sf::Event &event) : type(SFML_EVENT), sfmlEvent(event) {
+EventTypeE Event::GetType() const {
+   return type_;
+}
 
+UIEventTypeE Event::GetUIEventType() const {
+   return uiType_;
+}
+
+const std::string& Event::GetUIElement() const {
+   return uiElement_;
+}
+
+sf::Event Event::GetSFMLEvent() const {
+   return sfmlEvent_;
 }

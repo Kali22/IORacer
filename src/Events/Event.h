@@ -7,7 +7,7 @@ enum EventTypeE {
     UI_EVENT
 };
 
-enum UIEventType {
+enum UIEventTypeE {
     UI_EVENT_CLICK,
     UI_EVENT_MOUSE_OVER,
     UI_EVENT_MOUSE_LOST,
@@ -15,15 +15,22 @@ enum UIEventType {
 
 class Event {
 public:
-    Event(UIEventType type, const std::string &name);
+    Event(UIEventTypeE type, const std::string &name);
     Event(const sf::Event &event);
 
-    EventTypeE type;
+    EventTypeE GetType() const;
+    UIEventTypeE GetUIEventType() const;
+    const std::string& GetUIElement() const;
+    sf::Event GetSFMLEvent() const;
+
+private:
+    EventTypeE type_;
 
     // UI
-    UIEventType uiType;
-    std::string uiElenemt;
+    UIEventTypeE uiType_;
+    std::string uiElement_;
+
     // SFML
-    sf::Event sfmlEvent;
+    sf::Event sfmlEvent_;
 };
 

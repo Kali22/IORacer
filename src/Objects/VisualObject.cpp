@@ -1,5 +1,5 @@
 #include "VisualObject.h"
-#include "ObjectDesc.h"
+
 
 VisualObject::VisualObject(ObjectDesc objectDesc, TexturePtr texture) :
         name_(objectDesc.name),

@@ -4,7 +4,7 @@
 #include <Box2D.h>
 #include <SFML/Graphics.hpp>
 #include <VisualObject.h>
-#include <GameObjects/ObjectTypeE.h>
+#include <ObjectTypeE.h>
 
 class Object {
 public:

@@ -1,11 +1,11 @@
 #pragma once
 
 #include <bits/stdc++.h>
+#include <SFML/Graphics/Sprite.hpp>
 #include <RealVec.h>
 #include <Texture/Texture.h>
 #include <ObjectDesc.h>
 #include <GraphicsCommon.h>
-#include <SFML/Graphics/Sprite.hpp>
 
 class VisualObject {
 public:

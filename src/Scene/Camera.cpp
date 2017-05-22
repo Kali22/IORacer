@@ -6,10 +6,9 @@ Camera::Camera(RealVec center, float refHeigth, float screenFraction) :
         trackedObject_(nullptr),
         referenceHeight_(refHeigth),
         screenFraction_(screenFraction) {
-
 }
 
-Camera::Camera(ObjectPtr tracked, float refHeigth, float screenFraction) :
+Camera::Camera(VehiclePtr tracked, float refHeigth, float screenFraction) :
         trackedObject_(tracked),
         center_(tracked->GetPosition()),
         referenceHeight_(refHeigth),
@@ -25,10 +24,11 @@ float Camera::GetScreenFraction() const {
 }
 
 RealVec Camera::GetCenter() const {
-    if (trackedObject_ == nullptr)
+    if (trackedObject_ == nullptr) {
         return center_;
-    else
+    } else {
         return  trackedObject_->GetPosition();
+    }
 }
 
 void Camera::ChangeView(float ref, float frac) {
@@ -36,7 +36,7 @@ void Camera::ChangeView(float ref, float frac) {
     screenFraction_ = frac;
 }
 
-ObjectPtr Camera::GetTrackedObject() const{
+VehiclePtr Camera::GetTrackedObject() const{
     return trackedObject_;
 }
 

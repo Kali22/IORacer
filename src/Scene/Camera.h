@@ -2,13 +2,14 @@
 
 #include <bits/stdc++.h>
 #include <Trackable.h>
+#include <Vehicle.h>
 #include <RealVec.h>
 
 class Camera {
 public:
     Camera(RealVec center, float refHeight, float screenFraction);
 
-    Camera(ObjectPtr tracked, float refHeight, float screenFraction);
+    Camera(VehiclePtr tracked, float refHeight, float screenFraction);
 
     float GetReferenceHeight() const;
 
@@ -16,7 +17,7 @@ public:
 
     RealVec GetCenter() const;
 
-    ObjectPtr GetTrackedObject() const;
+    VehiclePtr GetTrackedObject() const;
 
     void ChangeView(float ref, float frac);
 
@@ -24,7 +25,7 @@ private:
     float referenceHeight_;
     float screenFraction_;
     RealVec center_;
-    ObjectPtr trackedObject_;
+    VehiclePtr trackedObject_;
 };
 
 using CameraPtr = std::shared_ptr<Camera>;

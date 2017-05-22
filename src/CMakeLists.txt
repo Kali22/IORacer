@@ -18,6 +18,7 @@ set(INCLUDE_DIRS
         ${PROJECT_SOURCE_DIR}/src/Managers
         ${PROJECT_SOURCE_DIR}/src/Objects
         ${PROJECT_SOURCE_DIR}/src/Objects/GameObjects/
+        ${PROJECT_SOURCE_DIR}/src/Objects/GameObjects/CheckPoint
         ${PROJECT_SOURCE_DIR}/src/Objects/GameObjects/Vehicle
         ${PROJECT_SOURCE_DIR}/src/Scene
         ${PROJECT_SOURCE_DIR}/src/Graphics/Textures
@@ -25,6 +26,7 @@ set(INCLUDE_DIRS
         ${PROJECT_SOURCE_DIR}/src/Utils
         ${PROJECT_SOURCE_DIR}/src/Events
         ${PROJECT_SOURCE_DIR}/src/Graphics
+        ${PROJECT_SOURCE_DIR}/src/Graphics/Texture
         ${PROJECT_SOURCE_DIR}/src/Graphics/UI
         ${PROJECT_SOURCE_DIR}/src/Activity
         ${PROJECT_SOURCE_DIR}/src/Game

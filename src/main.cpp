@@ -1,6 +1,5 @@
 #include <Window.h>
 #include <ActivityManager.h>
-#include <TextureManager.h>
 #include <PlayerSelector.h>
 #include <Splash.h>
 #include <NewRace.h>

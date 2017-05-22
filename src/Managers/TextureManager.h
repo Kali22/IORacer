@@ -1,7 +1,7 @@
 #pragma once
 
-#include <Texture/Texture.h>
-#include <Texture/Sprite.h>
+#include <Texture.h>
+#include <Sprite.h>
 
 class TextureManager {
 public:

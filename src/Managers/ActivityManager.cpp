@@ -1,5 +1,6 @@
 #include "ActivityManager.h"
-#include "Activity.h"
+
+#include <Activity.h>
 
 ActivityManager::ActivityManager(WindowPtr window, TextureManagerPtr textureManager) :
         window_(window),
@@ -10,13 +11,16 @@ ActivityManager::ActivityManager(WindowPtr window, TextureManagerPtr textureMana
 }
 
 void ActivityManager::Poll() {
-    sf::Event event;
-    while (window_->PollEvent(event)) {
+    sf::Event sfmlEvent;
+    while (window_->PollEvent(sfmlEvent)) {
+        Event event = Event(sfmlEvent);
         if (active_ != nullptr) {
-            active_->EventAction(Event(event));
+            active_->EventAction(event);
+            UIPtr ui = active_->GetUI();
+            if (ui != nullptr) {
+               ui->EventAction(event.GetSFMLEvent());
+            }
         }
-        if (active_ != nullptr)
-            active_->GetUI()->EventAction(event);
     }
 }
 
@@ -28,11 +32,12 @@ void ActivityManager::AddActivity(ActivityPtr activity) {
 void ActivityManager::RemoveActivity(std::string name) {
     std::map<std::string, ActivityPtr>::iterator it = activities_.find(name);
     if (it == activities_.end()) {
-        fprintf(stderr, "There's no such activity!\n");
+        std::cerr << "There's no such activity!" << std::endl;
         exit(1);
     }
-    if (active_->GetName() == it->second->GetName())
+    if (active_ != nullptr && active_->GetName() == it->second->GetName()) {
         active_ = nullptr;
+    }
     it->second->End();
     activities_.erase(it);
 }
@@ -63,7 +68,7 @@ bool ActivityManager::IsRunning() const {
 void ActivityManager::SetAsActive(std::string name) {
     std::map<std::string, ActivityPtr>::iterator it = activities_.find(name);
     if (it == activities_.end()) {
-        fprintf(stderr, "There's no such activity!\n");
+        std::cerr << "There's no such activity!" << std::endl;
         exit(1);
     }
     active_ = it->second;

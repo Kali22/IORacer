@@ -1,11 +1,7 @@
-//
-// Created by pawel on 10.05.17.
-//
-#include <Box2D/Box2D.h>
+#include "Object.h"
+
 #include <Drawable.h>
 #include <MathUtil.h>
-#include "VisualObject.h"
-#include "Object.h"
 
 Object::Object(b2Body *body, VisualObjectPtr visualObject, ObjectTypeE type)
         : body_(body), visualObject_(visualObject), type_(type) { }

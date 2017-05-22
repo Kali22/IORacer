@@ -1,7 +1,7 @@
 #pragma once
 
 #include <Activity.h>
-#include "../Events/Event.h"
+#include <Event.h>
 
 class NewRace : public Activity {
 public:

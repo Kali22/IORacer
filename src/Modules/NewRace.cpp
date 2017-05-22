@@ -1,13 +1,14 @@
-#include "../Managers/ActivityManager.h"
 #include "NewRace.h"
-#include "Gameplay.h"
 
-NewRace::NewRace() : Activity("new_race"){
+#include <ActivityManager.h>
+#include <Gameplay.h>
+#include <ViewportConst.h>
 
+NewRace::NewRace() : Activity("new_race") {
 }
 
 void NewRace::Init() {
-    UIBoxPtr back = userInterface_->CreateBox("background", sf::FloatRect(0.5, 0.5, 1, 1));
+    UIBoxPtr back = userInterface_->CreateBox("background", centeredFullScreen);
     back->SetBackgroundTexture("menu_back");
     UITextBoxPtr title = userInterface_->CreateTextBox("title", "Setup your race", 50, sf::FloatRect(0.5, 0.075, 1, 0.1));
     SetTitleStyle(title);
@@ -29,24 +30,19 @@ void NewRace::Run() {
 }
 
 void NewRace::End() {
-
 }
 
 void NewRace::EventAction(Event event) {
-    if (event.type == SFML_EVENT) {
-        switch (event.sfmlEvent.type) {
-            case sf::Event::KeyPressed:
-                HandleKey(event.sfmlEvent.key);
-                break;
-
-            default:
-                break;
+    if (event.GetType() == SFML_EVENT) {
+        sf::Event sfmlEvent = event.GetSFMLEvent();
+        if (sfmlEvent.type == sf::Event::KeyPressed) {
+                HandleKey(sfmlEvent.key);
         }
-    } else if (event.type == UI_EVENT) {
-        if (event.uiType == UI_EVENT_CLICK) {
-            if (event.uiElenemt == "map_0")
+    } else if (event.GetType() == UI_EVENT) {
+        if (event.GetUIEventType() == UI_EVENT_CLICK) {
+            if (event.GetUIElement() == "map_0")
                 CreateRace("map_0");
-            if (event.uiElenemt == "map_1")
+            if (event.GetUIElement() == "map_1")
                 CreateRace("map_1");
         }
     }

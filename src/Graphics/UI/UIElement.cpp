@@ -1,18 +1,20 @@
 #include "UIElement.h"
+
 #include <ActivityManager.h>
 #include <Activity.h>
-#include <TextureManager.h>
+#include <ViewportConst.h>
 
 UIElement::UIElement(int id, std::string name, ActivityPtr activity)
         : name_(name),
           id_(id),
           activity_(activity),
-          size_(sf::FloatRect(0.5, 0.5, 1, 1)),
+          size_(centeredFullScreen),
           hover_(false) {
 
 }
 
-UIElement::UIElement(int id, std::string name, sf::FloatRect size, ActivityPtr activity)
+UIElement::UIElement(int id, std::string name, sf::FloatRect size,
+                     ActivityPtr activity)
         : name_(name),
           id_(id),
           activity_(activity),
@@ -22,19 +24,22 @@ UIElement::UIElement(int id, std::string name, sf::FloatRect size, ActivityPtr a
 
 void UIElement::EventAction(sf::Event event) {
     if (event.type == sf::Event::MouseMoved) {
-        if (!hover_ && bounds_.getGlobalBounds().contains(event.mouseMove.x, event.mouseMove.y)) {
+        if (!hover_ && bounds_.getGlobalBounds().contains(event.mouseMove.x,
+                                                          event.mouseMove.y)) {
             hover_ = true;
             activity_->EventAction(Event(UI_EVENT_MOUSE_OVER, name_));
         }
 
-        if (hover_ && !bounds_.getGlobalBounds().contains(event.mouseMove.x, event.mouseMove.y)) {
+        if (hover_ && !bounds_.getGlobalBounds().contains(event.mouseMove.x,
+                                                          event.mouseMove.y)) {
             hover_ = false;
             activity_->EventAction(Event(UI_EVENT_MOUSE_LOST, name_));
         }
     }
 
     if (event.type == sf::Event::MouseButtonPressed) {
-        if (bounds_.getGlobalBounds().contains(event.mouseButton.x, event.mouseButton.y)) {
+        if (bounds_.getGlobalBounds().contains(event.mouseButton.x,
+                                               event.mouseButton.y)) {
             activity_->EventAction(Event(UI_EVENT_CLICK, name_));
         }
     }
@@ -63,7 +68,8 @@ void UIElement::SetAbsoluteSize(sf::FloatRect size) {
 void UIElement::SetBackgroundTexture(std::string name) {
     TexturePtr texture = activity_->GetActivityManager()->GetTextureManager()->GetTextureByName(name);
     if (texture == nullptr) {
-        fprintf(stderr, "UIElement: No such texture named %s!\n", name.c_str());
+        std::cerr << "UIElement: No such texture named "
+                  << name.c_str() << std::endl;
         exit(1);
     }
     bounds_.setTexture(texture->GetTexture());

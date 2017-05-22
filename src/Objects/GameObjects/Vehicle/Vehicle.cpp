@@ -1,8 +1,7 @@
-#include <Map.h>
-#include <MathUtil.h>
 #include "Vehicle.h"
-#include "WheelPositionE.h"
-#include <CheckPoint/CheckPoint.h>
+
+#include <MathUtil.h>
+#include <CheckPoint.h>
 
 enum ControllerStateE {
     CTRL_STATE_ACC = 0x01,
@@ -155,7 +154,7 @@ void Vehicle::UpdateTurn(float dt) {
 void Vehicle::UpdateModifiers() {
     /// @TODO HERE UPDATE DIFFERENT PARAMS
     for (auto &wheel : wheels_) {
-        fprintf(stderr, "Vehicle %d: ", id_);
+        std::cerr << "Vehicle " << id_ << ":" << std::endl;
         float modifier = map_->GetFrictionModifier(wheel->GetPosition());
         float load = 9.81f * vehicleSetup_.vehicleMass * 0.5f;
         if (wheel->IsFront())

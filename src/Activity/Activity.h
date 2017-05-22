@@ -4,8 +4,8 @@
 #include <Drawable.h>
 #include <Renderer.h>
 #include <Managers.h>
-#include <UI/UI.h>
-#include "../Events/Event.h"
+#include <UI.h>
+#include <Event.h>
 
 enum ActivityStateE {
     ACTIVITY_STATE_INIT,

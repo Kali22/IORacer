@@ -1,5 +1,4 @@
 #include "Renderer.h"
-#include <Vehicle.h>
 
 Renderer::Renderer(RenderWindowPtr renderWindow) : renderWindow_(renderWindow) {
 }
@@ -14,8 +13,7 @@ void Renderer::RenderScene(ScenePtr scene, ViewTypeE viewType) {
     switch (viewType) {
         case VIEW_TYPE_SINGLE:
             camera0 = scene->GetCamera(0);
-            /* Single player - render on full screen (0, 0, 1, 1). */
-            RenderCameraInViewport(scene, camera0, sf::FloatRect(0, 0, 1, 1));
+            RenderCameraInViewport(scene, camera0, fullScreen);
             break;
         case VIEW_TYPE_MULTI:
             camera0 = scene->GetCamera(0);
@@ -24,7 +22,8 @@ void Renderer::RenderScene(ScenePtr scene, ViewTypeE viewType) {
             /* Render first player on left half-screen. */
             RenderCameraInViewport(scene, camera0, sf::FloatRect(0, 0, 0.5, 1));
             /* Render second player on right half-screen. */
-            RenderCameraInViewport(scene, camera1, sf::FloatRect(0.5, 0, 0.5, 1));
+            RenderCameraInViewport(scene, camera1,
+                                   sf::FloatRect(0.5, 0, 0.5, 1));
             break;
     }
 }
@@ -33,20 +32,22 @@ void Renderer::RenderScene(ScenePtr scene, ViewTypeE viewType) {
  * Rendering camera view on monitor screen basing on viewport rectangle.
  * Remember! It contains fractional units relative to renderer screen. -> viewport = [left, top, width, height]
  */
-void Renderer::RenderCameraInViewport(ScenePtr scene, CameraPtr camera, sf::FloatRect viewport) {
+void Renderer::RenderCameraInViewport(ScenePtr scene, CameraPtr camera,
+                                      sf::FloatRect viewport) {
     if (camera == nullptr) {
         std::cerr << "Camera doesn't exist!\n";
         exit(1);
     }
     auto screenSize = renderWindow_->getSize();
-       sf::View view;
+    sf::View view;
     sf::Vector2f viewSize;
     view.setViewport(viewport);
     // Recalculate screen size to fit viewport - This causes cropping visible map area but proportions are saved.
     screenSize.x *= viewport.width;
     screenSize.y *= viewport.height;
     // Calculate view size.
-    viewSize.y = camera->GetReferenceHeight() * scene->GetScale() / camera->GetScreenFraction();
+    viewSize.y = camera->GetReferenceHeight() * scene->GetScale() /
+                 camera->GetScreenFraction();
     viewSize.x = viewSize.y * screenSize.x / screenSize.y;
     view.setSize(viewSize);
     view.setCenter(camera->GetCenter().GetScaledVector());
@@ -54,7 +55,7 @@ void Renderer::RenderCameraInViewport(ScenePtr scene, CameraPtr camera, sf::Floa
     renderWindow_->setView(view);
     scene->Render(renderWindow_);
     /* Render private view */
-    std::dynamic_pointer_cast<Vehicle>(camera->GetTrackedObject())->DrawPrivate(renderWindow_);
+    camera->GetTrackedObject()->DrawPrivate(renderWindow_);
     renderWindow_->setView(renderWindow_->getDefaultView());
 }
 

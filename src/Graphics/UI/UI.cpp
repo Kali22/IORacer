@@ -5,12 +5,12 @@ int UI::GetElementsCount() const {
 }
 
 UI::UI(ActivityPtr activity) : activity_(activity) {
-
 }
 
 void UI::EventAction(sf::Event event) {
-    for (auto item : list_)
+    for (auto item : list_) {
         item.second->EventAction(event);
+    }
 }
 
 UIBoxPtr UI::CreateBox(std::string name, sf::FloatRect size) {
@@ -20,13 +20,13 @@ UIBoxPtr UI::CreateBox(std::string name, sf::FloatRect size) {
 }
 
 UIElementPtr UI::GetElementByName(const std::string &name) {
-    UIElementPtr el  = list_[name];
-    if (el == nullptr)
-    {
-        fprintf(stderr, "UI::GetElementByName: No such element like %s!\n", name.c_str());
+    auto el  = list_.find(name);
+    if (el == list_.end()) {
+        std::cerr<< "UI::GetElementByName: No such element like "
+                 << name.c_str() << std::endl;
         exit(1);
     }
-    return el;
+    return el->second;
 }
 
 UITextBoxPtr UI::CreateTextBox(std::string name, std::string text, int fontSize, sf::FloatRect size) {

@@ -3,9 +3,9 @@
 #include <Managers.h>
 #include <GameObjects/ObjectTypes.h>
 #include <Map.h>
-#include <GameObjects/Vehicle/VehicleSetup.h>
+#include <VehicleSetup.h>
 #include <Object.h>
-#include "TextureManager.h"
+#include <TextureManager.h>
 
 class ObjectManager {
 public:
@@ -23,6 +23,8 @@ public:
     ObjectPtr CreateObjectByName(const std::string &name, const RealVec &pos, float rot);
 
 private:
+    void CreateFixture(b2Body* body, ObjectDesc objectDesc) const;
+
     b2Body *InitializeBody(const std::string &objectName, const RealVec &pos, float rot);
 
     VisualObjectPtr GetVisualObjectInstanceByName(const std::string &objectName);

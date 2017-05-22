@@ -3,16 +3,17 @@
 
 #include <bits/stdc++.h>
 #include <UI/UIElement.h>
-#include "../../Events/Event.h"
-#include "UIBox.h"
-#include "UITextBox.h"
+#include <Event.h>
+#include <UIBox.h>
+#include <UITextBox.h>
+#include <ViewportConst.h>
 
 /** @TODO Resize elements onload! */
 class UI {
 public:
     UI(ActivityPtr activity);
 
-    UIBoxPtr CreateBox(std::string name, sf::FloatRect size  = sf::FloatRect(0.5, 0.5, 1, 1));
+    UIBoxPtr CreateBox(std::string name, sf::FloatRect size  = centeredFullScreen);
 
     UITextBoxPtr CreateTextBox(std::string name, std::string text, int fontSize, sf::FloatRect size);
 
