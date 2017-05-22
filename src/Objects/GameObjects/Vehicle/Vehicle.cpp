@@ -155,6 +155,7 @@ void Vehicle::UpdateTurn(float dt) {
 void Vehicle::UpdateModifiers() {
     /// @TODO HERE UPDATE DIFFERENT PARAMS
     for (auto &wheel : wheels_) {
+        fprintf(stderr, "Vehicle %d: ", id_);
         float modifier = map_->GetFrictionModifier(wheel->GetPosition());
         float load = 9.81f * vehicleSetup_.vehicleMass * 0.5f;
         if (wheel->IsFront())
