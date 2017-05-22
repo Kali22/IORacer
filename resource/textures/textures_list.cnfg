@@ -5,9 +5,6 @@ box box.png
 checkpoint checkpoint.png
 wheel tire.png
 truck_tire truckTire.png
-map_0_view map_0_view.png
-map_0_friction map_0_fric.png
-map_0_mini map_0_mini.png
 map_1_view map_1_view.png
 map_1_friction map_1_friction.png
 map_1_mini map_1_mini.png

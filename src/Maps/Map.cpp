@@ -16,6 +16,9 @@ Map::Map(std::string name, std::string description, RealVec size, TexturePtr vie
         checkpoints_(std::move(checkpoints)),
         objects_(std::move(objects)),
         startPositions_(std::move(standings)) {
+    /// @TODO: Check imageFriction scaling
+    /// @TODO: Check correctness of imageFriction data in GetFrictionModifier call
+
     // Get images and textures
     imageFriction_ = friction->GetTexture()->copyToImage();
     mapView_.setTexture(*view->GetTexture());
@@ -40,7 +43,7 @@ Map::Map(std::string name, std::string description, RealVec size, TexturePtr vie
 
     std::cerr << mapName_ << ": Map is ready!\n";
     std::cerr << mapName_ << ": width = " << mapSize_.x << " heigth = " << mapSize_.y << "!\n";
-    std::cerr << mapName_ << ": width [px] = " << textureMapSize.width << " heigth [px] = " << textureMapSize.height << "!\n";
+    std::cerr << mapName_ << ": width [px] = " << textureMapSize.width << " heigth [px] = " << textureMapSize.height << "!\n";  
 }
 
 float Map::GetPixMetersScale() const {
@@ -48,10 +51,15 @@ float Map::GetPixMetersScale() const {
 }
 
 float Map::GetFrictionModifier(const RealVec& pos) {
+    /// @TODO Check Out of range positioin
+    /// @TODO Validate
     unsigned int x = (unsigned int) (pos.x < 0 ? 0 : pos.x);
     unsigned int y = (unsigned int) (pos.y < 0 ? 0 : pos.y);
+
     sf::Color color = imageFriction_.getPixel(x, y);
-    return 1.f - (color.b + color.r + color.g) / 256.0f / 3.0f;
+    float res = 1.f - (color.b + color.r + color.g) / 256.0f / 3.0f;
+    fprintf(stderr,"GetFrictionModifier( %f, %f, %f) = (r: %d, g: %d, b: %d) ->  %f", pos.x, pos.y, pos.GetScale(), color.r, color.g, color.b, res);
+    return res;
 }
 
 void Map::Draw(RenderWindowPtr window) const {
