@@ -14,6 +14,7 @@ UITextBox::UITextBox(int id, std::string name, std::string text, int fontSize, s
     hoverColor_ = sf::Color::Transparent;
     hoverOutlineColor_= sf::Color::Transparent;
     normalOutlineColor_ = sf::Color::Transparent;
+    verticalFix = text_.getGlobalBounds().top;
 }
 
 void UITextBox::SetBackgroundColorHover(sf::Color color) {
@@ -36,16 +37,16 @@ void UITextBox::Render(RenderWindowPtr window) {
     if (hover_) {
         bounds_.setFillColor(hoverColor_);
         bounds_.setOutlineColor(hoverOutlineColor_);
-        text_.setColor(hoverTextColor_);
+        text_.setFillColor(hoverTextColor_);
     } else {
         bounds_.setFillColor(normalColor_);
         bounds_.setOutlineColor(normalOutlineColor_);
-        text_.setColor(normalTextColor_);
+        text_.setFillColor(normalTextColor_);
     }
     auto size = bounds_.getGlobalBounds();
     auto textSize = text_.getGlobalBounds();
     text_.setPosition(size.left + size.width * 0.5, size.top + size.height * 0.5);
-    text_.setOrigin(textSize.width * 0.5, textSize.height * 0.5);
+    text_.setOrigin(textSize.width * 0.5, textSize.height * 0.5 + verticalFix);
     window->draw(bounds_);
     window->draw(text_);
 }

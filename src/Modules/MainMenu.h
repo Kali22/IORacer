@@ -4,9 +4,9 @@
 #include <Activity.h>
 #include <Event.h>
 
-class PlayerSelector : public Activity {
+class MainMenu : public Activity {
 public:
-    PlayerSelector();
+    MainMenu();
 
     void Init();
 
@@ -21,14 +21,6 @@ private:
     void HandleKey(sf::Event::KeyEvent event);
 
     void SetButtonStyle(UITextBoxPtr button);
-
-    void SetTextBoxStyle(UITextBoxPtr textBox);
-
-    void Update();
-
-    size_t player_;
-
-    std::vector<std::string> playersList_;
 };
 
-using PlayerSelectorPtr = std::shared_ptr<PlayerSelector>;
+using MainMenuPtr = std::shared_ptr<MainMenu>;

@@ -4,9 +4,9 @@
 #include <Activity.h>
 #include <Event.h>
 
-class PlayerSelector : public Activity {
+class NewPlayer : public Activity {
 public:
-    PlayerSelector();
+    NewPlayer();
 
     void Init();
 
@@ -26,9 +26,11 @@ private:
 
     void Update();
 
-    size_t player_;
+    void CreatePlayer();
 
-    std::vector<std::string> playersList_;
+    std::string player_;
+
+    const std::string resourcePath_ = "../players/";
 };
 
-using PlayerSelectorPtr = std::shared_ptr<PlayerSelector>;
+using NewPlayerPtr = std::shared_ptr<NewPlayer>;
