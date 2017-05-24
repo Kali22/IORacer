@@ -1,12 +1,12 @@
 #include "Player.h"
 
-Player::Player(const std::string &name, VehiclePtr vehicle)
-        : name_(name), vehicle_(vehicle) {}
+Player::Player(const std::string &name, CarConfigurationPtr carConfiguration)
+        : name_(name), carConfiguration_(carConfiguration) {}
 
 std::string Player::GetName() const {
     return name_;
 }
 
-VehiclePtr Player::GetVehicle() const {
-    return vehicle_;
+CarConfigurationPtr Player::GetCarConfiguration() const {
+    return carConfiguration_;
 }

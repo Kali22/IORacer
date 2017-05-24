@@ -2,19 +2,19 @@
 
 #include <string>
 #include <bits/stdc++.h>
-#include <Vehicle.h>
+#include <CarConfiguration.h>
 
 /// TODO add achivements
 class Player {
 public:
-    Player(const std::string& name, VehiclePtr vehicle);
+    Player(const std::string& name, CarConfigurationPtr carConfiguration);
 
     std::string GetName() const;
 
-    VehiclePtr GetVehicle() const;
+    CarConfigurationPtr GetCarConfiguration() const;
 private:
     std::string name_;
-    VehiclePtr vehicle_;
+    CarConfigurationPtr carConfiguration_;
 };
 
 using PlayerPtr = std::shared_ptr<Player>;
