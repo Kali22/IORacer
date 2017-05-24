@@ -3,6 +3,7 @@
 #include <PlayerSelector.h>
 #include <Splash.h>
 #include <NewRace.h>
+#include <TextureManager.h>
 
 
 int main(int argc, char **argv) {

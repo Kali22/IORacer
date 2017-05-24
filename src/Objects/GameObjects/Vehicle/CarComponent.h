@@ -13,7 +13,7 @@ enum ModifierType {
 
 class CarComponent {
 public:
-    CarComponent(ModifierType type, const std::string& name,
+    CarComponent(ModifierType type, int id, const std::string& name,
                  std::map<std::string, float> requirement, float value);
 
     ModifierType GetType() const;
@@ -22,9 +22,12 @@ public:
 
     std::string GetName() const;
 
+    int GetId() const;
+
     std::map<std::string, float> GetRequirement() const;
 private:
     ModifierType type_;
+    int id_;
     std::string name_;
     float value_;
     std::map<std::string, float> requirement_;
