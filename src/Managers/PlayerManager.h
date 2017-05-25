@@ -1,5 +1,6 @@
 #pragma once
 
+#include <bits/stdc++.h>
 #include <map>
 #include <Player.h>
 
@@ -21,4 +22,4 @@ private:
     std::map<std::string, PlayerPtr> nameToPlayer_;
     PlayerPtr activePlayer_;
 };
-
+using PlayerManagerPtr = std::shared_ptr<PlayerManager>;

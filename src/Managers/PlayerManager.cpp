@@ -1,6 +1,15 @@
 #include "PlayerManager.h"
+#include "CarComponentManager.h"
 
 PlayerManager::PlayerManager() {
+    // TODO Use stored player - integrate with player branch.
+    CarComponentManagerPtr carComponentManager = std::make_shared<CarComponentManager>();
+    std::vector<CarComponentPtr> carComponents = carComponentManager->GetBaseComponents();
+    CarConfigurationPtr carConfiguration =
+            std::make_shared<CarConfiguration>(carComponents);
+
+    PlayerPtr player = std::make_shared<Player>("jacek", carConfiguration);
+    nameToPlayer_.emplace("jacek", player);
 }
 
 PlayerPtr PlayerManager::GetActivePlayer() const {

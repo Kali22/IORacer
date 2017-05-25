@@ -7,7 +7,7 @@
 
 class Workshop : public Activity {
 public:
-    Workshop(PlayerPtr player, CarComponentManagerPtr carComponentManager);
+    Workshop();
 
     void Init();
 
@@ -25,8 +25,6 @@ private:
 
     void SetSelectedButtonStyle(UITextBoxPtr button);
 
-    void CreateRace(std::string name);
-
     void InitCategories();
 
     void UpdateCategoryUI();
@@ -35,19 +33,19 @@ private:
 
     void SelectComponent();
 
+    void UpdateComponentString(CarComponentPtr component) const;
+
     ComponentCategoryPtr GetCurrentCategory() const;
 
     PlayerPtr player_;
+    CarConfigurationPtr configuration_;
     CarComponentManagerPtr carComponentManager_;
 
     std::vector<ComponentCategoryPtr> categories_;
-    int categoryId_;
+    unsigned long categoryId_;
 
     UITextBoxPtr categoryBox_;
     UITextBoxPtr componentBox_;
-    // TODO select already choosen object at startup
-    // TODO change style of selected button
-    // TODO print requriments
 };
 
 using WorkshopPtr = std::shared_ptr<Workshop>;

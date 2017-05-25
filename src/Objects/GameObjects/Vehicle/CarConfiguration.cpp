@@ -31,3 +31,12 @@ void CarConfiguration::AddComponent(CarComponentPtr component) {
     components_[component->GetType()] = component;
     std::cout << "Added component " << component->GetName() << " to car" << std::endl;
 }
+
+int CarConfiguration::GetComponentId(ModifierType type) const {
+    auto it = components_.find(type);
+    if (it == components_.end()) {
+        return -1;
+    }
+    return it->second->GetId();
+}
+

@@ -41,17 +41,6 @@ void PlayerSelector::EventAction(Event event) {
             if (event.GetUIElement() == "start_game")
                 activityManager_->SetAsActive("new_race");
             if (event.GetUIElement() == "workshop") {
-                // TODO Use stored player.
-                CarComponentManagerPtr carComponentManager =
-                        std::make_shared<CarComponentManager>();
-                std::vector<CarComponentPtr> carComponents =
-                        carComponentManager->GetBaseComponents();
-                CarConfigurationPtr carConfiguration =
-                        std::make_shared<CarConfiguration>(carComponents);
-
-                PlayerPtr player = std::make_shared<Player>("jacek", carConfiguration);
-                WorkshopPtr workshop = std::make_shared<Workshop>(player, carComponentManager);
-                activityManager_->AddActivity(workshop);
                 activityManager_->SetAsActive("workshop");
             }
             if (event.GetUIElement() == "quit_game")

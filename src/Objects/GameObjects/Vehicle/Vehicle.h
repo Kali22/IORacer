@@ -5,12 +5,14 @@
 #include <bits/stdc++.h>
 #include <vector>
 #include "VehicleSetup.h"
+#include "CarConfiguration.h"
 #include <Map.h>
 
 class Vehicle : public Object {
 public:
-    Vehicle(int id, b2Body *body, VisualObjectPtr chassis, std::vector<WheelPtr> &&wheels, const VehicleSetupT &setup,
-                MapPtr map);
+    Vehicle(int id, b2Body *body, VisualObjectPtr chassis,
+            std::vector<WheelPtr> &&wheels, const VehicleSetupT &setup,
+            CarConfigurationPtr carConfigurationPtr, MapPtr map);
 
     ~Vehicle();
 
@@ -69,6 +71,8 @@ private:
 
     /* Car params */
     VehicleSetupT vehicleSetup_;
+    // TODO after branch merging rename to vehicleConfiguration
+    CarConfigurationPtr carConfiguration_;
 
     float GetDesiredAngle();
 };

@@ -11,11 +11,13 @@ enum ControllerStateE {
     CTRL_STATE_BRK = 0x10,
 };
 
-Vehicle::Vehicle(int id, b2Body *body, VisualObjectPtr chassis, std::vector<WheelPtr> &&wheels, const VehicleSetupT &setup,
+Vehicle::Vehicle(int id, b2Body *body, VisualObjectPtr chassis,
+                 std::vector<WheelPtr> &&wheels, const VehicleSetupT &setup, CarConfigurationPtr carConfiguration,
                  MapPtr map) :
         Object(body, chassis, OBJECT_TYPE_VEHICLE),
         wheels_(std::move(wheels)),
         vehicleSetup_(setup),
+        carConfiguration_(carConfiguration),
         map_(map),
         activeCheckpoint_(nullptr),
         id_(id)
@@ -98,8 +100,8 @@ void Vehicle::UpdateFriction(float dt) {
 
 void Vehicle::UpdateDrive(float dt) {
     if (controllerState_ & (CTRL_STATE_ACC | CTRL_STATE_REV)) {
-        if (enginePowerNow_ < vehicleSetup_.enginePowerMax) {
-            enginePowerNow_ += vehicleSetup_.enginePowerMax / 10.f;
+        if (enginePowerNow_ < carConfiguration_->GetEnginePowerMax()) {
+            enginePowerNow_ += carConfiguration_->GetEnginePowerMax() / 10.f;
         }
         float torque = 1.0f * enginePowerNow_ * 0.5f;
         torque = (controllerState_ & CTRL_STATE_REV ? -torque : torque);
@@ -161,7 +163,7 @@ void Vehicle::UpdateModifiers() {
             load *= 1.f - vehicleSetup_.massBalance;
         else
             load *= vehicleSetup_.massBalance;
-        wheel->UpdateModifiers(modifier, load, vehicleSetup_.aerodynamicFriction);
+        wheel->UpdateModifiers(modifier, load, carConfiguration_->GetAerodynamicFriction());
     }
 }
 
@@ -171,7 +173,7 @@ void Vehicle::ChangeVehicleSetup(const VehicleSetupT setup) {
 
 float Vehicle::GetDesiredAngle() {
     float desiredAngle = 0;
-    float maxSteeringAngleRadians = MathUtil::DegreeToRadian(vehicleSetup_.steeringAngleMax);
+    float maxSteeringAngleRadians = MathUtil::DegreeToRadian(carConfiguration_->GetSteeringAngleMax());
     switch (controllerState_ & (CTRL_STATE_LEFT | CTRL_STATE_RIGHT)) {
         case CTRL_STATE_LEFT:
             desiredAngle = -maxSteeringAngleRadians;

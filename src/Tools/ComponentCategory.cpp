@@ -31,5 +31,7 @@ std::string ComponentCategory::GetName() const {
     return name_;
 }
 
-
+ModifierType ComponentCategory::GetType() const {
+    return type_;
+}
 

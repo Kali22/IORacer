@@ -350,18 +350,20 @@ void Gameplay::SetTitleStyle(UITextBoxPtr textBox) {
 
 void Gameplay::PrepareSecondPlayer() {
     VehicleSetupT setup;
-    setup.steeringAngleMax = 20;
     setup.steeringAngleSpeed = 45;
-    setup.aerodynamicFriction = 0.01;
     setup.brakesType = BRAKES_REAR;
-    setup.enginePowerMax = 100000;
     setup.massBalance = 0.5; // Equal load on front and rear wheels
     setup.transmissionType = TRANSMISSION_FRONT;
     setup.vehicleMass = 300;
     /* ---------------------------------------------------------------- TESTS ---- */
 
+    // TODO Use stored player - integrate with player branch.
+    CarComponentManagerPtr carComponentManager = std::make_shared<CarComponentManager>();
+    auto components = carComponentManager->GetBaseComponents();
+    CarConfigurationPtr configuration = std::make_shared<CarConfiguration>(components);
+
     StartPositionT start = map_->GetStartPosition(1);
-    secondPlayerVehicle_ = objectManager_->CreateVehicle(1, RealVec(start.x, start.y), start.rot, setup, map_);
+    secondPlayerVehicle_ = objectManager_->CreateVehicle(1, RealVec(start.x, start.y), start.rot, setup, map_, configuration);
     std::vector<CheckPointPtr> checkpoints;
     for (auto el : map_->GetCheckpoints()) {
         checkpoints.push_back(
@@ -375,18 +377,20 @@ void Gameplay::PrepareSecondPlayer() {
 void Gameplay::PrepareFirstPlayer() {
 /* ---------------------------------------------------------------- TESTS ---- */
     VehicleSetupT setup;
-    setup.steeringAngleMax = 20;
     setup.steeringAngleSpeed = 45;
-    setup.aerodynamicFriction = 0.01;
     setup.brakesType = BRAKES_FRONT;
-    setup.enginePowerMax = 100000;
     setup.massBalance = 0.45; // higher load on front wheels
     setup.transmissionType = TRANSMISSION_REAR;
     setup.vehicleMass = 300;
     /* ---------------------------------------------------------------- TESTS ---- */
 
+    // TODO Use stored player - integrate with player branch.
+    CarComponentManagerPtr carComponentManager = std::make_shared<CarComponentManager>();
+    auto components = carComponentManager->GetBaseComponents();
+    CarConfigurationPtr configuration = std::make_shared<CarConfiguration>(components);
+
     StartPositionT start = map_->GetStartPosition(0);
-    firstPlayerVehicle_ = objectManager_->CreateVehicle(0, RealVec(start.x, start.y), start.rot, setup, map_);
+    firstPlayerVehicle_ = objectManager_->CreateVehicle(0, RealVec(start.x, start.y), start.rot, setup, map_, configuration);
     std::vector<CheckPointPtr> checkpoints;
     for (auto el : map_->GetCheckpoints()) {
         checkpoints.push_back(

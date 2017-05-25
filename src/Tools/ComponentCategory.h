@@ -13,6 +13,8 @@ public:
 
     std::string GetName() const;
 
+    ModifierType GetType() const;
+
     bool SetComponent(int id);
 
     CarComponentPtr GetComponent() const;
