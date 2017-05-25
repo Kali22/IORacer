@@ -1,9 +1,15 @@
 #include "CarComponentManager.h"
 
+
 CarComponentManager::CarComponentManager() {
     typeToComponents_[ENGINE_POWER_MAX] = CreateEngineComponents();
     typeToComponents_[AERODYNAMIC_FRICTION] = CreateAerodynamicComponents();
     typeToComponents_[STEERING_ANGLE_MAX] = CreateWheelComponents();
+    modifierToCategoryName_  = {
+            {ENGINE_POWER_MAX, "Engine"},
+            {AERODYNAMIC_FRICTION, "Body"},
+            {STEERING_ANGLE_MAX, "Wheels"}
+    };
 }
 
 CarComponentPtr CarComponentManager::GetComponent(ModifierType type,
@@ -23,15 +29,34 @@ CarComponentPtr CarComponentManager::GetComponent(ModifierType type,
     return components[id];
 }
 
+std::vector<ComponentCategoryPtr> CarComponentManager::GetComponentCategories() const {
+    std::vector<ComponentCategoryPtr> categories;
+    for (auto it : typeToComponents_) {
+        auto nameIt = modifierToCategoryName_.find(it.first);
+        if (nameIt == modifierToCategoryName_.end()) {
+            std::cerr << "Fatal: Unknown category name" << std::endl;
+            exit(1);
+        }
+        std::string name = nameIt->second;
+        categories.push_back(std::make_shared<ComponentCategory>(
+                it.first, name, it.second));
+    }
+    return categories;
+}
+
+
 std::vector<CarComponentPtr> CarComponentManager::CreateEngineComponents() {
     std::vector<CarComponentPtr> components;
     components.push_back(std::make_shared<CarComponent>(
-            ENGINE_POWER_MAX, 0, "Silnik 1", std::map<std::string, float>(), 60000));
+            ENGINE_POWER_MAX, 0, "Engine 1", std::map<std::string, float>(),
+            60000));
 
     components.push_back(std::make_shared<CarComponent>(
-            ENGINE_POWER_MAX, 1, "Silnik 2", std::map<std::string, float>(), 11000));
+            ENGINE_POWER_MAX, 1, "Engine 2", std::map<std::string, float>(),
+            11000));
     components.push_back(std::make_shared<CarComponent>(
-            ENGINE_POWER_MAX, 2, "Silnik 3", std::map<std::string, float>(), 20000));
+            ENGINE_POWER_MAX, 2, "Engine 3", std::map<std::string, float>(),
+            20000));
     return components;
 }
 
@@ -39,11 +64,11 @@ std::vector<CarComponentPtr>
 CarComponentManager::CreateAerodynamicComponents() {
     std::vector<CarComponentPtr> components;
     components.push_back(std::make_shared<CarComponent>(
-            AERODYNAMIC_FRICTION, 0, "Karoseria 1", std::map<std::string, float>(), 0.1));
+            AERODYNAMIC_FRICTION, 0, "Body 1", std::map<std::string, float>(), 0.1));
     components.push_back(std::make_shared<CarComponent>(
-            AERODYNAMIC_FRICTION, 1, "Karoseria 2", std::map<std::string, float>(), 0.01));
+            AERODYNAMIC_FRICTION, 1, "Body 2", std::map<std::string, float>(), 0.01));
     components.push_back(std::make_shared<CarComponent>(
-            AERODYNAMIC_FRICTION, 2, "Karoseria 3", std::map<std::string, float>(), 0.001));
+            AERODYNAMIC_FRICTION, 2, "Body 3", std::map<std::string, float>(), 0.001));
     return components;
 
 }
@@ -51,11 +76,22 @@ CarComponentManager::CreateAerodynamicComponents() {
 std::vector<CarComponentPtr> CarComponentManager::CreateWheelComponents() {
     std::vector<CarComponentPtr> components;
     components.push_back(std::make_shared<CarComponent>(
-            STEERING_ANGLE_MAX, 0, "Koło 1", std::map<std::string, float>(), 10));
+            STEERING_ANGLE_MAX, 0, "Wheel 1", std::map<std::string, float>(),
+            10));
     components.push_back(std::make_shared<CarComponent>(
-            STEERING_ANGLE_MAX, 1, "Koło 2", std::map<std::string, float>(), 20));
+            STEERING_ANGLE_MAX, 1, "Wheel 2", std::map<std::string, float>(),
+            20));
     components.push_back(std::make_shared<CarComponent>(
-            STEERING_ANGLE_MAX, 2, "Koło 3", std::map<std::string, float>(), 30));
+            STEERING_ANGLE_MAX, 2, "Wheel 3", std::map<std::string, float>(),
+            30));
     return components;
 
+}
+
+std::vector<CarComponentPtr> CarComponentManager::GetBaseComponents() const {
+    std::vector<CarComponentPtr> components;
+    components.push_back(typeToComponents_.at(ENGINE_POWER_MAX)[0]);
+    components.push_back(typeToComponents_.at(AERODYNAMIC_FRICTION)[0]);
+    components.push_back(typeToComponents_.at(STEERING_ANGLE_MAX)[0]);
+    return components;
 }
