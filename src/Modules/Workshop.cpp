@@ -23,13 +23,13 @@ void Workshop::Init() {
     componentBox_ = userInterface_->CreateTextBox(
             "component", "Component", 30, sf::FloatRect(0.75, 0.5, 0.2, 0.05));
     UITextBoxPtr categoryLeft = userInterface_->CreateTextBox(
-            "category_right", "<", 30, sf::FloatRect(0.175, 0.65, 0.05, 0.05));
+            "category_left", "<", 30, sf::FloatRect(0.175, 0.65, 0.05, 0.05));
     UITextBoxPtr categoryRight = userInterface_->CreateTextBox(
-            "category_left", ">", 30, sf::FloatRect(0.325, 0.65, 0.05, 0.05));
+            "category_right", ">", 30, sf::FloatRect(0.325, 0.65, 0.05, 0.05));
     UITextBoxPtr componentLeft = userInterface_->CreateTextBox(
-            "component_right", "<", 30, sf::FloatRect(0.675, 0.65, 0.05, 0.05));
+            "component_left", "<", 30, sf::FloatRect(0.675, 0.65, 0.05, 0.05));
     UITextBoxPtr componentRight = userInterface_->CreateTextBox(
-            "component_left", ">", 30, sf::FloatRect(0.825, 0.65, 0.05, 0.05));
+            "component_right", ">", 30, sf::FloatRect(0.825, 0.65, 0.05, 0.05));
     SetButtonStyle(categoryBox_);
     SetButtonStyle(componentBox_);
     SetButtonStyle(categoryRight);
@@ -64,7 +64,7 @@ void Workshop::EventAction(Event event) {
                 return;
             }
             if (uiElement == "component") {
-                std::cout << "Selected component";
+                SelectComponent();
             } else if (uiElement == "category_right") {
                 categoryId_ = (categoryId_ + 1) % categories_.size();
             } else if (uiElement == "category_left") {
@@ -131,4 +131,23 @@ void Workshop::UpdateComponentUI() {
 
 ComponentCategoryPtr Workshop::GetCurrentCategory() const {
     return categories_[categoryId_];
+}
+
+void Workshop::SelectComponent() {
+    CarComponentPtr component = GetCurrentCategory()->GetComponent();
+    if (component->IsTimesSufficient(player_->GetTimes())) {
+        player_->GetCarConfiguration()->AddComponent(component);
+    }
+    // TODO change ui
+}
+
+void Workshop::SetSelectedButtonStyle(UITextBoxPtr button) {
+    // TODO reformat - add colors to constants
+    button->SetBackgroundColor(sf::Color(0xD5E6E0ff));
+    button->SetBackgroundColorHover(sf::Color(0xD5E6E0ff));
+    button->SetOutlineColor(sf::Color(0xE1F0FFff));
+    button->SetOutlineColorHover(sf::Color(0x60758Cff));
+    button->SetTextColor(sf::Color(0x1c7396ff));
+    button->SetTextColorHover(sf::Color(0x1c7396ff));
+    button->SetOutlineThickness(3.f);
 }

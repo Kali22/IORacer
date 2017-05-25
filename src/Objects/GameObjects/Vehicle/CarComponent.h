@@ -24,13 +24,15 @@ public:
 
     int GetId() const;
 
+    bool IsTimesSufficient(std::map<std::string, float> times) const;
+
     std::map<std::string, float> GetRequirement() const;
 private:
     ModifierType type_;
     int id_;
     std::string name_;
     float value_;
-    std::map<std::string, float> requirement_;
+    std::map<std::string, float> mapNameToTime_;
 };
 
 

@@ -12,9 +12,12 @@ public:
     std::string GetName() const;
 
     CarConfigurationPtr GetCarConfiguration() const;
+
+    std::map<std::string, float> GetTimes() const;
 private:
     std::string name_;
     CarConfigurationPtr carConfiguration_;
+    std::map<std::string, float> times_;
 };
 
 using PlayerPtr = std::shared_ptr<Player>;

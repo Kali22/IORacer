@@ -10,3 +10,7 @@ std::string Player::GetName() const {
 CarConfigurationPtr Player::GetCarConfiguration() const {
     return carConfiguration_;
 }
+
+std::map<std::string, float> Player::GetTimes() const {
+    return times_;
+}

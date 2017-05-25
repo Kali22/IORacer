@@ -23,6 +23,8 @@ private:
 
     void SetButtonStyle(UITextBoxPtr button);
 
+    void SetSelectedButtonStyle(UITextBoxPtr button);
+
     void CreateRace(std::string name);
 
     void InitCategories();
@@ -30,6 +32,8 @@ private:
     void UpdateCategoryUI();
 
     void UpdateComponentUI();
+
+    void SelectComponent();
 
     ComponentCategoryPtr GetCurrentCategory() const;
 
@@ -41,6 +45,9 @@ private:
 
     UITextBoxPtr categoryBox_;
     UITextBoxPtr componentBox_;
+    // TODO select already choosen object at startup
+    // TODO change style of selected button
+    // TODO print requriments
 };
 
 using WorkshopPtr = std::shared_ptr<Workshop>;
