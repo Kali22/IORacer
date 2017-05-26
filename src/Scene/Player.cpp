@@ -6,7 +6,7 @@ Player::Player(const std::string &name)
     std::string line;
     std::stringstream data;
     std::string mapName;
-    int time;
+    float time;
 
     while (getline(file, line)) {
         data = std::stringstream(line);
@@ -15,21 +15,26 @@ Player::Player(const std::string &name)
     }
 }
 
+
 std::string Player::GetName() const {
     return name_;
 }
 
-VehiclePtr Player::GetVehicle() const {
-    return vehicle_;
+CarConfigurationPtr Player::GetCarConfiguration() const {
+    return carConfiguration_;
 }
 
-void Player::setTime(std::string map, int time) {
+std::map<std::string, float> Player::GetTimes() const {
+    return times_;
+}
+
+void Player::setTime(std::string map, float time) {
     auto it = times_.find(map);
     if (it == times_.end()) {
         times_[map] = time;
     }
     else {
-        times_[map] = std::min(times_[map], time);
+        times_[map] = std::min(it->second, time);
     }
 }
 

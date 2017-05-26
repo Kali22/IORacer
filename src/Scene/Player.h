@@ -2,7 +2,7 @@
 
 #include <string>
 #include <bits/stdc++.h>
-#include <Vehicle.h>
+#include <CarConfiguration.h>
 
 /// TODO add achivements
 class Player {
@@ -11,15 +11,17 @@ public:
 
     std::string GetName() const;
 
-    VehiclePtr GetVehicle() const;
+    CarConfigurationPtr GetCarConfiguration() const;
 
-    void setTime(std::string map, int time);
+    std::map<std::string, float> GetTimes() const;
+
+    void setTime(std::string map, float time);
 
     void save();
 private:
     std::string name_;
-    VehiclePtr vehicle_;
-    std::map<std::string, int> times_;
+    CarConfigurationPtr carConfiguration_;
+    std::map<std::string, float> times_;
     const std::string resourcePath_ = "../players/";
 };
 

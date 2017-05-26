@@ -1,6 +1,8 @@
 #include "PlayerSelector.h"
 #include <ActivityManager.h>
 #include <PlayerManager.h>
+#include <Player.h>
+
 #include <ViewportConst.h>
 
 extern PlayerManagerPtr playerManager;
@@ -35,7 +37,6 @@ void PlayerSelector::Run() {
 }
 
 void PlayerSelector::End() {
-
 }
 
 void PlayerSelector::EventAction(Event event) {

@@ -23,3 +23,5 @@ private:
     std::map<ModifierType, CarComponentPtr> components_;
 };
 
+
+using CarConfigurationPtr = std::shared_ptr<CarConfiguration>;

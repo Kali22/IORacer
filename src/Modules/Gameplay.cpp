@@ -95,7 +95,7 @@ void Gameplay::SetFirstPlayer(const std::string &name) {
 
 void Gameplay::ExitGame() {
     activityManager_->RemoveActivity("race");
-    activityManager_->SetAsActive("player_selector");
+    activityManager_->SetAsActive("main_menu");
 }
 
 void Gameplay::Render() {
