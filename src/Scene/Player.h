@@ -3,11 +3,11 @@
 #include <string>
 #include <bits/stdc++.h>
 #include <CarConfiguration.h>
+#include <CarComponentManager.h>
 
-/// TODO add achivements
 class Player {
 public:
-    Player(const std::string &name);
+    Player(const std::string &name, CarComponentManagerPtr carComponentManager, bool newPlayer);
 
     std::string GetName() const;
 
@@ -22,7 +22,7 @@ private:
     std::string name_;
     CarConfigurationPtr carConfiguration_;
     std::map<std::string, float> times_;
-    const std::string resourcePath_ = "../players/";
+    const std::string resourcePath_ = "../resource/players/";
 };
 
 using PlayerPtr = std::shared_ptr<Player>;

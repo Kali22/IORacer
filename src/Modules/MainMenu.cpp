@@ -5,8 +5,6 @@
 #include <ViewportConst.h>
 #include <PlayerManager.h>
 
-extern PlayerManagerPtr playerManager;
-
 MainMenu::MainMenu() : Activity("main_menu") {
 
 }
@@ -44,16 +42,8 @@ void MainMenu::EventAction(Event event) {
             if (event.GetUIElement() == "start_game")
                 activityManager_->SetAsActive("new_race");
             if (event.GetUIElement() == "workshop") {
-                // TODO Use stored player.
-                CarComponentManagerPtr carComponentManager =
-                        std::make_shared<CarComponentManager>();
-                std::vector<CarComponentPtr> carComponents =
-                        carComponentManager->GetBaseComponents();
-                CarConfigurationPtr carConfiguration =
-                        std::make_shared<CarConfiguration>(carComponents);
-
-                //PlayerPtr player = std::make_shared<Player>("jacek", carConfiguration);
-                WorkshopPtr workshop = std::make_shared<Workshop>(playerManager->GetActivePlayer(), carComponentManager);
+                PlayerPtr player = activityManager_->GetPlayerManager()->GetActivePlayer();
+                WorkshopPtr workshop = std::make_shared<Workshop>(player);
                 activityManager_->AddActivity(workshop);
                 activityManager_->SetAsActive("workshop");
             }
@@ -66,6 +56,20 @@ void MainMenu::EventAction(Event event) {
 void MainMenu::HandleKey(sf::Event::KeyEvent event) {
     if(event.code == sf::Keyboard::Escape) {
         activityManager_->RemoveActivity("main_menu");
+    }
+    //TODO delete debug print
+    if (event.code == sf::Keyboard::F1) {
+        CarConfigurationPtr config = activityManager_->GetPlayerManager()->GetActivePlayer()->GetCarConfiguration();
+        for (auto id : config->GetComponentsIDs())
+            std::cerr << id << " ";
+        std::cerr << std::endl;
+    }
+    if (event.code == sf::Keyboard::F2) {
+        auto times = activityManager_->GetPlayerManager()->GetActivePlayer()->GetTimes();
+        std::cerr << "PRINT TIMES " << times.size() << std::endl;
+        for (auto rec : times) {
+            std::cerr << rec.first << " " << rec.second << std::endl;
+        }
     }
 }
 

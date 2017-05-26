@@ -3,8 +3,6 @@
 #include <PlayerManager.h>
 #include <ViewportConst.h>
 
-extern PlayerManagerPtr playerManager;
-
 NewPlayer::NewPlayer() : Activity("new_player") {
 }
 
@@ -49,8 +47,11 @@ void NewPlayer::EventAction(Event event) {
 }
 
 void NewPlayer::CreatePlayer() {
-    playerManager->CreateNewPlayer(player_);
-    activityManager_->SetAsActive("main_menu");
+    if (!player_.empty()) {
+        PlayerManagerPtr playerManager = activityManager_->GetPlayerManager();
+        playerManager->CreateNewPlayer(player_);
+        activityManager_->SetAsActive("main_menu");
+    }
 }
 
 void NewPlayer::Update() {
@@ -62,9 +63,6 @@ void NewPlayer::HandleKey(sf::Event::KeyEvent event) {
     if (event.code == sf::Keyboard::BackSpace) {
         if (!player_.empty())
             player_.pop_back();
-    }
-    if (event.code == sf::Keyboard::F1) {
-        std::cerr << player_.size() << ": " << player_ << std::endl;
     }
     if (event.code == sf::Keyboard::Escape) {
         activityManager_->RemoveActivity("new_player");

@@ -31,3 +31,13 @@ void CarConfiguration::AddComponent(CarComponentPtr component) {
     components_[component->GetType()] = component;
     std::cout << "Added component " << component->GetName() << " to car" << std::endl;
 }
+
+std::vector<int> CarConfiguration::GetComponentsIDs() const {
+    std::vector<int> IDs;
+    for (auto component : components_) {
+        IDs.push_back(component.second->GetId());
+    }
+    return IDs;
+}
+
+

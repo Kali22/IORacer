@@ -8,11 +8,16 @@
 #include <Renderer.h>
 #include <Managers.h>
 #include <TextureManager.h>
+#include <PlayerManager.h>
+#include <CarComponentManager.h>
 
 
 class ActivityManager : public std::enable_shared_from_this<ActivityManager> {
 public:
-    ActivityManager(WindowPtr window, TextureManagerPtr textureManager);
+    ActivityManager(WindowPtr window,
+                    TextureManagerPtr textureManager,
+                    PlayerManagerPtr playerManager,
+                    CarComponentManagerPtr carComponentManager);
 
     void Poll();
 
@@ -32,9 +37,15 @@ public:
 
     TextureManagerPtr GetTextureManager() const;
 
+    PlayerManagerPtr GetPlayerManager() const;
+
+    CarComponentManagerPtr GetCarComponentManager() const;
+
 private:
     WindowPtr window_;
     TextureManagerPtr textureManager_;
+    PlayerManagerPtr playerManager_;
+    CarComponentManagerPtr carComponentManager_;
 
     std::map<std::string, ActivityPtr> activities_;
     ActivityPtr active_;

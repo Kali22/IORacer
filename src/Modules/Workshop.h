@@ -7,7 +7,7 @@
 
 class Workshop : public Activity {
 public:
-    Workshop(PlayerPtr player, CarComponentManagerPtr carComponentManager);
+    Workshop(PlayerPtr player);
 
     void Init();
 

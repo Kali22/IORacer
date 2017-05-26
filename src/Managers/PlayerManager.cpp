@@ -1,11 +1,12 @@
 #include "PlayerManager.h"
 
-PlayerManager::PlayerManager() {
+PlayerManager::PlayerManager(CarComponentManagerPtr carComponentManager) :
+    carComponentManager_(carComponentManager){
     std::ifstream file(resourcePath_ + playerListFile_);
     std::string line;
 
     while (getline(file, line)) {
-        nameToPlayer_[line] = std::make_shared<Player>(line);
+        nameToPlayer_[line] = std::make_shared<Player>(line, carComponentManager_, false);
     }
 }
 
@@ -41,7 +42,9 @@ std::vector<std::string> PlayerManager::GetPlayersList() const {
 void PlayerManager::CreateNewPlayer(const std::string &name) {
     std::ofstream players_list(resourcePath_ + playerListFile_ , std::ios_base::app);
     players_list << name << std::endl;
-    nameToPlayer_[name] = std::make_shared<Player>(name);
+    PlayerPtr player = std::make_shared<Player>(name, carComponentManager_, true);
+    nameToPlayer_[name] = player;
+    SetActivePlayer(name);
 }
 
 void PlayerManager::SaveGame() {

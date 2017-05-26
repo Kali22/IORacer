@@ -2,15 +2,15 @@
 #include <ActivityManager.h>
 #include <PlayerManager.h>
 #include <Player.h>
-
 #include <ViewportConst.h>
 
-extern PlayerManagerPtr playerManager;
-
-PlayerSelector::PlayerSelector() : Activity("player_selector"), player_(0), playersList_(playerManager->GetPlayersList()) {
+PlayerSelector::PlayerSelector() :
+        Activity("player_selector"),
+        player_(0) {
 }
 
 void PlayerSelector::Init() {
+    playersList_ = activityManager_->GetPlayerManager()->GetPlayersList();
     UIBoxPtr back = userInterface_->CreateBox("background", centeredFullScreen);
     back->SetBackgroundTexture("menu_back");
     if (!playersList_.empty()) {
@@ -55,7 +55,7 @@ void PlayerSelector::EventAction(Event event) {
                     player_--;
             }
             if (event.GetUIElement() == "select") {
-                playerManager->SetActivePlayer(playersList_[player_]);
+                activityManager_->GetPlayerManager()->SetActivePlayer(playersList_[player_]);
                 activityManager_->SetAsActive("main_menu");
             }
             if (event.GetUIElement() == "new_player")

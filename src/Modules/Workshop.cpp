@@ -4,12 +4,12 @@
 #include <Gameplay.h>
 #include <ViewportConst.h>
 
-Workshop::Workshop(PlayerPtr player, CarComponentManagerPtr carComponentManager)
-        : Activity("workshop"), player_(player),
-          carComponentManager_(carComponentManager) {
+Workshop::Workshop(PlayerPtr player)
+        : Activity("workshop"), player_(player) {
 }
 
 void Workshop::Init() {
+    carComponentManager_ = activityManager_->GetCarComponentManager();
     UIBoxPtr back = userInterface_->CreateBox("background", centeredFullScreen);
     back->SetBackgroundTexture("menu_back");
     UITextBoxPtr title = userInterface_->CreateTextBox("title",
@@ -59,10 +59,6 @@ void Workshop::EventAction(Event event) {
     } else if (event.GetType() == UI_EVENT) {
         if (event.GetUIEventType() == UI_EVENT_CLICK) {
             std::string uiElement = event.GetUIElement();
-            if (uiElement == "quit_game") {
-                activityManager_->RemoveActivity("player_selector");
-                return;
-            }
             if (uiElement == "component") {
                 SelectComponent();
             } else if (uiElement == "category_right") {

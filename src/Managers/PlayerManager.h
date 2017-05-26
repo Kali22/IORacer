@@ -2,11 +2,12 @@
 
 #include <map>
 #include <Player.h>
+#include <CarComponentManager.h>
 
 
 class PlayerManager {
 public:
-    PlayerManager();
+    PlayerManager(CarComponentManagerPtr carComponentManager);
 
     ~PlayerManager();
 
@@ -24,7 +25,8 @@ public:
 private:
     std::map<std::string, PlayerPtr> nameToPlayer_;
     PlayerPtr activePlayer_;
-    const std::string resourcePath_ = "../players/";
+    CarComponentManagerPtr carComponentManager_;
+    const std::string resourcePath_ = "../resource/players/";
     const std::string playerListFile_ = "players_list";
 
 };

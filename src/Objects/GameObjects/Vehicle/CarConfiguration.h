@@ -16,6 +16,8 @@ public:
 
     float GetSteeringAngleMax() const;
 
+    std::vector<int> GetComponentsIDs() const;
+
     void AddComponent(CarComponentPtr component);
 private:
     float GetModifierByType(ModifierType type) const;

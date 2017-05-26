@@ -8,7 +8,8 @@
 enum ModifierType {
     ENGINE_POWER_MAX,
     AERODYNAMIC_FRICTION,
-    STEERING_ANGLE_MAX
+    STEERING_ANGLE_MAX,
+    MODIFIER_TYPE_MAX,
 };
 
 class CarComponent {
