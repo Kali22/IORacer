@@ -37,11 +37,11 @@ void UITextBox::Render(RenderWindowPtr window) {
     if (hover_) {
         bounds_.setFillColor(hoverColor_);
         bounds_.setOutlineColor(hoverOutlineColor_);
-        text_.setFillColor(hoverTextColor_);
+        text_.setColor(hoverTextColor_);
     } else {
         bounds_.setFillColor(normalColor_);
         bounds_.setOutlineColor(normalOutlineColor_);
-        text_.setFillColor(normalTextColor_);
+        text_.setColor(normalTextColor_);
     }
     auto size = bounds_.getGlobalBounds();
     auto textSize = text_.getGlobalBounds();

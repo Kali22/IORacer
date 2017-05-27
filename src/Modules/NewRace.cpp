@@ -66,7 +66,10 @@ void NewRace::EventAction(Event event) {
 
 void NewRace::HandleKey(sf::Event::KeyEvent event) {
     if(event.code == sf::Keyboard::Escape) {
-        activityManager_->SetAsActive("main_menu");
+        if (type_ == SINGLE_PLAYER)
+            activityManager_->SetAsActive("main_menu");
+        else
+            activityManager_->SetAsActive("player_selector");
     }
 }
 

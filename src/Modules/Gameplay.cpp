@@ -95,7 +95,6 @@ void Gameplay::SetFirstPlayer(const std::string &name) {
 }
 
 void Gameplay::ExitGame() {
-    SaveTimes();
     activityManager_->RemoveActivity("race");
     activityManager_->SetAsActive("main_menu");
 }
@@ -252,6 +251,7 @@ void Gameplay::UpdateGame() {
     }
     UpdateHUD();
     if (isOver_) {
+        SaveTimes();
         gameState_ = GAMEPLAY_STATE_END;
         PrepareUIForEndState();
     }

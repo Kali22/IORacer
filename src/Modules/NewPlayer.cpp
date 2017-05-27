@@ -67,7 +67,7 @@ void NewPlayer::HandleKey(sf::Event::KeyEvent event) {
             player_.pop_back();
     }
     if (event.code == sf::Keyboard::Escape) {
-        activityManager_->RemoveActivity("new_player");
+        activityManager_->SetAsActive("player_selector");
     }
 }
 

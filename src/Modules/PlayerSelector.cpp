@@ -87,7 +87,10 @@ void PlayerSelector::Update() {
 
 void PlayerSelector::HandleKey(sf::Event::KeyEvent event) {
     if (event.code == sf::Keyboard::Escape) {
-        activityManager_->RemoveActivity("player_selector");
+        if (type_ == FIRST_PLAYER)
+            activityManager_->RemoveActivity("player_selector");
+        else
+            activityManager_->SetAsActive("main_menu");
     }
 }
 
