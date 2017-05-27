@@ -37,6 +37,7 @@ void Gameplay::Init() {
     PrepareUIForPrepareState();
 }
 
+//TODO delete
 void Gameplay::PrintState() {
     float sec = clk.restart().asSeconds();
     printf(">>>> fps: %f, time: %f\n", 1 / sec, sec);
@@ -94,8 +95,22 @@ void Gameplay::SetFirstPlayer(const std::string &name) {
 }
 
 void Gameplay::ExitGame() {
+    SaveTimes();
     activityManager_->RemoveActivity("race");
     activityManager_->SetAsActive("main_menu");
+}
+
+void Gameplay::SaveTimes() {
+    std::string mapName = map_->GetMapName();
+    PlayerPtr firstPlayer = activityManager_->GetPlayerManager()->GetPlayer(firstPlayerName_);
+    float firstPlayerTime = firstPlayerManager_->GetTimeManager()->GetBestLapTime();
+    firstPlayer->setTime(mapName, firstPlayerTime);
+    if (!secondPlayerName_.empty()) {
+        PlayerPtr secondPlayer = activityManager_->GetPlayerManager()->GetPlayer(secondPlayerName_);
+        float secondPlayerTime = secondPlayerManager_->GetTimeManager()->GetBestLapTime();
+        secondPlayer->setTime(mapName, secondPlayerTime);
+    }
+
 }
 
 void Gameplay::Render() {
@@ -397,3 +412,5 @@ void Gameplay::PrepareFirstPlayer() {
     scene_->AddCamera(0, 40, 0.3);
 
 }
+
+

@@ -102,6 +102,8 @@ private:
 
     void SetTitleStyle(UITextBoxPtr textBox);
 
+    void SaveTimes();
+
     void PrintState();
 };
 

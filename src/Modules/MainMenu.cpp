@@ -4,6 +4,8 @@
 #include <CarComponentManager.h>
 #include <ViewportConst.h>
 #include <PlayerManager.h>
+#include <NewRace.h>
+#include <PlayerSelector.h>
 
 MainMenu::MainMenu() : Activity("main_menu") {
 
@@ -12,11 +14,13 @@ MainMenu::MainMenu() : Activity("main_menu") {
 void MainMenu::Init() {
     UIBoxPtr back = userInterface_->CreateBox("background", centeredFullScreen);
     back->SetBackgroundTexture("menu_back");
-    UITextBoxPtr play = userInterface_->CreateTextBox("start_game", "Play", 50, sf::FloatRect(0.5, 0.2, 0.2, 0.1));
-    UITextBoxPtr workshop = userInterface_->CreateTextBox("workshop", "Workshop", 50, sf::FloatRect(0.5, 0.4, 0.2, 0.1));
+    UITextBoxPtr single = userInterface_->CreateTextBox("single_player", "Single Player", 50, sf::FloatRect(0.5, 0.2, 0.2, 0.1));
+    UITextBoxPtr multi = userInterface_->CreateTextBox("multi_player", "Multi Player", 50, sf::FloatRect(0.5, 0.4, 0.2, 0.1));
+    UITextBoxPtr workshop = userInterface_->CreateTextBox("workshop", "Workshop", 50, sf::FloatRect(0.5, 0.6, 0.2, 0.1));
     UITextBoxPtr quit = userInterface_->CreateTextBox("quit_game", "Quit",
-                                                      50, sf::FloatRect(0.5, 0.6, 0.2, 0.1));
-    SetButtonStyle(play);
+                                                      50, sf::FloatRect(0.5, 0.8, 0.2, 0.1));
+    SetButtonStyle(single);
+    SetButtonStyle(multi);
     SetButtonStyle(workshop);
     SetButtonStyle(quit);
 }
@@ -39,8 +43,16 @@ void MainMenu::EventAction(Event event) {
         }
     } else if (event.GetType() == UI_EVENT) {
         if(event.GetUIEventType() == UI_EVENT_CLICK) {
-            if (event.GetUIElement() == "start_game")
+            if (event.GetUIElement() == "single_player") {
+                NewRacePtr newRace = std::make_shared<NewRace>(SINGLE_PLAYER);
+                activityManager_->AddActivity(newRace);
                 activityManager_->SetAsActive("new_race");
+            }
+            if (event.GetUIElement() == "multi_player") {
+                PlayerSelectorPtr selector = std::make_shared<PlayerSelector>(SECOND_PLAYER);
+                activityManager_->AddActivity(selector);
+                activityManager_->SetAsActive("player_selector");
+            }
             if (event.GetUIElement() == "workshop") {
                 PlayerPtr player = activityManager_->GetPlayerManager()->GetActivePlayer();
                 WorkshopPtr workshop = std::make_shared<Workshop>(player);
@@ -56,20 +68,6 @@ void MainMenu::EventAction(Event event) {
 void MainMenu::HandleKey(sf::Event::KeyEvent event) {
     if(event.code == sf::Keyboard::Escape) {
         activityManager_->RemoveActivity("main_menu");
-    }
-    //TODO delete debug print
-    if (event.code == sf::Keyboard::F1) {
-        CarConfigurationPtr config = activityManager_->GetPlayerManager()->GetActivePlayer()->GetCarConfiguration();
-        for (auto id : config->GetComponentsIDs())
-            std::cerr << id << " ";
-        std::cerr << std::endl;
-    }
-    if (event.code == sf::Keyboard::F2) {
-        auto times = activityManager_->GetPlayerManager()->GetActivePlayer()->GetTimes();
-        std::cerr << "PRINT TIMES " << times.size() << std::endl;
-        for (auto rec : times) {
-            std::cerr << rec.first << " " << rec.second << std::endl;
-        }
     }
 }
 

@@ -35,6 +35,8 @@ public:
 
     StartPositionT GetStartPosition(int position) const;
 
+    std::string GetMapName() const;
+
 private:
     std::string mapName_;
     std::string mapDescription_;

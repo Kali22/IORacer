@@ -47,12 +47,14 @@ std::map<std::string, float> Player::GetTimes() const {
 }
 
 void Player::setTime(std::string map, float time) {
-    auto it = times_.find(map);
-    if (it == times_.end()) {
-        times_[map] = time;
-    }
-    else {
-        times_[map] = std::min(it->second, time);
+    if (time != std::numeric_limits<float>::infinity()) {
+        auto it = times_.find(map);
+        if (it == times_.end()) {
+            times_[map] = time;
+        }
+        else {
+            times_[map] = std::min(it->second, time);
+        }
     }
 }
 

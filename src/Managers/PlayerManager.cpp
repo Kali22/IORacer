@@ -1,7 +1,9 @@
 #include "PlayerManager.h"
 
 PlayerManager::PlayerManager(CarComponentManagerPtr carComponentManager) :
-    carComponentManager_(carComponentManager){
+    carComponentManager_(carComponentManager),
+    activePlayer_(nullptr),
+    secondPlayer_(nullptr) {
     std::ifstream file(resourcePath_ + playerListFile_);
     std::string line;
 
@@ -22,6 +24,18 @@ bool PlayerManager::SetActivePlayer(const std::string &name) {
     activePlayer_ = it->second;
     return true;
 }
+
+PlayerPtr PlayerManager::GetSecondPlayer() const {
+    return secondPlayer_;
+}
+
+bool PlayerManager::SetSecondPlayer(const std::string &name) {
+    auto it = nameToPlayer_.find(name);
+    if (it == nameToPlayer_.end()) {
+        return false;
+    }
+    secondPlayer_ = it->second;
+    return true;}
 
 PlayerPtr PlayerManager::GetPlayer(const std::string &name) const {
     auto it = nameToPlayer_.find(name);
@@ -56,6 +70,10 @@ void PlayerManager::SaveGame() {
 PlayerManager::~PlayerManager() {
     SaveGame();
 }
+
+
+
+
 
 
 

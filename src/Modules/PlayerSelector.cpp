@@ -3,16 +3,19 @@
 #include <PlayerManager.h>
 #include <Player.h>
 #include <ViewportConst.h>
+#include <NewRace.h>
 
-PlayerSelector::PlayerSelector() :
+PlayerSelector::PlayerSelector(SelectorType type) :
         Activity("player_selector"),
-        player_(0) {
+        player_(0),
+        type_(type) {
 }
 
 void PlayerSelector::Init() {
     playersList_ = activityManager_->GetPlayerManager()->GetPlayersList();
     UIBoxPtr back = userInterface_->CreateBox("background", centeredFullScreen);
     back->SetBackgroundTexture("menu_back");
+    assert(type_ == FIRST_PLAYER || !playersList_.empty());
     if (!playersList_.empty()) {
         UITextBoxPtr left = userInterface_->CreateTextBox("prev", "<", 50, sf::FloatRect(0.2, 0.4, 0.05, 0.05));
         SetButtonStyle(left);
@@ -23,9 +26,12 @@ void PlayerSelector::Init() {
         UITextBoxPtr select = userInterface_->CreateTextBox("select", "Select", 50, sf::FloatRect(0.75, 0.8, 0.2, 0.1));
         SetButtonStyle(select);
     }
-    sf::FloatRect new_player_pos = playersList_.empty() ? sf::FloatRect(0.5, 0.5, 0.2, 0.1) : sf::FloatRect(0.25, 0.8, 0.2, 0.1);
-    UITextBoxPtr new_player = userInterface_->CreateTextBox("new_player", "New Player", 50, new_player_pos);
-    SetButtonStyle(new_player);
+    if (type_ == FIRST_PLAYER) {
+        sf::FloatRect new_player_pos = playersList_.empty() ?
+                                       sf::FloatRect(0.5, 0.5, 0.2, 0.1) : sf::FloatRect(0.25, 0.8, 0.2, 0.1);
+        UITextBoxPtr new_player = userInterface_->CreateTextBox("new_player", "New Player", 50, new_player_pos);
+        SetButtonStyle(new_player);
+    }
 }
 
 void PlayerSelector::Run() {
@@ -55,8 +61,16 @@ void PlayerSelector::EventAction(Event event) {
                     player_--;
             }
             if (event.GetUIElement() == "select") {
-                activityManager_->GetPlayerManager()->SetActivePlayer(playersList_[player_]);
-                activityManager_->SetAsActive("main_menu");
+                if (type_ == FIRST_PLAYER) {
+                    activityManager_->GetPlayerManager()->SetActivePlayer(playersList_[player_]);
+                    activityManager_->SetAsActive("main_menu");
+                }
+                else {
+                    activityManager_->GetPlayerManager()->SetSecondPlayer(playersList_[player_]);
+                    NewRacePtr newRace = std::make_shared<NewRace>(MULTI_PLAYER);
+                    activityManager_->AddActivity(newRace);
+                    activityManager_->SetAsActive("new_race");
+                }
             }
             if (event.GetUIElement() == "new_player")
                 activityManager_->SetAsActive("new_player");

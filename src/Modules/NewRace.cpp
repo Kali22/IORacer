@@ -4,7 +4,9 @@
 #include <Gameplay.h>
 #include <ViewportConst.h>
 
-NewRace::NewRace() : Activity("new_race") {
+const int default_laps_number = 2;
+
+NewRace::NewRace(RaceType type) : Activity("new_race"), type_(type), laps_(default_laps_number) {
 }
 
 void NewRace::Init() {
@@ -16,17 +18,25 @@ void NewRace::Init() {
     UITextBoxPtr m1 = userInterface_->CreateTextBox("map_1", "map_1", 30, sf::FloatRect(0.5, 0.6, 0.2, 0.05));
     SetButtonStyle(m0);
     SetButtonStyle(m1);
-    UITextBoxPtr right = userInterface_->CreateTextBox("inc_lap", ">", 30, sf::FloatRect(0.55, 0.2, 0.05, 0.05));
-    SetButtonStyle(right);
-    UITextBoxPtr left = userInterface_->CreateTextBox("dec_lap", "<", 30, sf::FloatRect(0.45, 0.2, 0.05, 0.05));
-    SetButtonStyle(left);
+    UITextBoxPtr laps = userInterface_->CreateTextBox("laps", std::to_string(laps_), 30, sf::FloatRect(0.5, 0.2, 0.1, 0.05));
+    SetButtonStyle(laps);
+    UITextBoxPtr plus = userInterface_->CreateTextBox("inc_lap", "+", 30, sf::FloatRect(0.6, 0.2, 0.05, 0.05));
+    SetButtonStyle(plus);
+    UITextBoxPtr minus = userInterface_->CreateTextBox("dec_lap", "-", 30, sf::FloatRect(0.4, 0.2, 0.05, 0.05));
+    SetButtonStyle(minus);
 }
 
 void NewRace::Run() {
     RendererPtr renderer = activityManager_->GetRenderer();
+    Update();
     renderer->Clear();
     renderer->RenderUI(userInterface_);
     renderer->Display();
+}
+
+void NewRace::Update() {
+    UITextBoxPtr nameTextBox = std::dynamic_pointer_cast<UITextBox>(userInterface_->GetElementByName("laps"));
+    nameTextBox->SetText(std::to_string(laps_));
 }
 
 void NewRace::End() {
@@ -40,6 +50,10 @@ void NewRace::EventAction(Event event) {
         }
     } else if (event.GetType() == UI_EVENT) {
         if (event.GetUIEventType() == UI_EVENT_CLICK) {
+            if (event.GetUIElement() == "dec_lap")
+                if (laps_ > 1) laps_--;
+            if (event.GetUIElement() == "inc_lap")
+                if (laps_ < 99) laps_++;
             if (event.GetUIElement() == "map_0")
                 CreateRace("map_0");
             if (event.GetUIElement() == "map_1")
@@ -67,10 +81,13 @@ void NewRace::SetTitleStyle(UITextBoxPtr textBox) {
 }
 
 void NewRace::CreateRace(std::string name) {
-    GameplayPtr race = std::make_shared<Gameplay>(name, 2);
+    GameplayPtr race = std::make_shared<Gameplay>(name, laps_);
     std::string firstPlayerName = activityManager_->GetPlayerManager()->GetActivePlayer()->GetName();
     race->SetFirstPlayer(firstPlayerName);
-    race->SetSecondPlayer("placek");
+    if (type_ == MULTI_PLAYER) {
+        std::string secondPlayerName = activityManager_->GetPlayerManager()->GetSecondPlayer()->GetName();
+        race->SetSecondPlayer(secondPlayerName);
+    }
     activityManager_->AddActivity(race);
     activityManager_->SetAsActive("race");
 }

@@ -60,6 +60,8 @@ void NewPlayer::Update() {
 }
 
 void NewPlayer::HandleKey(sf::Event::KeyEvent event) {
+    if (event.code == sf::Keyboard::Return)
+        CreatePlayer();
     if (event.code == sf::Keyboard::BackSpace) {
         if (!player_.empty())
             player_.pop_back();

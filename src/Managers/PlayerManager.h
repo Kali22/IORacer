@@ -13,7 +13,11 @@ public:
 
     bool SetActivePlayer(const std::string& name);
 
+    bool SetSecondPlayer(const std::string& name);
+
     PlayerPtr GetActivePlayer() const;
+
+    PlayerPtr GetSecondPlayer() const;
 
     PlayerPtr GetPlayer(const std::string& name) const;
 
@@ -25,6 +29,7 @@ public:
 private:
     std::map<std::string, PlayerPtr> nameToPlayer_;
     PlayerPtr activePlayer_;
+    PlayerPtr secondPlayer_;
     CarComponentManagerPtr carComponentManager_;
     const std::string resourcePath_ = "../resource/players/";
     const std::string playerListFile_ = "players_list";

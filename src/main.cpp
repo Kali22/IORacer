@@ -20,16 +20,14 @@ int main(int argc, char **argv) {
 
     /*=============== Activities and game logic. ===============*/
     SplashPtr splashScreen = std::make_shared<Splash>();
-    PlayerSelectorPtr playerSelector = std::make_shared<PlayerSelector>();
+    PlayerSelectorPtr playerSelector = std::make_shared<PlayerSelector>(FIRST_PLAYER);
     NewPlayerPtr newPlayer = std::make_shared<NewPlayer>();
     MainMenuPtr mainMenu = std::make_shared<MainMenu>();
-    NewRacePtr newRace = std::make_shared<NewRace>();
 
     activityManager->AddActivity(splashScreen);
     activityManager->AddActivity(playerSelector);
     activityManager->AddActivity(newPlayer);
     activityManager->AddActivity(mainMenu);
-    activityManager->AddActivity(newRace);
     /* Set splash screen as game entry point. */
     activityManager->SetAsActive("splash");
 

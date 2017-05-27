@@ -82,3 +82,9 @@ const std::vector<CheckpointPosition> &Map::GetCheckpoints() const {
 StartPositionT Map::GetStartPosition(int position) const {
     return startPositions_[position];
 }
+
+std::string Map::GetMapName() const {
+    return mapName_;
+}
+
+
