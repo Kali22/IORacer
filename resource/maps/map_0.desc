@@ -3,14 +3,17 @@
 # 2: <physical size x [m]> <physical size y [m]>
 # 3: view texture name
 # 4: friction texture name
-# number of checkpoints
-# list of checkpoints: <posx> <posy> <rot>
+# 5: minimap texture name
+# 6: number of checkpoints
+# 6+: list of checkpoints: <posx> <posy> <rot>
+# 7: max number of players
+# 7+: starting positions of players
 # list of items <object name> <posx> <posy> <rot>
-Second small test map
+Bootcamp
 842.3 478.1
-map_1_view
-map_1_friction
-map_1_mini
+map_0_view
+map_0_friction
+map_0_mini
 9
 -308 151 130
 -290 -189.5 72

@@ -3,34 +3,27 @@
 # 2: <physical size x [m]> <physical size y [m]>
 # 3: view texture name
 # 4: friction texture name
-# number of checkpoints
-# list of checkpoints: <posx> <posy> <rot>
+# 5: minimap texture name
+# 6: number of checkpoints
+# 6+: list of checkpoints: <posx> <posy> <rot>
+# 7: max number of players
+# 7+: starting positions of players
 # list of items <object name> <posx> <posy> <rot>
-Second small test map
+Bordeaux
 435.0 260.82
 map_2_view
 map_2_friction
 map_2_mini
-9
--308 151 130
--290 -189.5 72
--67.5 -98 0
--207 11 0
-112 9 40
-213 -138 115
-363 -140 0
-363.5 89 0
--95 170 90
+6
+15 -98 105
+155 14 87
+31 -2 15
+-60 98 95
+-187 25 160
+-57 -55 15
 4
-0 0 90
--80 175.19 90
--75 165.1 90
--70 175.19 90
+-60 -52 205
+-55 -51 205
+-50 -50 205
+-45 -49 205
 tire -8 152 45
-tire -5 152 45
-tire -2 152 45
-tire 1 152 45
-tire 4 152 45
-tire 7 152 45
-tire 10 152 45
-tire 13 152 45
