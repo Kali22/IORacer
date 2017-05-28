@@ -16,7 +16,7 @@ class MapManager {
 public:
     MapManager(TextureManagerPtr textureManager, ObjectManagerPtr objectManager);
 
-    MapPtr  CreateMap(std::string mapName);
+    MapPtr CreateMap(std::string mapName);
 private:
     std::vector<CheckpointPosition> ParseCheckpoints(std::ifstream* file) const;
 

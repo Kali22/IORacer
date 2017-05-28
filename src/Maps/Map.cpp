@@ -13,6 +13,7 @@ Map::Map(std::string name, std::string description, RealVec size, TexturePtr vie
         mapName_(name),
         mapDescription_(description),
         mapSize_(size),
+        minimapTexture_(minimap),
         checkpoints_(checkpoints),
         objects_(objects),
         startPositions_(standings) {
@@ -22,7 +23,6 @@ Map::Map(std::string name, std::string description, RealVec size, TexturePtr vie
     // Get images and textures
     imageFriction_ = friction->GetTexture()->copyToImage();
     mapView_.setTexture(*view->GetTexture());
-    minimapView_.setTexture(*minimap->GetTexture());
 
     auto textureMapSize = mapView_.getGlobalBounds();
     // Set origin in the middle
@@ -87,4 +87,7 @@ std::string Map::GetMapName() const {
     return mapName_;
 }
 
+TexturePtr Map::GetMinimapTexture() const {
+    return minimapTexture_;
+}
 
