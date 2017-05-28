@@ -2,15 +2,10 @@
 
 #include <Activity.h>
 
-ActivityManager::ActivityManager(WindowPtr window,
-                                 TextureManagerPtr textureManager,
-                                 PlayerManagerPtr playerManager,
-                                 CarComponentManagerPtr carComponentManager) :
-        window_(window),
-        active_(nullptr),
-        textureManager_(textureManager),
-        playerManager_(playerManager),
-        carComponentManager_(carComponentManager) {
+ActivityManager::ActivityManager(WindowPtr window, TextureManagerPtr textureManager,
+                                 CarComponentManagerPtr carComponentManager, PlayerManagerPtr playerManager)
+        : window_(window), active_(nullptr), textureManager_(textureManager),
+          carComponentManager_(carComponentManager), playerManager_(playerManager) {
 }
 
 void ActivityManager::Poll() {
@@ -92,15 +87,10 @@ TextureManagerPtr ActivityManager::GetTextureManager() const {
     return textureManager_;
 }
 
-PlayerManagerPtr ActivityManager::GetPlayerManager() const {
-    return playerManager_;
-}
-
 CarComponentManagerPtr ActivityManager::GetCarComponentManager() const {
     return carComponentManager_;
 }
 
-
-
-
-
+PlayerManagerPtr ActivityManager::GetPlayerManager() const {
+    return playerManager_;
+}

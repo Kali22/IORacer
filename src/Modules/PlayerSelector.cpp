@@ -2,6 +2,8 @@
 #include <ActivityManager.h>
 #include <PlayerManager.h>
 #include <Player.h>
+#include <Workshop.h>
+#include <CarComponentManager.h>
 #include <ViewportConst.h>
 #include <NewRace.h>
 

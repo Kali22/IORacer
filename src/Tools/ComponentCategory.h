@@ -13,7 +13,9 @@ public:
 
     std::string GetName() const;
 
-    bool SetComponent(int id);
+    ModifierType GetType() const;
+
+    bool SetComponent(unsigned long id);
 
     CarComponentPtr GetComponent() const;
 
@@ -22,7 +24,7 @@ public:
     CarComponentPtr PreviousComponent();
 private:
     std::vector<CarComponentPtr> components_;
-    int current_;
+    unsigned long current_;
     ModifierType type_;
     std::string name_;
 };

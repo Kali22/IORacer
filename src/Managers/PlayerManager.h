@@ -1,5 +1,6 @@
 #pragma once
 
+#include <bits/stdc++.h>
 #include <map>
 #include <Player.h>
 #include <CarComponentManager.h>
@@ -35,5 +36,4 @@ private:
     const std::string playerListFile_ = "players_list";
 
 };
-
 using PlayerManagerPtr = std::shared_ptr<PlayerManager>;

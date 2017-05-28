@@ -54,8 +54,7 @@ void MainMenu::EventAction(Event event) {
                 activityManager_->SetAsActive("player_selector");
             }
             if (event.GetUIElement() == "workshop") {
-                PlayerPtr player = activityManager_->GetPlayerManager()->GetActivePlayer();
-                WorkshopPtr workshop = std::make_shared<Workshop>(player);
+                WorkshopPtr workshop = std::make_shared<Workshop>();
                 activityManager_->AddActivity(workshop);
                 activityManager_->SetAsActive("workshop");
             }

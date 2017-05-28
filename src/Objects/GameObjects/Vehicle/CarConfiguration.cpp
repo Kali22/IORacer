@@ -41,3 +41,11 @@ std::vector<int> CarConfiguration::GetComponentsIDs() const {
 }
 
 
+int CarConfiguration::GetComponentId(ModifierType type) const {
+    auto it = components_.find(type);
+    if (it == components_.end()) {
+        return -1;
+    }
+    return it->second->GetId();
+}
+

@@ -42,13 +42,15 @@ ObjectManager::ObjectManager(TextureManagerPtr textureManager, b2World* world) :
     }
 }
 
-VehiclePtr ObjectManager::CreateVehicle(int id, const RealVec &pos, float rot, const VehicleSetupT &setup, MapPtr map) {
+VehiclePtr ObjectManager::CreateVehicle(int id, const RealVec &pos, float
+rot, const VehicleSetupT &setup, MapPtr map, CarConfigurationPtr carConfiguration) {
     std::vector<WheelPtr> wheels;
     for(int i = 0; i < 4; ++i)
         wheels.push_back(CreateWheel(pos, rot));
     b2Body *body = InitializeBody(ObjectsMap[OBJECT_TYPE_VEHICLE], pos, rot);
     VisualObjectPtr chassis = GetVisualObjectInstanceByName(ObjectsMap[OBJECT_TYPE_VEHICLE]);
-    return std::make_shared<Vehicle>(id, body, chassis, std::move(wheels), setup, map);
+    return std::make_shared<Vehicle>(id, body, chassis, std::move(wheels),
+                                     setup, carConfiguration, map);
 }
 
 WheelPtr ObjectManager::CreateWheel(const RealVec &pos, float rot) {

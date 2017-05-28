@@ -1,10 +1,13 @@
 #pragma once
 
+#define MAX_PLAYER 2
+
 #include <Activity.h>
 #include <Event.h>
 #include <Vehicle.h>
 #include <ContactListener.h>
 #include <MapManager.h>
+#include <Player.h>
 
 enum GameplayStateE {
     GAMEPLAY_STATE_PREPARE,
@@ -17,9 +20,9 @@ class Gameplay : public Activity {
 public:
     Gameplay(const std::string &mapName, int laps);
 
-    void SetFirstPlayer(const std::string &name);
+    void SetFirstPlayer(PlayerPtr player);
 
-    void SetSecondPlayer(const std::string &name);
+    void SetSecondPlayer(PlayerPtr player);
 
     void Init();
 
@@ -28,7 +31,6 @@ public:
     void End();
 
     void EventAction(Event event);
-
 private:
     void HandleKey(sf::Event::KeyEvent event, bool state);
 
@@ -56,6 +58,8 @@ private:
 
     void UpdateGame();
 
+    void UpdatePlayer(int id, float dt);
+
     void PrepareUIForPrepareState();
 
     void PrepareUIForPauseState();
@@ -64,9 +68,7 @@ private:
 
     void PrepareHUD();
 
-    void PrepareFirstPlayer();
-
-    void PrepareSecondPlayer();
+    void PreparePlayer(int id);
 
     /* xD xD xD */
     bool isOver_;
@@ -79,12 +81,9 @@ private:
     GameplayStateE gameState_; // Game status
 
     /* Players */
-    std::string firstPlayerName_;
-    std::string secondPlayerName_;
-    VehiclePtr firstPlayerVehicle_;
-    VehiclePtr secondPlayerVehicle_;
-    CheckPointManagerPtr  firstPlayerManager_;
-    CheckPointManagerPtr  secondPlayerManager_;
+    PlayerPtr player_[MAX_PLAYER];
+    VehiclePtr playerVehicle_[MAX_PLAYER];
+    CheckPointManagerPtr playerCheckpoints_[MAX_PLAYER];
 
     MapPtr map_;
     ScenePtr scene_;
@@ -95,7 +94,6 @@ private:
 
     const float preparationTimeInSeconds = 3.f;
 
-
     void HandleKeyFirstPlayer(sf::Event::KeyEvent event, bool state);
 
     void HandleKeySecondPlayer(sf::Event::KeyEvent event, bool state);
@@ -103,8 +101,6 @@ private:
     void SetTitleStyle(UITextBoxPtr textBox);
 
     void SaveTimes();
-
-    void PrintState();
 };
 
 using GameplayPtr = std::shared_ptr<Gameplay>;

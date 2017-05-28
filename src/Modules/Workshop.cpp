@@ -1,41 +1,46 @@
 #include "Workshop.h"
 
+#include <UIColorConstants.h>
 #include <ActivityManager.h>
 #include <Gameplay.h>
 #include <ViewportConst.h>
 
-Workshop::Workshop(PlayerPtr player)
-        : Activity("workshop"), player_(player) {
+Workshop::Workshop() : Activity("workshop") {
 }
 
 void Workshop::Init() {
+    player_ = activityManager_->GetPlayerManager()->GetActivePlayer();
+    configuration_ = player_->GetCarConfiguration();
     carComponentManager_ = activityManager_->GetCarComponentManager();
+
     UIBoxPtr back = userInterface_->CreateBox("background", centeredFullScreen);
     back->SetBackgroundTexture("menu_back");
-    UITextBoxPtr title = userInterface_->CreateTextBox("title",
-                                                       "Select component", 50,
-                                                       sf::FloatRect(0.5, 0.075,
-                                                                     1, 0.1));
+    UITextBoxPtr title = userInterface_->CreateTextBox(
+            "title", "Select component", 50, sf::FloatRect(0.5, 0.075, 1, 0.1));
     SetTitleStyle(title);
 
     categoryBox_ = userInterface_->CreateTextBox(
             "category", "Category", 30, sf::FloatRect(0.25, 0.5, 0.2, 0.05));
     componentBox_ = userInterface_->CreateTextBox(
-            "component", "Component", 30, sf::FloatRect(0.75, 0.5, 0.2, 0.05));
+            "component", "Component", 30, sf::FloatRect(0.75, 0.5, 0.2, 0.2));
+
     UITextBoxPtr categoryLeft = userInterface_->CreateTextBox(
-            "category_left", "<", 30, sf::FloatRect(0.175, 0.65, 0.05, 0.05));
+            "category_left", "<", 30, sf::FloatRect(0.175, 0.60, 0.05, 0.05));
     UITextBoxPtr categoryRight = userInterface_->CreateTextBox(
-            "category_right", ">", 30, sf::FloatRect(0.325, 0.65, 0.05, 0.05));
+            "category_right", ">", 30, sf::FloatRect(0.325, 0.60, 0.05, 0.05));
+
     UITextBoxPtr componentLeft = userInterface_->CreateTextBox(
-            "component_left", "<", 30, sf::FloatRect(0.675, 0.65, 0.05, 0.05));
+            "component_left", "<", 30, sf::FloatRect(0.675, 0.7, 0.05, 0.05));
     UITextBoxPtr componentRight = userInterface_->CreateTextBox(
-            "component_right", ">", 30, sf::FloatRect(0.825, 0.65, 0.05, 0.05));
+            "component_right", ">", 30, sf::FloatRect(0.825, 0.7, 0.05, 0.05));
+
     SetButtonStyle(categoryBox_);
     SetButtonStyle(componentBox_);
     SetButtonStyle(categoryRight);
     SetButtonStyle(categoryLeft);
     SetButtonStyle(componentRight);
     SetButtonStyle(componentLeft);
+
     InitCategories();
     UpdateCategoryUI();
 }
@@ -64,7 +69,7 @@ void Workshop::EventAction(Event event) {
             } else if (uiElement == "category_right") {
                 categoryId_ = (categoryId_ + 1) % categories_.size();
             } else if (uiElement == "category_left") {
-                int size = categories_.size();
+                unsigned long size = categories_.size();
                 categoryId_ = (categoryId_ + size - 1) % size;
             } else if (uiElement == "component_right") {
                 GetCurrentCategory()->NextComponent();
@@ -92,37 +97,67 @@ void Workshop::SetTitleStyle(UITextBoxPtr textBox) {
     textBox->SetOutlineThickness(1.f);
 }
 
-void Workshop::CreateRace(std::string name) {
-    GameplayPtr race = std::make_shared<Gameplay>(name, 2);
-    race->SetFirstPlayer("jacek");
-    race->SetSecondPlayer("placek");
-    activityManager_->AddActivity(race);
-    activityManager_->SetAsActive("race");
-}
-
 void Workshop::SetButtonStyle(UITextBoxPtr button) {
-    button->SetBackgroundColor(sf::Color(0x1c7396ff));
-    button->SetBackgroundColorHover(sf::Color(0xD5E6E0ff));
-    button->SetOutlineColor(sf::Color(0xE1F0FFff));
-    button->SetOutlineColorHover(sf::Color(0x60758Cff));
-    button->SetTextColor(sf::Color(0xD5E6E0ff));
-    button->SetTextColorHover(sf::Color(0x1c7396ff));
-    button->SetOutlineThickness(3.f);
+    button->SetBackgroundColor(backgroundColor);
+    button->SetBackgroundColorHover(backgroundColorHover);
+    button->SetOutlineColor(outlineColor);
+    button->SetOutlineColorHover(outlineColorHover);
+    button->SetTextColor(textColor);
+    button->SetTextColorHover(textColorHover);
+    button->SetOutlineThickness(outlineThickness);
 }
 
 void Workshop::InitCategories() {
     categories_ = carComponentManager_->GetComponentCategories();
-    categoryId_ = 0; // TODO set for already choosen by player
+    categoryId_ = 0;
+    for (auto category : categories_) {
+        ModifierType type = category->GetType();
+        int id = configuration_->GetComponentId(type);
+        if (id >= 0) {
+            category->SetComponent(id);
+        }
+    }
 }
 
 void Workshop::UpdateCategoryUI() {
-    categoryBox_->SetText(categories_[categoryId_]->GetName());
+    categoryBox_->SetText(GetCurrentCategory()->GetName());
     UpdateComponentUI();
 }
 
 
 void Workshop::UpdateComponentUI() {
-    componentBox_->SetText(categories_[categoryId_]->GetComponent()->GetName());
+    CarComponentPtr component = GetCurrentCategory()->GetComponent();
+    UpdateComponentString(component);
+
+    ModifierType type = GetCurrentCategory()->GetType();
+    int id = configuration_->GetComponentId(type);
+    if (id == component->GetId()) {
+        SetSelectedButtonStyle(componentBox_);
+        return;
+    }
+
+    SetButtonStyle(componentBox_);
+    if (!component->IsTimesSufficient(player_->GetTimes())) {
+        componentBox_->SetBackgroundColor(sf::Color::Red);
+        componentBox_->SetBackgroundColorHover(sf::Color::Red);
+    }
+}
+
+void Workshop::UpdateComponentString(CarComponentPtr component) const {
+    std::stringstream label;
+    label << component->GetName().c_str();
+
+    auto requirements = GetCurrentCategory()->GetComponent()->GetRequirement();
+    if (requirements.empty()) {
+        label << "\nNo requirements";
+    } else {
+        label << "\nRequirements:";
+        for (auto it : requirements) {
+            label << "\n" << it.first.c_str() << " - ";
+            label << it.second << " s";
+        }
+    }
+    componentBox_->SetText(label.str());
 }
 
 ComponentCategoryPtr Workshop::GetCurrentCategory() const {
@@ -131,19 +166,19 @@ ComponentCategoryPtr Workshop::GetCurrentCategory() const {
 
 void Workshop::SelectComponent() {
     CarComponentPtr component = GetCurrentCategory()->GetComponent();
-    if (component->IsTimesSufficient(player_->GetTimes())) {
-        player_->GetCarConfiguration()->AddComponent(component);
+    if (!component->IsTimesSufficient(player_->GetTimes())) {
+        return;
     }
-    // TODO change ui
+    configuration_->AddComponent(component);
+    SetSelectedButtonStyle(componentBox_);
 }
 
 void Workshop::SetSelectedButtonStyle(UITextBoxPtr button) {
-    // TODO reformat - add colors to constants
-    button->SetBackgroundColor(sf::Color(0xD5E6E0ff));
-    button->SetBackgroundColorHover(sf::Color(0xD5E6E0ff));
-    button->SetOutlineColor(sf::Color(0xE1F0FFff));
-    button->SetOutlineColorHover(sf::Color(0x60758Cff));
-    button->SetTextColor(sf::Color(0x1c7396ff));
-    button->SetTextColorHover(sf::Color(0x1c7396ff));
-    button->SetOutlineThickness(3.f);
+    button->SetBackgroundColor(backgroundColorHover);
+    button->SetBackgroundColorHover(backgroundColorHover);
+    button->SetOutlineColor(outlineColorHover);
+    button->SetOutlineColorHover(outlineColorHover);
+    button->SetTextColor(textColorHover);
+    button->SetTextColorHover(textColorHover);
+    button->SetOutlineThickness(outlineThickness);
 }

@@ -3,21 +3,28 @@
 #include <CarComponentManager.h>
 #include <Window.h>
 #include <ActivityManager.h>
+#include <PlayerSelector.h>
 #include <Splash.h>
 #include <PlayerSelector.h>
 #include <NewPlayer.h>
 #include <MainMenu.h>
 #include <NewRace.h>
+#include <TextureManager.h>
+#include <CarComponentManager.h>
+#include <PlayerManager.h>
+#include <Workshop.h>
 
 
 int main(int argc, char **argv) {
     /*=============== Early inits. Core objects. ===============*/
-    CarComponentManagerPtr carComponentManager = std::make_shared<CarComponentManager>();
     TextureManagerPtr textureManager = std::make_shared<TextureManager>();
+    CarComponentManagerPtr carComponentManager = std::make_shared<CarComponentManager>();
     PlayerManagerPtr playerManager = std::make_shared<PlayerManager>(carComponentManager);
     WindowPtr window = std::make_shared<Window>("IORacer");
-    ActivityManagerPtr activityManager = std::make_shared<ActivityManager>(window, textureManager, playerManager, carComponentManager);
+    ActivityManagerPtr activityManager = std::make_shared<ActivityManager>
+            (window, textureManager, carComponentManager, playerManager);
 
+    playerManager->SetActivePlayer("jacek");
     /*=============== Activities and game logic. ===============*/
     SplashPtr splashScreen = std::make_shared<Splash>();
     PlayerSelectorPtr playerSelector = std::make_shared<PlayerSelector>(FIRST_PLAYER);
