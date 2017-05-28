@@ -64,7 +64,8 @@ float Map::GetFrictionModifier(const RealVec& pos) {
 
     sf::Color color = imageFriction_.getPixel(x, y);
     float res = 1.f - (color.b + color.r + color.g) / 256.0f / 3.0f;
-    fprintf(stderr,"GetFrictionModifier( %f, %f, %f)[x: %d, y: %d] = (r: %d, g: %d, b: %d) ->  %f\n", pos.x, pos.y, pos.GetScale(), x, y, color.r, color.g, color.b, res);
+    //fprintf(stderr,"GetFrictionModifier( %f, %f, %f)[x: %d, y: %d] = (r: %d, g: %d, b: %d) ->  %f\n", pos.x, pos.y, pos.GetScale(), x, y, color.r, color.g, color.b, res);
+    fprintf(stderr,"[x: %f, y: %f]", pos.x, pos.y);
     return res;
 }
 
