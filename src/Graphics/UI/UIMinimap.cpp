@@ -8,6 +8,8 @@ UIMinimap::UIMinimap(int id, std::string name, sf::FloatRect size, ActivityPtr
 activity, RealVec mapSize, TexturePtr texture)
         : UIElement(id, name, size, activity), mapSize_(mapSize),
           texture_(texture) {
+    SetOutlineThickness(0.5f);
+    SetOutlineColor(sf::Color(0, 0, 0, 200));
 }
 
 void UIMinimap::Render(RenderWindowPtr window) {

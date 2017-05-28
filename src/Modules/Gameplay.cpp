@@ -205,7 +205,7 @@ void Gameplay::PrepareHUD() {
     UITextBoxPtr lap0 = userInterface_->CreateTextBox("lap_0", "?", 20,
                                                        sf::FloatRect(0.1, 0.075, 0.2, 0.06));
     SetTitleStyle(lap0);
-    sf::FloatRect minimapRect(0.9, 0.9, 0.16, 0.16);
+    sf::FloatRect minimapRect(0.9, 0.85, 0.16, 0.16);
     TexturePtr minimapTexture = map_->GetMinimapTexture();
     if (playerVehicle_[SECOND_PLAYER] != nullptr) {
         UITextBoxPtr lap1 = userInterface_->CreateTextBox("lap_1", "?", 20,
@@ -213,7 +213,7 @@ void Gameplay::PrepareHUD() {
         SetTitleStyle(lap1);
         minimap_[SECOND_PLAYER] = userInterface_->CreateMinimap(
                 "minimap_1", minimapRect,map_->GetSize(), minimapTexture);
-        minimapRect = sf::FloatRect(0.4, 0.9, 0.16, 0.16);
+        minimapRect = sf::FloatRect(0.4, 0.85, 0.16, 0.16);
     }
     minimap_[FIRST_PLAYER] = userInterface_->CreateMinimap(
             "minimap_0", minimapRect,map_->GetSize(), minimapTexture);
