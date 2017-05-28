@@ -8,7 +8,7 @@
 class UIMinimap : public UIElement {
 public:
     UIMinimap(int id, std::string name, sf::FloatRect size, ActivityPtr
-    activity, TexturePtr texture);
+    activity, RealVec mapSize, TexturePtr texture);
 
     virtual void Render(RenderWindowPtr window);
 
@@ -16,6 +16,9 @@ public:
 private:
     void UpdatePos(RealVec* origin, RealVec newPos);
 
+    void DrawPos(RenderWindowPtr window, RealVec pos, sf::Color);
+
+    RealVec mapSize_;
     TexturePtr texture_;
     RealVec carPos_;
     RealVec checkpointPos_;

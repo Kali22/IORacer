@@ -38,6 +38,8 @@ public:
 
     TexturePtr GetMinimapTexture() const;
 
+    RealVec GetSize() const;
+
     std::string GetMapName() const;
 private:
     std::string mapName_;

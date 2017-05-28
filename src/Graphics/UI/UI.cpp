@@ -21,9 +21,10 @@ UIBoxPtr UI::CreateBox(std::string name, sf::FloatRect size) {
 }
 
 UIMinimapPtr UI::CreateMinimap(std::string name, sf::FloatRect size,
-                               TexturePtr texture) {
+                               RealVec mapSize, TexturePtr texture) {
     UIMinimapPtr minimap = std::make_shared<UIMinimap>(list_.size(), name,
-                                                       size, activity_, texture);
+                                                       size, activity_,
+                                                       mapSize, texture);
     list_[name] = minimap;
     return minimap;
 }

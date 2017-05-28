@@ -5,14 +5,15 @@
 
 
 UIMinimap::UIMinimap(int id, std::string name, sf::FloatRect size, ActivityPtr
-activity, TexturePtr texture)
-        : UIElement(id, name, size, activity), texture_(texture) {
-    // TODO compute scale
+activity, RealVec mapSize, TexturePtr texture)
+        : UIElement(id, name, size, activity), mapSize_(mapSize),
+          texture_(texture) {
 }
 
 void UIMinimap::Render(RenderWindowPtr window) {
     UIElement::Render(window);
-    //window->draw(bounds_);
+    DrawPos(window, carPos_, sf::Color(255, 50, 0, 250));
+    DrawPos(window, checkpointPos_, sf::Color(0, 250, 200, 250));
 }
 
 void UIMinimap::Update(RealVec carPos, RealVec checkpointPos) {
@@ -23,4 +24,22 @@ void UIMinimap::Update(RealVec carPos, RealVec checkpointPos) {
 void UIMinimap::UpdatePos(RealVec* origin, RealVec newPos) {
     origin->x = newPos.x;
     origin->y = newPos.y;
+}
+
+void UIMinimap::DrawPos(RenderWindowPtr window, RealVec posOnMap, sf::Color color) {
+    sf::CircleShape point(5);
+    point.setFillColor(color);
+    point.setOutlineColor(sf::Color(0, 0, 0, 150));
+
+    float scale = bounds_.getGlobalBounds().height / mapSize_.y;
+    carPos_.SetScale(scale);
+    checkpointPos_.SetScale(scale);
+
+    sf::Vector2f pos = bounds_.getPosition();
+    sf::Vector2f scaledPos = posOnMap.GetScaledVector();
+    pos.x += scaledPos.x;
+    pos.y += scaledPos.y;
+
+    point.setPosition(pos);
+    window->draw(point);
 }

@@ -91,3 +91,6 @@ TexturePtr Map::GetMinimapTexture() const {
     return minimapTexture_;
 }
 
+RealVec Map::GetSize() const {
+    return mapSize_;
+}

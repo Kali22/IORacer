@@ -16,7 +16,8 @@ public:
 
     UIBoxPtr CreateBox(std::string name, sf::FloatRect size  = centeredFullScreen);
 
-    UIMinimapPtr CreateMinimap(std::string name, sf::FloatRect size, TexturePtr texture);
+    UIMinimapPtr CreateMinimap(std::string name, sf::FloatRect size,
+                               RealVec mapSize, TexturePtr texture);
 
     UITextBoxPtr CreateTextBox(std::string name, std::string text, int fontSize, sf::FloatRect size);
 
