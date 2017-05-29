@@ -7,6 +7,7 @@
 #include <UIBox.h>
 #include <UITextBox.h>
 #include <ViewportConst.h>
+#include <UIMinimap.h>
 
 /** @TODO Resize elements onload! */
 class UI {
@@ -14,6 +15,9 @@ public:
     UI(ActivityPtr activity);
 
     UIBoxPtr CreateBox(std::string name, sf::FloatRect size = centeredFullScreen);
+
+    UIMinimapPtr CreateMinimap(std::string name, sf::FloatRect size,
+                               RealVec mapSize, TexturePtr texture);
 
     UITextBoxPtr CreateTextBox(std::string name, std::string text, int fontSize, sf::FloatRect size);
 

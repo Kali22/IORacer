@@ -8,6 +8,7 @@
 #include <ContactListener.h>
 #include <MapManager.h>
 #include <Player.h>
+#include <UIMinimap.h>
 
 enum GameplayStateE {
     GAMEPLAY_STATE_PREPARE,
@@ -92,6 +93,8 @@ private:
     MapManagerPtr mapManager_;
     ContactListenerPtr contactListener_;
     b2World *world_;
+
+    UIMinimapPtr minimap_[MAX_PLAYER];
 
     const float preparationTimeInSeconds = 3.f;
 

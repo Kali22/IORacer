@@ -1,15 +1,20 @@
 #include "NewPlayer.h"
 #include <ActivityManager.h>
+#include <PlayerManager.h>
+#include <ViewportConst.h>
+#include <NewRace.h>
 
-NewPlayer::NewPlayer() : Activity("new_player") {}
+NewPlayer::NewPlayer(SelectorType type) : Activity("new_player"), type_(type) {
+}
 
 void NewPlayer::Init() {
     UIBoxPtr back = userInterface_->CreateBox("background", centeredFullScreen);
     back->SetBackgroundTexture("menu_back");
+    UITextBoxPtr title = userInterface_->CreateTextBox("title", "", 70, sf::FloatRect(0.5, 0.075, 1, 0.1));
+    SetTitleStyle(title);
     UITextBoxPtr player = userInterface_->CreateTextBox("name", "", 80, sf::FloatRect(0.5, 0.4, 0.7, 0.15));
     SetTextBoxStyle(player);
-    UITextBoxPtr new_player = userInterface_->CreateTextBox("new_player", "New Player", 50,
-                                                            sf::FloatRect(0.5, 0.8, 0.2, 0.1));
+    UITextBoxPtr new_player = userInterface_->CreateTextBox("new_player", "Create", 50, sf::FloatRect(0.5, 0.8, 0.2, 0.1));
     SetButtonStyle(new_player);
 }
 
@@ -46,7 +51,16 @@ void NewPlayer::CreatePlayer() {
     if (!player_.empty()) {
         PlayerManagerPtr playerManager = activityManager_->GetPlayerManager();
         playerManager->CreateNewPlayer(player_);
-        activityManager_->SetAsActive("main_menu");
+        if (type_ == FIRST_PLAYER) {
+            playerManager->SetActivePlayer(player_);
+            activityManager_->SetAsActive("main_menu");
+        }
+        else {
+            playerManager->SetSecondPlayer(player_);
+            NewRacePtr newRace = std::make_shared<NewRace>(MULTI_PLAYER);
+            activityManager_->AddActivity(newRace);
+            activityManager_->SetAsActive("new_race");
+        }
     }
 }
 
@@ -65,24 +79,4 @@ void NewPlayer::HandleKey(sf::Event::KeyEvent event) {
     if (event.code == sf::Keyboard::Escape) {
         activityManager_->SetAsActive("player_selector");
     }
-}
-
-void NewPlayer::SetButtonStyle(UITextBoxPtr button) {
-    button->SetBackgroundColor(sf::Color(0x1c7396ff));
-    button->SetBackgroundColorHover(sf::Color(0xD5E6E0ff));
-    button->SetOutlineColor(sf::Color(0xE1F0FFff));
-    button->SetOutlineColorHover(sf::Color(0x60758Cff));
-    button->SetTextColor(sf::Color(0xD5E6E0ff));
-    button->SetTextColorHover(sf::Color(0x1c7396ff));
-    button->SetOutlineThickness(3.f);
-}
-
-void NewPlayer::SetTextBoxStyle(UITextBoxPtr textBox) {
-    textBox->SetBackgroundColor(sf::Color(0x1c7396ff));
-    textBox->SetBackgroundColorHover(sf::Color(0x1c7396ff));
-    textBox->SetOutlineColor(sf::Color(0xE1F0FFff));
-    textBox->SetOutlineColorHover(sf::Color(0xE1F0FFff));
-    textBox->SetTextColor(sf::Color(0xD5E6E0ff));
-    textBox->SetTextColorHover(sf::Color(0xD5E6E0ff));
-    textBox->SetOutlineThickness(3.f);
 }

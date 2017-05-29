@@ -71,16 +71,6 @@ void NewRace::HandleKey(sf::Event::KeyEvent event) {
     }
 }
 
-void NewRace::SetTitleStyle(UITextBoxPtr textBox) {
-    textBox->SetTextColor(sf::Color::White);
-    textBox->SetTextColorHover(sf::Color::White);
-    textBox->SetBackgroundColor(sf::Color(0x2B405Bff));
-    textBox->SetBackgroundColorHover(sf::Color(0x2B405Bff));
-    textBox->SetOutlineColor(sf::Color(0xE1F0FFff));
-    textBox->SetOutlineColorHover(sf::Color(0xE1F0FFff));
-    textBox->SetOutlineThickness(1.f);
-}
-
 void NewRace::CreateRace(std::string name) {
     GameplayPtr race = std::make_shared<Gameplay>(name, laps_);
     PlayerPtr firstPlayer = activityManager_->GetPlayerManager()
@@ -93,14 +83,4 @@ void NewRace::CreateRace(std::string name) {
     }
     activityManager_->AddActivity(race);
     activityManager_->SetAsActive("race");
-}
-
-void NewRace::SetButtonStyle(UITextBoxPtr button) {
-    button->SetBackgroundColor(sf::Color(0x1c7396ff));
-    button->SetBackgroundColorHover(sf::Color(0xD5E6E0ff));
-    button->SetOutlineColor(sf::Color(0xE1F0FFff));
-    button->SetOutlineColorHover(sf::Color(0x60758Cff));
-    button->SetTextColor(sf::Color(0xD5E6E0ff));
-    button->SetTextColorHover(sf::Color(0x1c7396ff));
-    button->SetOutlineThickness(3.f);
 }

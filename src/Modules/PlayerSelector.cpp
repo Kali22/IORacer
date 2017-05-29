@@ -1,6 +1,7 @@
 #include "PlayerSelector.h"
 #include <ActivityManager.h>
 #include <NewRace.h>
+#include <NewPlayer.h>
 
 PlayerSelector::PlayerSelector(SelectorType type) :
         Activity("player_selector"),
@@ -10,9 +11,14 @@ PlayerSelector::PlayerSelector(SelectorType type) :
 
 void PlayerSelector::Init() {
     playersList_ = activityManager_->GetPlayerManager()->GetPlayersList();
+    if (type_ == SECOND_PLAYER) {
+        std::string playerName = activityManager_->GetPlayerManager()->GetActivePlayer()->GetName();
+        playersList_.erase(std::remove(playersList_.begin(), playersList_.end(), playerName), playersList_.end());
+    }
     UIBoxPtr back = userInterface_->CreateBox("background", centeredFullScreen);
     back->SetBackgroundTexture("menu_back");
-    assert(type_ == FIRST_PLAYER || !playersList_.empty());
+    UITextBoxPtr title = userInterface_->CreateTextBox("title", "Choose player", 70, sf::FloatRect(0.5, 0.075, 1, 0.1));
+    SetTitleStyle(title);
     if (!playersList_.empty()) {
         UITextBoxPtr left = userInterface_->CreateTextBox("prev", "<", 50, sf::FloatRect(0.2, 0.4, 0.05, 0.05));
         SetButtonStyle(left);
@@ -24,12 +30,11 @@ void PlayerSelector::Init() {
         UITextBoxPtr select = userInterface_->CreateTextBox("select", "Select", 50, sf::FloatRect(0.75, 0.8, 0.2, 0.1));
         SetButtonStyle(select);
     }
-    if (type_ == FIRST_PLAYER) {
-        sf::FloatRect new_player_pos = playersList_.empty() ?
-                                       sf::FloatRect(0.5, 0.5, 0.2, 0.1) : sf::FloatRect(0.25, 0.8, 0.2, 0.1);
-        UITextBoxPtr new_player = userInterface_->CreateTextBox("new_player", "New Player", 50, new_player_pos);
-        SetButtonStyle(new_player);
-    }
+    sf::FloatRect new_player_pos = playersList_.empty() ?
+                                   sf::FloatRect(0.5, 0.5, 0.2, 0.1) : sf::FloatRect(0.25, 0.8, 0.2, 0.1);
+    UITextBoxPtr new_player = userInterface_->CreateTextBox("new_player", "New Player", 50, new_player_pos);
+    SetButtonStyle(new_player);
+
 }
 
 void PlayerSelector::Run() {
@@ -68,8 +73,11 @@ void PlayerSelector::EventAction(Event event) {
                     activityManager_->SetAsActive("new_race");
                 }
             }
-            if (event.GetUIElement() == "new_player")
+            if (event.GetUIElement() == "new_player") {
+                NewPlayerPtr newPlayer = std::make_shared<NewPlayer>(type_);
+                activityManager_->AddActivity(newPlayer);
                 activityManager_->SetAsActive("new_player");
+            }
         }
     }
 }
@@ -88,24 +96,4 @@ void PlayerSelector::HandleKey(sf::Event::KeyEvent event) {
         else
             activityManager_->SetAsActive("main_menu");
     }
-}
-
-void PlayerSelector::SetButtonStyle(UITextBoxPtr button) {
-    button->SetBackgroundColor(sf::Color(0x1c7396ff));
-    button->SetBackgroundColorHover(sf::Color(0xD5E6E0ff));
-    button->SetOutlineColor(sf::Color(0xE1F0FFff));
-    button->SetOutlineColorHover(sf::Color(0x60758Cff));
-    button->SetTextColor(sf::Color(0xD5E6E0ff));
-    button->SetTextColorHover(sf::Color(0x1c7396ff));
-    button->SetOutlineThickness(3.f);
-}
-
-void PlayerSelector::SetTextBoxStyle(UITextBoxPtr textBox) {
-    textBox->SetBackgroundColor(sf::Color(0x1c7396ff));
-    textBox->SetBackgroundColorHover(sf::Color(0x1c7396ff));
-    textBox->SetOutlineColor(sf::Color(0xE1F0FFff));
-    textBox->SetOutlineColorHover(sf::Color(0xE1F0FFff));
-    textBox->SetTextColor(sf::Color(0xD5E6E0ff));
-    textBox->SetTextColorHover(sf::Color(0xD5E6E0ff));
-    textBox->SetOutlineThickness(3.f);
 }

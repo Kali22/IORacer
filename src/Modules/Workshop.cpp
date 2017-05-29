@@ -75,32 +75,35 @@ void Workshop::EventAction(Event event) {
             UpdateCategoryUI();
         }
     }
+    if (event.GetType() != UI_EVENT || event.GetUIEventType() != UI_EVENT_CLICK) {
+        return;
+    }
+
+    std::string uiElement = event.GetUIElement();
+    if (uiElement == "quit_game") {
+        activityManager_->RemoveActivity("player_selector");
+        return;
+    }
+
+    if (uiElement == "component") {
+        SelectComponent();
+    } else if (uiElement == "category_right") {
+        categoryId_ = (categoryId_ + 1) % categories_.size();
+    } else if (uiElement == "category_left") {
+        unsigned long size = categories_.size();
+        categoryId_ = (categoryId_ + size - 1) % size;
+    } else if (uiElement == "component_right") {
+        GetCurrentCategory()->NextComponent();
+    } else if (uiElement == "component_left") {
+        GetCurrentCategory()->PreviousComponent();
+    }
+    UpdateCategoryUI();
 }
 
 void Workshop::HandleKey(sf::Event::KeyEvent event) {
     if (event.code == sf::Keyboard::Escape) {
         activityManager_->SetAsActive("main_menu");
     }
-}
-
-void Workshop::SetTitleStyle(UITextBoxPtr textBox) {
-    textBox->SetTextColor(sf::Color::White);
-    textBox->SetTextColorHover(sf::Color::White);
-    textBox->SetBackgroundColor(sf::Color(0x2B405Bff));
-    textBox->SetBackgroundColorHover(sf::Color(0x2B405Bff));
-    textBox->SetOutlineColor(sf::Color(0xE1F0FFff));
-    textBox->SetOutlineColorHover(sf::Color(0xE1F0FFff));
-    textBox->SetOutlineThickness(1.f);
-}
-
-void Workshop::SetButtonStyle(UITextBoxPtr button) {
-    button->SetBackgroundColor(backgroundColor);
-    button->SetBackgroundColorHover(backgroundColorHover);
-    button->SetOutlineColor(outlineColor);
-    button->SetOutlineColorHover(outlineColorHover);
-    button->SetTextColor(textColor);
-    button->SetTextColorHover(textColorHover);
-    button->SetOutlineThickness(outlineThickness);
 }
 
 void Workshop::InitCategories() {

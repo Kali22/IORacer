@@ -101,14 +101,13 @@ void Gameplay::SaveTimes() {
                 ->GetBestLapTime();
         player_[SECOND_PLAYER]->setTime(mapName, secondPlayerTime);
     }
-
 }
 
 void Gameplay::Render() {
     /* Rendering */
     RendererPtr renderer = activityManager_->GetRenderer();
     renderer->Clear();
-    if (playerVehicle_[1] == nullptr)
+    if (playerVehicle_[SECOND_PLAYER] == nullptr)
         renderer->RenderScene(scene_, VIEW_TYPE_SINGLE);
     else
         renderer->RenderScene(scene_, VIEW_TYPE_MULTI);
@@ -171,12 +170,19 @@ void Gameplay::UpdateHUD() {
     ss << "Lap: " << playerCheckpoints_[0]->GetCurrentLapNumber() << " / "
        << playerCheckpoints_[0]->GetTotalNumberOfLaps();
     lap0->SetText(ss.str());
-    if (playerVehicle_[1] != nullptr) {
+
+    minimap_[FIRST_PLAYER]->Update(playerVehicle_[FIRST_PLAYER]->GetPosition(),
+    playerCheckpoints_[FIRST_PLAYER]->GetNextCheckPointPosition());
+
+    if (playerVehicle_[SECOND_PLAYER] != nullptr) {
         UITextBoxPtr lap0 = std::dynamic_pointer_cast<UITextBox>(userInterface_->GetElementByName("lap_1"));
         ss.str("");
-        ss << "Lap: " << playerCheckpoints_[1]->GetCurrentLapNumber() << " / "
-           << playerCheckpoints_[1]->GetTotalNumberOfLaps();
+        ss << "Lap: " << playerCheckpoints_[SECOND_PLAYER]->GetCurrentLapNumber() << " / "
+                "" << playerCheckpoints_[SECOND_PLAYER]->GetTotalNumberOfLaps();
         lap0->SetText(ss.str());
+
+        minimap_[SECOND_PLAYER]->Update(playerVehicle_[SECOND_PLAYER]->GetPosition(),
+                                       playerCheckpoints_[SECOND_PLAYER]->GetNextCheckPointPosition());
     }
 }
 
@@ -197,10 +203,22 @@ void Gameplay::PrepareHUD() {
     UITextBoxPtr lap0 = userInterface_->CreateTextBox("lap_0", "?", 20,
                                                       sf::FloatRect(0.1, 0.075, 0.2, 0.06));
     SetTitleStyle(lap0);
-    if (playerVehicle_[1] != nullptr) {
+    sf::FloatRect minimapRect(0.9, 0.85, 0.16, 0.16);
+    TexturePtr minimapTexture = map_->GetMinimapTexture();
+    if (playerVehicle_[SECOND_PLAYER] != nullptr) {
         UITextBoxPtr lap1 = userInterface_->CreateTextBox("lap_1", "?", 20,
                                                           sf::FloatRect(0.9, 0.075, 0.2, 0.06));
         SetTitleStyle(lap1);
+        minimap_[SECOND_PLAYER] = userInterface_->CreateMinimap(
+                "minimap_1", minimapRect,map_->GetSize(), minimapTexture);
+        minimapRect = sf::FloatRect(0.4, 0.85, 0.16, 0.16);
+    }
+    minimap_[FIRST_PLAYER] = userInterface_->CreateMinimap(
+            "minimap_0", minimapRect,map_->GetSize(), minimapTexture);
+    for (auto minimap : minimap_) {
+        if (minimap != nullptr){
+            minimap->SetBackgroundTexture(map_->GetMapName() + "_mini");
+        }
     }
 }
 
@@ -360,7 +378,6 @@ void Gameplay::PreparePlayer(int id) {
     setup.massBalance = 0.45; // higher load on front wheels
     setup.transmissionType = TRANSMISSION_REAR;
     setup.vehicleMass = 300;
-    /* ---------------------------------------------------------------- TESTS ---- */
 
     CarConfigurationPtr configuration = player_[id]->GetCarConfiguration();
     StartPositionT start = map_->GetStartPosition(id);

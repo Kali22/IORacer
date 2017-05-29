@@ -13,6 +13,7 @@
 #include <GameObjects/ObjectTypes.h>
 #include <Object.h>
 #include <CheckpointPosition.h>
+#include <Sprite.h>
 
 /**
  * Map class.
@@ -35,8 +36,11 @@ public:
 
     StartPositionT GetStartPosition(int position) const;
 
-    std::string GetMapName() const;
+    TexturePtr GetMinimapTexture() const;
 
+    RealVec GetSize() const;
+
+    std::string GetMapName() const;
 private:
     std::string mapName_;
     std::string mapDescription_;
@@ -45,7 +49,7 @@ private:
 
     sf::Image imageFriction_;
     sf::Sprite mapView_;
-    sf::Sprite minimapView_;
+    TexturePtr minimapTexture_;
 
     std::vector<StartPositionT> startPositions_;
     std::vector<CheckpointPosition> checkpoints_;

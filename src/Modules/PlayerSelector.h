@@ -24,10 +24,6 @@ public:
 private:
     void HandleKey(sf::Event::KeyEvent event);
 
-    void SetButtonStyle(UITextBoxPtr button);
-
-    void SetTextBoxStyle(UITextBoxPtr textBox);
-
     void Update();
 
     size_t player_;
