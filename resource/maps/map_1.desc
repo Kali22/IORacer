@@ -11,9 +11,9 @@
 # list of items <object name> <posx> <posy> <rot>
 Bordeaux
 435.0 260.82
-map_2_view
-map_2_friction
-map_2_mini
+map_1_view
+map_1_friction
+map_1_mini
 6
 15 -98 105
 155 14 87
