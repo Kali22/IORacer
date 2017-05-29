@@ -1,10 +1,5 @@
 #include "PlayerSelector.h"
 #include <ActivityManager.h>
-#include <PlayerManager.h>
-#include <Player.h>
-#include <Workshop.h>
-#include <CarComponentManager.h>
-#include <ViewportConst.h>
 #include <NewRace.h>
 
 PlayerSelector::PlayerSelector(SelectorType type) :
@@ -23,7 +18,8 @@ void PlayerSelector::Init() {
         SetButtonStyle(left);
         UITextBoxPtr right = userInterface_->CreateTextBox("next", ">", 50, sf::FloatRect(0.8, 0.4, 0.05, 0.05));
         SetButtonStyle(right);
-        UITextBoxPtr player = userInterface_->CreateTextBox("name", playersList_[player_], 80, sf::FloatRect(0.5, 0.4, 0.5, 0.1));
+        UITextBoxPtr player = userInterface_->CreateTextBox("name", playersList_[player_], 80,
+                                                            sf::FloatRect(0.5, 0.4, 0.5, 0.1));
         SetTextBoxStyle(player);
         UITextBoxPtr select = userInterface_->CreateTextBox("select", "Select", 50, sf::FloatRect(0.75, 0.8, 0.2, 0.1));
         SetButtonStyle(select);
@@ -44,8 +40,7 @@ void PlayerSelector::Run() {
     renderer->Display();
 }
 
-void PlayerSelector::End() {
-}
+void PlayerSelector::End() {}
 
 void PlayerSelector::EventAction(Event event) {
     if (event.GetType() == SFML_EVENT) {
@@ -53,7 +48,7 @@ void PlayerSelector::EventAction(Event event) {
             HandleKey(event.GetSFMLEvent().key);
         }
     } else if (event.GetType() == UI_EVENT) {
-        if(event.GetUIEventType() == UI_EVENT_CLICK) {
+        if (event.GetUIEventType() == UI_EVENT_CLICK) {
             if (event.GetUIElement() == "next") {
                 if (player_ + 1 < playersList_.size())
                     player_++;
@@ -66,8 +61,7 @@ void PlayerSelector::EventAction(Event event) {
                 if (type_ == FIRST_PLAYER) {
                     activityManager_->GetPlayerManager()->SetActivePlayer(playersList_[player_]);
                     activityManager_->SetAsActive("main_menu");
-                }
-                else {
+                } else {
                     activityManager_->GetPlayerManager()->SetSecondPlayer(playersList_[player_]);
                     NewRacePtr newRace = std::make_shared<NewRace>(MULTI_PLAYER);
                     activityManager_->AddActivity(newRace);
@@ -115,8 +109,3 @@ void PlayerSelector::SetTextBoxStyle(UITextBoxPtr textBox) {
     textBox->SetTextColorHover(sf::Color(0xD5E6E0ff));
     textBox->SetOutlineThickness(3.f);
 }
-
-
-
-
-

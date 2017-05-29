@@ -14,6 +14,7 @@ public:
     std::vector<ComponentCategoryPtr> GetComponentCategories() const;
 
     std::vector<CarComponentPtr> GetBaseComponents() const;
+
 private:
     static std::vector<CarComponentPtr> CreateEngineComponents();
 
@@ -25,4 +26,5 @@ private:
 
     std::map<ModifierType, std::vector<CarComponentPtr>> typeToComponents_;
 };
+
 using CarComponentManagerPtr = std::shared_ptr<CarComponentManager>;

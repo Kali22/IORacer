@@ -1,7 +1,7 @@
 #include <GameObjects/CheckPoint/CheckPoint.h>
 
 CheckPoint::CheckPoint(int id, b2Body *body, VisualObjectPtr visualObject)
-        : Object(body, visualObject, OBJECT_TYPE_CHECK_POINT), playerId_(id){
+        : Object(body, visualObject, OBJECT_TYPE_CHECK_POINT), playerId_(id) {
     body_->SetUserData(this);
 }
 

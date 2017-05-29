@@ -31,6 +31,7 @@ public:
     void End();
 
     void EventAction(Event event);
+
 private:
     void HandleKey(sf::Event::KeyEvent event, bool state);
 
@@ -104,4 +105,3 @@ private:
 };
 
 using GameplayPtr = std::shared_ptr<Gameplay>;
-

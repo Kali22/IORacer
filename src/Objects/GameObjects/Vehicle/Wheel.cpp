@@ -36,7 +36,7 @@ bool Wheel::IsLeft() const {
     return positionFlag_ == WHEEL_LEFT_FRONT || positionFlag_ == WHEEL_LEFT_REAR;
 }
 
-void Wheel::UpdateDrive(float torque, float dt) {
+void Wheel::UpdateDrive(float torque) {
     if (!locked_) {
         b2Vec2 currentForwardNormal = body_->GetWorldVector(b2Vec2(0, 1));
         body_->ApplyForce(torque * wheelRadius_ * currentForwardNormal, body_->GetWorldCenter(), true);
@@ -55,8 +55,8 @@ Wheel::~Wheel() {
 
 void Wheel::UpdateFrictionLocked(float dt) {
     b2Vec2 impulse = body_->GetMass() * -body_->GetLinearVelocity();
-    if (impulse.Length() > dt * maxTireFrictionForce_* 100.)
-        impulse *= dt * maxTireFrictionForce_ * 100./ impulse.Length();
+    if (impulse.Length() > dt * maxTireFrictionForce_ * 100.)
+        impulse *= dt * maxTireFrictionForce_ * 100. / impulse.Length();
 
     body_->ApplyLinearImpulse(impulse, body_->GetWorldCenter(), true);
     body_->ApplyAngularImpulse(0.5f * body_->GetInertia() * -body_->GetAngularVelocity(), true);
@@ -70,8 +70,8 @@ void Wheel::UpdateFrictionLocked(float dt) {
 
 void Wheel::UpdateFrictionNotLocked(float dt) {
     b2Vec2 impulse = body_->GetMass() * -GetLateralVelocity();
-    if (impulse.Length() > dt * maxTireFrictionForce_* 100.)
-        impulse *= dt * maxTireFrictionForce_ * 100./ impulse.Length();
+    if (impulse.Length() > dt * maxTireFrictionForce_ * 100.)
+        impulse *= dt * maxTireFrictionForce_ * 100. / impulse.Length();
 
     body_->ApplyLinearImpulse(impulse, body_->GetWorldCenter(), true);
     body_->ApplyAngularImpulse(0.5f * body_->GetInertia() * -body_->GetAngularVelocity(), true);

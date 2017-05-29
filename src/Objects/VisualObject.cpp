@@ -69,7 +69,7 @@ void VisualObject::Rescale(float scale) {
     }
     sprite_.setScale(scaleX, scaleY);
     position_.SetScale(scale);
-    std::cerr << "Object <" << name_ << ">: scale set " << scale <<"!\n";
+    std::cerr << "Object <" << name_ << ">: scale set " << scale << "!\n";
 }
 
 RealVec VisualObject::GetPosition() const {

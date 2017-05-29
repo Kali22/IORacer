@@ -1,17 +1,15 @@
 #include "NewPlayer.h"
 #include <ActivityManager.h>
-#include <PlayerManager.h>
-#include <ViewportConst.h>
 
-NewPlayer::NewPlayer() : Activity("new_player") {
-}
+NewPlayer::NewPlayer() : Activity("new_player") {}
 
 void NewPlayer::Init() {
     UIBoxPtr back = userInterface_->CreateBox("background", centeredFullScreen);
     back->SetBackgroundTexture("menu_back");
     UITextBoxPtr player = userInterface_->CreateTextBox("name", "", 80, sf::FloatRect(0.5, 0.4, 0.7, 0.15));
     SetTextBoxStyle(player);
-    UITextBoxPtr new_player = userInterface_->CreateTextBox("new_player", "New Player", 50, sf::FloatRect(0.5, 0.8, 0.2, 0.1));
+    UITextBoxPtr new_player = userInterface_->CreateTextBox("new_player", "New Player", 50,
+                                                            sf::FloatRect(0.5, 0.8, 0.2, 0.1));
     SetButtonStyle(new_player);
 }
 
@@ -23,9 +21,7 @@ void NewPlayer::Run() {
     renderer->Display();
 }
 
-void NewPlayer::End() {
-
-}
+void NewPlayer::End() {}
 
 void NewPlayer::EventAction(Event event) {
     if (event.GetType() == SFML_EVENT) {
@@ -39,7 +35,7 @@ void NewPlayer::EventAction(Event event) {
             }
         }
     } else if (event.GetType() == UI_EVENT) {
-        if(event.GetUIEventType() == UI_EVENT_CLICK) {
+        if (event.GetUIEventType() == UI_EVENT_CLICK) {
             if (event.GetUIElement() == "new_player")
                 CreatePlayer();
         }
@@ -90,10 +86,3 @@ void NewPlayer::SetTextBoxStyle(UITextBoxPtr textBox) {
     textBox->SetTextColorHover(sf::Color(0xD5E6E0ff));
     textBox->SetOutlineThickness(3.f);
 }
-
-
-
-
-
-
-

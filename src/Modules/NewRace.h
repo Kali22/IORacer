@@ -37,4 +37,3 @@ private:
 };
 
 using NewRacePtr = std::shared_ptr<NewRace>;
-

@@ -15,7 +15,7 @@ void ActivityManager::Poll() {
         if (active_ != nullptr)
             active_->EventAction(event);
         /* This check is a must! EventAction can destroy active_! */
-        if (active_ != nullptr){
+        if (active_ != nullptr) {
             UIPtr ui = active_->GetUI();
             if (ui != nullptr) {
                 ui->EventAction(event.GetSFMLEvent());

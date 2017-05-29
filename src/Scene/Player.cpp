@@ -4,8 +4,7 @@ Player::Player(const std::string &name, CarComponentManagerPtr carComponentManag
         : name_(name) {
     if (newPlayer) {
         carConfiguration_ = std::make_shared<CarConfiguration>(carComponentManager->GetBaseComponents());
-    }
-    else {
+    } else {
         std::ifstream file(resourcePath_ + name_);
         std::string line;
         std::stringstream data;
@@ -51,8 +50,7 @@ void Player::setTime(std::string map, float time) {
         auto it = times_.find(map);
         if (it == times_.end()) {
             times_[map] = time;
-        }
-        else {
+        } else {
             times_[map] = std::min(it->second, time);
         }
     }
@@ -66,7 +64,7 @@ void Player::save() {
     }
     file << std::endl;
     // save times
-    for (auto& time : times_) {
+    for (auto &time : times_) {
         file << time.first << " " << time.second << std::endl;
     }
 }

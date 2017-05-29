@@ -20,10 +20,10 @@ UIBoxPtr UI::CreateBox(std::string name, sf::FloatRect size) {
 }
 
 UIElementPtr UI::GetElementByName(const std::string &name) {
-    auto el  = list_.find(name);
+    auto el = list_.find(name);
     if (el == list_.end()) {
-        std::cerr<< "UI::GetElementByName: No such element like "
-                 << name.c_str() << std::endl;
+        std::cerr << "UI::GetElementByName: No such element like "
+                  << name.c_str() << std::endl;
         exit(1);
     }
     return el->second;

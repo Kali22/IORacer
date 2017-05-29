@@ -19,7 +19,7 @@ public:
 
     void UpdateFriction(float dt);
 
-    void UpdateDrive(float torque,  float dt);
+    void UpdateDrive(float torque);
 
     void Brake();
 

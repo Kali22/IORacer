@@ -2,11 +2,8 @@
 
 #include <UIColorConstants.h>
 #include <ActivityManager.h>
-#include <Gameplay.h>
-#include <ViewportConst.h>
 
-Workshop::Workshop() : Activity("workshop") {
-}
+Workshop::Workshop() : Activity("workshop") {}
 
 void Workshop::Init() {
     player_ = activityManager_->GetPlayerManager()->GetActivePlayer();
@@ -52,8 +49,7 @@ void Workshop::Run() {
     renderer->Display();
 }
 
-void Workshop::End() {
-}
+void Workshop::End() {}
 
 void Workshop::EventAction(Event event) {
     if (event.GetType() == SFML_EVENT) {

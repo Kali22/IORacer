@@ -7,6 +7,7 @@
 class Texture {
 public:
     Texture(const std::string &name, const std::string &path);
+
     sf::Texture *GetTexture();
 
 private:

@@ -385,7 +385,7 @@ cone 284.451 237.929 0
 cone 280.671 237.998 0 #map corner
 stone -120 -102 180
 stone 200 -124 277
-stone 335 -142 135
+stone 335 -142 135 # stones
 cone 75 -205 0
 cone 75 -205 0
 cone 75 -205 0
@@ -474,4 +474,4 @@ cone 75 -205 0
 cone 75 -205 0
 cone 75 -205 0
 cone 74.5 -205 0
-cone 74.5 -205.5 0
+cone 74.5 -205.5 0 # cone playground

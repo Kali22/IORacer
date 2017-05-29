@@ -1,5 +1,4 @@
 #include "Map.h"
-#include <CheckPoint/CheckPoint.h>
 
 /**
  * Creates map and prepare the map's world.
@@ -43,20 +42,21 @@ Map::Map(std::string name, std::string description, RealVec size, TexturePtr vie
 
     std::cerr << mapName_ << ": Map is ready!\n";
     std::cerr << mapName_ << ": width = " << mapSize_.x << " heigth = " << mapSize_.y << "!\n";
-    std::cerr << mapName_ << ": width [px] = " << textureMapSize.width << " heigth [px] = " << textureMapSize.height << "!\n";
+    std::cerr << mapName_ << ": width [px] = " << textureMapSize.width << " heigth [px] = " << textureMapSize.height
+              << "!\n";
 }
 
 float Map::GetPixMetersScale() const {
     return scalePixMeters_;
 }
 
-float Map::GetFrictionModifier(const RealVec& pos) {
+float Map::GetFrictionModifier(const RealVec &pos) {
     /// @TODO Check Out of range positioin
     /// @TODO Validate
     unsigned int sx = imageFriction_.getSize().x;
     unsigned int sy = imageFriction_.getSize().y;
-    unsigned int x = (unsigned int)pos.GetScaledVector().x + sx * 0.5;
-    unsigned int y = (unsigned int)pos.GetScaledVector().y + sy * 0.5;
+    unsigned int x = (unsigned int) (pos.GetScaledVector().x + sx * 0.5);
+    unsigned int y = (unsigned int) (pos.GetScaledVector().y + sy * 0.5);
     x = (x < 0 ? 0 : x);
     x = (x > sx ? sx : x);
     y = (y < 0 ? 0 : y);
@@ -64,8 +64,8 @@ float Map::GetFrictionModifier(const RealVec& pos) {
 
     sf::Color color = imageFriction_.getPixel(x, y);
     float res = 1.f - (color.b + color.r + color.g) / 256.0f / 3.0f;
-    //fprintf(stderr,"GetFrictionModifier( %f, %f, %f)[x: %d, y: %d] = (r: %d, g: %d, b: %d) ->  %f\n", pos.x, pos.y, pos.GetScale(), x, y, color.r, color.g, color.b, res);
-    fprintf(stderr,"[x: %f, y: %f]", pos.x, pos.y);
+    fprintf(stderr, "GetFrictionModifier( %f, %f, %f)[x: %d, y: %d] = (r: %d, g: %d, b: %d) ->  %f\n", pos.x, pos.y,
+            pos.GetScale(), x, y, color.r, color.g, color.b, res);
     return res;
 }
 
@@ -87,5 +87,3 @@ StartPositionT Map::GetStartPosition(int position) const {
 std::string Map::GetMapName() const {
     return mapName_;
 }
-
-

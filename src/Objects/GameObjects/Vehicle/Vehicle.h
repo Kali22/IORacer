@@ -49,7 +49,7 @@ private:
 
     void UpdateFriction(float dt);
 
-    void UpdateDrive(float dt);
+    void UpdateDrive();
 
     void UpdateTurn(float dt);
 
@@ -76,4 +76,5 @@ private:
 
     float GetDesiredAngle();
 };
+
 using VehiclePtr = std::shared_ptr<Vehicle>;
