@@ -13,5 +13,6 @@ class Drawable {
 public:
     virtual void Draw(RenderWindowPtr window) const = 0;
 };
+
 using DrawablePtr = std::shared_ptr<Drawable>;
 

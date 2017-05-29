@@ -6,9 +6,8 @@
 
 class UITextBox : public UIElement {
 public:
-    UITextBox(int id, std::string name, std::string text, int fontSize, sf::FloatRect size,
-                  ActivityPtr activity);
-
+    UITextBox(int id, std::string name, std::string text, unsigned fontSize, sf::FloatRect size,
+              ActivityPtr activity);
 
     void SetBackgroundColorHover(sf::Color color);
 
@@ -25,7 +24,6 @@ public:
     void SetText(const std::string &text);
 
     void Render(RenderWindowPtr window);
-
 private:
     sf::Font font_;
     sf::Text text_;
@@ -35,8 +33,7 @@ private:
     sf::Color hoverColor_;
     sf::Color hoverOutlineColor_;
     sf::Color hoverTextColor_;
+    float verticalFix;
 };
 
 using UITextBoxPtr = std::shared_ptr<UITextBox>;
-
-

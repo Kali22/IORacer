@@ -1,9 +1,11 @@
 # comment
 # real dimensions -> meters
-# shape: 0 - box, 1 - circe
+# shape: 0 - square, 1 - circle
 # <object name> <texture name> <static/dynamic> <default mass> <shape type> <real size x / radius> [<real size y>]
 vehicle vehicle dynamic 100 0 2.66 4
 wheel wheel dynamic 10 0 0.5 0.9
-tire truck_tire dynamic 40 0 2 2
-box box dynamic 100 0 2 2
+tire truck_tire dynamic 70 1 1.5 1.5
+box box dynamic 100 0 3 3
+cone cone dynamic 10 1 1 1
+stone stone static 0 1 5 5
 checkpoint checkpoint dynamic 0 0 20 2

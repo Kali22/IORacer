@@ -1,4 +1,5 @@
 #include "UI.h"
+#include <UIMinimap.h>
 
 int UI::GetElementsCount() const {
     return (int) list_.size();
@@ -19,11 +20,20 @@ UIBoxPtr UI::CreateBox(std::string name, sf::FloatRect size) {
     return box;
 }
 
+UIMinimapPtr UI::CreateMinimap(std::string name, sf::FloatRect size,
+                               RealVec mapSize, TexturePtr texture) {
+    UIMinimapPtr minimap = std::make_shared<UIMinimap>(list_.size(), name,
+                                                       size, activity_,
+                                                       mapSize, texture);
+    list_[name] = minimap;
+    return minimap;
+}
+
 UIElementPtr UI::GetElementByName(const std::string &name) {
-    auto el  = list_.find(name);
+    auto el = list_.find(name);
     if (el == list_.end()) {
-        std::cerr<< "UI::GetElementByName: No such element like "
-                 << name.c_str() << std::endl;
+        std::cerr << "UI::GetElementByName: No such element like "
+                  << name.c_str() << std::endl;
         exit(1);
     }
     return el->second;

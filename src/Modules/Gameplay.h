@@ -1,10 +1,14 @@
 #pragma once
 
+#define MAX_PLAYER 2
+
 #include <Activity.h>
 #include <Event.h>
 #include <Vehicle.h>
 #include <ContactListener.h>
 #include <MapManager.h>
+#include <Player.h>
+#include <UIMinimap.h>
 
 enum GameplayStateE {
     GAMEPLAY_STATE_PREPARE,
@@ -17,9 +21,9 @@ class Gameplay : public Activity {
 public:
     Gameplay(const std::string &mapName, int laps);
 
-    void SetFirstPlayer(const std::string &name);
+    void SetFirstPlayer(PlayerPtr player);
 
-    void SetSecondPlayer(const std::string &name);
+    void SetSecondPlayer(PlayerPtr player);
 
     void Init();
 
@@ -56,6 +60,8 @@ private:
 
     void UpdateGame();
 
+    void UpdatePlayer(int id, float dt);
+
     void PrepareUIForPrepareState();
 
     void PrepareUIForPauseState();
@@ -64,9 +70,7 @@ private:
 
     void PrepareHUD();
 
-    void PrepareFirstPlayer();
-
-    void PrepareSecondPlayer();
+    void PreparePlayer(int id);
 
     /* xD xD xD */
     bool isOver_;
@@ -79,12 +83,9 @@ private:
     GameplayStateE gameState_; // Game status
 
     /* Players */
-    std::string firstPlayerName_;
-    std::string secondPlayerName_;
-    VehiclePtr firstPlayerVehicle_;
-    VehiclePtr secondPlayerVehicle_;
-    CheckPointManagerPtr  firstPlayerManager_;
-    CheckPointManagerPtr  secondPlayerManager_;
+    PlayerPtr player_[MAX_PLAYER];
+    VehiclePtr playerVehicle_[MAX_PLAYER];
+    CheckPointManagerPtr playerCheckpoints_[MAX_PLAYER];
 
     MapPtr map_;
     ScenePtr scene_;
@@ -93,8 +94,9 @@ private:
     ContactListenerPtr contactListener_;
     b2World *world_;
 
-    const float preparationTimeInSeconds = 3.f;
+    UIMinimapPtr minimap_[MAX_PLAYER];
 
+    const float preparationTimeInSeconds = 3.f;
 
     void HandleKeyFirstPlayer(sf::Event::KeyEvent event, bool state);
 
@@ -102,8 +104,7 @@ private:
 
     void SetTitleStyle(UITextBoxPtr textBox);
 
-    void PrintState();
+    void SaveTimes();
 };
 
 using GameplayPtr = std::shared_ptr<Gameplay>;
-

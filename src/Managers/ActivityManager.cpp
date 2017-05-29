@@ -2,12 +2,10 @@
 
 #include <Activity.h>
 
-ActivityManager::ActivityManager(WindowPtr window, TextureManagerPtr textureManager) :
-        window_(window),
-        active_(nullptr),
-        textureManager_(textureManager)
-{
-
+ActivityManager::ActivityManager(WindowPtr window, TextureManagerPtr textureManager,
+                                 CarComponentManagerPtr carComponentManager, PlayerManagerPtr playerManager)
+        : window_(window), active_(nullptr), textureManager_(textureManager),
+          carComponentManager_(carComponentManager), playerManager_(playerManager) {
 }
 
 void ActivityManager::Poll() {
@@ -17,7 +15,7 @@ void ActivityManager::Poll() {
         if (active_ != nullptr)
             active_->EventAction(event);
         /* This check is a must! EventAction can destroy active_! */
-        if (active_ != nullptr){
+        if (active_ != nullptr) {
             UIPtr ui = active_->GetUI();
             if (ui != nullptr) {
                 ui->EventAction(event.GetSFMLEvent());
@@ -89,3 +87,10 @@ TextureManagerPtr ActivityManager::GetTextureManager() const {
     return textureManager_;
 }
 
+CarComponentManagerPtr ActivityManager::GetCarComponentManager() const {
+    return carComponentManager_;
+}
+
+PlayerManagerPtr ActivityManager::GetPlayerManager() const {
+    return playerManager_;
+}

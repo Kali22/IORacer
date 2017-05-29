@@ -2,7 +2,7 @@
 #include <GameObjects/CheckPoint/CheckPoint.h>
 #include <GameObjects/Vehicle/Vehicle.h>
 
-ObjectManager::ObjectManager(TextureManagerPtr textureManager, b2World* world) :
+ObjectManager::ObjectManager(TextureManagerPtr textureManager, b2World *world) :
         textureManager_(textureManager), world_(world) {
     std::ifstream file(resourcePath_ + "objects_list.cnfg");
     std::string line;
@@ -42,13 +42,15 @@ ObjectManager::ObjectManager(TextureManagerPtr textureManager, b2World* world) :
     }
 }
 
-VehiclePtr ObjectManager::CreateVehicle(int id, const RealVec &pos, float rot, const VehicleSetupT &setup, MapPtr map) {
+VehiclePtr ObjectManager::CreateVehicle(int id, const RealVec &pos, float
+rot, const VehicleSetupT &setup, MapPtr map, CarConfigurationPtr carConfiguration) {
     std::vector<WheelPtr> wheels;
-    for(int i = 0; i < 4; ++i)
+    for (int i = 0; i < 4; ++i)
         wheels.push_back(CreateWheel(pos, rot));
     b2Body *body = InitializeBody(ObjectsMap[OBJECT_TYPE_VEHICLE], pos, rot);
     VisualObjectPtr chassis = GetVisualObjectInstanceByName(ObjectsMap[OBJECT_TYPE_VEHICLE]);
-    return std::make_shared<Vehicle>(id, body, chassis, std::move(wheels), setup, map);
+    return std::make_shared<Vehicle>(id, body, chassis, std::move(wheels),
+                                     setup, carConfiguration, map);
 }
 
 WheelPtr ObjectManager::CreateWheel(const RealVec &pos, float rot) {
@@ -76,8 +78,20 @@ ObjectPtr ObjectManager::CreateBox(const RealVec &pos, float rot) {
     return std::make_shared<Object>(body, box, OBJECT_TYPE_BOX);
 }
 
+ObjectPtr ObjectManager::CreateCone(const RealVec &pos, float rot) {
+    b2Body *body = InitializeBody(ObjectsMap[OBJECT_TYPE_CONE], pos, rot);
+    VisualObjectPtr cone = GetVisualObjectInstanceByName(ObjectsMap[OBJECT_TYPE_CONE]);
+    return std::make_shared<Object>(body, cone, OBJECT_TYPE_CONE);
+}
+
+ObjectPtr ObjectManager::CreateStone(const RealVec &pos, float rot) {
+    b2Body *body = InitializeBody(ObjectsMap[OBJECT_TYPE_STONE], pos, rot);
+    VisualObjectPtr stone = GetVisualObjectInstanceByName(ObjectsMap[OBJECT_TYPE_STONE]);
+    return std::make_shared<Object>(body, stone, OBJECT_TYPE_STONE);
+}
+
 VisualObjectPtr ObjectManager::GetVisualObjectInstanceByName(const std::string &objectName) {
-    std::map<std::string,ObjectDesc>::iterator it = objectDesc_.find(objectName);
+    std::map<std::string, ObjectDesc>::iterator it = objectDesc_.find(objectName);
     if (it == objectDesc_.end()) {
         std::cerr << "Object name " << objectName << " not found!\n";
         exit(1);
@@ -92,7 +106,7 @@ VisualObjectPtr ObjectManager::GetVisualObjectInstanceByName(const std::string &
 }
 
 b2Body *ObjectManager::InitializeBody(const std::string &objectName, const RealVec &pos, float rot) {
-    std::map<std::string,ObjectDesc>::iterator it = objectDesc_.find(objectName);
+    std::map<std::string, ObjectDesc>::iterator it = objectDesc_.find(objectName);
     if (it == objectDesc_.end()) {
         std::cerr << "Object name " << objectName << " not found!\n";
         exit(1);
@@ -118,7 +132,7 @@ b2Body *ObjectManager::InitializeBody(const std::string &objectName, const RealV
 
 ObjectPtr ObjectManager::CreateObjectByName(const std::string &name, const RealVec &pos, float rot) {
     std::map<ObjectTypeE, std::string>::iterator it = ObjectsMap.begin();
-    while(it != ObjectsMap.end() && it->second != name)
+    while (it != ObjectsMap.end() && it->second != name)
         it++;
     if (it == ObjectsMap.end()) {
         std::cerr << "Object name " << name << " not found!\n";
@@ -132,6 +146,12 @@ ObjectPtr ObjectManager::CreateObjectByName(const std::string &name, const RealV
         case OBJECT_TYPE_TIRE:
             obj = CreateTire(pos, rot);
             break;
+        case OBJECT_TYPE_CONE:
+            obj = CreateCone(pos, rot);
+            break;
+        case OBJECT_TYPE_STONE:
+            obj = CreateStone(pos, rot);
+            break;
         default:
             std::cerr << "Cannot create " << name << " just by name!\n";
             exit(1);
@@ -139,13 +159,13 @@ ObjectPtr ObjectManager::CreateObjectByName(const std::string &name, const RealV
     return obj;
 }
 
-void ObjectManager::CreateFixture(b2Body* body, ObjectDesc objectDesc) const {
+void ObjectManager::CreateFixture(b2Body *body, ObjectDesc objectDesc) const {
     if (objectDesc.objectShape == OBJECT_SHAPE_CIRC) {
         b2CircleShape shape;
         float density = objectDesc.mass / objectDesc.radius / objectDesc.radius / b2_pi;
         shape.m_radius = objectDesc.radius;
         body->CreateFixture(&shape, density);
-    } else if (objectDesc.objectShape == OBJECT_SHAPE_RECT){
+    } else if (objectDesc.objectShape == OBJECT_SHAPE_RECT) {
         b2FixtureDef fixtureDef;
         b2PolygonShape shape;
         float density = objectDesc.mass / objectDesc.size.x / objectDesc.size.y;

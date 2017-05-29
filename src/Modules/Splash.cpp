@@ -1,11 +1,8 @@
 #include "Splash.h"
 
 #include <ActivityManager.h>
-#include <ViewportConst.h>
 
-Splash::Splash() : Activity("splash") {
-
-}
+Splash::Splash() : Activity("splash") {}
 
 void Splash::Run() {
     RendererPtr renderer = activityManager_->GetRenderer();
@@ -20,20 +17,18 @@ void Splash::Init() {
     splash->SetBackgroundTexture("splash");
 }
 
-void Splash::End() {
-
-}
+void Splash::End() {}
 
 void Splash::EventAction(Event event) {
     if (event.GetType() == SFML_EVENT) {
         sf::Event sfmlEvent = event.GetSFMLEvent();
         if (sfmlEvent.type == sf::Event::KeyPressed) {
-                HandleKey(sfmlEvent.key);
+            HandleKey(sfmlEvent.key);
         }
     } else if (event.GetType() == UI_EVENT) {
         if (event.GetUIEventType() == UI_EVENT_CLICK) {
-                activityManager_->SetAsActive("player_selector");
-                activityManager_->RemoveActivity("splash");
+            activityManager_->SetAsActive("player_selector");
+            activityManager_->RemoveActivity("splash");
         }
     }
 }

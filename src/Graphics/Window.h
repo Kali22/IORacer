@@ -13,6 +13,7 @@ public:
     RenderWindowPtr GetRenderWindow() const;
 
     RendererPtr GetRenderer() const;
+
 private:
     std::string appName_;
     std::vector<sf::VideoMode> modes_;

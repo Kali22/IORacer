@@ -14,10 +14,7 @@ enum VehicleBrakesTypeE {
 struct VehicleSetupT {
     float massBalance;
     float vehicleMass;
-    float enginePowerMax;
     float steeringAngleSpeed; // In degs per sec
-    float steeringAngleMax;
-    float aerodynamicFriction;
     VehicleTransmissionTypeE transmissionType;
     VehicleBrakesTypeE brakesType;
 };

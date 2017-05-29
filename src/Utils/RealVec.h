@@ -14,7 +14,7 @@ public:
 
     RealVec(float x, float y, float scale);
 
-    RealVec(const b2Vec2& vec);
+    RealVec(const b2Vec2 &vec);
 
     RealVec(const sf::Vector2f &vec);
 

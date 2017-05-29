@@ -22,6 +22,7 @@ public:
     bool IsEnable() const;
 
     void Draw(RenderWindowPtr window);
+
     /**
      * Set observer who is notifed each time when enabled checkpoint is
      * reached by car.
@@ -37,6 +38,7 @@ public:
     void EndContact();
 
     int GetId() const;
+
 private:
     int playerId_;
     CheckPointObserver *observer_;

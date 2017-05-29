@@ -3,9 +3,14 @@
 #include <Activity.h>
 #include <Event.h>
 
+enum RaceType {
+    SINGLE_PLAYER,
+    MULTI_PLAYER
+};
+
 class NewRace : public Activity {
 public:
-    NewRace();
+    NewRace(RaceType type);
 
     void Init();
 
@@ -16,14 +21,15 @@ public:
     void EventAction(Event event);
 
 private:
+    void Update();
+
     void HandleKey(sf::Event::KeyEvent event);
 
-    void SetTitleStyle(UITextBoxPtr textBox);
-
-    void SetButtonStyle(UITextBoxPtr button);
-
     void CreateRace(std::string name);
+
+    RaceType type_;
+
+    int laps_;
 };
 
 using NewRacePtr = std::shared_ptr<NewRace>;
-

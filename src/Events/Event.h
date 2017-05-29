@@ -16,11 +16,15 @@ enum UIEventTypeE {
 class Event {
 public:
     Event(UIEventTypeE type, const std::string &name);
+
     Event(const sf::Event &event);
 
     EventTypeE GetType() const;
+
     UIEventTypeE GetUIEventType() const;
-    const std::string& GetUIElement() const;
+
+    const std::string &GetUIElement() const;
+
     sf::Event GetSFMLEvent() const;
 
 private:
