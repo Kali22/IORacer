@@ -24,7 +24,6 @@ public:
     void SetText(const std::string &text);
 
     void Render(RenderWindowPtr window);
-
 private:
     sf::Font font_;
     sf::Text text_;

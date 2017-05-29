@@ -1,4 +1,5 @@
 #include "UI.h"
+#include <UIMinimap.h>
 
 int UI::GetElementsCount() const {
     return (int) list_.size();
@@ -17,6 +18,15 @@ UIBoxPtr UI::CreateBox(std::string name, sf::FloatRect size) {
     UIBoxPtr box = std::make_shared<UIBox>(list_.size(), name, size, activity_);
     list_[name] = box;
     return box;
+}
+
+UIMinimapPtr UI::CreateMinimap(std::string name, sf::FloatRect size,
+                               RealVec mapSize, TexturePtr texture) {
+    UIMinimapPtr minimap = std::make_shared<UIMinimap>(list_.size(), name,
+                                                       size, activity_,
+                                                       mapSize, texture);
+    list_[name] = minimap;
+    return minimap;
 }
 
 UIElementPtr UI::GetElementByName(const std::string &name) {
