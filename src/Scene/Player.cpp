@@ -41,8 +41,7 @@ CarConfigurationPtr Player::GetCarConfiguration() const {
 }
 
 std::map<std::string, float> Player::GetTimes() const {
-    std::map<std::string, float> ret = times_;
-    return ret;
+    return times_;
 }
 
 void Player::setTime(std::string map, float time) {

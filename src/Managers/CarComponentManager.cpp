@@ -48,16 +48,16 @@ std::vector<ComponentCategoryPtr> CarComponentManager::GetComponentCategories() 
 std::vector<CarComponentPtr> CarComponentManager::CreateEngineComponents() {
     std::vector<CarComponentPtr> components;
     components.push_back(std::make_shared<CarComponent>(
-            ENGINE_POWER_MAX, 0, "Engine 1", std::map<std::string, float>(),
-            60000));
+            ENGINE_POWER_MAX, 0, "Fiat 126p", std::map<std::string,
+                    float>(), 60000));
 
-    std::map<std::string, float> requirement = {{"map_1", 17}};
+    std::map<std::string, float> requirement = {{"map_1", 23}};
     components.push_back(std::make_shared<CarComponent>(
-            ENGINE_POWER_MAX, 1, "Engine 2", requirement, 110000));
-    requirement = {{"map_0", 12.},
-                   {"map_1", 17}};
+            ENGINE_POWER_MAX, 1, "V8 engine", requirement, 110000));
+    requirement = {{"map_0", 41.},
+                   {"map_1", 14}};
     components.push_back(std::make_shared<CarComponent>(
-            ENGINE_POWER_MAX, 2, "Engine 3", requirement,
+            ENGINE_POWER_MAX, 2, "Rocket engine", requirement,
             200000));
     return components;
 }
@@ -66,15 +66,16 @@ std::vector<CarComponentPtr>
 CarComponentManager::CreateAerodynamicComponents() {
     std::vector<CarComponentPtr> components;
     components.push_back(std::make_shared<CarComponent>(
-            AERODYNAMIC_FRICTION, 0, "Body 1", std::map<std::string, float>(), 0.1));
+            AERODYNAMIC_FRICTION, 0, "Wooden bolid",
+            std::map<std::string, float>(), 0.1));
 
-    std::map<std::string, float> requirement = {{"map_1", 16}};
+    std::map<std::string, float> requirement = {{"map_1", 24}};
     components.push_back(std::make_shared<CarComponent>(
-            AERODYNAMIC_FRICTION, 1, "Body 2", requirement, 0.01));
-    requirement = {{"map_0", 11.},
-                   {"map_1", 15}};
+            AERODYNAMIC_FRICTION, 1, "Porche", requirement, 0.01));
+    requirement = {{"map_0", 15.},
+                   {"map_1", 42}};
     components.push_back(std::make_shared<CarComponent>(
-            AERODYNAMIC_FRICTION, 2, "Body 3", requirement, 0.001));
+            AERODYNAMIC_FRICTION, 2, "Formula one", requirement, 0.001));
     return components;
 
 }
@@ -82,17 +83,18 @@ CarComponentManager::CreateAerodynamicComponents() {
 std::vector<CarComponentPtr> CarComponentManager::CreateWheelComponents() {
     std::vector<CarComponentPtr> components;
     components.push_back(std::make_shared<CarComponent>(
-            STEERING_ANGLE_MAX, 0, "Wheel 1", std::map<std::string, float>(),
+            STEERING_ANGLE_MAX, 0, "Wooden wheel", std::map<std::string,
+                    float>(),
             10));
 
-    std::map<std::string, float> requirement = {{"map_0", 13}};
+    std::map<std::string, float> requirement = {{"map_0", 65}};
     components.push_back(std::make_shared<CarComponent>(
-            STEERING_ANGLE_MAX, 1, "Wheel 2", requirement,
+            STEERING_ANGLE_MAX, 1, "Stone wheel", requirement,
             20));
-    requirement = {{"map_0", 12.},
-                   {"map_1", 14}};
+    requirement = {{"map_0", 15.},
+                   {"map_1", 46}};
     components.push_back(std::make_shared<CarComponent>(
-            STEERING_ANGLE_MAX, 2, "Wheel 3", requirement,
+            STEERING_ANGLE_MAX, 2, "Sport tire", requirement,
             30));
     return components;
 

@@ -43,6 +43,6 @@ int main(int argc, char **argv) {
         /* Manage activities. */
         activityManager->Manage();
     }
-    playerManager->SaveGame(); //TODO nie uruchamia sie w destruktorze?
+    playerManager->SaveGame();
     return 0;
 }
