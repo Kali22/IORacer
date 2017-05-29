@@ -75,6 +75,29 @@ void Workshop::EventAction(Event event) {
             UpdateCategoryUI();
         }
     }
+    if (event.GetType() != UI_EVENT || event.GetUIEventType() != UI_EVENT_CLICK) {
+        return;
+    }
+
+    std::string uiElement = event.GetUIElement();
+    if (uiElement == "quit_game") {
+        activityManager_->RemoveActivity("player_selector");
+        return;
+    }
+
+    if (uiElement == "component") {
+        SelectComponent();
+    } else if (uiElement == "category_right") {
+        categoryId_ = (categoryId_ + 1) % categories_.size();
+    } else if (uiElement == "category_left") {
+        unsigned long size = categories_.size();
+        categoryId_ = (categoryId_ + size - 1) % size;
+    } else if (uiElement == "component_right") {
+        GetCurrentCategory()->NextComponent();
+    } else if (uiElement == "component_left") {
+        GetCurrentCategory()->PreviousComponent();
+    }
+    UpdateCategoryUI();
 }
 
 void Workshop::HandleKey(sf::Event::KeyEvent event) {

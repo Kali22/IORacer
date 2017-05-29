@@ -27,7 +27,6 @@ public:
     ObjectPtr CreateStone(const RealVec &pos, float rot);
 
     ObjectPtr CreateObjectByName(const std::string &name, const RealVec &pos, float rot);
-
 private:
     void CreateFixture(b2Body *body, ObjectDesc objectDesc) const;
 
