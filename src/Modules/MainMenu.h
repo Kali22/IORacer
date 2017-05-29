@@ -19,7 +19,7 @@ public:
 private:
     void HandleKey(sf::Event::KeyEvent event);
 
-    void SetButtonStyle(UITextBoxPtr button);
+    void Update();
 };
 
 using MainMenuPtr = std::shared_ptr<MainMenu>;

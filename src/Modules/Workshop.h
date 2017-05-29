@@ -19,10 +19,6 @@ public:
 private:
     void HandleKey(sf::Event::KeyEvent event);
 
-    void SetTitleStyle(UITextBoxPtr textBox);
-
-    void SetButtonStyle(UITextBoxPtr button);
-
     void SetSelectedButtonStyle(UITextBoxPtr button);
 
     void InitCategories();

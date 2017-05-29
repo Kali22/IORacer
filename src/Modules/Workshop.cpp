@@ -87,26 +87,6 @@ void Workshop::HandleKey(sf::Event::KeyEvent event) {
     }
 }
 
-void Workshop::SetTitleStyle(UITextBoxPtr textBox) {
-    textBox->SetTextColor(sf::Color::White);
-    textBox->SetTextColorHover(sf::Color::White);
-    textBox->SetBackgroundColor(sf::Color(0x2B405Bff));
-    textBox->SetBackgroundColorHover(sf::Color(0x2B405Bff));
-    textBox->SetOutlineColor(sf::Color(0xE1F0FFff));
-    textBox->SetOutlineColorHover(sf::Color(0xE1F0FFff));
-    textBox->SetOutlineThickness(1.f);
-}
-
-void Workshop::SetButtonStyle(UITextBoxPtr button) {
-    button->SetBackgroundColor(backgroundColor);
-    button->SetBackgroundColorHover(backgroundColorHover);
-    button->SetOutlineColor(outlineColor);
-    button->SetOutlineColorHover(outlineColorHover);
-    button->SetTextColor(textColor);
-    button->SetTextColorHover(textColorHover);
-    button->SetOutlineThickness(outlineThickness);
-}
-
 void Workshop::InitCategories() {
     categories_ = carComponentManager_->GetComponentCategories();
     categoryId_ = 0;

@@ -59,7 +59,6 @@ void PlayerManager::CreateNewPlayer(const std::string &name) {
     players_list << name << std::endl;
     PlayerPtr player = std::make_shared<Player>(name, carComponentManager_, true);
     nameToPlayer_[name] = player;
-    SetActivePlayer(name);
 }
 
 void PlayerManager::SaveGame() {

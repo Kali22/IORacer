@@ -25,10 +25,6 @@ private:
 
     void HandleKey(sf::Event::KeyEvent event);
 
-    void SetTitleStyle(UITextBoxPtr textBox);
-
-    void SetButtonStyle(UITextBoxPtr button);
-
     void CreateRace(std::string name);
 
     RaceType type_;

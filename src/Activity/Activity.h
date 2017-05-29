@@ -38,6 +38,12 @@ public:
     ActivityManagerPtr GetActivityManager() const;
 
 protected:
+    void SetTitleStyle(UITextBoxPtr textBox);
+
+    void SetButtonStyle(UITextBoxPtr button);
+
+    void SetTextBoxStyle(UITextBoxPtr textBox);
+
     std::string name_;
     ActivityStateE state_;
 
