@@ -27,7 +27,7 @@ RealVec Camera::GetCenter() const {
     if (trackedObject_ == nullptr) {
         return center_;
     } else {
-        return  trackedObject_->GetPosition();
+        return trackedObject_->GetPosition();
     }
 }
 
@@ -36,7 +36,7 @@ void Camera::ChangeView(float ref, float frac) {
     screenFraction_ = frac;
 }
 
-VehiclePtr Camera::GetTrackedObject() const{
+VehiclePtr Camera::GetTrackedObject() const {
     return trackedObject_;
 }
 

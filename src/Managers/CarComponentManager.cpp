@@ -5,10 +5,10 @@ CarComponentManager::CarComponentManager() {
     typeToComponents_[ENGINE_POWER_MAX] = CreateEngineComponents();
     typeToComponents_[AERODYNAMIC_FRICTION] = CreateAerodynamicComponents();
     typeToComponents_[STEERING_ANGLE_MAX] = CreateWheelComponents();
-    modifierToCategoryName_  = {
-            {ENGINE_POWER_MAX, "Engine"},
+    modifierToCategoryName_ = {
+            {ENGINE_POWER_MAX,     "Engine"},
             {AERODYNAMIC_FRICTION, "Body"},
-            {STEERING_ANGLE_MAX, "Wheels"}
+            {STEERING_ANGLE_MAX,   "Wheels"}
     };
 }
 
@@ -54,7 +54,8 @@ std::vector<CarComponentPtr> CarComponentManager::CreateEngineComponents() {
     std::map<std::string, float> requirement = {{"map_1", 17}};
     components.push_back(std::make_shared<CarComponent>(
             ENGINE_POWER_MAX, 1, "Engine 2", requirement, 110000));
-    requirement = {{"map_0", 12.}, {"map_1", 17}};
+    requirement = {{"map_0", 12.},
+                   {"map_1", 17}};
     components.push_back(std::make_shared<CarComponent>(
             ENGINE_POWER_MAX, 2, "Engine 3", requirement,
             200000));
@@ -70,7 +71,8 @@ CarComponentManager::CreateAerodynamicComponents() {
     std::map<std::string, float> requirement = {{"map_1", 16}};
     components.push_back(std::make_shared<CarComponent>(
             AERODYNAMIC_FRICTION, 1, "Body 2", requirement, 0.01));
-    requirement = {{"map_0", 11.}, {"map_1", 15}};
+    requirement = {{"map_0", 11.},
+                   {"map_1", 15}};
     components.push_back(std::make_shared<CarComponent>(
             AERODYNAMIC_FRICTION, 2, "Body 3", requirement, 0.001));
     return components;
@@ -87,7 +89,8 @@ std::vector<CarComponentPtr> CarComponentManager::CreateWheelComponents() {
     components.push_back(std::make_shared<CarComponent>(
             STEERING_ANGLE_MAX, 1, "Wheel 2", requirement,
             20));
-    requirement = {{"map_0", 12.}, {"map_1", 14}};
+    requirement = {{"map_0", 12.},
+                   {"map_1", 14}};
     components.push_back(std::make_shared<CarComponent>(
             STEERING_ANGLE_MAX, 2, "Wheel 3", requirement,
             30));

@@ -14,7 +14,7 @@ enum ModifierType {
 
 class CarComponent {
 public:
-    CarComponent(ModifierType type, int id, const std::string& name,
+    CarComponent(ModifierType type, int id, const std::string &name,
                  std::map<std::string, float> requirement, float value);
 
     ModifierType GetType() const;
@@ -28,6 +28,7 @@ public:
     bool IsTimesSufficient(std::map<std::string, float> times) const;
 
     std::map<std::string, float> GetRequirement() const;
+
 private:
     ModifierType type_;
     int id_;

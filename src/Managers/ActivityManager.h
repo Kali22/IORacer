@@ -17,6 +17,7 @@ public:
     ActivityManager(WindowPtr window, TextureManagerPtr textureManager,
                     CarComponentManagerPtr carComponentManager,
                     PlayerManagerPtr playerManager);
+
     void Poll();
 
     void AddActivity(ActivityPtr activity);
@@ -38,6 +39,7 @@ public:
     CarComponentManagerPtr GetCarComponentManager() const;
 
     PlayerManagerPtr GetPlayerManager() const;
+
 private:
     WindowPtr window_;
     TextureManagerPtr textureManager_;

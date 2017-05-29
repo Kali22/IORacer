@@ -31,7 +31,7 @@ void Scene::Render(RenderWindowPtr renderWindow) const {
     map_->Draw(renderWindow);
     // Second - scene objects
     for (auto object : vehicles_) {
-      object->Draw(renderWindow);
+        object->Draw(renderWindow);
     }
 }
 

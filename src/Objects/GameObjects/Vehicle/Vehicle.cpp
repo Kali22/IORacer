@@ -20,8 +20,7 @@ Vehicle::Vehicle(int id, b2Body *body, VisualObjectPtr chassis,
         carConfiguration_(carConfiguration),
         map_(map),
         activeCheckpoint_(nullptr),
-        id_(id)
-{
+        id_(id) {
     controllerState_ = 0;
     body_->SetUserData(this);
     InitializeWheels();
@@ -58,7 +57,7 @@ void Vehicle::Brake(bool state) {
 void Vehicle::Update(float dt) {
     UpdateModifiers();
     UpdateFriction(dt);
-    UpdateDrive(dt);
+    UpdateDrive();
     UpdateTurn(dt);
 }
 
@@ -98,7 +97,7 @@ void Vehicle::UpdateFriction(float dt) {
     }
 }
 
-void Vehicle::UpdateDrive(float dt) {
+void Vehicle::UpdateDrive() {
     if (controllerState_ & (CTRL_STATE_ACC | CTRL_STATE_REV)) {
         if (enginePowerNow_ < carConfiguration_->GetEnginePowerMax()) {
             enginePowerNow_ += carConfiguration_->GetEnginePowerMax() / 10.f;
@@ -109,19 +108,19 @@ void Vehicle::UpdateDrive(float dt) {
             case TRANSMISSION_4X4:
                 torque *= 0.5f;
                 for (auto &wheel : wheels_)
-                    wheel->UpdateDrive(torque, dt);
+                    wheel->UpdateDrive(torque);
                 break;
 
             case TRANSMISSION_FRONT:
                 for (auto &wheel : wheels_)
                     if (wheel->IsFront())
-                        wheel->UpdateDrive(torque, dt);
+                        wheel->UpdateDrive(torque);
                 break;
 
             case TRANSMISSION_REAR:
                 for (auto &wheel : wheels_)
                     if (!wheel->IsFront())
-                        wheel->UpdateDrive(torque, dt);
+                        wheel->UpdateDrive(torque);
                 break;
         }
     } else {
@@ -212,9 +211,12 @@ void Vehicle::Reverse(bool state) {
 void Vehicle::PrintDiagnostic() {
     printf("ctrl state: %#08X\n", controllerState_);
     printf("body_: x: %f, y: %f, a: %f\n", body_->GetPosition().x, body_->GetPosition().y, body_->GetAngle());
-    for(auto &wheel : wheels_)
-        printf("wheel %d: x: %f, y: %f, a: %f\n", wheel->GetWheelType(), wheel->GetBody()->GetPosition().x, wheel->GetBody()->GetPosition().y, wheel->GetBody()->GetAngle());
-    printf("speed: m/s:%f, km/h:%f [x: %f, y: %f]\n",body_->GetLinearVelocity().Length(), body_->GetLinearVelocity().Length() * 0.001 * 3600., body_->GetLinearVelocity().x, body_->GetLinearVelocity().y);
+    for (auto &wheel : wheels_)
+        printf("wheel %d: x: %f, y: %f, a: %f\n", wheel->GetWheelType(), wheel->GetBody()->GetPosition().x,
+               wheel->GetBody()->GetPosition().y, wheel->GetBody()->GetAngle());
+    printf("speed: m/s:%f, km/h:%f [x: %f, y: %f]\n", body_->GetLinearVelocity().Length(),
+           body_->GetLinearVelocity().Length() * 0.001 * 3600., body_->GetLinearVelocity().x,
+           body_->GetLinearVelocity().y);
 
 }
 

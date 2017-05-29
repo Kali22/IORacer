@@ -13,7 +13,8 @@ public:
     ObjectManager(TextureManagerPtr textureManager, b2World *world);
 
     /* Game object creation. */
-    VehiclePtr CreateVehicle(int id, const RealVec &pos, float rot, const VehicleSetupT &setup, MapPtr map, CarConfigurationPtr carConfiguration);
+    VehiclePtr CreateVehicle(int id, const RealVec &pos, float rot, const VehicleSetupT &setup, MapPtr map,
+                             CarConfigurationPtr carConfiguration);
 
     CheckPointPtr CreateCheckpoint(int id, const RealVec &pos, float rot);
 
@@ -21,9 +22,14 @@ public:
 
     ObjectPtr CreateBox(const RealVec &pos, float rot);
 
+    ObjectPtr CreateCone(const RealVec &pos, float rot);
+
+    ObjectPtr CreateStone(const RealVec &pos, float rot);
+
     ObjectPtr CreateObjectByName(const std::string &name, const RealVec &pos, float rot);
+
 private:
-    void CreateFixture(b2Body* body, ObjectDesc objectDesc) const;
+    void CreateFixture(b2Body *body, ObjectDesc objectDesc) const;
 
     b2Body *InitializeBody(const std::string &objectName, const RealVec &pos, float rot);
 

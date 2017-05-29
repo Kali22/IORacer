@@ -10,4 +10,3 @@ UIBox::UIBox(int id, std::string name, ActivityPtr activity)
 UIBox::UIBox(int id, std::string name, sf::FloatRect size, ActivityPtr activity)
         : UIElement(id, name, size, activity) {
 }
-

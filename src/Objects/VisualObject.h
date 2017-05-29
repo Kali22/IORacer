@@ -30,6 +30,7 @@ public:
     void Move(float offsetX, float offsetY);
 
     virtual RealVec GetSize() const;
+
 private:
     void UpdateSpritePosition();
 

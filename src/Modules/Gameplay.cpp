@@ -2,7 +2,6 @@
 
 #include <ActivityManager.h>
 #include <CheckPointManager.h>
-#include <ViewportConst.h>
 
 #define FIRST_PLAYER 0
 #define SECOND_PLAYER 1
@@ -151,9 +150,7 @@ void Gameplay::UpdateUIInPrepareState() {
     title->SetText(ss.str());
 }
 
-void Gameplay::UpdateUIInPauseState() {
-
-}
+void Gameplay::UpdateUIInPauseState() {}
 
 void Gameplay::PrepareUIForPrepareState() {
     UIBoxPtr back = userInterface_->CreateBox("background", centeredFullScreen);
@@ -171,12 +168,14 @@ void Gameplay::UpdateHUD() {
 
     UITextBoxPtr lap0 = std::dynamic_pointer_cast<UITextBox>(userInterface_->GetElementByName("lap_0"));
     ss.str("");
-    ss << "Lap: " << playerCheckpoints_[0]->GetCurrentLapNumber() << " / " << playerCheckpoints_[0]->GetTotalNumberOfLaps();
+    ss << "Lap: " << playerCheckpoints_[0]->GetCurrentLapNumber() << " / "
+       << playerCheckpoints_[0]->GetTotalNumberOfLaps();
     lap0->SetText(ss.str());
     if (playerVehicle_[1] != nullptr) {
         UITextBoxPtr lap0 = std::dynamic_pointer_cast<UITextBox>(userInterface_->GetElementByName("lap_1"));
         ss.str("");
-        ss << "Lap: " << playerCheckpoints_[1]->GetCurrentLapNumber() << " / " << playerCheckpoints_[1]->GetTotalNumberOfLaps();
+        ss << "Lap: " << playerCheckpoints_[1]->GetCurrentLapNumber() << " / "
+           << playerCheckpoints_[1]->GetTotalNumberOfLaps();
         lap0->SetText(ss.str());
     }
 }
@@ -196,7 +195,7 @@ void Gameplay::PrepareHUD() {
                                                        sf::FloatRect(0.5, 0.075, 0.2, 0.1));
     SetTitleStyle(title);
     UITextBoxPtr lap0 = userInterface_->CreateTextBox("lap_0", "?", 20,
-                                                       sf::FloatRect(0.1, 0.075, 0.2, 0.06));
+                                                      sf::FloatRect(0.1, 0.075, 0.2, 0.06));
     SetTitleStyle(lap0);
     if (playerVehicle_[1] != nullptr) {
         UITextBoxPtr lap1 = userInterface_->CreateTextBox("lap_1", "?", 20,
@@ -205,8 +204,7 @@ void Gameplay::PrepareHUD() {
     }
 }
 
-void Gameplay::UpdateUIInEndState() {
-}
+void Gameplay::UpdateUIInEndState() {}
 
 void Gameplay::PrepareUIForEndState() {
     userInterface_->DeleteElementByName("time");
@@ -218,7 +216,7 @@ void Gameplay::PrepareUIForEndState() {
                                                        sf::FloatRect(0.5, 0.5, 1, 0.2));
     SetTitleStyle(title);
     std::stringstream ss;
-    ss << "Player " << winnerName_ << " won!" ;
+    ss << "Player " << winnerName_ << " won!";
     title->SetText(ss.str());
 }
 
@@ -284,7 +282,7 @@ void Gameplay::HandleKeyInEndState(sf::Event::KeyEvent event) {
 void Gameplay::HandleKeyFirstPlayer(sf::Event::KeyEvent event, bool state) {
     float ref;
     float scr;
-    int id = FIRST_PLAYER;
+    unsigned id = FIRST_PLAYER;
     switch (event.code) {
         case sf::Keyboard::Up:
             playerVehicle_[id]->Accelerate(state);
@@ -313,11 +311,10 @@ void Gameplay::HandleKeyFirstPlayer(sf::Event::KeyEvent event, bool state) {
     }
 }
 
-
 void Gameplay::HandleKeySecondPlayer(sf::Event::KeyEvent event, bool state) {
     float ref;
     float scr;
-    int id = SECOND_PLAYER;
+    unsigned id = SECOND_PLAYER;
     switch (event.code) {
         case sf::Keyboard::W:
             playerVehicle_[id]->Accelerate(state);
@@ -368,17 +365,16 @@ void Gameplay::PreparePlayer(int id) {
     CarConfigurationPtr configuration = player_[id]->GetCarConfiguration();
     StartPositionT start = map_->GetStartPosition(id);
     playerVehicle_[id] = objectManager_->CreateVehicle(id, RealVec(start.x,
-                                                                start.y), start.rot, setup, map_, configuration);
+                                                                   start.y), start.rot, setup, map_, configuration);
     std::vector<CheckPointPtr> checkpoints;
     for (auto el : map_->GetCheckpoints()) {
         checkpoints.push_back(
                 objectManager_->CreateCheckpoint(id, RealVec(el.x, el.y,
-                                                            map_->GetPixMetersScale()), el.rot));
+                                                             map_->GetPixMetersScale()), el.rot));
     }
     playerCheckpoints_[id] = std::make_shared<CheckPointManager>
             (playerVehicle_[id], checkpoints, laps_);
     scene_->AddObject(playerVehicle_[id]);
     scene_->AddCamera(id, 40, 0.3);
-
 }
 

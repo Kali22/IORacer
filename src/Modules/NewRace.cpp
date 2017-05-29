@@ -2,23 +2,23 @@
 
 #include <ActivityManager.h>
 #include <Gameplay.h>
-#include <ViewportConst.h>
 
 const int default_laps_number = 2;
 
-NewRace::NewRace(RaceType type) : Activity("new_race"), type_(type), laps_(default_laps_number) {
-}
+NewRace::NewRace(RaceType type) : Activity("new_race"), type_(type), laps_(default_laps_number) {}
 
 void NewRace::Init() {
     UIBoxPtr back = userInterface_->CreateBox("background", centeredFullScreen);
     back->SetBackgroundTexture("menu_back");
-    UITextBoxPtr title = userInterface_->CreateTextBox("title", "Setup your race", 50, sf::FloatRect(0.5, 0.075, 1, 0.1));
+    UITextBoxPtr title = userInterface_->CreateTextBox("title", "Setup your race", 50,
+                                                       sf::FloatRect(0.5, 0.075, 1, 0.1));
     SetTitleStyle(title);
     UITextBoxPtr m0 = userInterface_->CreateTextBox("map_0", "map_0", 30, sf::FloatRect(0.5, 0.5, 0.2, 0.05));
     UITextBoxPtr m1 = userInterface_->CreateTextBox("map_1", "map_1", 30, sf::FloatRect(0.5, 0.6, 0.2, 0.05));
     SetButtonStyle(m0);
     SetButtonStyle(m1);
-    UITextBoxPtr laps = userInterface_->CreateTextBox("laps", std::to_string(laps_), 30, sf::FloatRect(0.5, 0.2, 0.1, 0.05));
+    UITextBoxPtr laps = userInterface_->CreateTextBox("laps", std::to_string(laps_), 30,
+                                                      sf::FloatRect(0.5, 0.2, 0.1, 0.05));
     SetButtonStyle(laps);
     UITextBoxPtr plus = userInterface_->CreateTextBox("inc_lap", "+", 30, sf::FloatRect(0.6, 0.2, 0.05, 0.05));
     SetButtonStyle(plus);
@@ -39,14 +39,13 @@ void NewRace::Update() {
     nameTextBox->SetText(std::to_string(laps_));
 }
 
-void NewRace::End() {
-}
+void NewRace::End() {}
 
 void NewRace::EventAction(Event event) {
     if (event.GetType() == SFML_EVENT) {
         sf::Event sfmlEvent = event.GetSFMLEvent();
         if (sfmlEvent.type == sf::Event::KeyPressed) {
-                HandleKey(sfmlEvent.key);
+            HandleKey(sfmlEvent.key);
         }
     } else if (event.GetType() == UI_EVENT) {
         if (event.GetUIEventType() == UI_EVENT_CLICK) {
@@ -63,9 +62,8 @@ void NewRace::EventAction(Event event) {
 }
 
 
-
 void NewRace::HandleKey(sf::Event::KeyEvent event) {
-    if(event.code == sf::Keyboard::Escape) {
+    if (event.code == sf::Keyboard::Escape) {
         if (type_ == SINGLE_PLAYER)
             activityManager_->SetAsActive("main_menu");
         else

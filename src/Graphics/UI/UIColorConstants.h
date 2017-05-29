@@ -9,4 +9,3 @@ static sf::Color outlineColorHover = sf::Color(0x60758Cff);
 static sf::Color textColor = sf::Color(0xD5E6E0ff);
 static sf::Color textColorHover = sf::Color(0x1c7396ff);
 static float outlineThickness = 3.f;
-

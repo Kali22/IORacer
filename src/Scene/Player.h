@@ -18,6 +18,7 @@ public:
     void setTime(std::string map, float time);
 
     void save();
+
 private:
     std::string name_;
     CarConfigurationPtr carConfiguration_;

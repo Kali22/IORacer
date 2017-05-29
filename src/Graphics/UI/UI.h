@@ -13,7 +13,7 @@ class UI {
 public:
     UI(ActivityPtr activity);
 
-    UIBoxPtr CreateBox(std::string name, sf::FloatRect size  = centeredFullScreen);
+    UIBoxPtr CreateBox(std::string name, sf::FloatRect size = centeredFullScreen);
 
     UITextBoxPtr CreateTextBox(std::string name, std::string text, int fontSize, sf::FloatRect size);
 
@@ -26,6 +26,7 @@ public:
     void DeleteElementByName(const std::string &name);
 
     std::map<std::string, UIElementPtr>::iterator GetElements();
+
 private:
     std::map<std::string, UIElementPtr> list_;
 
@@ -33,4 +34,3 @@ private:
 };
 
 using UIPtr = std::shared_ptr<UI>;
-

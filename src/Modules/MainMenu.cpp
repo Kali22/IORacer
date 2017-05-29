@@ -1,25 +1,20 @@
 #include "MainMenu.h"
 #include <ActivityManager.h>
 #include <Workshop.h>
-#include <CarComponentManager.h>
-#include <ViewportConst.h>
-#include <PlayerManager.h>
 #include <NewRace.h>
 #include <PlayerSelector.h>
 
-MainMenu::MainMenu() : Activity("main_menu") {
-
-}
+MainMenu::MainMenu() : Activity("main_menu") {}
 
 void MainMenu::Init() {
     UIBoxPtr back = userInterface_->CreateBox("background", centeredFullScreen);
     back->SetBackgroundTexture("menu_back");
+    UITextBoxPtr multi = userInterface_->CreateTextBox("multi_player", "Multi Player", 50, sf::FloatRect(0.5, 0.4, 0.2, 0.1));
     UITextBoxPtr title = userInterface_->CreateTextBox(
             "title", "", 70, sf::FloatRect(0.5, 0.075, 1, 0.1));
     SetTitleStyle(title);
 
     UITextBoxPtr single = userInterface_->CreateTextBox("single_player", "Single Player", 50, sf::FloatRect(0.5, 0.25, 0.2, 0.1));
-    UITextBoxPtr multi = userInterface_->CreateTextBox("multi_player", "Multi Player", 50, sf::FloatRect(0.5, 0.4, 0.2, 0.1));
     UITextBoxPtr workshop = userInterface_->CreateTextBox("workshop", "Workshop", 50, sf::FloatRect(0.5, 0.55, 0.2, 0.1));
     UITextBoxPtr change = userInterface_->CreateTextBox("change_player", "Change Player", 50, sf::FloatRect(0.5, 0.7, 0.2, 0.1));
     UITextBoxPtr quit = userInterface_->CreateTextBox("quit_game", "Quit",
@@ -45,17 +40,15 @@ void MainMenu::Update() {
     nameTextBox->SetText(playerName);
 }
 
-void MainMenu::End() {
-
-}
+void MainMenu::End() {}
 
 void MainMenu::EventAction(Event event) {
     if (event.GetType() == SFML_EVENT) {
         if (event.GetSFMLEvent().type == sf::Event::KeyPressed) {
-                HandleKey(event.GetSFMLEvent().key);
+            HandleKey(event.GetSFMLEvent().key);
         }
     } else if (event.GetType() == UI_EVENT) {
-        if(event.GetUIEventType() == UI_EVENT_CLICK) {
+        if (event.GetUIEventType() == UI_EVENT_CLICK) {
             if (event.GetUIElement() == "single_player") {
                 NewRacePtr newRace = std::make_shared<NewRace>(SINGLE_PLAYER);
                 activityManager_->AddActivity(newRace);

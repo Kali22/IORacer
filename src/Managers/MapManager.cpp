@@ -61,12 +61,13 @@ MapPtr MapManager::CreateMap(std::string mapName) {
     std::cerr << "Map " << mapName << " created!\n";
     std::cerr << "Desc: " << description << "\n";
 
-    return std::make_shared<Map>(mapName, description, RealVec(sf::Vector2f(sizeX, sizeY)), view, friction, minimap, std::move(checkpoints),
+    return std::make_shared<Map>(mapName, description, RealVec(sf::Vector2f(sizeX, sizeY)), view, friction, minimap,
+                                 std::move(checkpoints),
                                  std::move(objects), std::move(standings));
 }
 
 std::vector<CheckpointPosition> MapManager::ParseCheckpoints(
-        std::ifstream* file) const {
+        std::ifstream *file) const {
     int checkpointNumber;
     std::vector<CheckpointPosition> checkpoints;
     *file >> checkpointNumber;
@@ -74,7 +75,7 @@ std::vector<CheckpointPosition> MapManager::ParseCheckpoints(
         float x, y, r;
         CheckpointPosition checkpoint;
         *file >> x >> y >> r;
-        checkpoint = {x,  y, MathUtil::DegreeToRadian(r)};
+        checkpoint = {x, y, MathUtil::DegreeToRadian(r)};
         checkpoints.push_back(checkpoint);
         std::cerr << "Checkpoint: " << x << ", " << y << ", " << r << "\n";
     }
@@ -109,7 +110,7 @@ std::vector<ObjectPtr> MapManager::ParseObjects(std::ifstream *file) const {
         data = std::stringstream(line);
         data >> objectName >> x >> y >> r;
         object = objectManager_->CreateObjectByName(
-                objectName, RealVec(x,  y), MathUtil::DegreeToRadian(r));
+                objectName, RealVec(x, y), MathUtil::DegreeToRadian(r));
         objects.push_back(object);
     }
     return objects;

@@ -5,7 +5,7 @@ Activity::Activity(std::string name) : name_(name), state_(ACTIVITY_STATE_INIT),
 
 }
 
-void Activity::Prepare(ActivityManagerPtr activityManager){
+void Activity::Prepare(ActivityManagerPtr activityManager) {
     activityManager_ = activityManager;
     userInterface_ = std::make_shared<UI>(shared_from_this());
 }

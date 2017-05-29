@@ -16,12 +16,12 @@
  */
 bool ContactListener::CheckIfCar(Object **entity1, Object **entity2, int *id) {
     if ((*entity2)->GetType() == OBJECT_TYPE_VEHICLE) {
-        *id = dynamic_cast<Vehicle*>(*entity2)->GetId();
+        *id = dynamic_cast<Vehicle *>(*entity2)->GetId();
         std::swap(*entity1, *entity2);
         return true;
     }
     if ((*entity1)->GetType() == OBJECT_TYPE_VEHICLE) {
-        *id = dynamic_cast<Vehicle*>(*entity1)->GetId();
+        *id = dynamic_cast<Vehicle *>(*entity1)->GetId();
         return true;
     }
     return false;

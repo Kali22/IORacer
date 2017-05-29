@@ -8,7 +8,7 @@
 
 class ComponentCategory {
 public:
-    ComponentCategory(ModifierType type, const std::string& name,
+    ComponentCategory(ModifierType type, const std::string &name,
                       std::vector<CarComponentPtr> components);
 
     std::string GetName() const;
@@ -22,10 +22,12 @@ public:
     CarComponentPtr NextComponent();
 
     CarComponentPtr PreviousComponent();
+
 private:
     std::vector<CarComponentPtr> components_;
     unsigned long current_;
     ModifierType type_;
     std::string name_;
 };
+
 using ComponentCategoryPtr = std::shared_ptr<ComponentCategory>;

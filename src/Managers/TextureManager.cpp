@@ -20,7 +20,7 @@ TextureManager::TextureManager() {
 }
 
 TexturePtr TextureManager::GetTextureByName(std::string name) {
-    std::map<std::string,TexturePtr>::iterator it = textures_.find(name);
+    std::map<std::string, TexturePtr>::iterator it = textures_.find(name);
     if (it != textures_.end())
         return textures_[name];
     else

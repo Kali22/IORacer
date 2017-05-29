@@ -26,9 +26,7 @@ void NewPlayer::Run() {
     renderer->Display();
 }
 
-void NewPlayer::End() {
-
-}
+void NewPlayer::End() {}
 
 void NewPlayer::EventAction(Event event) {
     if (event.GetType() == SFML_EVENT) {
@@ -42,7 +40,7 @@ void NewPlayer::EventAction(Event event) {
             }
         }
     } else if (event.GetType() == UI_EVENT) {
-        if(event.GetUIEventType() == UI_EVENT_CLICK) {
+        if (event.GetUIEventType() == UI_EVENT_CLICK) {
             if (event.GetUIElement() == "new_player")
                 CreatePlayer();
         }

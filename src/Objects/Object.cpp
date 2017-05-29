@@ -4,7 +4,7 @@
 #include <MathUtil.h>
 
 Object::Object(b2Body *body, VisualObjectPtr visualObject, ObjectTypeE type)
-        : body_(body), visualObject_(visualObject), type_(type) { }
+        : body_(body), visualObject_(visualObject), type_(type) {}
 
 b2Body *Object::GetBody() const {
     return body_;
@@ -18,7 +18,7 @@ ObjectTypeE Object::GetType() const {
     return type_;
 }
 
-void Object::Draw(RenderWindowPtr window){
+void Object::Draw(RenderWindowPtr window) {
     b2Vec2 pos = body_->GetPosition();
     visualObject_->SetPosition(pos.x, pos.y);
     visualObject_->SetRotation(MathUtil::RadianToDegree(body_->GetAngle()));

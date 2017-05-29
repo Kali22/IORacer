@@ -1,7 +1,7 @@
 #include <Fonts.h>
 #include "UITextBox.h"
 
-UITextBox::UITextBox(int id, std::string name, std::string text, int fontSize, sf::FloatRect size,
+UITextBox::UITextBox(int id, std::string name, std::string text, unsigned fontSize, sf::FloatRect size,
                      ActivityPtr activity)
         : UIElement(id, name, size,
                     activity) {
@@ -12,7 +12,7 @@ UITextBox::UITextBox(int id, std::string name, std::string text, int fontSize, s
     text_.setCharacterSize(fontSize);
     normalColor_ = sf::Color::Transparent;
     hoverColor_ = sf::Color::Transparent;
-    hoverOutlineColor_= sf::Color::Transparent;
+    hoverOutlineColor_ = sf::Color::Transparent;
     normalOutlineColor_ = sf::Color::Transparent;
     verticalFix = text_.getGlobalBounds().top;
 }

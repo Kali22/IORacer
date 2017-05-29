@@ -1,10 +1,9 @@
 #include "PlayerManager.h"
-#include "CarComponentManager.h"
 
 PlayerManager::PlayerManager(CarComponentManagerPtr carComponentManager) :
-    carComponentManager_(carComponentManager),
-    activePlayer_(nullptr),
-    secondPlayer_(nullptr) {
+        carComponentManager_(carComponentManager),
+        activePlayer_(nullptr),
+        secondPlayer_(nullptr) {
     std::ifstream file(resourcePath_ + playerListFile_);
     std::string line;
 
@@ -36,7 +35,8 @@ bool PlayerManager::SetSecondPlayer(const std::string &name) {
         return false;
     }
     secondPlayer_ = it->second;
-    return true;}
+    return true;
+}
 
 PlayerPtr PlayerManager::GetPlayer(const std::string &name) const {
     auto it = nameToPlayer_.find(name);
@@ -48,21 +48,21 @@ PlayerPtr PlayerManager::GetPlayer(const std::string &name) const {
 
 std::vector<std::string> PlayerManager::GetPlayersList() const {
     std::vector<std::string> playersList;
-    for (auto& player : nameToPlayer_) {
+    for (auto &player : nameToPlayer_) {
         playersList.push_back(player.first);
     }
     return playersList;
 }
 
 void PlayerManager::CreateNewPlayer(const std::string &name) {
-    std::ofstream players_list(resourcePath_ + playerListFile_ , std::ios_base::app);
+    std::ofstream players_list(resourcePath_ + playerListFile_, std::ios_base::app);
     players_list << name << std::endl;
     PlayerPtr player = std::make_shared<Player>(name, carComponentManager_, true);
     nameToPlayer_[name] = player;
 }
 
 void PlayerManager::SaveGame() {
-    for (auto& player : nameToPlayer_) {
+    for (auto &player : nameToPlayer_) {
         player.second->save();
     }
 }
