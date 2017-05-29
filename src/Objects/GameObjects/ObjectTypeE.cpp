@@ -8,4 +8,5 @@ std::map<ObjectTypeE, std::string> ObjectsMap{
         {OBJECT_TYPE_BOX,         "box"},
         {OBJECT_TYPE_CONE,        "cone"},
         {OBJECT_TYPE_STONE,       "stone"},
+        {OBJECT_TYPE_BOUND,       "bound"},
 };

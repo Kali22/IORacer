@@ -57,6 +57,8 @@ MapPtr MapManager::CreateMap(std::string mapName) {
     std::vector<CheckpointPosition> checkpoints = ParseCheckpoints(&file);
     std::vector<StartPositionT> standings = ParseStartPositions(&file);
     std::vector<ObjectPtr> objects = ParseObjects(&file);
+    std::vector<ObjectPtr> bounds = AddBounds(sizeX, sizeY);
+    objects.insert(objects.end(), bounds.begin(), bounds.end());
 
     std::cerr << "Map " << mapName << " created!\n";
     std::cerr << "Desc: " << description << "\n";
@@ -116,3 +118,11 @@ std::vector<ObjectPtr> MapManager::ParseObjects(std::ifstream *file) const {
     return objects;
 }
 
+std::vector<ObjectPtr> MapManager::AddBounds(float sizeX, float sizeY) const {
+    std::vector<ObjectPtr> bounds;
+    bounds.push_back(objectManager_->CreateBound(RealVec(sizeX / 2, 0), sizeY, false));  //right
+    bounds.push_back(objectManager_->CreateBound(RealVec(-sizeX / 2, 0), sizeY, false)); //left
+    bounds.push_back(objectManager_->CreateBound(RealVec(0, -sizeY / 2), sizeX, true));  //up
+    bounds.push_back(objectManager_->CreateBound(RealVec(0, sizeY / 2), sizeX, true));   //down
+    return bounds;
+}

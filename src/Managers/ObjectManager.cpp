@@ -1,6 +1,7 @@
 #include "ObjectManager.h"
 #include <GameObjects/CheckPoint/CheckPoint.h>
 #include <GameObjects/Vehicle/Vehicle.h>
+#include <MathUtil.h>
 
 ObjectManager::ObjectManager(TextureManagerPtr textureManager, b2World *world) :
         textureManager_(textureManager), world_(world) {
@@ -180,3 +181,24 @@ void ObjectManager::CreateFixture(b2Body *body, ObjectDesc objectDesc) const {
     }
 }
 
+ObjectPtr ObjectManager::CreateBound(const RealVec &pos, float length, bool horizontal) {
+    std::string objectName = "bound";
+    std::map<std::string, ObjectDesc>::iterator it = objectDesc_.find(objectName);
+    if (it == objectDesc_.end()) {
+        std::cerr << "Object name " << objectName << " not found!\n";
+        exit(1);
+    }
+    ObjectDesc objectDesc = it->second;
+    objectDesc.size.x = length;
+
+    b2BodyDef bodyDef;
+    bodyDef.position.x = pos.x;
+    bodyDef.position.y = pos.y;
+    bodyDef.angle = MathUtil::DegreeToRadian(90 * (!horizontal));
+    bodyDef.type = b2_staticBody;
+    b2Body *body = world_->CreateBody(&bodyDef);
+
+    CreateFixture(body, objectDesc);
+    VisualObjectPtr obj = GetVisualObjectInstanceByName(ObjectsMap[OBJECT_TYPE_BOUND]);
+    return std::make_shared<Object>(body, obj, OBJECT_TYPE_BOUND);
+}

@@ -51,7 +51,7 @@ float Map::GetPixMetersScale() const {
 }
 
 float Map::GetFrictionModifier(const RealVec &pos) {
-    /// @TODO Check Out of range positioin
+    /// @TODO Check Out of range position
     /// @TODO Validate
     unsigned int sx = imageFriction_.getSize().x;
     unsigned int sy = imageFriction_.getSize().y;
