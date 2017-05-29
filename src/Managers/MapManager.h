@@ -34,6 +34,8 @@ private:
     TextureManagerPtr textureManager_;
 
     ObjectManagerPtr objectManager_;
+
+    std::vector<ObjectPtr> AddBounds(float sizeX, float sizeY) const;
 };
 
 using MapManagerPtr = std::shared_ptr<MapManager>;

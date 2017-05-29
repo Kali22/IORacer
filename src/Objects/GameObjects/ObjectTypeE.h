@@ -14,6 +14,7 @@ enum ObjectTypeE {
     OBJECT_TYPE_BOX,
     OBJECT_TYPE_CONE,
     OBJECT_TYPE_STONE,
+    OBJECT_TYPE_BOUND
 };
 
 extern std::map<ObjectTypeE, std::string> ObjectsMap;
