@@ -1,10 +1,8 @@
 #pragma once
 
-#include <map>
-#include <string>
-#include <vector>
-#include <CarComponent.h>
 
+#include <bits/stdc++.h>
+#include <CarComponent.h>
 
 class CarConfiguration {
 public:
@@ -28,6 +26,5 @@ private:
 
     std::map<ModifierType, CarComponentPtr> components_;
 };
-
 
 using CarConfigurationPtr = std::shared_ptr<CarConfiguration>;

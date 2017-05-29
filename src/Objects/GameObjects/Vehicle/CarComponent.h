@@ -1,8 +1,6 @@
 #pragma once
 
-#include <map>
-#include <vector>
-#include <string>
+
 #include <bits/stdc++.h>
 
 enum ModifierType {
@@ -36,6 +34,5 @@ private:
     float value_;
     std::map<std::string, float> mapNameToTime_;
 };
-
 
 using CarComponentPtr = std::shared_ptr<CarComponent>;

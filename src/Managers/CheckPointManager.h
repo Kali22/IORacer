@@ -1,9 +1,11 @@
 #pragma once
 
-#include <CheckPoint/CheckPointObserver.h>
+
+#include <SFML/System.hpp>
 #include <SFML/System/Clock.hpp>
-#include <CheckPoint/TimeManager.h>
-#include <GameObjects/ObjectTypes.h>
+#include <CheckPointObserver.h>
+#include <TimeManager.h>
+#include <ObjectTypes.h>
 
 /**
  * Store list of chekpoints. Track and update active checkpoint.

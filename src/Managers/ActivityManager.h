@@ -1,8 +1,7 @@
 #pragma once
 
+
 #include <bits/stdc++.h>
-#include <vector>
-#include <map>
 #include <Window.h>
 #include <ActivityCommon.h>
 #include <Renderer.h>
@@ -10,7 +9,6 @@
 #include <TextureManager.h>
 #include <CarComponentManager.h>
 #include <PlayerManager.h>
-
 
 class ActivityManager : public std::enable_shared_from_this<ActivityManager> {
 public:

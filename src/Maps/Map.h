@@ -1,5 +1,6 @@
 #pragma once
 
+
 #include <bits/stdc++.h>
 #include <string>
 #include <SFML/Graphics/RenderWindow.hpp>
@@ -10,7 +11,7 @@
 #include <Texture/Texture.h>
 #include <StartPosition.h>
 #include <Drawable.h>
-#include <GameObjects/ObjectTypes.h>
+#include <ObjectTypes.h>
 #include <Object.h>
 #include <CheckpointPosition.h>
 #include <Sprite.h>

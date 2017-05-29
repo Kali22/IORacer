@@ -1,5 +1,4 @@
-#include "Gameplay.h"
-
+#include <Gameplay.h>
 #include <ActivityManager.h>
 #include <CheckPointManager.h>
 
@@ -13,8 +12,6 @@ Gameplay::Gameplay(const std::string &mapName, int laps)
           isOver_(false),
           contactListener_(std::make_shared<ContactListener>()) {
 }
-
-sf::Clock clk;
 
 void Gameplay::Init() {
     world_ = new b2World(b2Vec2(0, 0));
@@ -175,11 +172,11 @@ void Gameplay::UpdateHUD() {
     playerCheckpoints_[FIRST_PLAYER]->GetNextCheckPointPosition());
 
     if (playerVehicle_[SECOND_PLAYER] != nullptr) {
-        UITextBoxPtr lap0 = std::dynamic_pointer_cast<UITextBox>(userInterface_->GetElementByName("lap_1"));
+        UITextBoxPtr lap1 = std::dynamic_pointer_cast<UITextBox>(userInterface_->GetElementByName("lap_1"));
         ss.str("");
         ss << "Lap: " << playerCheckpoints_[SECOND_PLAYER]->GetCurrentLapNumber() << " / "
                 "" << playerCheckpoints_[SECOND_PLAYER]->GetTotalNumberOfLaps();
-        lap0->SetText(ss.str());
+        lap1->SetText(ss.str());
 
         minimap_[SECOND_PLAYER]->Update(playerVehicle_[SECOND_PLAYER]->GetPosition(),
                                        playerCheckpoints_[SECOND_PLAYER]->GetNextCheckPointPosition());
@@ -392,6 +389,5 @@ void Gameplay::PreparePlayer(int id) {
     playerCheckpoints_[id] = std::make_shared<CheckPointManager>
             (playerVehicle_[id], checkpoints, laps_);
     scene_->AddObject(playerVehicle_[id]);
-    scene_->AddCamera(id, 40, 0.3);
+    scene_->AddCamera((unsigned) id, 40, 0.3);
 }
-

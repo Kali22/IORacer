@@ -1,4 +1,4 @@
-#include <GameObjects/CheckPoint/CheckPoint.h>
+#include <CheckPoint.h>
 
 CheckPoint::CheckPoint(int id, b2Body *body, VisualObjectPtr visualObject)
         : Object(body, visualObject, OBJECT_TYPE_CHECK_POINT), playerId_(id) {
@@ -37,4 +37,3 @@ void CheckPoint::EndContact() {}
 int CheckPoint::GetId() const {
     return playerId_;
 }
-

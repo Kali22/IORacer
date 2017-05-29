@@ -1,5 +1,6 @@
 #pragma once
 
+
 #include <Texture.h>
 #include <Sprite.h>
 
@@ -17,4 +18,3 @@ private:
 };
 
 using TextureManagerPtr = std::shared_ptr<TextureManager>;
-

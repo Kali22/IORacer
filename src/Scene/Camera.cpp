@@ -1,5 +1,5 @@
 #include <Object.h>
-#include "Camera.h"
+#include <Camera.h>
 
 Camera::Camera(RealVec center, float refHeigth, float screenFraction) :
         center_(center),
@@ -39,4 +39,3 @@ void Camera::ChangeView(float ref, float frac) {
 VehiclePtr Camera::GetTrackedObject() const {
     return trackedObject_;
 }
-

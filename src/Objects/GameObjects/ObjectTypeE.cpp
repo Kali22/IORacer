@@ -1,4 +1,4 @@
-#include "ObjectTypeE.h"
+#include <ObjectTypeE.h>
 
 std::map<ObjectTypeE, std::string> ObjectsMap{
         {OBJECT_TYPE_VEHICLE,     "vehicle"},

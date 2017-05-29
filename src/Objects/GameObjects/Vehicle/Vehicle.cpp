@@ -1,5 +1,4 @@
-#include "Vehicle.h"
-
+#include <Vehicle.h>
 #include <MathUtil.h>
 #include <CheckPoint.h>
 
@@ -155,7 +154,7 @@ void Vehicle::UpdateTurn(float dt) {
 void Vehicle::UpdateModifiers() {
     /// @TODO HERE UPDATE DIFFERENT PARAMS
     for (auto &wheel : wheels_) {
-        //std::cerr << "Vehicle " << id_ << ":" << std::endl;
+        std::cerr << "Vehicle " << id_ << ":" << std::endl;
         float modifier = map_->GetFrictionModifier(wheel->GetPosition());
         float load = 9.81f * vehicleSetup_.vehicleMass * 0.5f;
         if (wheel->IsFront())

@@ -1,4 +1,4 @@
-#include "CarConfiguration.h"
+#include <CarConfiguration.h>
 
 CarConfiguration::CarConfiguration(
         std::vector<CarComponentPtr> carComponents) {
@@ -48,4 +48,3 @@ int CarConfiguration::GetComponentId(ModifierType type) const {
     }
     return it->second->GetId();
 }
-

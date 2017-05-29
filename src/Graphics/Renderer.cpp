@@ -1,7 +1,6 @@
-#include "Renderer.h"
+#include <Renderer.h>
 
-Renderer::Renderer(RenderWindowPtr renderWindow) : renderWindow_(renderWindow) {
-}
+Renderer::Renderer(RenderWindowPtr renderWindow) : renderWindow_(renderWindow) {}
 
 /**
  * Camera view render on screen.

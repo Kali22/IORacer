@@ -1,11 +1,9 @@
 #pragma once
-//
-// Created by pawel on 03.04.17.
-//
+
 
 #include <Box2D.h>
 #include <SFML/Graphics/View.hpp>
-#include <CheckPoint/CheckPointObserver.h>
+#include <CheckPointObserver.h>
 #include <Object.h>
 #include <VisualObject.h>
 
@@ -44,4 +42,3 @@ private:
     CheckPointObserver *observer_;
     bool enable_;
 };
-

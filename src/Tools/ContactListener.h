@@ -1,10 +1,8 @@
-//
-// Created by pawel on 04.04.17.
-//
 #pragma once
 
+
 #include <Box2D.h>
-#include <GameObjects/CheckPoint/CheckPoint.h>
+#include <CheckPoint.h>
 #include <Object.h>
 
 class ContactListener : public b2ContactListener {

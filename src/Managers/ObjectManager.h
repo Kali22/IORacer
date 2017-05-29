@@ -1,7 +1,8 @@
 #pragma once
 
+
 #include <Managers.h>
-#include <GameObjects/ObjectTypes.h>
+#include <ObjectTypes.h>
 #include <Map.h>
 #include <VehicleSetup.h>
 #include <Object.h>

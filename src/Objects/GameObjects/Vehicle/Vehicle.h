@@ -1,11 +1,11 @@
 #pragma once
 
+
 #include <ObjectTypes.h>
 #include <Wheel.h>
 #include <bits/stdc++.h>
-#include <vector>
-#include "VehicleSetup.h"
-#include "CarConfiguration.h"
+#include <VehicleSetup.h>
+#include <CarConfiguration.h>
 #include <Map.h>
 
 class Vehicle : public Object {
@@ -67,7 +67,6 @@ private:
     /* Car state */
     int controllerState_;
     float enginePowerNow_;
-    float steeringAngleNow_;
 
     /* Car params */
     VehicleSetupT vehicleSetup_;

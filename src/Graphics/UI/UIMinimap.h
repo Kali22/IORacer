@@ -13,8 +13,9 @@ public:
     virtual void Render(RenderWindowPtr window);
 
     void Update(RealVec carPos, RealVec checkpointPos);
+
 private:
-    void UpdatePos(RealVec* origin, RealVec newPos);
+    void UpdatePos(RealVec *origin, RealVec newPos);
 
     void DrawPos(RenderWindowPtr window, RealVec pos, sf::Color);
 

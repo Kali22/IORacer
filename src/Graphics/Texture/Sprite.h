@@ -1,6 +1,7 @@
 #pragma once
 
-#include <bits/stdc++.h>
+
+#include <memory>
 #include <SFML/Graphics/Sprite.hpp>
 #include <Drawable.h>
 #include <Texture.h>

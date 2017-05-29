@@ -1,5 +1,6 @@
 #pragma once
 
+
 #include <SFML/Window/Event.hpp>
 
 enum EventTypeE {
@@ -37,4 +38,3 @@ private:
     // SFML
     sf::Event sfmlEvent_;
 };
-

@@ -1,4 +1,4 @@
-#include "ComponentCategory.h"
+#include <ComponentCategory.h>
 
 ComponentCategory::ComponentCategory(ModifierType type, const std::string &name,
                                      std::vector<CarComponentPtr> components)
@@ -35,4 +35,3 @@ std::string ComponentCategory::GetName() const {
 ModifierType ComponentCategory::GetType() const {
     return type_;
 }
-

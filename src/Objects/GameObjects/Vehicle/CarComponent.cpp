@@ -1,4 +1,4 @@
-#include "CarComponent.h"
+#include <CarComponent.h>
 
 CarComponent::CarComponent(ModifierType type, int id, const std::string &name,
                            std::map<std::string, float> requirement,

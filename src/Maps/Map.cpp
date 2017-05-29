@@ -1,4 +1,4 @@
-#include "Map.h"
+#include <Map.h>
 
 /**
  * Creates map and prepare the map's world.

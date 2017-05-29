@@ -1,12 +1,10 @@
-#include "UI.h"
-#include <UIMinimap.h>
+#include <UI.h>
 
 int UI::GetElementsCount() const {
     return (int) list_.size();
 }
 
-UI::UI(ActivityPtr activity) : activity_(activity) {
-}
+UI::UI(ActivityPtr activity) : activity_(activity) {}
 
 void UI::EventAction(sf::Event event) {
     for (auto item : list_) {

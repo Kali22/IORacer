@@ -1,6 +1,7 @@
 #include "ObjectManager.h"
-#include <GameObjects/CheckPoint/CheckPoint.h>
-#include <GameObjects/Vehicle/Vehicle.h>
+
+#include <CheckPoint.h>
+#include <Vehicle.h>
 #include <MathUtil.h>
 
 ObjectManager::ObjectManager(TextureManagerPtr textureManager, b2World *world) :

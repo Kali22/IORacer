@@ -1,7 +1,8 @@
 #pragma once
 
+
 #include <SFML/Window/Event.hpp>
-#include <bits/stdc++.h>
+#include <memory>
 
 class Controllable {
 public:

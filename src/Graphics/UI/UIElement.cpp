@@ -2,24 +2,23 @@
 
 #include <ActivityManager.h>
 #include <Activity.h>
-#include <ViewportConst.h>
 
-UIElement::UIElement(int id, std::string name, ActivityPtr activity)
-        : name_(name),
-          id_(id),
-          activity_(activity),
-          size_(centeredFullScreen),
-          hover_(false) {
+UIElement::UIElement(int id, std::string name, ActivityPtr activity) :
+        name_(name),
+        id_(id),
+        activity_(activity),
+        size_(centeredFullScreen),
+        hover_(false) {
 
 }
 
 UIElement::UIElement(int id, std::string name, sf::FloatRect size,
-                     ActivityPtr activity)
-        : name_(name),
-          id_(id),
-          activity_(activity),
-          size_(size),
-          hover_(false) {
+                     ActivityPtr activity) :
+        name_(name),
+        id_(id),
+        activity_(activity),
+        size_(size),
+        hover_(false) {
 }
 
 void UIElement::EventAction(sf::Event event) {

@@ -33,4 +33,3 @@ public:
 private:
     float scale_;
 };
-

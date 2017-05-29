@@ -1,18 +1,10 @@
 #include <PlayerManager.h>
 #include <TextureManager.h>
-#include <CarComponentManager.h>
 #include <Window.h>
 #include <ActivityManager.h>
 #include <PlayerSelector.h>
 #include <Splash.h>
-#include <PlayerSelector.h>
-#include <NewPlayer.h>
 #include <MainMenu.h>
-#include <NewRace.h>
-#include <TextureManager.h>
-#include <CarComponentManager.h>
-#include <PlayerManager.h>
-#include <Workshop.h>
 
 
 int main(int argc, char **argv) {

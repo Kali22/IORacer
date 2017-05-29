@@ -1,17 +1,12 @@
 #pragma once
 
-#include "Map.h"
 
+#include <Map.h>
 #include <bits/stdc++.h>
 #include <string>
-#include <map>
 #include <ObjectManager.h>
 #include <Object.h>
 
-/**
- * @TODO -> Change map loader and add starting  positions!!!
- * @TODO -> Add minimap provider!?
- */
 class MapManager {
 public:
     MapManager(TextureManagerPtr textureManager, ObjectManagerPtr objectManager);

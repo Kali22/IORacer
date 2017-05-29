@@ -1,7 +1,8 @@
 #pragma once
 
+
 #include <Drawable.h>
-#include <bits/stdc++.h>
+#include <memory>
 #include <SFML/System.hpp>
 
 class Movable {

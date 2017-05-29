@@ -1,15 +1,11 @@
-//
-// Created by pawel on 04.04.17.
-//
-
 #include <utility>
 #include <iostream>
 
 #include <Box2D.h>
 #include <Object.h>
-#include <GameObjects/CheckPoint/CheckPoint.h>
+#include <CheckPoint.h>
+#include <Vehicle.h>
 #include <ContactListener.h>
-#include <GameObjects/Vehicle/Vehicle.h>
 
 /** Return true if one of Entities is a car.
  *  If one of the entities is a car replace pointer so that the first one is the car.

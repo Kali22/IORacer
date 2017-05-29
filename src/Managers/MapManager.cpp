@@ -1,6 +1,3 @@
-#include <fstream>
-#include <sstream>
-#include <iostream>
 #include <MapManager.h>
 #include <MathUtil.h>
 

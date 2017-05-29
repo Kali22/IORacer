@@ -1,7 +1,7 @@
 #pragma once
 
 
-#include <bits/shared_ptr.h>
+#include <memory>
 
 class Scalable {
 public:

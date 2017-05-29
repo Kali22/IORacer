@@ -1,6 +1,5 @@
 #pragma once
 
-#define MAX_PLAYER 2
 
 #include <Activity.h>
 #include <Event.h>
@@ -9,6 +8,8 @@
 #include <MapManager.h>
 #include <Player.h>
 #include <UIMinimap.h>
+
+#define MAX_PLAYER 2
 
 enum GameplayStateE {
     GAMEPLAY_STATE_PREPARE,
@@ -72,7 +73,6 @@ private:
 
     void PreparePlayer(int id);
 
-    /* xD xD xD */
     bool isOver_;
     std::string winnerName_;
 

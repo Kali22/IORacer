@@ -1,5 +1,6 @@
 #pragma once
 
+
 #include <string>
 #include <SFML/Window/VideoMode.hpp>
 #include <GraphicsCommon.h>

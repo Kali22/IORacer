@@ -1,4 +1,4 @@
-#include "Wheel.h"
+#include <Wheel.h>
 
 Wheel::Wheel(b2Body *body, VisualObjectPtr wheel) : Object(body, wheel, OBJECT_TYPE_WHEEL) {
     body_->SetUserData(this);
@@ -81,7 +81,7 @@ void Wheel::UpdateFrictionNotLocked(float dt) {
     float bodySpeed = currBodyVelDir.Normalize();
     float currForwardSpeed = currForwardVel.Normalize();
     float aeroForceMagnitude = -0.1f * vehicleAeroFriction_ * 0.25f * bodySpeed * bodySpeed;
-    float dragForceMagnitude = -(0.1f + 0.5 * frictionModifier_) * 0.2f * currForwardSpeed;
+    float dragForceMagnitude = -(0.1f + 0.5f * frictionModifier_) * 0.2f * currForwardSpeed;
     // Simulate wheel drag force
     body_->ApplyForce(dragForceMagnitude * currForwardVel, body_->GetWorldCenter(), true);
     // Simulate car aerodynamics friction

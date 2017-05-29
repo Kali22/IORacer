@@ -1,11 +1,5 @@
-//
-// Created by pawel on 04.04.17.
-// Edited by jack on 13.04.17
-//
-
-#include <cassert>
-#include <GameObjects/CheckPoint/CheckPoint.h>
-#include "CheckPointManager.h"
+#include <CheckPointManager.h>
+#include <CheckPoint.h>
 #include <Vehicle.h>
 
 CheckPointManager::CheckPointManager(VehiclePtr player, std::vector<CheckPointPtr> checkPoints, int totalLaps)

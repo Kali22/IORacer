@@ -1,4 +1,4 @@
-#include "Sprite.h"
+#include <Sprite.h>
 
 Sprite::Sprite(TexturePtr texture) {
     sprite_.setTexture(*texture->GetTexture());

@@ -1,7 +1,7 @@
 #pragma once
 
-#include <map>
-#include <vector>
+
+#include <bits/stdc++.h>
 #include <CarComponent.h>
 #include <ComponentCategory.h>
 

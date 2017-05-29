@@ -1,5 +1,4 @@
-#include "PlayerManager.h"
-#include "CarComponentManager.h"
+#include <PlayerManager.h>
 
 PlayerManager::PlayerManager(CarComponentManagerPtr carComponentManager) :
         carComponentManager_(carComponentManager),

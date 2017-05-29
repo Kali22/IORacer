@@ -1,4 +1,4 @@
-#include "Fonts.h"
+#include <Fonts.h>
 
 std::map<std::string, std::string> fonts{
         {"andale_mono", "../resource/fonts/Andale_Mono.ttf"},

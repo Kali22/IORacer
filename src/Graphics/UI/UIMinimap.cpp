@@ -1,8 +1,6 @@
 #include "UIMinimap.h"
 
-#include <Texture.h>
 #include <Activity.h>
-
 
 UIMinimap::UIMinimap(int id, std::string name, sf::FloatRect size, ActivityPtr
 activity, RealVec mapSize, TexturePtr texture)
@@ -23,7 +21,7 @@ void UIMinimap::Update(RealVec carPos, RealVec checkpointPos) {
     UpdatePos(&checkpointPos_, checkpointPos);
 }
 
-void UIMinimap::UpdatePos(RealVec* origin, RealVec newPos) {
+void UIMinimap::UpdatePos(RealVec *origin, RealVec newPos) {
     origin->x = newPos.x;
     origin->y = newPos.y;
 }

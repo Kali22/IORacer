@@ -1,4 +1,4 @@
-#include "Event.h"
+#include <Event.h>
 
 Event::Event(UIEventTypeE type, const std::string &name)
         : type_(UI_EVENT), uiType_(type), uiElement_(name) {

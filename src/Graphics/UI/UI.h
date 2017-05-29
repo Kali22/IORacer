@@ -2,14 +2,14 @@
 
 
 #include <bits/stdc++.h>
-#include <UI/UIElement.h>
-#include <Event.h>
+#include <UIElement.h>
 #include <UIBox.h>
 #include <UITextBox.h>
-#include <ViewportConst.h>
 #include <UIMinimap.h>
+#include <Event.h>
+#include <ViewportConst.h>
 
-/** @TODO Resize elements onload! */
+/** @TODO Resize elements on load! */
 class UI {
 public:
     UI(ActivityPtr activity);

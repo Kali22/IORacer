@@ -1,4 +1,4 @@
-#include <CheckPoint/TimeManager.h>
+#include <TimeManager.h>
 
 TimeManager::TimeManager(const int &currentSector, const int &currentLap,
                          const int &totalSectors) :
@@ -23,12 +23,12 @@ void TimeManager::Reset() {
     bestLapTime_ = std::numeric_limits<float>::infinity();
     bestLapNumber_ = 0;
 
-    bestSectorTimeNumber_ = std::vector<int>(totalSectors_, 0);
-    bestSectorTimes_ = std::vector<float>(totalSectors_,
+    bestSectorTimeNumber_ = std::vector<int>((unsigned) totalSectors_, 0);
+    bestSectorTimes_ = std::vector<float>((unsigned) totalSectors_,
                                           std::numeric_limits<float>::infinity());
     // Add zeros in 'guard' zero lap
     accumulativeSectorsTimes_ = {
-            std::vector<float>(totalSectors_,
+            std::vector<float>((unsigned) totalSectors_,
                                std::numeric_limits<float>::infinity()),
             std::vector<float>()};
     sectorsTimes_ = accumulativeSectorsTimes_;
@@ -127,7 +127,6 @@ const int &TimeManager::GetCurrentLapNumber() const {
 const int &TimeManager::GetCurrentSectorNumber() const {
     return currentSectorIndicator_;
 }
-
 
 void TimeManager::UpdateTimes() {
     currentSectorTime_ = sectorClock_;

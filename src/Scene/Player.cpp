@@ -1,4 +1,4 @@
-#include "Player.h"
+#include <Player.h>
 
 Player::Player(const std::string &name, CarComponentManagerPtr carComponentManager, bool newPlayer)
         : name_(name) {
@@ -30,7 +30,6 @@ Player::Player(const std::string &name, CarComponentManagerPtr carComponentManag
         }
     }
 }
-
 
 std::string Player::GetName() const {
     return name_;

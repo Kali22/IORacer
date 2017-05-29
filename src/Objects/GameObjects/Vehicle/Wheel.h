@@ -49,6 +49,5 @@ private:
     float maxTireFrictionForce_;
     float vehicleAeroFriction_;
     const float wheelRadius_ = 0.2;
-
 };
 

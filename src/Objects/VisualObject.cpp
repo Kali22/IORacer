@@ -1,5 +1,4 @@
-#include "VisualObject.h"
-
+#include <VisualObject.h>
 
 VisualObject::VisualObject(ObjectDesc objectDesc, TexturePtr texture) :
         name_(objectDesc.name),
@@ -26,7 +25,6 @@ void VisualObject::SetPosition(const sf::Vector2f &pos) {
     position_ = pos;
     UpdateSpritePosition();
 }
-
 
 void VisualObject::SetPosition(float x, float y) {
     position_ = sf::Vector2f(x, y);
@@ -55,7 +53,6 @@ void VisualObject::SetRotation(float absoluteAngle) {
 void VisualObject::UpdateSpritePosition() {
     sprite_.setPosition(position_.GetScaledVector());
 }
-
 
 /**
  * Rescales sprite size to match global physical scale (pixs per meter).

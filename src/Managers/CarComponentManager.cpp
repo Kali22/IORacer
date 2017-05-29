@@ -1,5 +1,4 @@
-#include "CarComponentManager.h"
-
+#include <CarComponentManager.h>
 
 CarComponentManager::CarComponentManager() {
     typeToComponents_[ENGINE_POWER_MAX] = CreateEngineComponents();
@@ -48,13 +47,13 @@ std::vector<ComponentCategoryPtr> CarComponentManager::GetComponentCategories() 
 std::vector<CarComponentPtr> CarComponentManager::CreateEngineComponents() {
     std::vector<CarComponentPtr> components;
     components.push_back(std::make_shared<CarComponent>(
-            ENGINE_POWER_MAX, 0, "Fiat 126p", std::map<std::string,
-                    float>(), 60000));
+            ENGINE_POWER_MAX, 0, "Fiat 126p",
+            std::map<std::string, float>(), 60000));
 
     std::map<std::string, float> requirement = {{"map_1", 23}};
     components.push_back(std::make_shared<CarComponent>(
             ENGINE_POWER_MAX, 1, "V8 engine", requirement, 110000));
-    requirement = {{"map_0", 41.},
+    requirement = {{"map_0", 41},
                    {"map_1", 14}};
     components.push_back(std::make_shared<CarComponent>(
             ENGINE_POWER_MAX, 2, "Rocket engine", requirement,
@@ -83,9 +82,8 @@ CarComponentManager::CreateAerodynamicComponents() {
 std::vector<CarComponentPtr> CarComponentManager::CreateWheelComponents() {
     std::vector<CarComponentPtr> components;
     components.push_back(std::make_shared<CarComponent>(
-            STEERING_ANGLE_MAX, 0, "Wooden wheel", std::map<std::string,
-                    float>(),
-            10));
+            STEERING_ANGLE_MAX, 0, "Wooden wheel",
+            std::map<std::string, float>(), 10));
 
     std::map<std::string, float> requirement = {{"map_0", 65}};
     components.push_back(std::make_shared<CarComponent>(

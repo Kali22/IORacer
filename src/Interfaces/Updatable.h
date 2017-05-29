@@ -1,10 +1,7 @@
-//
-// Created by jacek on 20.04.17.
-//
-
 #pragma once
 
-#include <bits/stdc++.h>
+
+#include <memory>
 
 class Updatable {
 public:

@@ -1,7 +1,7 @@
 #pragma once
 
+
 #include <bits/stdc++.h>
-#include <string>
 #include <SFML/Graphics/Texture.hpp>
 
 class Texture {

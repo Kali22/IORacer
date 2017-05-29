@@ -1,11 +1,11 @@
 #pragma once
 
+
 #include <SFML/Window.hpp>
 #include <SFML/Graphics.hpp>
-#include <bits/stdc++.h>
-#include <string>
 #include <SFML/Window/VideoMode.hpp>
 #include <SFML/Graphics/RenderWindow.hpp>
+#include <memory>
 
 using RenderWindowPtr = std::shared_ptr<sf::RenderWindow>;
 
@@ -15,4 +15,3 @@ public:
 };
 
 using DrawablePtr = std::shared_ptr<Drawable>;
-

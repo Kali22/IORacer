@@ -1,7 +1,5 @@
-#include "NewPlayer.h"
+#include <NewPlayer.h>
 #include <ActivityManager.h>
-#include <PlayerManager.h>
-#include <ViewportConst.h>
 #include <NewRace.h>
 
 NewPlayer::NewPlayer(SelectorType type) : Activity("new_player"), type_(type) {

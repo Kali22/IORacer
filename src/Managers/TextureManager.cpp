@@ -1,4 +1,4 @@
-#include "TextureManager.h"
+#include <TextureManager.h>
 
 TextureManager::TextureManager() {
     std::ifstream file(resourcePath_ + "textures_list.cnfg");

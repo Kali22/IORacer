@@ -1,10 +1,7 @@
-//
-// Created by pawel on 10.05.17.
-//
 #pragma once
 
-#include <SFML/System.hpp>
 
+#include <SFML/System.hpp>
 
 class Rotatable {
 public:
@@ -12,4 +9,3 @@ public:
 
     virtual void SetRotation(float absoluteAngle) = 0;
 };
-

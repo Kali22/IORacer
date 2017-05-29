@@ -1,5 +1,4 @@
-#include "Splash.h"
-
+#include <Splash.h>
 #include <ActivityManager.h>
 
 Splash::Splash() : Activity("splash") {}

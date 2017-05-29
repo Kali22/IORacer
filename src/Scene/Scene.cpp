@@ -1,4 +1,4 @@
-#include "Scene.h"
+#include <Scene.h>
 
 
 /** Scene is composed of: map, cameras and objects - which are not included in map, i.e. cars.
@@ -6,8 +6,7 @@
  * Map determines world's scale.
  * Each time when map and scene is created, objects are rescaled.
  * */
-Scene::Scene(MapPtr map) : map_(map) {
-}
+Scene::Scene(MapPtr map) : map_(map) {}
 
 void Scene::AddObject(VehiclePtr object) {
     object->Rescale(map_->GetPixMetersScale());

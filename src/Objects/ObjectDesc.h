@@ -1,9 +1,10 @@
 #pragma once
 
-#include <RealVec.h>
+
 #include <SFML/Graphics/RectangleShape.hpp>
 #include <SFML/Graphics/CircleShape.hpp>
-#include <GameObjects/ObjectTypeE.h>
+#include <RealVec.h>
+#include <ObjectTypeE.h>
 
 enum ObjectShapeE {
     OBJECT_SHAPE_RECT,

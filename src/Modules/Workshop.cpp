@@ -1,5 +1,4 @@
-#include "Workshop.h"
-
+#include <Workshop.h>
 #include <UIColorConstants.h>
 #include <ActivityManager.h>
 
@@ -90,7 +89,7 @@ void Workshop::InitCategories() {
         ModifierType type = category->GetType();
         int id = configuration_->GetComponentId(type);
         if (id >= 0) {
-            category->SetComponent(id);
+            category->SetComponent((unsigned) id);
         }
     }
 }

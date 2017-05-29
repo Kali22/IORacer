@@ -1,9 +1,7 @@
-#include "Activity.h"
+#include <Activity.h>
 #include <UIColorConstants.h>
 
-Activity::Activity(std::string name) : name_(name), state_(ACTIVITY_STATE_INIT), userInterface_(nullptr) {
-
-}
+Activity::Activity(std::string name) : name_(name), state_(ACTIVITY_STATE_INIT), userInterface_(nullptr) {}
 
 void Activity::Prepare(ActivityManagerPtr activityManager) {
     activityManager_ = activityManager;

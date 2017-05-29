@@ -3,7 +3,7 @@
 
 #include <bits/stdc++.h>
 #include <Map.h>
-#include <Texture/Texture.h>
+#include <Texture.h>
 #include <Drawable.h>
 #include <Camera.h>
 
@@ -33,4 +33,3 @@ private:
 };
 
 using ScenePtr = std::shared_ptr<Scene>;
-

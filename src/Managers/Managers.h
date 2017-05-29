@@ -1,6 +1,7 @@
 #pragma once
 
-#include <bits/stdc++.h>
+
+#include <memory>
 
 class ObjectManager;
 using ObjectManagerPtr = std::shared_ptr<ObjectManager>;
