@@ -60,7 +60,6 @@ void NewRace::EventAction(Event event) {
     }
 }
 
-
 void NewRace::HandleKey(sf::Event::KeyEvent event) {
     if (event.code == sf::Keyboard::Escape) {
         if (type_ == SINGLE_PLAYER)
