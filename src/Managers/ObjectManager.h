@@ -19,6 +19,7 @@ public:
 
     CheckPointPtr CreateCheckpoint(int id, const RealVec &pos, float rot);
 
+/*
     ObjectPtr CreateTire(const RealVec &pos, float rot);
 
     ObjectPtr CreateBox(const RealVec &pos, float rot);
@@ -26,7 +27,7 @@ public:
     ObjectPtr CreateCone(const RealVec &pos, float rot);
 
     ObjectPtr CreateStone(const RealVec &pos, float rot);
-
+*/
     ObjectPtr CreateObjectByName(const std::string &name, const RealVec &pos, float rot);
 
     ObjectPtr CreateBound(const RealVec &pos, float length, bool horizontal);
@@ -39,6 +40,8 @@ private:
     VisualObjectPtr GetVisualObjectInstanceByName(const std::string &objectName);
 
     WheelPtr CreateWheel(const RealVec &pos, float rot);
+
+    ObjectPtr CreateObject(ObjectTypeE type, const RealVec &pos, float rot);
 
 
     const std::string resourcePath_ = "../resource/objects/";

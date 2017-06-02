@@ -45,9 +45,13 @@ protected:
 
     void SetTextBoxStyle(UITextBoxPtr textBox);
 
+    void SetBackgroundToMenu();
+
     std::string name_;
     ActivityStateE state_;
 
     UIPtr userInterface_;
     WeakActivityManagerPtr activityManager_;
+
+    void SetTitle(std::string title);
 };

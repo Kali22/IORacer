@@ -17,7 +17,6 @@ CameraPtr Scene::GetCamera(unsigned n) {
     if (n >= cameras_.size()) {
         return nullptr;
     }
-
     return cameras_[n];
 }
 
@@ -26,7 +25,7 @@ float Scene::GetScale() const {
 }
 
 void Scene::Render(RenderWindowPtr renderWindow) const {
-    // First - map backgorund
+    // First - map background
     map_->Draw(renderWindow);
     // Second - scene objects
     for (auto object : vehicles_) {
@@ -34,8 +33,7 @@ void Scene::Render(RenderWindowPtr renderWindow) const {
     }
 }
 
-void Scene::AddCamera(unsigned trackedObjectId, float refHeight, float
-screenFraction) {
+void Scene::AddCamera(unsigned trackedObjectId, float refHeight, float screenFraction) {
     if (trackedObjectId >= vehicles_.size() || trackedObjectId < 0) {
         std::cerr << "Object doesn't exist!" << std::endl;
         exit(1);

@@ -20,6 +20,17 @@ void Activity::SetReady() {
     state_ = ACTIVITY_STATE_RUN;
 }
 
+void Activity::SetBackgroundToMenu() {
+    UIBoxPtr back = userInterface_->CreateBox("background", centeredFullScreen);
+    back->SetBackgroundTexture("menu_back");
+}
+
+void Activity::SetTitle(std::string titleText) {
+    UITextBoxPtr title = userInterface_->CreateTextBox(
+            "title", titleText, 50, sf::FloatRect(0.5, 0.075, 1, 0.1));
+    SetTitleStyle(title);
+}
+
 UIPtr Activity::GetUI() const {
     return userInterface_;
 }

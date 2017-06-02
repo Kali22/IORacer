@@ -2,34 +2,32 @@
 #include <CheckPoint.h>
 #include <Vehicle.h>
 
-CheckPointManager::CheckPointManager(VehiclePtr player, std::vector<CheckPointPtr> checkPoints, int totalLaps)
-        : checkPoints_(checkPoints), currentLap_(1), currentSector_(0),
-          totalLaps_(totalLaps), player_(player) {
+CheckPointManager::CheckPointManager(VehiclePtr player, std::vector<CheckPointPtr> checkPoints, int totalLaps) :
+        checkPoints_(checkPoints), currentLap_(1), currentSector_(0), totalLaps_(totalLaps), player_(player) {
     assert(!checkPoints.empty());
     for (auto checkPoint : checkPoints) {
         checkPoint->SetObserver(this);
-
     }
     totalSectors_ = (int) checkPoints_.size();
-    timeManager_ = std::make_shared<TimeManager>(currentSector_, currentLap_,
-                                                 totalSectors_);
+    timeManager_ = std::make_shared<TimeManager>(
+            currentSector_, currentLap_, totalSectors_);
     Reset();
 }
 
 void CheckPointManager::Reset() {
-    GetCurrentCheckPoint()->SetEnable(false);
+    GetCurrentCheckPoint()->SetEnabled(false);
 
     // Change to first check point.
     currentSector_ = 0;
     currentLap_ = 1;
-    GetCurrentCheckPoint()->SetEnable(true);
+    GetCurrentCheckPoint()->SetEnabled(true);
     timeManager_->Reset();
     player_->SetActiveCheckpoint(GetCurrentCheckPoint());
 }
 
 void CheckPointManager::NotifyCheckPointReached() {
     // CheckPoint reached? If reached, CheckPoint should be disabled.
-    if (GetCurrentCheckPoint()->IsEnable()) {
+    if (GetCurrentCheckPoint()->IsEnabled()) {
         return;
     }
 
@@ -42,7 +40,7 @@ void CheckPointManager::NotifyCheckPointReached() {
         currentLap_++;
         currentSector_ = 0;
     }
-    GetCurrentCheckPoint()->SetEnable(true);
+    GetCurrentCheckPoint()->SetEnabled(true);
     player_->SetActiveCheckpoint(GetCurrentCheckPoint());
 }
 

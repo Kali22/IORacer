@@ -25,6 +25,8 @@ private:
     CarConfigurationPtr carConfiguration_;
     std::map<std::string, float> times_;
     const std::string resourcePath_ = "../resource/players/";
+
+    void ParseConfiguration(std::ifstream &file, CarComponentManagerPtr);
 };
 
 using PlayerPtr = std::shared_ptr<Player>;

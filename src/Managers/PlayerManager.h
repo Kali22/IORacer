@@ -34,7 +34,6 @@ private:
     CarComponentManagerPtr carComponentManager_;
     const std::string resourcePath_ = "../resource/players/";
     const std::string playerListFile_ = "players_list";
-
 };
 
 using PlayerManagerPtr = std::shared_ptr<PlayerManager>;

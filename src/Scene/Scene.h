@@ -25,8 +25,6 @@ public:
     void Render(RenderWindowPtr renderWindow) const;
 
 private:
-    float scalePixInMeters_;
-
     MapPtr map_;
     std::vector<VehiclePtr> vehicles_; //!< Extra objects... Players or a etc.. :)
     std::vector<CameraPtr> cameras_; //!< Possible views...

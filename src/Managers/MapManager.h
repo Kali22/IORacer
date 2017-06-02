@@ -14,11 +14,11 @@ public:
     MapPtr CreateMap(std::string mapName);
 
 private:
-    std::vector<CheckpointPosition> ParseCheckpoints(std::ifstream *file) const;
+    std::vector<CheckpointPosition> ParseCheckpoints(std::ifstream &file) const;
 
-    std::vector<StartPositionT> ParseStartPositions(std::ifstream *file) const;
+    std::vector<StartPosition> ParseStartPositions(std::ifstream &file) const;
 
-    std::vector<ObjectPtr> ParseObjects(std::ifstream *file) const;
+    std::vector<ObjectPtr> ParseObjects(std::ifstream &file) const;
 
     const std::string cnfgFile_ = "maps_list.cnfg";
 
@@ -31,6 +31,8 @@ private:
     ObjectManagerPtr objectManager_;
 
     std::vector<ObjectPtr> AddBounds(float sizeX, float sizeY) const;
+
+    MapPtr ParseMapDescription(std::string mapName);
 };
 
 using MapManagerPtr = std::shared_ptr<MapManager>;

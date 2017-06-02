@@ -23,7 +23,7 @@ public:
 
     int GetId() const;
 
-    bool IsTimesSufficient(std::map<std::string, float> times) const;
+    bool AreTimesSufficient(std::map<std::string, float> times) const;
 
     std::map<std::string, float> GetRequirement() const;
 

@@ -7,11 +7,8 @@ const int default_laps_number = 2;
 NewRace::NewRace(RaceType type) : Activity("new_race"), type_(type), laps_(default_laps_number) {}
 
 void NewRace::Init() {
-    UIBoxPtr back = userInterface_->CreateBox("background", centeredFullScreen);
-    back->SetBackgroundTexture("menu_back");
-    UITextBoxPtr title = userInterface_->CreateTextBox("title", "Setup your race", 50,
-                                                       sf::FloatRect(0.5, 0.075, 1, 0.1));
-    SetTitleStyle(title);
+    SetBackgroundToMenu();
+    SetTitle("Setup your race");
     UITextBoxPtr m0 = userInterface_->CreateTextBox("map_0", "map_0", 30, sf::FloatRect(0.5, 0.5, 0.2, 0.05));
     UITextBoxPtr m1 = userInterface_->CreateTextBox("map_1", "map_1", 30, sf::FloatRect(0.5, 0.6, 0.2, 0.05));
     SetButtonStyle(m0);

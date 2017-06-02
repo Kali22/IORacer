@@ -1,34 +1,29 @@
 #include <Player.h>
 
-Player::Player(const std::string &name, CarComponentManagerPtr carComponentManager, bool newPlayer)
-        : name_(name) {
+Player::Player(const std::string &name, CarComponentManagerPtr carComponentManager, bool newPlayer) : name_(name) {
     if (newPlayer) {
         carConfiguration_ = std::make_shared<CarConfiguration>(carComponentManager->GetBaseComponents());
     } else {
         std::ifstream file(resourcePath_ + name_);
-        std::string line;
-        std::stringstream data;
-
-        // read car configuration
-        std::vector<CarComponentPtr> carComponents;
-        getline(file, line);
-        data = std::stringstream(line);
-        for (int type = 0; type < MODIFIER_TYPE_MAX; type++) {
-            int component_id;
-            data >> component_id;
-            carComponents.push_back(carComponentManager->GetComponent((ModifierType) type, component_id));
-        }
-        carConfiguration_ = std::make_shared<CarConfiguration>(carComponents);
+        ParseConfiguration(file, carComponentManager);
 
         // read times
         std::string mapName;
         float time;
-        while (getline(file, line)) {
-            data = std::stringstream(line);
-            data >> mapName >> time;
+        while (file >> mapName >> time) {
             times_[mapName] = time;
         }
     }
+}
+
+void Player::ParseConfiguration(std::ifstream &file, CarComponentManagerPtr carComponentManager) {
+    std::vector<CarComponentPtr> carComponents;
+    int component_id;
+    for (int type = 0; type < MODIFIER_TYPE_MAX; type++) {
+        file >> component_id;
+        carComponents.push_back(carComponentManager->GetComponent((ModifierType) type, component_id));
+    }
+    carConfiguration_ = std::make_shared<CarConfiguration>(carComponents);
 }
 
 std::string Player::GetName() const {

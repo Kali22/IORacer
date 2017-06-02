@@ -2,8 +2,8 @@
 #include <Drawable.h>
 #include <MathUtil.h>
 
-Object::Object(b2Body *body, VisualObjectPtr visualObject, ObjectTypeE type)
-        : body_(body), visualObject_(visualObject), type_(type) {}
+Object::Object(b2Body *body, VisualObjectPtr visualObject, ObjectTypeE type) :
+        body_(body), visualObject_(visualObject), type_(type) {}
 
 b2Body *Object::GetBody() const {
     return body_;

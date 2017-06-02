@@ -2,17 +2,15 @@
 #include <ActivityManager.h>
 #include <NewRace.h>
 
-NewPlayer::NewPlayer(SelectorType type) : Activity("new_player"), type_(type) {
-}
+NewPlayer::NewPlayer(SelectorType type) : Activity("new_player"), type_(type) {}
 
 void NewPlayer::Init() {
-    UIBoxPtr back = userInterface_->CreateBox("background", centeredFullScreen);
-    back->SetBackgroundTexture("menu_back");
-    UITextBoxPtr title = userInterface_->CreateTextBox("title", "", 70, sf::FloatRect(0.5, 0.075, 1, 0.1));
-    SetTitleStyle(title);
+    SetBackgroundToMenu();
+    SetTitle("Choose your name");
     UITextBoxPtr player = userInterface_->CreateTextBox("name", "", 80, sf::FloatRect(0.5, 0.4, 0.7, 0.15));
     SetTextBoxStyle(player);
-    UITextBoxPtr new_player = userInterface_->CreateTextBox("new_player", "Create", 50, sf::FloatRect(0.5, 0.8, 0.2, 0.1));
+    UITextBoxPtr new_player = userInterface_->CreateTextBox("new_player", "Create", 50,
+                                                            sf::FloatRect(0.5, 0.8, 0.2, 0.1));
     SetButtonStyle(new_player);
 }
 
@@ -37,11 +35,9 @@ void NewPlayer::EventAction(Event event) {
                 player_ += static_cast<char>(sfmlEvent.text.unicode);
             }
         }
-    } else if (event.GetType() == UI_EVENT) {
-        if (event.GetUIEventType() == UI_EVENT_CLICK) {
-            if (event.GetUIElement() == "new_player")
-                CreatePlayer();
-        }
+    } else if (event.GetType() == UI_EVENT && event.GetUIEventType() == UI_EVENT_CLICK) {
+        if (event.GetUIElement() == "new_player")
+            CreatePlayer();
     }
 }
 
@@ -52,8 +48,7 @@ void NewPlayer::CreatePlayer() {
         if (type_ == FIRST_PLAYER) {
             playerManager->SetActivePlayer(player_);
             activityManager_.lock()->SetAsActive("main_menu");
-        }
-        else {
+        } else {
             playerManager->SetSecondPlayer(player_);
             NewRacePtr newRace = std::make_shared<NewRace>(MULTI_PLAYER);
             activityManager_.lock()->AddActivity(newRace);

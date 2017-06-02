@@ -6,7 +6,6 @@
 #include <Splash.h>
 #include <MainMenu.h>
 
-
 int main(int argc, char **argv) {
     /*=============== Early inits. Core objects. ===============*/
     TextureManagerPtr textureManager = std::make_shared<TextureManager>();
@@ -16,7 +15,7 @@ int main(int argc, char **argv) {
     ActivityManagerPtr activityManager = std::make_shared<ActivityManager>
             (window, textureManager, carComponentManager, playerManager);
 
-    playerManager->SetActivePlayer("jacek");
+    //playerManager->SetActivePlayer("jacek");
     /*=============== Activities and game logic. ===============*/
     SplashPtr splashScreen = std::make_shared<Splash>();
     PlayerSelectorPtr playerSelector = std::make_shared<PlayerSelector>(FIRST_PLAYER);

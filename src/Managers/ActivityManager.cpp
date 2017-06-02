@@ -44,21 +44,19 @@ void ActivityManager::RemoveActivity(std::string name) {
 }
 
 void ActivityManager::Manage() {
-    if (active_ != nullptr) {
-        switch (active_->GetState()) {
-            case ACTIVITY_STATE_INIT:
-                active_->Init();
-                active_->SetReady();
-                break;
-
-            case ACTIVITY_STATE_RUN:
-                active_->Run();
-                break;
-
-            case ACTIVITY_STATE_END:
-                active_->End();
-                break;
-        }
+    if (active_ == nullptr)
+        return;
+    switch (active_->GetState()) {
+        case ACTIVITY_STATE_INIT:
+            active_->Init();
+            active_->SetReady();
+            break;
+        case ACTIVITY_STATE_RUN:
+            active_->Run();
+            break;
+        case ACTIVITY_STATE_END:
+            active_->End();
+            break;
     }
 }
 

@@ -16,7 +16,6 @@ TextureManager::TextureManager() {
         TexturePtr texture = std::make_shared<Texture>(name, resourcePath_ + fileName);
         textures_.emplace(name, texture);
     }
-
 }
 
 TexturePtr TextureManager::GetTextureByName(std::string name) {

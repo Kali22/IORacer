@@ -15,9 +15,9 @@ class CheckPoint : public Object {
 public:
     CheckPoint(int id, b2Body *body, VisualObjectPtr visualObject);
 
-    void SetEnable(bool value);
+    void SetEnabled(bool value);
 
-    bool IsEnable() const;
+    bool IsEnabled() const;
 
     void Draw(RenderWindowPtr window);
 
@@ -40,5 +40,5 @@ public:
 private:
     int playerId_;
     CheckPointObserver *observer_;
-    bool enable_;
+    bool enabled_;
 };

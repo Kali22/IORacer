@@ -22,14 +22,22 @@ public:
     void EventAction(Event event);
 
 private:
+    void ShowPlayers();
+
+    void UpdatePlayersList();
+
+    void EmplaceNewPlayerControls();
+
+    void HandleUIEventClick(Event event);
+
+    void SelectPlayer();
+
     void HandleKey(sf::Event::KeyEvent event);
 
     void Update();
 
     size_t player_;
-
     std::vector<std::string> playersList_;
-
     SelectorType type_;
 };
 

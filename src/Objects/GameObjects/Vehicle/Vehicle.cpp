@@ -10,17 +10,16 @@ enum ControllerStateE {
     CTRL_STATE_BRK = 0x10,
 };
 
-Vehicle::Vehicle(int id, b2Body *body, VisualObjectPtr chassis,
-                 std::vector<WheelPtr> &&wheels, const VehicleSetupT &setup, CarConfigurationPtr carConfiguration,
-                 MapPtr map) :
+Vehicle::Vehicle(int id, b2Body *body, VisualObjectPtr chassis, std::vector<WheelPtr> &&wheels,
+                 const VehicleSetupT &setup, CarConfigurationPtr carConfiguration, MapPtr map) :
         Object(body, chassis, OBJECT_TYPE_VEHICLE),
         wheels_(std::move(wheels)),
         vehicleSetup_(setup),
         carConfiguration_(carConfiguration),
         map_(map),
         activeCheckpoint_(nullptr),
-        id_(id) {
-    controllerState_ = 0;
+        id_(id),
+        controllerState_(0) {
     body_->SetUserData(this);
     InitializeWheels();
 }
@@ -101,7 +100,7 @@ void Vehicle::UpdateDrive() {
         if (enginePowerNow_ < carConfiguration_->GetEnginePowerMax()) {
             enginePowerNow_ += carConfiguration_->GetEnginePowerMax() / 10.f;
         }
-        float torque = 1.0f * enginePowerNow_ * 0.5f;
+        float torque = enginePowerNow_ * 0.5f;
         torque = (controllerState_ & CTRL_STATE_REV ? -torque : torque);
         switch (vehicleSetup_.transmissionType) {
             case TRANSMISSION_4X4:

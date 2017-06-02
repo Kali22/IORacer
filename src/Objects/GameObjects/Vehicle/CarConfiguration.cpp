@@ -1,7 +1,6 @@
 #include <CarConfiguration.h>
 
-CarConfiguration::CarConfiguration(
-        std::vector<CarComponentPtr> carComponents) {
+CarConfiguration::CarConfiguration(std::vector<CarComponentPtr> carComponents) {
     for (auto carComponent : carComponents) {
         components_[carComponent->GetType()] = carComponent;
     }

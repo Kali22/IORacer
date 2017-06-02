@@ -5,12 +5,12 @@
 #define FIRST_PLAYER 0
 #define SECOND_PLAYER 1
 
-Gameplay::Gameplay(const std::string &mapName, int laps)
-        : Activity("race"),
-          laps_(laps),
-          mapName_(mapName),
-          isOver_(false),
-          contactListener_(std::make_shared<ContactListener>()) {
+Gameplay::Gameplay(const std::string &mapName, int laps) :
+        Activity("race"),
+        laps_(laps),
+        mapName_(mapName),
+        isOver_(false),
+        contactListener_(std::make_shared<ContactListener>()) {
 }
 
 void Gameplay::Init() {
@@ -169,7 +169,7 @@ void Gameplay::UpdateHUD() {
     lap0->SetText(ss.str());
 
     minimap_[FIRST_PLAYER]->Update(playerVehicle_[FIRST_PLAYER]->GetPosition(),
-    playerCheckpoints_[FIRST_PLAYER]->GetNextCheckPointPosition());
+                                   playerCheckpoints_[FIRST_PLAYER]->GetNextCheckPointPosition());
 
     if (playerVehicle_[SECOND_PLAYER] != nullptr) {
         UITextBoxPtr lap1 = std::dynamic_pointer_cast<UITextBox>(userInterface_->GetElementByName("lap_1"));
@@ -179,7 +179,7 @@ void Gameplay::UpdateHUD() {
         lap1->SetText(ss.str());
 
         minimap_[SECOND_PLAYER]->Update(playerVehicle_[SECOND_PLAYER]->GetPosition(),
-                                       playerCheckpoints_[SECOND_PLAYER]->GetNextCheckPointPosition());
+                                        playerCheckpoints_[SECOND_PLAYER]->GetNextCheckPointPosition());
     }
 }
 
@@ -207,13 +207,13 @@ void Gameplay::PrepareHUD() {
                                                           sf::FloatRect(0.9, 0.075, 0.2, 0.06));
         SetTitleStyle(lap1);
         minimap_[SECOND_PLAYER] = userInterface_->CreateMinimap(
-                "minimap_1", minimapRect,map_->GetSize(), minimapTexture);
+                "minimap_1", minimapRect, map_->GetSize(), minimapTexture);
         minimapRect = sf::FloatRect(0.4, 0.85, 0.16, 0.16);
     }
     minimap_[FIRST_PLAYER] = userInterface_->CreateMinimap(
-            "minimap_0", minimapRect,map_->GetSize(), minimapTexture);
+            "minimap_0", minimapRect, map_->GetSize(), minimapTexture);
     for (auto minimap : minimap_) {
-        if (minimap != nullptr){
+        if (minimap != nullptr) {
             minimap->SetBackgroundTexture(map_->GetMapName() + "_mini");
         }
     }
@@ -377,7 +377,7 @@ void Gameplay::PreparePlayer(int id) {
     setup.vehicleMass = 300;
 
     CarConfigurationPtr configuration = player_[id]->GetCarConfiguration();
-    StartPositionT start = map_->GetStartPosition(id);
+    StartPosition start = map_->GetStartPosition(id);
     playerVehicle_[id] = objectManager_->CreateVehicle(id, RealVec(start.x,
                                                                    start.y), start.rot, setup, map_, configuration);
     std::vector<CheckPointPtr> checkpoints;

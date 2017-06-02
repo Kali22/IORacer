@@ -1,7 +1,7 @@
 #include <CheckPoint.h>
 
-CheckPoint::CheckPoint(int id, b2Body *body, VisualObjectPtr visualObject)
-        : Object(body, visualObject, OBJECT_TYPE_CHECK_POINT), playerId_(id) {
+CheckPoint::CheckPoint(int id, b2Body *body, VisualObjectPtr visualObject) :
+        Object(body, visualObject, OBJECT_TYPE_CHECK_POINT), playerId_(id) {
     body_->SetUserData(this);
 }
 
@@ -9,17 +9,17 @@ void CheckPoint::SetObserver(CheckPointObserver *observer) {
     observer_ = observer;
 }
 
-void CheckPoint::SetEnable(bool value) {
-    enable_ = value;
+void CheckPoint::SetEnabled(bool value) {
+    enabled_ = value;
 }
 
-bool CheckPoint::IsEnable() const {
-    return enable_;
+bool CheckPoint::IsEnabled() const {
+    return enabled_;
 }
 
 void CheckPoint::BeginContact() {
-    if (enable_) {
-        enable_ = false;
+    if (enabled_) {
+        enabled_ = false;
         if (observer_ != nullptr) {
             observer_->NotifyCheckPointReached();
         }
@@ -27,7 +27,7 @@ void CheckPoint::BeginContact() {
 }
 
 void CheckPoint::Draw(RenderWindowPtr window) {
-    if (IsEnable()) {
+    if (IsEnabled()) {
         Object::Draw(window);
     }
 }

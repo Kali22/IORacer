@@ -1,8 +1,37 @@
-#include "ObjectManager.h"
-
+#include <ObjectManager.h>
 #include <CheckPoint.h>
 #include <Vehicle.h>
 #include <MathUtil.h>
+
+ObjectTypeE ParseObjectType(std::string name) {
+    for (auto it : ObjectsMap) {
+        if (it.second == name) {
+            return it.first;
+        }
+    }
+    std::cerr << "Nonexistent object type name: " << name << std::endl;
+    exit(1);
+}
+
+ObjectDesc ParseDescription(std::string &line) {
+    std::stringstream data = std::stringstream(line);
+    ObjectDesc desc;
+    float x, y;
+    int type;
+
+    data >> desc.name >> desc.textureName >> line >> desc.mass >> type;
+    desc.dynamic = (line == "dynamic");
+    desc.objectShape = (ObjectShapeE) type;
+    if (type == (int) OBJECT_SHAPE_RECT) {
+        data >> x >> y;
+        desc.size = RealVec(sf::Vector2f(x, y));
+    } else {
+        data >> desc.radius;
+    }
+    desc.objectType = ParseObjectType(desc.name);
+
+    return desc;
+}
 
 ObjectManager::ObjectManager(TextureManagerPtr textureManager, b2World *world) :
         textureManager_(textureManager), world_(world) {
@@ -10,42 +39,19 @@ ObjectManager::ObjectManager(TextureManagerPtr textureManager, b2World *world) :
     std::string line;
 
     while (getline(file, line)) {
-        std::stringstream data;
-        float radius, x, y;
-        int type;
-
         if (line[0] == '#') {
             continue;
         }
-        ObjectDesc desc;
-        data = std::stringstream(line);
-        data >> desc.name >> desc.textureName >> line >> desc.mass;
-        desc.dynamic = line == "dynamic";
-        data >> type;
-        desc.objectShape = (ObjectShapeE) type;
-        if (type == (int) OBJECT_SHAPE_RECT) {
-            data >> x >> y;
-            desc.size = RealVec(sf::Vector2f(x, y));
-        } else {
-            data >> radius;
-            desc.radius = radius;
-        }
-
-        for (auto it : ObjectsMap) {
-            if (it.second == desc.name) {
-                desc.objectType = it.first;
-                break;
-            }
-        }
+        ObjectDesc desc = ParseDescription(line);
 
         objectDesc_.emplace(desc.name, desc);
         std::cerr << "Object description loaded: [" << desc.name << ", "
-                  << desc.textureName << ", " << type << "]\n";
+                  << desc.textureName << "]\n";
     }
 }
 
-VehiclePtr ObjectManager::CreateVehicle(int id, const RealVec &pos, float
-rot, const VehicleSetupT &setup, MapPtr map, CarConfigurationPtr carConfiguration) {
+VehiclePtr ObjectManager::CreateVehicle(int id, const RealVec &pos, float rot, const VehicleSetupT &setup,
+                                        MapPtr map, CarConfigurationPtr carConfiguration) {
     std::vector<WheelPtr> wheels;
     for (int i = 0; i < 4; ++i)
         wheels.push_back(CreateWheel(pos, rot));
@@ -68,6 +74,13 @@ CheckPointPtr ObjectManager::CreateCheckpoint(int id, const RealVec &pos, float 
     return std::make_shared<CheckPoint>(id, body, checkpoint);
 }
 
+ObjectPtr ObjectManager::CreateObject(ObjectTypeE type, const RealVec &pos, float rot) {
+    b2Body *body = InitializeBody(ObjectsMap[type], pos, rot);
+    VisualObjectPtr tire = GetVisualObjectInstanceByName(ObjectsMap[type]);
+    return std::make_shared<Object>(body, tire, type);
+}
+
+/*
 ObjectPtr ObjectManager::CreateTire(const RealVec &pos, float rot) {
     b2Body *body = InitializeBody(ObjectsMap[OBJECT_TYPE_TIRE], pos, rot);
     VisualObjectPtr tire = GetVisualObjectInstanceByName(ObjectsMap[OBJECT_TYPE_TIRE]);
@@ -90,7 +103,7 @@ ObjectPtr ObjectManager::CreateStone(const RealVec &pos, float rot) {
     b2Body *body = InitializeBody(ObjectsMap[OBJECT_TYPE_STONE], pos, rot);
     VisualObjectPtr stone = GetVisualObjectInstanceByName(ObjectsMap[OBJECT_TYPE_STONE]);
     return std::make_shared<Object>(body, stone, OBJECT_TYPE_STONE);
-}
+}*/
 
 VisualObjectPtr ObjectManager::GetVisualObjectInstanceByName(const std::string &objectName) {
     std::map<std::string, ObjectDesc>::iterator it = objectDesc_.find(objectName);
@@ -98,7 +111,6 @@ VisualObjectPtr ObjectManager::GetVisualObjectInstanceByName(const std::string &
         std::cerr << "Object name " << objectName << " not found!\n";
         exit(1);
     }
-
     TexturePtr texture = textureManager_->GetTextureByName(objectDesc_[objectName].textureName);
     if (texture == nullptr) {
         std::cerr << "Texture name " << objectDesc_[objectName].textureName << " not found!\n";
@@ -108,12 +120,7 @@ VisualObjectPtr ObjectManager::GetVisualObjectInstanceByName(const std::string &
 }
 
 b2Body *ObjectManager::InitializeBody(const std::string &objectName, const RealVec &pos, float rot) {
-    std::map<std::string, ObjectDesc>::iterator it = objectDesc_.find(objectName);
-    if (it == objectDesc_.end()) {
-        std::cerr << "Object name " << objectName << " not found!\n";
-        exit(1);
-    }
-    ObjectDesc objectDesc = it->second;
+    ObjectDesc objectDesc = objectDesc_.at(objectName);
 
     b2BodyDef bodyDef;
     bodyDef.linearDamping = 2;
@@ -140,43 +147,32 @@ ObjectPtr ObjectManager::CreateObjectByName(const std::string &name, const RealV
         std::cerr << "Object name " << name << " not found!\n";
         exit(1);
     }
-    ObjectPtr obj;
     switch (it->first) {
         case OBJECT_TYPE_BOX:
-            obj = CreateBox(pos, rot);
-            break;
         case OBJECT_TYPE_TIRE:
-            obj = CreateTire(pos, rot);
-            break;
         case OBJECT_TYPE_CONE:
-            obj = CreateCone(pos, rot);
-            break;
         case OBJECT_TYPE_STONE:
-            obj = CreateStone(pos, rot);
-            break;
+            return CreateObject(it->first, pos, rot);
         default:
-            std::cerr << "Cannot create " << name << " just by name!\n";
+            std::cerr << "Cannot create " << name << " just by name!" << std::endl;
             exit(1);
     }
-    return obj;
 }
 
 void ObjectManager::CreateFixture(b2Body *body, ObjectDesc objectDesc) const {
     if (objectDesc.objectShape == OBJECT_SHAPE_CIRC) {
         b2CircleShape shape;
-        float density = objectDesc.mass / objectDesc.radius / objectDesc.radius / b2_pi;
+        float density = objectDesc.mass / (b2_pi * objectDesc.radius * objectDesc.radius);
         shape.m_radius = objectDesc.radius;
         body->CreateFixture(&shape, density);
     } else if (objectDesc.objectShape == OBJECT_SHAPE_RECT) {
         b2FixtureDef fixtureDef;
         b2PolygonShape shape;
-        float density = objectDesc.mass / objectDesc.size.x / objectDesc.size.y;
         shape.SetAsBox(objectDesc.size.x * 0.5f, objectDesc.size.y * 0.5f);
         fixtureDef.shape = &shape;
-        fixtureDef.density = density;
+        fixtureDef.density = objectDesc.mass / (objectDesc.size.x * objectDesc.size.y);
         if (objectDesc.objectType == OBJECT_TYPE_CHECK_POINT) { // Special case...
             fixtureDef.isSensor = true;
-            fixtureDef.density = 0;
         }
         body->CreateFixture(&fixtureDef);
     }

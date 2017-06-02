@@ -2,6 +2,10 @@
 
 RealVec::RealVec() : sf::Vector2f(0, 0), scale_(1.f) {}
 
+RealVec::RealVec(float x, float y) : Vector2(x, y) {}
+
+RealVec::RealVec(float x, float y, float scale) : Vector2(x, y), scale_(scale) {}
+
 RealVec::RealVec(float scalePixInMeters) : sf::Vector2f(0, 0), scale_(scalePixInMeters) {}
 
 RealVec::RealVec(const b2Vec2 &vec) : RealVec(vec.x, vec.y) {}
@@ -24,8 +28,6 @@ sf::Vector2f RealVec::GetScaledVector() const {
     return scale_ * sf::Vector2f(x, y);
 }
 
-RealVec::RealVec(float x, float y) : Vector2(x, y) {}
-
 RealVec &RealVec::operator=(const RealVec &vec) {
     x = vec.x;
     y = vec.y;
@@ -38,6 +40,3 @@ RealVec &RealVec::operator=(const sf::Vector2f &vec) {
     y = vec.y;
     return *this;
 }
-
-RealVec::RealVec(float x, float y, float scale) : Vector2(x, y), scale_(scale) {}
-

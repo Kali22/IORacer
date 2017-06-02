@@ -25,6 +25,12 @@ private:
 
     void InitCategories();
 
+    void SetCategoryDisplay();
+
+    void SetComponentDisplay();
+
+    void HandleUIEventClick(Event event);
+
     void UpdateCategoryUI();
 
     void UpdateComponentUI();

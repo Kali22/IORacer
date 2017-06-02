@@ -20,6 +20,20 @@ private:
     void HandleKey(sf::Event::KeyEvent event);
 
     void Update();
+
+    void SetButtons();
+
+    void HandleUIEventClick(Event event);
+
+    void StartNewRace();
+
+    void StartSecondPlayerSelector();
+
+    void StartWorkshop();
+
+    void StartFirstPlayerSelector();
+
+    void QuitGame();
 };
 
 using MainMenuPtr = std::shared_ptr<MainMenu>;

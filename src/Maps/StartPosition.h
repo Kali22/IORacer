@@ -1,6 +1,6 @@
 #pragma once
 
 
-struct StartPositionT {
+struct StartPosition {
     float x, y, rot;
 };
