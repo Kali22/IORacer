@@ -1,5 +1,4 @@
-#include "UIElement.h"
-
+#include <UIElement.h>
 #include <ActivityManager.h>
 #include <Activity.h>
 
@@ -8,9 +7,7 @@ UIElement::UIElement(int id, std::string name, ActivityPtr activity) :
         id_(id),
         activity_(activity),
         size_(centeredFullScreen),
-        hover_(false) {
-
-}
+        hover_(false) {}
 
 UIElement::UIElement(int id, std::string name, sf::FloatRect size,
                      ActivityPtr activity) :
@@ -18,23 +15,10 @@ UIElement::UIElement(int id, std::string name, sf::FloatRect size,
         id_(id),
         activity_(activity),
         size_(size),
-        hover_(false) {
-}
+        hover_(false) {}
 
 void UIElement::EventAction(sf::Event event) {
-    if (event.type == sf::Event::MouseMoved) {
-        if (!hover_ && bounds_.getGlobalBounds().contains(event.mouseMove.x,
-                                                          event.mouseMove.y)) {
-            hover_ = true;
-            activity_->EventAction(Event(UI_EVENT_MOUSE_OVER, name_));
-        }
-
-        if (hover_ && !bounds_.getGlobalBounds().contains(event.mouseMove.x,
-                                                          event.mouseMove.y)) {
-            hover_ = false;
-            activity_->EventAction(Event(UI_EVENT_MOUSE_LOST, name_));
-        }
-    }
+    HandleMouseMoved(event);
 
     if (event.type == sf::Event::MouseButtonPressed) {
         if (bounds_.getGlobalBounds().contains(event.mouseButton.x,
@@ -43,6 +27,20 @@ void UIElement::EventAction(sf::Event event) {
         }
     }
 
+}
+
+void UIElement::HandleMouseMoved(sf::Event event) {
+    if (event.type != sf::Event::MouseMoved) {
+        return;
+    }
+    bool nowHovered = bounds_.getGlobalBounds().contains(event.mouseMove.x,
+                                                         event.mouseMove.y);
+    if (!hover_ && nowHovered) {
+        activity_->EventAction(Event(UI_EVENT_MOUSE_OVER, name_));
+    } else if (hover_ && !nowHovered) {
+        activity_->EventAction(Event(UI_EVENT_MOUSE_LOST, name_));
+    }
+    hover_ = nowHovered;
 }
 
 std::string UIElement::GetName() const {

@@ -19,6 +19,10 @@ private:
 
     void DrawPos(RenderWindowPtr window, RealVec pos, sf::Color);
 
+    void SetScale();
+
+    sf::Vector2f GetPos(RealVec posOnMap);
+
     RealVec mapSize_;
     TexturePtr texture_;
     RealVec carPos_;

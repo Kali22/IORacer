@@ -1,10 +1,10 @@
 #include <UI.h>
 
+UI::UI(ActivityPtr activity) : activity_(activity) {}
+
 int UI::GetElementsCount() const {
     return (int) list_.size();
 }
-
-UI::UI(ActivityPtr activity) : activity_(activity) {}
 
 void UI::EventAction(sf::Event event) {
     for (auto item : list_) {

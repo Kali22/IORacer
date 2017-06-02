@@ -35,6 +35,8 @@ private:
     sf::Color hoverOutlineColor_;
     sf::Color hoverTextColor_;
     float verticalFix;
+
+    void SetHoverColors();
 };
 
 using UITextBoxPtr = std::shared_ptr<UITextBox>;

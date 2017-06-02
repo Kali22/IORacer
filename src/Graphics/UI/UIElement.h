@@ -8,11 +8,7 @@
 #include <ActivityCommon.h>
 #include <GraphicsCommon.h>
 
-class UIElement;
-
-using UIElementPtr = std::shared_ptr<UIElement>;
-
-class UIElement : public std::enable_shared_from_this<UIElement> {
+class UIElement {
 public:
     /** Invoke event responsible UI. Default size: full screen */
     UIElement(int id, std::string name_, ActivityPtr activity);
@@ -45,7 +41,12 @@ protected:
     int id_;
     bool hover_;
 
-    sf::FloatRect size_; //!< Relative dimension
+    sf::FloatRect size_;        //!< Relative dimension
     sf::RectangleShape bounds_; //!< Graphics
-    ActivityPtr activity_; //!< Activity handler
+    ActivityPtr activity_;      //!< Activity handler
+
+private:
+    void HandleMouseMoved(sf::Event event);
 };
+
+using UIElementPtr = std::shared_ptr<UIElement>;

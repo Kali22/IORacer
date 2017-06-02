@@ -55,6 +55,8 @@ public:
 private:
     void UpdateTimes();
 
+    void UpdatePartialTimers();
+
     /// Current lap wall clock
     float lapClock_;
     /// Current sector wall clock

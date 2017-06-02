@@ -1,5 +1,6 @@
 #pragma once
 
+
 #include <SFML/Graphics.hpp>
 
 static sf::Color backgroundColor = sf::Color(0x1c7396ff);

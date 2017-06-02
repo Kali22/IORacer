@@ -1,10 +1,9 @@
 #include <Fonts.h>
-#include "UITextBox.h"
+#include <UITextBox.h>
 
 UITextBox::UITextBox(int id, std::string name, std::string text, unsigned fontSize, sf::FloatRect size,
                      ActivityPtr activity)
-        : UIElement(id, name, size,
-                    activity) {
+        : UIElement(id, name, size, activity) {
     if (!font_.loadFromFile(fonts["impact"])) {
         throw std::runtime_error("Font loading failed");
     }
@@ -34,6 +33,16 @@ void UITextBox::SetTextColorHover(sf::Color color) {
 }
 
 void UITextBox::Render(RenderWindowPtr window) {
+    SetHoverColors();
+    auto size = bounds_.getGlobalBounds();
+    auto textSize = text_.getGlobalBounds();
+    text_.setPosition(size.left + size.width * 0.5f, size.top + size.height * 0.5f);
+    text_.setOrigin(textSize.width * 0.5f, textSize.height * 0.5f + verticalFix);
+    window->draw(bounds_);
+    window->draw(text_);
+}
+
+void UITextBox::SetHoverColors() {
     if (hover_) {
         bounds_.setFillColor(hoverColor_);
         bounds_.setOutlineColor(hoverOutlineColor_);
@@ -43,12 +52,6 @@ void UITextBox::Render(RenderWindowPtr window) {
         bounds_.setOutlineColor(normalOutlineColor_);
         text_.setColor(normalTextColor_);
     }
-    auto size = bounds_.getGlobalBounds();
-    auto textSize = text_.getGlobalBounds();
-    text_.setPosition(size.left + size.width * 0.5, size.top + size.height * 0.5);
-    text_.setOrigin(textSize.width * 0.5, textSize.height * 0.5 + verticalFix);
-    window->draw(bounds_);
-    window->draw(text_);
 }
 
 void UITextBox::SetBackgroundColor(sf::Color color) {

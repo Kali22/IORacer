@@ -2,9 +2,12 @@
 #include <Activity.h>
 
 ActivityManager::ActivityManager(WindowPtr window, TextureManagerPtr textureManager,
-                                 CarComponentManagerPtr carComponentManager, PlayerManagerPtr playerManager)
-        : window_(window), active_(nullptr), textureManager_(textureManager),
-          carComponentManager_(carComponentManager), playerManager_(playerManager) {
+                                 CarComponentManagerPtr carComponentManager, PlayerManagerPtr playerManager) :
+        window_(window),
+        active_(nullptr),
+        textureManager_(textureManager),
+        carComponentManager_(carComponentManager),
+        playerManager_(playerManager) {
 }
 
 void ActivityManager::Poll() {

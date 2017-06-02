@@ -133,7 +133,10 @@ void TimeManager::UpdateTimes() {
     lastSectorTime_ = sectorsTimes_[currentLap_ - 1][currentSector_];
     bestSectorTime_ = bestSectorTimes_[currentSector_];
     bestSectorLapNumber_ = bestSectorTimeNumber_[currentSector_];
+    UpdatePartialTimers();
+}
 
+void TimeManager::UpdatePartialTimers() {
     if (currentSector_ > 0) {
         previousSectorTime_ = sectorsTimes_[currentLap_][currentSector_ - 1];
     } else {
