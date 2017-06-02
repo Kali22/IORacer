@@ -1,5 +1,4 @@
 #include <ActivityManager.h>
-#include <Activity.h>
 
 ActivityManager::ActivityManager(WindowPtr window, TextureManagerPtr textureManager,
                                  CarComponentManagerPtr carComponentManager, PlayerManagerPtr playerManager) :

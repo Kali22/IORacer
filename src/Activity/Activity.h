@@ -5,8 +5,8 @@
 #include <Drawable.h>
 #include <Renderer.h>
 #include <Managers.h>
-#include <UI.h>
 #include <Event.h>
+#include <UI.h>
 
 enum ActivityStateE {
     ACTIVITY_STATE_INIT,
@@ -26,7 +26,7 @@ public:
 
     virtual void EventAction(Event event) = 0;
 
-    void Prepare(ActivityManagerPtr activityManager);
+    void Prepare(WeakActivityManagerPtr activityManager);
 
     UIPtr GetUI() const;
 
@@ -36,7 +36,7 @@ public:
 
     void SetReady();
 
-    ActivityManagerPtr GetActivityManager() const;
+    WeakActivityManagerPtr GetActivityManager() const;
 
 protected:
     void SetTitleStyle(UITextBoxPtr textBox);
@@ -49,5 +49,5 @@ protected:
     ActivityStateE state_;
 
     UIPtr userInterface_;
-    ActivityManagerPtr activityManager_;
+    WeakActivityManagerPtr activityManager_;
 };

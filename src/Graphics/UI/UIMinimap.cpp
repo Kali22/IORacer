@@ -1,7 +1,7 @@
 #include <UIMinimap.h>
 #include <Activity.h>
 
-UIMinimap::UIMinimap(int id, std::string name, sf::FloatRect size, ActivityPtr activity, RealVec mapSize,
+UIMinimap::UIMinimap(int id, std::string name, sf::FloatRect size, WeakActivityPtr activity, RealVec mapSize,
                      TexturePtr texture) :
         UIElement(id, name, size, activity),
         mapSize_(mapSize),

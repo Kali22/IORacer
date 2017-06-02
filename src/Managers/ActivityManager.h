@@ -3,7 +3,7 @@
 
 #include <bits/stdc++.h>
 #include <Window.h>
-#include <ActivityCommon.h>
+#include <Activity.h>
 #include <Renderer.h>
 #include <Managers.h>
 #include <TextureManager.h>

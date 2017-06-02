@@ -10,9 +10,9 @@ PlayerSelector::PlayerSelector(SelectorType type) :
 }
 
 void PlayerSelector::Init() {
-    playersList_ = activityManager_->GetPlayerManager()->GetPlayersList();
+    playersList_ = activityManager_.lock()->GetPlayerManager()->GetPlayersList();
     if (type_ == SECOND_PLAYER) {
-        std::string playerName = activityManager_->GetPlayerManager()->GetActivePlayer()->GetName();
+        std::string playerName = activityManager_.lock()->GetPlayerManager()->GetActivePlayer()->GetName();
         playersList_.erase(std::remove(playersList_.begin(), playersList_.end(), playerName), playersList_.end());
     }
     UIBoxPtr back = userInterface_->CreateBox("background", centeredFullScreen);
@@ -38,7 +38,7 @@ void PlayerSelector::Init() {
 }
 
 void PlayerSelector::Run() {
-    RendererPtr renderer = activityManager_->GetRenderer();
+    RendererPtr renderer = activityManager_.lock()->GetRenderer();
     Update();
     renderer->Clear();
     renderer->RenderUI(userInterface_);
@@ -64,19 +64,19 @@ void PlayerSelector::EventAction(Event event) {
             }
             if (event.GetUIElement() == "select") {
                 if (type_ == FIRST_PLAYER) {
-                    activityManager_->GetPlayerManager()->SetActivePlayer(playersList_[player_]);
-                    activityManager_->SetAsActive("main_menu");
+                    activityManager_.lock()->GetPlayerManager()->SetActivePlayer(playersList_[player_]);
+                    activityManager_.lock()->SetAsActive("main_menu");
                 } else {
-                    activityManager_->GetPlayerManager()->SetSecondPlayer(playersList_[player_]);
+                    activityManager_.lock()->GetPlayerManager()->SetSecondPlayer(playersList_[player_]);
                     NewRacePtr newRace = std::make_shared<NewRace>(MULTI_PLAYER);
-                    activityManager_->AddActivity(newRace);
-                    activityManager_->SetAsActive("new_race");
+                    activityManager_.lock()->AddActivity(newRace);
+                    activityManager_.lock()->SetAsActive("new_race");
                 }
             }
             if (event.GetUIElement() == "new_player") {
                 NewPlayerPtr newPlayer = std::make_shared<NewPlayer>(type_);
-                activityManager_->AddActivity(newPlayer);
-                activityManager_->SetAsActive("new_player");
+                activityManager_.lock()->AddActivity(newPlayer);
+                activityManager_.lock()->SetAsActive("new_player");
             }
         }
     }
@@ -92,8 +92,8 @@ void PlayerSelector::Update() {
 void PlayerSelector::HandleKey(sf::Event::KeyEvent event) {
     if (event.code == sf::Keyboard::Escape) {
         if (type_ == FIRST_PLAYER)
-            activityManager_->RemoveActivity("player_selector");
+            activityManager_.lock()->RemoveActivity("player_selector");
         else
-            activityManager_->SetAsActive("main_menu");
+            activityManager_.lock()->SetAsActive("main_menu");
     }
 }

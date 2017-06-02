@@ -26,7 +26,7 @@ void NewRace::Init() {
 }
 
 void NewRace::Run() {
-    RendererPtr renderer = activityManager_->GetRenderer();
+    RendererPtr renderer = activityManager_.lock()->GetRenderer();
     Update();
     renderer->Clear();
     renderer->RenderUI(userInterface_);
@@ -63,22 +63,22 @@ void NewRace::EventAction(Event event) {
 void NewRace::HandleKey(sf::Event::KeyEvent event) {
     if (event.code == sf::Keyboard::Escape) {
         if (type_ == SINGLE_PLAYER)
-            activityManager_->SetAsActive("main_menu");
+            activityManager_.lock()->SetAsActive("main_menu");
         else
-            activityManager_->SetAsActive("player_selector");
+            activityManager_.lock()->SetAsActive("player_selector");
     }
 }
 
 void NewRace::CreateRace(std::string name) {
     GameplayPtr race = std::make_shared<Gameplay>(name, laps_);
-    PlayerPtr firstPlayer = activityManager_->GetPlayerManager()
+    PlayerPtr firstPlayer = activityManager_.lock()->GetPlayerManager()
             ->GetActivePlayer();
     race->SetFirstPlayer(firstPlayer);
     if (type_ == MULTI_PLAYER) {
-        PlayerPtr secondPlayer = activityManager_->GetPlayerManager()
+        PlayerPtr secondPlayer = activityManager_.lock()->GetPlayerManager()
                 ->GetSecondPlayer();
         race->SetSecondPlayer(secondPlayer);
     }
-    activityManager_->AddActivity(race);
-    activityManager_->SetAsActive("race");
+    activityManager_.lock()->AddActivity(race);
+    activityManager_.lock()->SetAsActive("race");
 }

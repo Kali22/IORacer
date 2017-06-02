@@ -17,7 +17,7 @@ void NewPlayer::Init() {
 }
 
 void NewPlayer::Run() {
-    RendererPtr renderer = activityManager_->GetRenderer();
+    RendererPtr renderer = activityManager_.lock()->GetRenderer();
     Update();
     renderer->Clear();
     renderer->RenderUI(userInterface_);
@@ -47,17 +47,17 @@ void NewPlayer::EventAction(Event event) {
 
 void NewPlayer::CreatePlayer() {
     if (!player_.empty()) {
-        PlayerManagerPtr playerManager = activityManager_->GetPlayerManager();
+        PlayerManagerPtr playerManager = activityManager_.lock()->GetPlayerManager();
         playerManager->CreateNewPlayer(player_);
         if (type_ == FIRST_PLAYER) {
             playerManager->SetActivePlayer(player_);
-            activityManager_->SetAsActive("main_menu");
+            activityManager_.lock()->SetAsActive("main_menu");
         }
         else {
             playerManager->SetSecondPlayer(player_);
             NewRacePtr newRace = std::make_shared<NewRace>(MULTI_PLAYER);
-            activityManager_->AddActivity(newRace);
-            activityManager_->SetAsActive("new_race");
+            activityManager_.lock()->AddActivity(newRace);
+            activityManager_.lock()->SetAsActive("new_race");
         }
     }
 }
@@ -75,6 +75,6 @@ void NewPlayer::HandleKey(sf::Event::KeyEvent event) {
             player_.pop_back();
     }
     if (event.code == sf::Keyboard::Escape) {
-        activityManager_->SetAsActive("player_selector");
+        activityManager_.lock()->SetAsActive("player_selector");
     }
 }

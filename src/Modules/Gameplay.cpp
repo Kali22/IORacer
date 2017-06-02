@@ -15,8 +15,8 @@ Gameplay::Gameplay(const std::string &mapName, int laps)
 
 void Gameplay::Init() {
     world_ = new b2World(b2Vec2(0, 0));
-    objectManager_ = std::make_shared<ObjectManager>(activityManager_->GetTextureManager(), world_);
-    mapManager_ = std::make_shared<MapManager>(activityManager_->GetTextureManager(), objectManager_);
+    objectManager_ = std::make_shared<ObjectManager>(activityManager_.lock()->GetTextureManager(), world_);
+    mapManager_ = std::make_shared<MapManager>(activityManager_.lock()->GetTextureManager(), objectManager_);
     map_ = mapManager_->CreateMap(mapName_);
     scene_ = std::make_shared<Scene>(map_);
     world_->SetContactListener(contactListener_.get());
@@ -84,8 +84,8 @@ void Gameplay::SetFirstPlayer(PlayerPtr player) {
 }
 
 void Gameplay::ExitGame() {
-    activityManager_->RemoveActivity("race");
-    activityManager_->SetAsActive("main_menu");
+    activityManager_.lock()->RemoveActivity("race");
+    activityManager_.lock()->SetAsActive("main_menu");
 }
 
 void Gameplay::SaveTimes() {
@@ -102,7 +102,7 @@ void Gameplay::SaveTimes() {
 
 void Gameplay::Render() {
     /* Rendering */
-    RendererPtr renderer = activityManager_->GetRenderer();
+    RendererPtr renderer = activityManager_.lock()->GetRenderer();
     renderer->Clear();
     if (playerVehicle_[SECOND_PLAYER] == nullptr)
         renderer->RenderScene(scene_, VIEW_TYPE_SINGLE);

@@ -60,7 +60,7 @@ void Renderer::RenderCameraInViewport(ScenePtr scene, CameraPtr camera,
 
 void Renderer::RenderUI(UIPtr ui) {
     auto screenSize = renderWindow_->getSize();
-    int size = ui->GetElementsCount();
+    unsigned size = ui->GetElementsCount();
     sf::FloatRect relSize;
     sf::FloatRect absSize;
     std::map<std::string, UIElementPtr>::iterator it = ui->GetElements();

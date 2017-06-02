@@ -2,7 +2,7 @@
 #include <UITextBox.h>
 
 UITextBox::UITextBox(int id, std::string name, std::string text, unsigned fontSize, sf::FloatRect size,
-                     ActivityPtr activity)
+                     WeakActivityPtr activity)
         : UIElement(id, name, size, activity) {
     if (!font_.loadFromFile(fonts["impact"])) {
         throw std::runtime_error("Font loading failed");

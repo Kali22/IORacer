@@ -2,10 +2,10 @@
 #include <Texture.h>
 #include <Activity.h>
 
-UIBox::UIBox(int id, std::string name, ActivityPtr activity)
+UIBox::UIBox(int id, std::string name, WeakActivityPtr activity)
         : UIElement(id, name, activity) {
 }
 
-UIBox::UIBox(int id, std::string name, sf::FloatRect size, ActivityPtr activity)
+UIBox::UIBox(int id, std::string name, sf::FloatRect size, WeakActivityPtr activity)
         : UIElement(id, name, size, activity) {
 }

@@ -3,11 +3,12 @@
 
 #include <SFML/Graphics/Text.hpp>
 #include <UIElement.h>
+#include <ActivityCommon.h>
 
 class UITextBox : public UIElement {
 public:
-    UITextBox(int id, std::string name, std::string text, unsigned fontSize, sf::FloatRect size,
-              ActivityPtr activity);
+    UITextBox(int id, std::string name, std::string text, unsigned fontSize,
+              sf::FloatRect size, WeakActivityPtr activity);
 
     void SetBackgroundColorHover(sf::Color color);
 

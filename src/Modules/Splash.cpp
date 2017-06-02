@@ -4,7 +4,7 @@
 Splash::Splash() : Activity("splash") {}
 
 void Splash::Run() {
-    RendererPtr renderer = activityManager_->GetRenderer();
+    RendererPtr renderer = activityManager_.lock()->GetRenderer();
     renderer->Clear();
     renderer->RenderUI(userInterface_);
     renderer->Display();
@@ -26,19 +26,19 @@ void Splash::EventAction(Event event) {
         }
     } else if (event.GetType() == UI_EVENT) {
         if (event.GetUIEventType() == UI_EVENT_CLICK) {
-            activityManager_->SetAsActive("player_selector");
-            activityManager_->RemoveActivity("splash");
+            activityManager_.lock()->SetAsActive("player_selector");
+            activityManager_.lock()->RemoveActivity("splash");
         }
     }
 }
 
 void Splash::HandleKey(sf::Event::KeyEvent event) {
     if (event.code == sf::Keyboard::Escape) {
-        activityManager_->End();
+        activityManager_.lock()->End();
     }
 
     if (event.code == sf::Keyboard::Space) {
-        activityManager_->SetAsActive("player_selector");
-        activityManager_->RemoveActivity("splash");
+        activityManager_.lock()->SetAsActive("player_selector");
+        activityManager_.lock()->RemoveActivity("splash");
     }
 }

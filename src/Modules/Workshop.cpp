@@ -5,9 +5,9 @@
 Workshop::Workshop() : Activity("workshop") {}
 
 void Workshop::Init() {
-    player_ = activityManager_->GetPlayerManager()->GetActivePlayer();
+    player_ = activityManager_.lock()->GetPlayerManager()->GetActivePlayer();
     configuration_ = player_->GetCarConfiguration();
-    carComponentManager_ = activityManager_->GetCarComponentManager();
+    carComponentManager_ = activityManager_.lock()->GetCarComponentManager();
 
     UIBoxPtr back = userInterface_->CreateBox("background", centeredFullScreen);
     back->SetBackgroundTexture("menu_back");
@@ -42,7 +42,7 @@ void Workshop::Init() {
 }
 
 void Workshop::Run() {
-    RendererPtr renderer = activityManager_->GetRenderer();
+    RendererPtr renderer = activityManager_.lock()->GetRenderer();
     renderer->Clear();
     renderer->RenderUI(userInterface_);
     renderer->Display();
@@ -78,7 +78,7 @@ void Workshop::EventAction(Event event) {
 
 void Workshop::HandleKey(sf::Event::KeyEvent event) {
     if (event.code == sf::Keyboard::Escape) {
-        activityManager_->SetAsActive("main_menu");
+        activityManager_.lock()->SetAsActive("main_menu");
     }
 }
 

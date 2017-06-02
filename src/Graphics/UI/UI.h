@@ -8,11 +8,12 @@
 #include <UIMinimap.h>
 #include <Event.h>
 #include <ViewportConst.h>
+#include <ActivityCommon.h>
 
 /** @TODO Resize elements on load! */
 class UI {
 public:
-    UI(ActivityPtr activity);
+    UI(WeakActivityPtr activity);
 
     UIBoxPtr CreateBox(std::string name, sf::FloatRect size = centeredFullScreen);
 
@@ -23,7 +24,7 @@ public:
 
     UIElementPtr GetElementByName(const std::string &name);
 
-    int GetElementsCount() const;
+    unsigned GetElementsCount() const;
 
     void EventAction(sf::Event event);
 
@@ -34,7 +35,7 @@ public:
 private:
     std::map<std::string, UIElementPtr> list_;
 
-    ActivityPtr activity_;
+    WeakActivityPtr activity_;
 };
 
 using UIPtr = std::shared_ptr<UI>;

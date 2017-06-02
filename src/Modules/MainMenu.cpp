@@ -27,7 +27,7 @@ void MainMenu::Init() {
 }
 
 void MainMenu::Run() {
-    RendererPtr renderer = activityManager_->GetRenderer();
+    RendererPtr renderer = activityManager_.lock()->GetRenderer();
     Update();
     renderer->Clear();
     renderer->RenderUI(userInterface_);
@@ -35,7 +35,7 @@ void MainMenu::Run() {
 }
 
 void MainMenu::Update() {
-    std::string playerName = activityManager_->GetPlayerManager()->GetActivePlayer()->GetName();
+    std::string playerName = activityManager_.lock()->GetPlayerManager()->GetActivePlayer()->GetName();
     UITextBoxPtr nameTextBox = std::dynamic_pointer_cast<UITextBox>(userInterface_->GetElementByName("title"));
     nameTextBox->SetText(playerName);
 }
@@ -51,32 +51,32 @@ void MainMenu::EventAction(Event event) {
         if (event.GetUIEventType() == UI_EVENT_CLICK) {
             if (event.GetUIElement() == "single_player") {
                 NewRacePtr newRace = std::make_shared<NewRace>(SINGLE_PLAYER);
-                activityManager_->AddActivity(newRace);
-                activityManager_->SetAsActive("new_race");
+                activityManager_.lock()->AddActivity(newRace);
+                activityManager_.lock()->SetAsActive("new_race");
             }
             if (event.GetUIElement() == "multi_player") {
                 PlayerSelectorPtr selector = std::make_shared<PlayerSelector>(SECOND_PLAYER);
-                activityManager_->AddActivity(selector);
-                activityManager_->SetAsActive("player_selector");
+                activityManager_.lock()->AddActivity(selector);
+                activityManager_.lock()->SetAsActive("player_selector");
             }
             if (event.GetUIElement() == "workshop") {
                 WorkshopPtr workshop = std::make_shared<Workshop>();
-                activityManager_->AddActivity(workshop);
-                activityManager_->SetAsActive("workshop");
+                activityManager_.lock()->AddActivity(workshop);
+                activityManager_.lock()->SetAsActive("workshop");
             }
             if (event.GetUIElement() == "change_player") {
                 PlayerSelectorPtr selector = std::make_shared<PlayerSelector>(FIRST_PLAYER);
-                activityManager_->AddActivity(selector);
-                activityManager_->SetAsActive("player_selector");
+                activityManager_.lock()->AddActivity(selector);
+                activityManager_.lock()->SetAsActive("player_selector");
             }
             if (event.GetUIElement() == "quit_game")
-                activityManager_->RemoveActivity("main_menu");
+                activityManager_.lock()->RemoveActivity("main_menu");
         }
     }
 }
 
 void MainMenu::HandleKey(sf::Event::KeyEvent event) {
     if (event.code == sf::Keyboard::Escape) {
-        activityManager_->RemoveActivity("main_menu");
+        activityManager_.lock()->RemoveActivity("main_menu");
     }
 }

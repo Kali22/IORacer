@@ -1,8 +1,7 @@
 #include <UIElement.h>
 #include <ActivityManager.h>
-#include <Activity.h>
 
-UIElement::UIElement(int id, std::string name, ActivityPtr activity) :
+UIElement::UIElement(int id, std::string name, WeakActivityPtr activity) :
         name_(name),
         id_(id),
         activity_(activity),
@@ -10,7 +9,7 @@ UIElement::UIElement(int id, std::string name, ActivityPtr activity) :
         hover_(false) {}
 
 UIElement::UIElement(int id, std::string name, sf::FloatRect size,
-                     ActivityPtr activity) :
+                     WeakActivityPtr activity) :
         name_(name),
         id_(id),
         activity_(activity),
@@ -23,7 +22,7 @@ void UIElement::EventAction(sf::Event event) {
     if (event.type == sf::Event::MouseButtonPressed) {
         if (bounds_.getGlobalBounds().contains(event.mouseButton.x,
                                                event.mouseButton.y)) {
-            activity_->EventAction(Event(UI_EVENT_CLICK, name_));
+            activity_.lock()->EventAction(Event(UI_EVENT_CLICK, name_));
         }
     }
 
@@ -36,9 +35,9 @@ void UIElement::HandleMouseMoved(sf::Event event) {
     bool nowHovered = bounds_.getGlobalBounds().contains(event.mouseMove.x,
                                                          event.mouseMove.y);
     if (!hover_ && nowHovered) {
-        activity_->EventAction(Event(UI_EVENT_MOUSE_OVER, name_));
+        activity_.lock()->EventAction(Event(UI_EVENT_MOUSE_OVER, name_));
     } else if (hover_ && !nowHovered) {
-        activity_->EventAction(Event(UI_EVENT_MOUSE_LOST, name_));
+        activity_.lock()->EventAction(Event(UI_EVENT_MOUSE_LOST, name_));
     }
     hover_ = nowHovered;
 }
@@ -63,7 +62,7 @@ void UIElement::SetAbsoluteSize(sf::FloatRect size) {
 
 
 void UIElement::SetBackgroundTexture(std::string name) {
-    TexturePtr texture = activity_->GetActivityManager()->GetTextureManager()->GetTextureByName(name);
+    TexturePtr texture = activity_.lock()->GetActivityManager().lock()->GetTextureManager()->GetTextureByName(name);
     if (texture == nullptr) {
         std::cerr << "UIElement: No such texture named "
                   << name.c_str() << std::endl;

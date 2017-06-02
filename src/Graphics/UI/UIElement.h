@@ -11,10 +11,10 @@
 class UIElement {
 public:
     /** Invoke event responsible UI. Default size: full screen */
-    UIElement(int id, std::string name_, ActivityPtr activity);
+    UIElement(int id, std::string name_, WeakActivityPtr activity);
 
     /** Invoke event responsible UI with given size. */
-    UIElement(int id, std::string name_, sf::FloatRect size, ActivityPtr activity);
+    UIElement(int id, std::string name_, sf::FloatRect size, WeakActivityPtr activity);
 
     void EventAction(sf::Event event);
 
@@ -43,7 +43,7 @@ protected:
 
     sf::FloatRect size_;        //!< Relative dimension
     sf::RectangleShape bounds_; //!< Graphics
-    ActivityPtr activity_;      //!< Activity handler
+    WeakActivityPtr activity_;  //!< Activity handler
 
 private:
     void HandleMouseMoved(sf::Event event);

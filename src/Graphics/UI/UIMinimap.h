@@ -1,14 +1,14 @@
 #pragma once
 
 
-#include <UIElement.h>
 #include <Texture.h>
 #include <RealVec.h>
+#include <UIElement.h>
 
 class UIMinimap : public UIElement {
 public:
-    UIMinimap(int id, std::string name, sf::FloatRect size, ActivityPtr
-    activity, RealVec mapSize, TexturePtr texture);
+    UIMinimap(int id, std::string name, sf::FloatRect size,
+              WeakActivityPtr activity, RealVec mapSize, TexturePtr texture);
 
     virtual void Render(RenderWindowPtr window);
 

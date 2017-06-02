@@ -1,9 +1,9 @@
 #include <UI.h>
 
-UI::UI(ActivityPtr activity) : activity_(activity) {}
+UI::UI(WeakActivityPtr activity) : activity_(activity) {}
 
-int UI::GetElementsCount() const {
-    return (int) list_.size();
+unsigned UI::GetElementsCount() const {
+    return (unsigned) list_.size();
 }
 
 void UI::EventAction(sf::Event event) {
@@ -20,9 +20,8 @@ UIBoxPtr UI::CreateBox(std::string name, sf::FloatRect size) {
 
 UIMinimapPtr UI::CreateMinimap(std::string name, sf::FloatRect size,
                                RealVec mapSize, TexturePtr texture) {
-    UIMinimapPtr minimap = std::make_shared<UIMinimap>(list_.size(), name,
-                                                       size, activity_,
-                                                       mapSize, texture);
+    UIMinimapPtr minimap = std::make_shared<UIMinimap>(
+            list_.size(), name, size, activity_, mapSize, texture);
     list_[name] = minimap;
     return minimap;
 }
