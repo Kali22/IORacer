@@ -29,6 +29,8 @@ private:
     SelectorType type_;
 
     const std::string resourcePath_ = "../players/";
+
+    void HandleSFMLEvent(Event event);
 };
 
 using NewPlayerPtr = std::shared_ptr<NewPlayer>;

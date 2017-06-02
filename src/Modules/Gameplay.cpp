@@ -21,7 +21,6 @@ void Gameplay::Init() {
     scene_ = std::make_shared<Scene>(map_);
     world_->SetContactListener(contactListener_.get());
 
-    /// @TODO player manager-> get player vehicle attributes and create player vehicle
     if (player_[FIRST_PLAYER] == nullptr) {
         std::cerr << "One player at least required!" << std::endl;
         ExitGame();

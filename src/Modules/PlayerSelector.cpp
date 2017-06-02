@@ -63,12 +63,11 @@ void PlayerSelector::EventAction(Event event) {
 }
 
 void PlayerSelector::HandleUIEventClick(Event event) {
+    unsigned long size = playersList_.size();
     if (event.GetUIElement() == "next") {
-        player_++;
-        player_ %= playersList_.size();
+        player_ = (player_ + 1) % size;
     } else if (event.GetUIElement() == "prev") {
-        player_ += playersList_.size() - 1;
-        player_ %= playersList_.size();
+        player_ = (player_ + size - 1) % size;
     }
     if (event.GetUIElement() == "select") {
         SelectPlayer();

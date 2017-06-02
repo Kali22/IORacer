@@ -9,10 +9,11 @@ NewRace::NewRace(RaceType type) : Activity("new_race"), type_(type), laps_(defau
 void NewRace::Init() {
     SetBackgroundToMenu();
     SetTitle("Setup your race");
-    UITextBoxPtr m0 = userInterface_->CreateTextBox("map_0", "map_0", 30, sf::FloatRect(0.5, 0.5, 0.2, 0.05));
-    UITextBoxPtr m1 = userInterface_->CreateTextBox("map_1", "map_1", 30, sf::FloatRect(0.5, 0.6, 0.2, 0.05));
-    SetButtonStyle(m0);
-    SetButtonStyle(m1);
+    SetLaps();
+    SetMaps();
+}
+
+void NewRace::SetLaps() {
     UITextBoxPtr laps = userInterface_->CreateTextBox("laps", std::to_string(laps_), 30,
                                                       sf::FloatRect(0.5, 0.2, 0.1, 0.05));
     SetButtonStyle(laps);
@@ -20,6 +21,13 @@ void NewRace::Init() {
     SetButtonStyle(plus);
     UITextBoxPtr minus = userInterface_->CreateTextBox("dec_lap", "-", 30, sf::FloatRect(0.4, 0.2, 0.05, 0.05));
     SetButtonStyle(minus);
+}
+
+void NewRace::SetMaps() {
+    UITextBoxPtr m0 = userInterface_->CreateTextBox("map_0", "map_0", 30, sf::FloatRect(0.5, 0.5, 0.2, 0.05));
+    UITextBoxPtr m1 = userInterface_->CreateTextBox("map_1", "map_1", 30, sf::FloatRect(0.5, 0.6, 0.2, 0.05));
+    SetButtonStyle(m0);
+    SetButtonStyle(m1);
 }
 
 void NewRace::Run() {
@@ -43,17 +51,20 @@ void NewRace::EventAction(Event event) {
         if (sfmlEvent.type == sf::Event::KeyPressed) {
             HandleKey(sfmlEvent.key);
         }
-    } else if (event.GetType() == UI_EVENT) {
-        if (event.GetUIEventType() == UI_EVENT_CLICK) {
-            if (event.GetUIElement() == "dec_lap")
-                if (laps_ > 1) laps_--;
-            if (event.GetUIElement() == "inc_lap")
-                if (laps_ < 99) laps_++;
-            if (event.GetUIElement() == "map_0")
-                CreateRace("map_0");
-            if (event.GetUIElement() == "map_1")
-                CreateRace("map_1");
-        }
+    } else if (event.GetType() == UI_EVENT && event.GetUIEventType() == UI_EVENT_CLICK) {
+        HandleUIEventClick(event);
+    }
+}
+
+void NewRace::HandleUIEventClick(Event event) {
+    if (event.GetUIElement() == "dec_lap") {
+        if (laps_ > 1) laps_--;
+    } else if (event.GetUIElement() == "inc_lap") {
+        if (laps_ < 99) laps_++;
+    } else if (event.GetUIElement() == "map_0") {
+        CreateRace("map_0");
+    } else if (event.GetUIElement() == "map_1") {
+        CreateRace("map_1");
     }
 }
 

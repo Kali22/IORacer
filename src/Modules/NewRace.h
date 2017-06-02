@@ -31,6 +31,12 @@ private:
     RaceType type_;
 
     int laps_;
+
+    void SetLaps();
+
+    void SetMaps();
+
+    void HandleUIEventClick(Event event);
 };
 
 using NewRacePtr = std::shared_ptr<NewRace>;

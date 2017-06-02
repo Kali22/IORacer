@@ -26,18 +26,22 @@ void NewPlayer::End() {}
 
 void NewPlayer::EventAction(Event event) {
     if (event.GetType() == SFML_EVENT) {
-        sf::Event sfmlEvent = event.GetSFMLEvent();
-        if (sfmlEvent.type == sf::Event::KeyPressed) {
-            HandleKey(sfmlEvent.key);
-        }
-        if (sfmlEvent.type == sf::Event::TextEntered) {
-            if (32 < sfmlEvent.text.unicode && sfmlEvent.text.unicode < 126) {
-                player_ += static_cast<char>(sfmlEvent.text.unicode);
-            }
-        }
+        HandleSFMLEvent(event);
     } else if (event.GetType() == UI_EVENT && event.GetUIEventType() == UI_EVENT_CLICK) {
         if (event.GetUIElement() == "new_player")
             CreatePlayer();
+    }
+}
+
+void NewPlayer::HandleSFMLEvent(Event event) {
+    sf::Event sfmlEvent = event.GetSFMLEvent();
+    if (sfmlEvent.type == sf::Event::KeyPressed) {
+        HandleKey(sfmlEvent.key);
+    }
+    if (sfmlEvent.type == sf::Event::TextEntered) {
+        if (32 < sfmlEvent.text.unicode && sfmlEvent.text.unicode < 126) {
+            player_ += static_cast<char>(sfmlEvent.text.unicode);
+        }
     }
 }
 
