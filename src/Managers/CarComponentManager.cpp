@@ -11,7 +11,7 @@ CarComponentManager::CarComponentManager() {
     };
 }
 
-CarComponentPtr CarComponentManager::GetComponent(ModifierType type, int id) const {
+CarComponentPtr CarComponentManager::GetComponent(ModifierTypeE type, int id) const {
     auto category = typeToComponents_.find(type);
     if (category == typeToComponents_.end()) {
         std::cerr << "Fatal: Requested unknown car component category"

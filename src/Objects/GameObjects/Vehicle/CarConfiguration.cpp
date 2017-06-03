@@ -18,7 +18,7 @@ float CarConfiguration::GetSteeringAngleMax() const {
     return GetModifierByType(STEERING_ANGLE_MAX);
 }
 
-float CarConfiguration::GetModifierByType(ModifierType type) const {
+float CarConfiguration::GetModifierByType(ModifierTypeE type) const {
     auto it = components_.find(type);
     if (it == components_.end()) {
         return 0;
@@ -40,7 +40,7 @@ std::vector<int> CarConfiguration::GetComponentsIDs() const {
 }
 
 
-int CarConfiguration::GetComponentId(ModifierType type) const {
+int CarConfiguration::GetComponentId(ModifierTypeE type) const {
     auto it = components_.find(type);
     if (it == components_.end()) {
         return -1;

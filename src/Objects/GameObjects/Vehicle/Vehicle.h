@@ -11,7 +11,7 @@
 class Vehicle : public Object {
 public:
     Vehicle(int id, b2Body *body, VisualObjectPtr chassis,
-            std::vector<WheelPtr> &&wheels, const VehicleSetupT &setup,
+            std::vector<WheelPtr> &&wheels, const VehicleSetup &setup,
             CarConfigurationPtr carConfigurationPtr, MapPtr map);
 
     ~Vehicle();
@@ -34,7 +34,7 @@ public:
 
     void Reset(float x, float y, float rot);
 
-    void ChangeVehicleSetup(const VehicleSetupT setup);
+    void ChangeVehicleSetup(const VehicleSetup setup);
 
     void DrawPrivate(RenderWindowPtr window);
 
@@ -69,8 +69,8 @@ private:
     float enginePowerNow_;
 
     /* Car params */
-    VehicleSetupT vehicleSetup_;
-    // TODO after branch merging rename to vehicleConfiguration
+    VehicleSetup vehicleSetup_;
+    // @TODO after branch merging rename to vehicleConfiguration
     CarConfigurationPtr carConfiguration_;
 
     float GetDesiredAngle();

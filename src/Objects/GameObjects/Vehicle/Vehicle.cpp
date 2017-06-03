@@ -11,7 +11,7 @@ enum ControllerStateE {
 };
 
 Vehicle::Vehicle(int id, b2Body *body, VisualObjectPtr chassis, std::vector<WheelPtr> &&wheels,
-                 const VehicleSetupT &setup, CarConfigurationPtr carConfiguration, MapPtr map) :
+                 const VehicleSetup &setup, CarConfigurationPtr carConfiguration, MapPtr map) :
         Object(body, chassis, OBJECT_TYPE_VEHICLE),
         wheels_(std::move(wheels)),
         vehicleSetup_(setup),
@@ -164,7 +164,7 @@ void Vehicle::UpdateModifiers() {
     }
 }
 
-void Vehicle::ChangeVehicleSetup(const VehicleSetupT setup) {
+void Vehicle::ChangeVehicleSetup(const VehicleSetup setup) {
     vehicleSetup_ = setup;
 }
 

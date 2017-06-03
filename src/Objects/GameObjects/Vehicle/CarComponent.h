@@ -3,7 +3,7 @@
 
 #include <bits/stdc++.h>
 
-enum ModifierType {
+enum ModifierTypeE {
     ENGINE_POWER_MAX,
     AERODYNAMIC_FRICTION,
     STEERING_ANGLE_MAX,
@@ -12,10 +12,10 @@ enum ModifierType {
 
 class CarComponent {
 public:
-    CarComponent(ModifierType type, int id, const std::string &name,
+    CarComponent(ModifierTypeE type, int id, const std::string &name,
                  std::map<std::string, float> requirement, float value);
 
-    ModifierType GetType() const;
+    ModifierTypeE GetType() const;
 
     float GetValue() const;
 
@@ -28,7 +28,7 @@ public:
     std::map<std::string, float> GetRequirement() const;
 
 private:
-    ModifierType type_;
+    ModifierTypeE type_;
     int id_;
     std::string name_;
     float value_;

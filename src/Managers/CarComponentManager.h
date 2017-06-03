@@ -9,7 +9,7 @@ class CarComponentManager {
 public:
     CarComponentManager();
 
-    CarComponentPtr GetComponent(ModifierType type, int id) const;
+    CarComponentPtr GetComponent(ModifierTypeE type, int id) const;
 
     std::vector<ComponentCategoryPtr> GetComponentCategories() const;
 
@@ -22,9 +22,9 @@ private:
 
     static std::vector<CarComponentPtr> CreateWheelComponents();
 
-    std::map<ModifierType, std::string> modifierToCategoryName_;
+    std::map<ModifierTypeE, std::string> modifierToCategoryName_;
 
-    std::map<ModifierType, std::vector<CarComponentPtr>> typeToComponents_;
+    std::map<ModifierTypeE, std::vector<CarComponentPtr>> typeToComponents_;
 };
 
 using CarComponentManagerPtr = std::shared_ptr<CarComponentManager>;

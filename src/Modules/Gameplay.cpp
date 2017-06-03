@@ -368,7 +368,7 @@ void Gameplay::SetTitleStyle(UITextBoxPtr textBox) {
 }
 
 void Gameplay::PreparePlayer(int id) {
-    VehicleSetupT setup;
+    VehicleSetup setup;
     setup.steeringAngleSpeed = 45;
     setup.brakesType = BRAKES_FRONT;
     setup.massBalance = 0.45; // higher load on front wheels

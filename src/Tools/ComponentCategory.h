@@ -8,12 +8,12 @@
 
 class ComponentCategory {
 public:
-    ComponentCategory(ModifierType type, const std::string &name,
+    ComponentCategory(ModifierTypeE type, const std::string &name,
                       std::vector<CarComponentPtr> components);
 
     std::string GetName() const;
 
-    ModifierType GetType() const;
+    ModifierTypeE GetType() const;
 
     bool SetComponent(unsigned long id);
 
@@ -26,7 +26,7 @@ public:
 private:
     std::vector<CarComponentPtr> components_;
     unsigned long current_;
-    ModifierType type_;
+    ModifierTypeE type_;
     std::string name_;
 };
 

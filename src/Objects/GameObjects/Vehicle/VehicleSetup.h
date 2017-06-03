@@ -12,7 +12,7 @@ enum VehicleBrakesTypeE {
     BRAKES_REAR
 };
 
-struct VehicleSetupT {
+struct VehicleSetup {
     float massBalance;
     float vehicleMass;
     float steeringAngleSpeed; // In degs per sec

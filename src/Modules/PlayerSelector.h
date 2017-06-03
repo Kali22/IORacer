@@ -4,14 +4,14 @@
 #include <Activity.h>
 #include <Event.h>
 
-enum SelectorType {
+enum SelectorTypeE {
     FIRST_PLAYER,
     SECOND_PLAYER
 };
 
 class PlayerSelector : public Activity {
 public:
-    PlayerSelector(SelectorType type);
+    PlayerSelector(SelectorTypeE type);
 
     void Init();
 
@@ -38,7 +38,7 @@ private:
 
     size_t player_;
     std::vector<std::string> playersList_;
-    SelectorType type_;
+    SelectorTypeE type_;
 };
 
 using PlayerSelectorPtr = std::shared_ptr<PlayerSelector>;

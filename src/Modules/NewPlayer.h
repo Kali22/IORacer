@@ -7,7 +7,7 @@
 
 class NewPlayer : public Activity {
 public:
-    NewPlayer(SelectorType type);
+    NewPlayer(SelectorTypeE type);
 
     void Init();
 
@@ -26,7 +26,7 @@ private:
 
     std::string player_;
 
-    SelectorType type_;
+    SelectorTypeE type_;
 
     const std::string resourcePath_ = "../players/";
 

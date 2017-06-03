@@ -2,7 +2,7 @@
 #include <ActivityManager.h>
 #include <NewRace.h>
 
-NewPlayer::NewPlayer(SelectorType type) : Activity("new_player"), type_(type) {}
+NewPlayer::NewPlayer(SelectorTypeE type) : Activity("new_player"), type_(type) {}
 
 void NewPlayer::Init() {
     SetBackgroundToMenu();

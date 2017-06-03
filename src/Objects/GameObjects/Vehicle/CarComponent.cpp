@@ -1,10 +1,10 @@
 #include <CarComponent.h>
 
-CarComponent::CarComponent(ModifierType type, int id, const std::string &name,
+CarComponent::CarComponent(ModifierTypeE type, int id, const std::string &name,
                            std::map<std::string, float> requirement, float value)
         : type_(type), id_(id), name_(name), mapNameToTime_(requirement), value_(value) {}
 
-ModifierType CarComponent::GetType() const {
+ModifierTypeE CarComponent::GetType() const {
     return type_;
 }
 

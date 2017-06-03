@@ -1,6 +1,6 @@
 #include <ComponentCategory.h>
 
-ComponentCategory::ComponentCategory(ModifierType type, const std::string &name,
+ComponentCategory::ComponentCategory(ModifierTypeE type, const std::string &name,
                                      std::vector<CarComponentPtr> components) :
         type_(type), name_(name), components_(components), current_(0) {}
 
@@ -31,6 +31,6 @@ std::string ComponentCategory::GetName() const {
     return name_;
 }
 
-ModifierType ComponentCategory::GetType() const {
+ModifierTypeE ComponentCategory::GetType() const {
     return type_;
 }

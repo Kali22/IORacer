@@ -45,12 +45,11 @@ ObjectManager::ObjectManager(TextureManagerPtr textureManager, b2World *world) :
         ObjectDesc desc = ParseDescription(line);
 
         objectDesc_.emplace(desc.name, desc);
-        std::cerr << "Object description loaded: [" << desc.name << ", "
-                  << desc.textureName << "]\n";
+        std::cerr << "Object description loaded: [" << desc.name << ", " << desc.textureName << "]\n";
     }
 }
 
-VehiclePtr ObjectManager::CreateVehicle(int id, const RealVec &pos, float rot, const VehicleSetupT &setup,
+VehiclePtr ObjectManager::CreateVehicle(int id, const RealVec &pos, float rot, const VehicleSetup &setup,
                                         MapPtr map, CarConfigurationPtr carConfiguration) {
     std::vector<WheelPtr> wheels;
     for (int i = 0; i < 4; ++i)

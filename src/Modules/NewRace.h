@@ -4,14 +4,14 @@
 #include <Activity.h>
 #include <Event.h>
 
-enum RaceType {
+enum RaceTypeE {
     SINGLE_PLAYER,
     MULTI_PLAYER
 };
 
 class NewRace : public Activity {
 public:
-    NewRace(RaceType type);
+    NewRace(RaceTypeE type);
 
     void Init();
 
@@ -28,7 +28,7 @@ private:
 
     void CreateRace(std::string name);
 
-    RaceType type_;
+    RaceTypeE type_;
 
     int laps_;
 

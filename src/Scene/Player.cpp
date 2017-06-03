@@ -21,7 +21,7 @@ void Player::ParseConfiguration(std::ifstream &file, CarComponentManagerPtr carC
     int component_id;
     for (int type = 0; type < MODIFIER_TYPE_MAX; type++) {
         file >> component_id;
-        carComponents.push_back(carComponentManager->GetComponent((ModifierType) type, component_id));
+        carComponents.push_back(carComponentManager->GetComponent((ModifierTypeE) type, component_id));
     }
     carConfiguration_ = std::make_shared<CarConfiguration>(carComponents);
 }

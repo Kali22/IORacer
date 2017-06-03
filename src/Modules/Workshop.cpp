@@ -88,7 +88,7 @@ void Workshop::InitCategories() {
     categories_ = carComponentManager_->GetComponentCategories();
     categoryId_ = 0;
     for (auto category : categories_) {
-        ModifierType type = category->GetType();
+        ModifierTypeE type = category->GetType();
         int id = configuration_->GetComponentId(type);
         if (id >= 0) {
             category->SetComponent((unsigned) id);
@@ -106,7 +106,7 @@ void Workshop::UpdateComponentUI() {
     CarComponentPtr component = GetCurrentCategory()->GetComponent();
     UpdateComponentString(component);
 
-    ModifierType type = GetCurrentCategory()->GetType();
+    ModifierTypeE type = GetCurrentCategory()->GetType();
     int id = configuration_->GetComponentId(type);
     if (id == component->GetId()) {
         SetSelectedButtonStyle(componentBox_);

@@ -19,12 +19,12 @@ public:
     void AddComponent(CarComponentPtr component);
 
     /** Return -1 if there is no component from given category. */
-    int GetComponentId(ModifierType) const;
+    int GetComponentId(ModifierTypeE) const;
 
 private:
-    float GetModifierByType(ModifierType type) const;
+    float GetModifierByType(ModifierTypeE type) const;
 
-    std::map<ModifierType, CarComponentPtr> components_;
+    std::map<ModifierTypeE, CarComponentPtr> components_;
 };
 
 using CarConfigurationPtr = std::shared_ptr<CarConfiguration>;

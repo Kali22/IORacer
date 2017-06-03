@@ -3,7 +3,7 @@
 #include <NewRace.h>
 #include <NewPlayer.h>
 
-PlayerSelector::PlayerSelector(SelectorType type) : Activity("player_selector"), player_(0), type_(type) {}
+PlayerSelector::PlayerSelector(SelectorTypeE type) : Activity("player_selector"), player_(0), type_(type) {}
 
 void PlayerSelector::Init() {
     UpdatePlayersList();

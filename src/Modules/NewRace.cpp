@@ -4,7 +4,7 @@
 
 const int default_laps_number = 2;
 
-NewRace::NewRace(RaceType type) : Activity("new_race"), type_(type), laps_(default_laps_number) {}
+NewRace::NewRace(RaceTypeE type) : Activity("new_race"), type_(type), laps_(default_laps_number) {}
 
 void NewRace::Init() {
     SetBackgroundToMenu();
