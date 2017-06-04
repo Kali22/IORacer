@@ -32,7 +32,7 @@ public:
 
     virtual void Draw(RenderWindowPtr window) const;
 
-    const std::vector<CheckpointPosition> &GetCheckpoints() const;
+    const std::vector<CheckpointPosition> & GetCheckpoints() const;
 
     StartPosition GetStartPosition(int position) const;
 

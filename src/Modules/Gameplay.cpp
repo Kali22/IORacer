@@ -1,9 +1,8 @@
 #include <Gameplay.h>
+
 #include <ActivityManager.h>
 #include <CheckPointManager.h>
 
-#define FIRST_PLAYER 0
-#define SECOND_PLAYER 1
 
 Gameplay::Gameplay(const std::string &mapName, int laps) :
         Activity("race"),
@@ -11,6 +10,20 @@ Gameplay::Gameplay(const std::string &mapName, int laps) :
         mapName_(mapName),
         isOver_(false),
         contactListener_(std::make_shared<ContactListener>()) {
+    keyMap_[FIRST_PLAYER] = {
+            {sf::Keyboard::Up, ACCELERATE},
+            {sf::Keyboard::Down, REVERSE},
+            {sf::Keyboard::Left, TURN_LEFT},
+            {sf::Keyboard::Right, TURN_RIGHT},
+            {sf::Keyboard::PageDown, SIZE_DOWN},
+            {sf::Keyboard::PageUp, SIZE_UP}};
+    keyMap_[SECOND_PLAYER] = {
+            {sf::Keyboard::W, ACCELERATE},
+            {sf::Keyboard::S, REVERSE},
+            {sf::Keyboard::A, TURN_LEFT},
+            {sf::Keyboard::D, TURN_RIGHT},
+            {sf::Keyboard::F1, SIZE_DOWN},
+            {sf::Keyboard::F2, SIZE_UP}};
 }
 
 void Gameplay::Init() {
@@ -141,7 +154,8 @@ void Gameplay::Update() {
 void Gameplay::UpdateUIInPrepareState() {
     UITextBoxPtr title = std::dynamic_pointer_cast<UITextBox>(userInterface_->GetElementByName("title"));
     std::stringstream ss;
-    ss << "Start in " << (int) ceil(preparationTimeInSeconds - globalTime_) << " seconds!";
+    ss << "Start in " << (int) ceil(preparationTimeInSeconds - globalTime_)
+       << " seconds!";
     title->SetText(ss.str());
 }
 
@@ -158,7 +172,8 @@ void Gameplay::PrepareUIForPrepareState() {
 void Gameplay::UpdateHUD() {
     UITextBoxPtr title = std::dynamic_pointer_cast<UITextBox>(userInterface_->GetElementByName("time"));
     std::stringstream ss;
-    ss << (int) (globalTime_ / 60.) << ":" << ((int) globalTime_) % 60 << ":" << (int) (globalTime_ * 100) % 100;
+    ss << (int) (globalTime_ / 60.) << ":" << ((int) globalTime_) % 60 << ":"
+       << (int) (globalTime_ * 100) % 100;
     title->SetText(ss.str());
 
     UITextBoxPtr lap0 = std::dynamic_pointer_cast<UITextBox>(userInterface_->GetElementByName("lap_0"));
@@ -173,8 +188,10 @@ void Gameplay::UpdateHUD() {
     if (playerVehicle_[SECOND_PLAYER] != nullptr) {
         UITextBoxPtr lap1 = std::dynamic_pointer_cast<UITextBox>(userInterface_->GetElementByName("lap_1"));
         ss.str("");
-        ss << "Lap: " << playerCheckpoints_[SECOND_PLAYER]->GetCurrentLapNumber() << " / "
-                "" << playerCheckpoints_[SECOND_PLAYER]->GetTotalNumberOfLaps();
+        ss << "Lap: "
+           << playerCheckpoints_[SECOND_PLAYER]->GetCurrentLapNumber() << " / "
+                   ""
+           << playerCheckpoints_[SECOND_PLAYER]->GetTotalNumberOfLaps();
         lap1->SetText(ss.str());
 
         minimap_[SECOND_PLAYER]->Update(playerVehicle_[SECOND_PLAYER]->GetPosition(),
@@ -273,10 +290,10 @@ void Gameplay::HandleKeyInGameState(sf::Event::KeyEvent event, bool state) {
         gameState_ = GAMEPLAY_STATE_PAUSE;
         PrepareUIForPauseState();
     } else {
-        if (playerVehicle_[0] != nullptr)
-            HandleKeyFirstPlayer(event, state);
-        if (playerVehicle_[1] != nullptr)
-            HandleKeySecondPlayer(event, state);
+        for (int id = 0; id < MAX_PLAYER; id++) {
+            if (playerVehicle_[id] != nullptr)
+                HandleKeyPlayerAction(id, event, state);
+        }
     }
 }
 
@@ -292,62 +309,29 @@ void Gameplay::HandleKeyInEndState(sf::Event::KeyEvent event) {
     }
 }
 
-/// TODO handle keyboard for both players in one function
-void Gameplay::HandleKeyFirstPlayer(sf::Event::KeyEvent event, bool state) {
+void Gameplay::HandleKeyPlayerAction(unsigned id, sf::Event::KeyEvent event, bool state) {
     float ref;
     float scr;
-    unsigned id = FIRST_PLAYER;
-    switch (event.code) {
-        case sf::Keyboard::Up:
+    auto key = keyMap_[id].find(event.code);
+    switch (key->second) {
+        case ACCELERATE:
             playerVehicle_[id]->Accelerate(state);
             break;
-        case sf::Keyboard::Down:
+        case REVERSE:
             playerVehicle_[id]->Reverse(state);
             break;
-        case sf::Keyboard::Left:
+        case TURN_LEFT:
             playerVehicle_[id]->TurnLeft(state);
             break;
-        case sf::Keyboard::Right:
+        case TURN_RIGHT:
             playerVehicle_[id]->TurnRight(state);
             break;
-        case sf::Keyboard::PageDown:
+        case SIZE_DOWN:
             ref = scene_->GetCamera(id)->GetReferenceHeight();
             scr = scene_->GetCamera(id)->GetScreenFraction();
             scene_->GetCamera(id)->ChangeView(ref + 1, scr);
             break;
-        case sf::Keyboard::PageUp:
-            ref = scene_->GetCamera(id)->GetReferenceHeight();
-            scr = scene_->GetCamera(id)->GetScreenFraction();
-            scene_->GetCamera(id)->ChangeView(ref - 1, scr);
-            break;
-        default:
-            break;
-    }
-}
-
-void Gameplay::HandleKeySecondPlayer(sf::Event::KeyEvent event, bool state) {
-    float ref;
-    float scr;
-    unsigned id = SECOND_PLAYER;
-    switch (event.code) {
-        case sf::Keyboard::W:
-            playerVehicle_[id]->Accelerate(state);
-            break;
-        case sf::Keyboard::S:
-            playerVehicle_[id]->Reverse(state);
-            break;
-        case sf::Keyboard::A:
-            playerVehicle_[id]->TurnLeft(state);
-            break;
-        case sf::Keyboard::D:
-            playerVehicle_[id]->TurnRight(state);
-            break;
-        case sf::Keyboard::F1:
-            ref = scene_->GetCamera(id)->GetReferenceHeight();
-            scr = scene_->GetCamera(id)->GetScreenFraction();
-            scene_->GetCamera(id)->ChangeView(ref + 1, scr);
-            break;
-        case sf::Keyboard::F2:
+        case SIZE_UP:
             ref = scene_->GetCamera(id)->GetReferenceHeight();
             scr = scene_->GetCamera(id)->GetScreenFraction();
             scene_->GetCamera(id)->ChangeView(ref - 1, scr);
@@ -368,25 +352,17 @@ void Gameplay::SetTitleStyle(UITextBoxPtr textBox) {
 }
 
 void Gameplay::PreparePlayer(int id) {
-    VehicleSetup setup;
-    setup.steeringAngleSpeed = 45;
-    setup.brakesType = BRAKES_FRONT;
-    setup.massBalance = 0.45; // higher load on front wheels
-    setup.transmissionType = TRANSMISSION_REAR;
-    setup.vehicleMass = 300;
-
-    CarConfigurationPtr configuration = player_[id]->GetCarConfiguration();
-    StartPosition start = map_->GetStartPosition(id);
-    playerVehicle_[id] = objectManager_->CreateVehicle(id, RealVec(start.x,
-                                                                   start.y), start.rot, setup, map_, configuration);
+    auto configuration = player_[id]->GetCarConfiguration();
+    auto start = map_->GetStartPosition(id);
+    auto startPos = RealVec(start.x, start.y);
+    playerVehicle_[id] = objectManager_->CreateVehicle(id, startPos, start.rot, {}, map_, configuration);
     std::vector<CheckPointPtr> checkpoints;
     for (auto el : map_->GetCheckpoints()) {
-        checkpoints.push_back(
-                objectManager_->CreateCheckpoint(id, RealVec(el.x, el.y,
-                                                             map_->GetPixMetersScale()), el.rot));
+        auto pos = RealVec(el.x, el.y, map_->GetPixMetersScale());
+        auto playerCheckpoint = objectManager_->CreateCheckpoint(id, pos , el.rot);
+        checkpoints.push_back(playerCheckpoint);
     }
-    playerCheckpoints_[id] = std::make_shared<CheckPointManager>
-            (playerVehicle_[id], checkpoints, laps_);
+    playerCheckpoints_[id] = std::make_shared<CheckPointManager>(playerVehicle_[id], checkpoints, laps_);
     scene_->AddObject(playerVehicle_[id]);
     scene_->AddCamera((unsigned) id, 40, 0.3);
 }

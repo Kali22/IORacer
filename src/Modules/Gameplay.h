@@ -1,6 +1,6 @@
 #pragma once
 
-
+#include <map>
 #include <Activity.h>
 #include <Event.h>
 #include <Vehicle.h>
@@ -10,6 +10,13 @@
 #include <UIMinimap.h>
 
 #define MAX_PLAYER 2
+
+#define FIRST_PLAYER 0
+#define SECOND_PLAYER 1
+
+enum PlayerAction {
+    ACCELERATE, REVERSE, TURN_LEFT, TURN_RIGHT, SIZE_UP, SIZE_DOWN
+};
 
 enum GameplayStateE {
     GAMEPLAY_STATE_PREPARE,
@@ -86,6 +93,7 @@ private:
     PlayerPtr player_[MAX_PLAYER];
     VehiclePtr playerVehicle_[MAX_PLAYER];
     CheckPointManagerPtr playerCheckpoints_[MAX_PLAYER];
+    std::map<sf::Keyboard::Key, PlayerAction> keyMap_[MAX_PLAYER];
 
     MapPtr map_;
     ScenePtr scene_;
@@ -98,9 +106,7 @@ private:
 
     const float preparationTimeInSeconds = 3.f;
 
-    void HandleKeyFirstPlayer(sf::Event::KeyEvent event, bool state);
-
-    void HandleKeySecondPlayer(sf::Event::KeyEvent event, bool state);
+    void HandleKeyPlayerAction(unsigned id, sf::Event::KeyEvent event, bool state);
 
     void SetTitleStyle(UITextBoxPtr textBox);
 
