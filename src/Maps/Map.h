@@ -8,11 +8,11 @@
 #include <SFML/Graphics/View.hpp>
 #include <RealVec.h>
 #include <Texture/Texture.h>
-#include <StartPosition.h>
+#include <InitialPosition.h>
 #include <Drawable.h>
 #include <ObjectTypes.h>
 #include <Object.h>
-#include <CheckpointPosition.h>
+#include <InitialPosition.h>
 #include <Sprite.h>
 
 /**
@@ -23,8 +23,8 @@
 class Map : public Drawable {
 public:
     Map(std::string name, std::string description, RealVec size, TexturePtr view, TexturePtr friction,
-        TexturePtr minimap, std::vector<CheckpointPosition> checkpoints, std::vector<ObjectPtr> objects,
-        std::vector<StartPosition> standings);
+        TexturePtr minimap, std::vector<InitialPosition> checkpoints, std::vector<ObjectPtr> objects,
+        std::vector<InitialPosition> standings);
 
     float GetPixMetersScale() const;
 
@@ -32,9 +32,9 @@ public:
 
     virtual void Draw(RenderWindowPtr window) const;
 
-    const std::vector<CheckpointPosition> & GetCheckpoints() const;
+    const std::vector<InitialPosition> & GetCheckpoints() const;
 
-    StartPosition GetStartPosition(int position) const;
+    InitialPosition GetInitialPosition(int position) const;
 
     TexturePtr GetMinimapTexture() const;
 
@@ -52,8 +52,8 @@ private:
     sf::Sprite mapView_;
     TexturePtr minimapTexture_;
 
-    std::vector<StartPosition> startPositions_;
-    std::vector<CheckpointPosition> checkpoints_;
+    std::vector<InitialPosition> startPositions_;
+    std::vector<InitialPosition> checkpoints_;
 
     std::vector<ObjectPtr> objects_;
 

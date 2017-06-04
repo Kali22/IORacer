@@ -7,8 +7,8 @@
  * Once map is created, all object have to be scaled.
  */
 Map::Map(std::string name, std::string description, RealVec size, TexturePtr view, TexturePtr friction,
-         TexturePtr minimap, std::vector<CheckpointPosition> checkpoints, std::vector<ObjectPtr> objects,
-         std::vector<StartPosition> standings) :
+         TexturePtr minimap, std::vector<InitialPosition> checkpoints, std::vector<ObjectPtr> objects,
+         std::vector<InitialPosition> standings) :
         mapName_(name),
         mapDescription_(description),
         mapSize_(size),
@@ -88,11 +88,11 @@ void Map::Draw(RenderWindowPtr window) const {
     }
 }
 
-const std::vector<CheckpointPosition> &Map::GetCheckpoints() const {
+const std::vector<InitialPosition> &Map::GetCheckpoints() const {
     return checkpoints_;
 }
 
-StartPosition Map::GetStartPosition(int position) const {
+InitialPosition Map::GetInitialPosition(int position) const {
     return startPositions_[position];
 }
 

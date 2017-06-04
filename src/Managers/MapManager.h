@@ -14,9 +14,9 @@ public:
     MapPtr CreateMap(std::string mapName);
 
 private:
-    std::vector<CheckpointPosition> ParseCheckpoints(std::ifstream &file) const;
+    std::vector<InitialPosition> ParseCheckpoints(std::ifstream &file) const;
 
-    std::vector<StartPosition> ParseStartPositions(std::ifstream &file) const;
+    std::vector<InitialPosition> ParseInitialPositions(std::ifstream &file) const;
 
     std::vector<ObjectPtr> ParseObjects(std::ifstream &file) const;
 

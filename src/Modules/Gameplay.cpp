@@ -2,6 +2,7 @@
 
 #include <ActivityManager.h>
 #include <CheckPointManager.h>
+#include <UIColorConstants.h>
 
 
 Gameplay::Gameplay(const std::string &mapName, int laps) :
@@ -42,7 +43,7 @@ void Gameplay::Init() {
     if (player_[SECOND_PLAYER] != nullptr) {
         PreparePlayer(SECOND_PLAYER);
     }
-    world_->Step(1.f / 60.f, 8, 6); // Init step
+    world_->Step(step_, 8, 6); // Init step
     gameState_ = GAMEPLAY_STATE_PREPARE;
     globalTime_ = 0.f;
     PrepareUIForPrepareState();
@@ -125,10 +126,9 @@ void Gameplay::Render() {
 }
 
 void Gameplay::Update() {
-    float dt = 1.f / 60.f;
     switch (gameState_) {
         case GAMEPLAY_STATE_PREPARE:
-            globalTime_ += dt;
+            globalTime_ += step_;
             UpdateUIInPrepareState();
             if (globalTime_ >= preparationTimeInSeconds) {
                 globalTime_ = 0;
@@ -170,33 +170,25 @@ void Gameplay::PrepareUIForPrepareState() {
 }
 
 void Gameplay::UpdateHUD() {
-    UITextBoxPtr title = std::dynamic_pointer_cast<UITextBox>(userInterface_->GetElementByName("time"));
     std::stringstream ss;
-    ss << (int) (globalTime_ / 60.) << ":" << ((int) globalTime_) % 60 << ":"
+    ss << (int) (globalTime_ * step_) << ":" << ((int) globalTime_) % 60 << ":"
        << (int) (globalTime_ * 100) % 100;
-    title->SetText(ss.str());
+    timer_->SetText(ss.str());
 
-    UITextBoxPtr lap0 = std::dynamic_pointer_cast<UITextBox>(userInterface_->GetElementByName("lap_0"));
-    ss.str("");
-    ss << "Lap: " << playerCheckpoints_[0]->GetCurrentLapNumber() << " / "
-       << playerCheckpoints_[0]->GetTotalNumberOfLaps();
-    lap0->SetText(ss.str());
-
-    minimap_[FIRST_PLAYER]->Update(playerVehicle_[FIRST_PLAYER]->GetPosition(),
-                                   playerCheckpoints_[FIRST_PLAYER]->GetNextCheckPointPosition());
-
-    if (playerVehicle_[SECOND_PLAYER] != nullptr) {
-        UITextBoxPtr lap1 = std::dynamic_pointer_cast<UITextBox>(userInterface_->GetElementByName("lap_1"));
-        ss.str("");
-        ss << "Lap: "
-           << playerCheckpoints_[SECOND_PLAYER]->GetCurrentLapNumber() << " / "
-                   ""
-           << playerCheckpoints_[SECOND_PLAYER]->GetTotalNumberOfLaps();
-        lap1->SetText(ss.str());
-
-        minimap_[SECOND_PLAYER]->Update(playerVehicle_[SECOND_PLAYER]->GetPosition(),
-                                        playerCheckpoints_[SECOND_PLAYER]->GetNextCheckPointPosition());
+    for (unsigned id = 0; id < MAX_PLAYER; id++) {
+        if (playerVehicle_[id] != nullptr) {
+            UpdateHUDPlayer(id);
+        }
     }
+}
+
+void Gameplay::UpdateHUDPlayer(unsigned id) {
+    std::stringstream ss;
+    ss << "Lap: " << playerCheckpoints_[id]->GetCurrentLapNumber() << " / "
+       << playerCheckpoints_[id]->GetTotalNumberOfLaps();
+    lapBox_[id]->SetText(ss.str());
+    minimap_[id]->Update(playerVehicle_[id]->GetPosition(),
+                                   playerCheckpoints_[id]->GetNextCheckPointPosition());
 }
 
 void Gameplay::PrepareUIForPauseState() {
@@ -210,41 +202,47 @@ void Gameplay::PrepareUIForPauseState() {
 void Gameplay::PrepareHUD() {
     userInterface_->DeleteElementByName("title");
     userInterface_->DeleteElementByName("background");
-    UITextBoxPtr title = userInterface_->CreateTextBox("time", "", 30,
-                                                       sf::FloatRect(0.5, 0.075, 0.2, 0.1));
-    SetTitleStyle(title);
-    UITextBoxPtr lap0 = userInterface_->CreateTextBox("lap_0", "?", 20,
-                                                      sf::FloatRect(0.1, 0.075, 0.2, 0.06));
-    SetTitleStyle(lap0);
-    sf::FloatRect minimapRect(0.9, 0.85, 0.16, 0.16);
-    TexturePtr minimapTexture = map_->GetMinimapTexture();
-    if (playerVehicle_[SECOND_PLAYER] != nullptr) {
-        UITextBoxPtr lap1 = userInterface_->CreateTextBox("lap_1", "?", 20,
-                                                          sf::FloatRect(0.9, 0.075, 0.2, 0.06));
-        SetTitleStyle(lap1);
-        minimap_[SECOND_PLAYER] = userInterface_->CreateMinimap(
-                "minimap_1", minimapRect, map_->GetSize(), minimapTexture);
-        minimapRect = sf::FloatRect(0.4, 0.85, 0.16, 0.16);
+
+    auto titleRect = sf::FloatRect(0.5, 0.075, 0.2, 0.1);
+    timer_ = userInterface_->CreateTextBox("time", "", 30, titleRect);
+    SetTitleStyle(timer_);
+
+     sf::FloatRect lapRect[MAX_PLAYER] = {sf::FloatRect(0.1, 0.075, 0.2, 0.06),
+                                sf::FloatRect(0.9, 0.075, 0.2, 0.06)};
+     sf::FloatRect minimapRect[MAX_PLAYER] = {sf::FloatRect(0.4, 0.85, 0.16,
+                                                            0.16),
+                                    sf::FloatRect(0.9, 0.85, 0.16, 0.16)};
+    if (playerVehicle_[SECOND_PLAYER] == nullptr) {
+        minimapRect[FIRST_PLAYER] = minimapRect[SECOND_PLAYER];
     }
-    minimap_[FIRST_PLAYER] = userInterface_->CreateMinimap(
-            "minimap_0", minimapRect, map_->GetSize(), minimapTexture);
-    for (auto minimap : minimap_) {
-        if (minimap != nullptr) {
-            minimap->SetBackgroundTexture(map_->GetMapName() + "_mini");
+    for (unsigned id = 0; id < MAX_PLAYER; id++) {
+        if (playerVehicle_[id] != nullptr) {
+            PrepareHUDPlayer(id, lapRect[id], minimapRect[id]);
         }
     }
+}
+
+void Gameplay::PrepareHUDPlayer(unsigned id, sf::FloatRect lapRect,
+                                   sf::FloatRect minimapRect) {
+    lapBox_[id] = userInterface_->CreateTextBox("lap_" + id, "?", 20, lapRect);
+    SetTitleStyle(lapBox_[id]);
+
+    auto minimapTexture = map_->GetMinimapTexture();
+    minimap_[id] = userInterface_->CreateMinimap("minimap_" + id, minimapRect,
+                                                 map_->GetSize(), minimapTexture);
+    minimap_[id]->SetBackgroundTexture(map_->GetMapName() + "_mini");
 }
 
 void Gameplay::UpdateUIInEndState() {}
 
 void Gameplay::PrepareUIForEndState() {
     userInterface_->DeleteElementByName("time");
-    userInterface_->DeleteElementByName("lap_0");
-    if (playerVehicle_[1] != nullptr)
-        userInterface_->DeleteElementByName("lap_1");
+    userInterface_->DeleteElementByName("lap_" + FIRST_PLAYER);
+    if (playerVehicle_[SECOND_PLAYER] != nullptr)
+        userInterface_->DeleteElementByName("lap_" + SECOND_PLAYER);
 
-    UITextBoxPtr title = userInterface_->CreateTextBox("finish", "", 60,
-                                                       sf::FloatRect(0.5, 0.5, 1, 0.2));
+    auto titleRect = sf::FloatRect(0.5, 0.5, 1, 0.2);
+    UITextBoxPtr title = userInterface_->CreateTextBox("finish", "", 60, titleRect);
     SetTitleStyle(title);
     std::stringstream ss;
     ss << "Player " << winnerName_ << " won!";
@@ -252,11 +250,10 @@ void Gameplay::PrepareUIForEndState() {
 }
 
 void Gameplay::UpdateGame() {
-    float dt = 1.f / 60.f;
-    globalTime_ += dt;
-    world_->Step(dt, 8, 6);
-    UpdatePlayer(FIRST_PLAYER, dt);
-    UpdatePlayer(SECOND_PLAYER, dt);
+    globalTime_ += step_;
+    world_->Step(step_, 8, 6);
+    UpdatePlayer(FIRST_PLAYER, step_);
+    UpdatePlayer(SECOND_PLAYER, step_);
     UpdateHUD();
     if (isOver_) {
         SaveTimes();
@@ -290,7 +287,7 @@ void Gameplay::HandleKeyInGameState(sf::Event::KeyEvent event, bool state) {
         gameState_ = GAMEPLAY_STATE_PAUSE;
         PrepareUIForPauseState();
     } else {
-        for (int id = 0; id < MAX_PLAYER; id++) {
+        for (unsigned id = 0; id < MAX_PLAYER; id++) {
             if (playerVehicle_[id] != nullptr)
                 HandleKeyPlayerAction(id, event, state);
         }
@@ -313,6 +310,9 @@ void Gameplay::HandleKeyPlayerAction(unsigned id, sf::Event::KeyEvent event, boo
     float ref;
     float scr;
     auto key = keyMap_[id].find(event.code);
+    if (key == keyMap_[id].end()) {
+        return;
+    }
     switch (key->second) {
         case ACCELERATE:
             playerVehicle_[id]->Accelerate(state);
@@ -346,14 +346,14 @@ void Gameplay::SetTitleStyle(UITextBoxPtr textBox) {
     textBox->SetTextColorHover(sf::Color::White);
     textBox->SetBackgroundColor(sf::Color(0x2B405Bef));
     textBox->SetBackgroundColorHover(sf::Color(0x2B405Bef));
-    textBox->SetOutlineColor(sf::Color(0xE1F0FFff));
-    textBox->SetOutlineColorHover(sf::Color(0xE1F0FFff));
+    textBox->SetOutlineColor(outlineColor);
+    textBox->SetOutlineColorHover(outlineColor);
     textBox->SetOutlineThickness(1.f);
 }
 
 void Gameplay::PreparePlayer(int id) {
     auto configuration = player_[id]->GetCarConfiguration();
-    auto start = map_->GetStartPosition(id);
+    auto start = map_->GetInitialPosition(id);
     auto startPos = RealVec(start.x, start.y);
     playerVehicle_[id] = objectManager_->CreateVehicle(id, startPos, start.rot, {}, map_, configuration);
     std::vector<CheckPointPtr> checkpoints;

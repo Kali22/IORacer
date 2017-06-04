@@ -66,6 +66,8 @@ private:
 
     void UpdateHUD();
 
+    void UpdateHUDPlayer(unsigned id);
+
     void UpdateGame();
 
     void UpdatePlayer(int id, float dt);
@@ -77,6 +79,8 @@ private:
     void PrepareUIForEndState();
 
     void PrepareHUD();
+
+    void PrepareHUDPlayer(unsigned id, sf::FloatRect lapRect, sf::FloatRect minimapRect);
 
     void PreparePlayer(int id);
 
@@ -102,9 +106,12 @@ private:
     ContactListenerPtr contactListener_;
     b2World *world_;
 
+    UITextBoxPtr lapBox_[MAX_PLAYER];
     UIMinimapPtr minimap_[MAX_PLAYER];
+    UITextBoxPtr timer_;
 
     const float preparationTimeInSeconds = 3.f;
+    const float step_ = 1.f / 60.f;
 
     void HandleKeyPlayerAction(unsigned id, sf::Event::KeyEvent event, bool state);
 

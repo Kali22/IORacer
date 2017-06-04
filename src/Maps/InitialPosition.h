@@ -1,6 +1,6 @@
 #pragma once
 
 
-struct CheckpointPosition {
+struct InitialPosition {
     float x, y, rot;
 };

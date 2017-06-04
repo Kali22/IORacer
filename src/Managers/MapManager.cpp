@@ -52,8 +52,8 @@ MapPtr MapManager::ParseMapDescription(std::string mapName) {
     TexturePtr friction = textureManager_->GetTextureByName(frictionName);
     TexturePtr minimap = textureManager_->GetTextureByName(minimapName);
 
-    std::vector<CheckpointPosition> checkpoints = ParseCheckpoints(file);
-    std::vector<StartPosition> standings = ParseStartPositions(file);
+    std::vector<InitialPosition> checkpoints = ParseCheckpoints(file);
+    std::vector<InitialPosition> standings = ParseInitialPositions(file);
     std::vector<ObjectPtr> objects = ParseObjects(file);
     std::vector<ObjectPtr> bounds = AddBounds(sizeX, sizeY);
     objects.insert(objects.end(), bounds.begin(), bounds.end());
@@ -65,13 +65,13 @@ MapPtr MapManager::ParseMapDescription(std::string mapName) {
                                  std::move(checkpoints), std::move(objects), std::move(standings));
 }
 
-std::vector<CheckpointPosition> MapManager::ParseCheckpoints(std::ifstream &file) const {
+std::vector<InitialPosition> MapManager::ParseCheckpoints(std::ifstream &file) const {
     int checkpointNumber;
-    std::vector<CheckpointPosition> checkpoints;
+    std::vector<InitialPosition> checkpoints;
     file >> checkpointNumber;
     float x, y, r;
     for (int i = 0; i < checkpointNumber; ++i) {
-        CheckpointPosition checkpoint;
+        InitialPosition checkpoint;
         file >> x >> y >> r;
         checkpoint = {x, y, MathUtil::DegreeToRadian(r)};
         checkpoints.push_back(checkpoint);
@@ -80,14 +80,14 @@ std::vector<CheckpointPosition> MapManager::ParseCheckpoints(std::ifstream &file
     return checkpoints;
 }
 
-std::vector<StartPosition> MapManager::ParseStartPositions(std::ifstream &file) const {
+std::vector<InitialPosition> MapManager::ParseInitialPositions(std::ifstream &file) const {
     int positionsNumber;
-    std::vector<StartPosition> startPositions;
+    std::vector<InitialPosition> startPositions;
     file >> positionsNumber;
     float x, y, r;
     for (int i = 0; i < positionsNumber; ++i) {
         file >> x >> y >> r;
-        startPositions.push_back((StartPosition) {x, y, MathUtil::DegreeToRadian(r)});
+        startPositions.push_back((InitialPosition) {x, y, MathUtil::DegreeToRadian(r)});
     }
     return startPositions;
 }

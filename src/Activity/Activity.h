@@ -39,7 +39,7 @@ public:
     WeakActivityManagerPtr GetActivityManager() const;
 
 protected:
-    void SetTitleStyle(UITextBoxPtr textBox);
+    virtual void SetTitleStyle(UITextBoxPtr textBox);
 
     void SetButtonStyle(UITextBoxPtr button);
 
