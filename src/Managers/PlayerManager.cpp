@@ -56,7 +56,7 @@ std::vector<std::string> PlayerManager::GetPlayersList() const {
 
 void PlayerManager::CreateNewPlayer(const std::string &name) {
     std::ofstream players_list(resourcePath_ + playerListFile_, std::ios_base::app);
-    players_list << name << std::endl;
+    players_list << std::endl << name;
     PlayerPtr player = std::make_shared<Player>(name, carComponentManager_, true);
     nameToPlayer_[name] = player;
 }
