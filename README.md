@@ -6,6 +6,6 @@ IORacer is simple but very enjoyable racer game. The game offers realistics phys
 ![Gameplay](https://github.com/pawelzell/IORacer/blob/master/screenshots/gameplay-1.png)
 ## Technical Details
 The implementation is in C++ and uses SFML and Box2d library. Box2d helps with modeling physics in 2D word.
-## Details
+## Authors
 Game was writen students of Computer Science at University of Warsaw: Paweł Zięcik, Jacek Łysiak, Bartosz Burny, Maciej Biernaczyk. The game was created as a project for Software Enginering classes on our University.
 
